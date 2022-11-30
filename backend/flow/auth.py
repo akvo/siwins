@@ -18,11 +18,6 @@ form_definition_url = f"{tc_api_url}/#form#/update"
 data_url = f"{flow_api_url}/form_instances?survey_id=#survey#&form_id=#form#"
 init_sync_url = f"{flow_api_url}/sync?initial=true"
 
-# Farmer test survey from Demo Survey
-survey_id = 6087710401888256
-registraton_form = 6286483501613056
-monitoring_form = 5968064826834944
-
 
 def get_token():
     account = r.post(auth_url, auth_data)
@@ -45,10 +40,13 @@ def get_header(token: dict):
 def get_data(url: str, token: dict):
     header = get_header(token)
     response = r.get(url, headers=header)
-    print("FETCH: " + str(response.status_code) + " | " + url)
-    if response.status_code == 200:
+    status_code = response.status_code
+    print("FETCH: " + str(status_code) + " | " + url)
+    if status_code == 200:
         response = response.json()
         return response
+    if status_code == 204:
+        return None
     print("ERROR: " + url)
     return None
 

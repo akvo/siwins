@@ -1,6 +1,5 @@
 import os
 import json
-import time
 import flow.auth as flow_auth
 from seeder.form import form_seeder
 from seeder.datapoint import datapoint_seeder
@@ -8,11 +7,11 @@ from db.connection import Base, SessionLocal, engine
 from db import crud_sync
 from db.truncator import truncate
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 Base.metadata.create_all(bind=engine)
 session = SessionLocal()
 
-start_time = time.process_time()
 
 forms = []
 forms_config = "./config/forms.json"
