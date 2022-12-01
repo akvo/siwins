@@ -66,3 +66,7 @@ def get_form_list():
     session = Session(engine)
     form = session.query(Form).all()
     return [f"{f.id} - {f.name}" for f in form]
+
+
+def get_registration_form(session: Session) -> FormDict:
+    return session.query(Form).filter(Form.registration_form.is_(None))

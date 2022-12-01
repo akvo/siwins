@@ -73,5 +73,10 @@ def get_data_by_id(session: Session, id: int) -> DataDict:
     return session.query(Data).filter(Data.id == id).first()
 
 
-def get_data_by_identifier(session: Session, identifier: str) -> DataDict:
-    return session.query(Data).filter(Data.identifier == identifier).first()
+def get_data_by_identifier(
+    session: Session, identifier: str, form: Optional[int] = None
+) -> DataDict:
+    data = session.query(Data).filter(Data.identifier == identifier)
+    if form:
+        data = data.filter(Data.form == form)
+    return data.first()

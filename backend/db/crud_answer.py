@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from typing import List, Union
+from typing import List, Union, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, desc
 from models.answer import Answer, AnswerDict, AnswerBase
@@ -53,13 +53,16 @@ def add_answer(
 
 
 def update_answer(
-    session: Session, answer: Answer,
-    history: History, type: QuestionType,
-    value: Union[int, float, str, bool, List[str], List[int], List[float]]
+    session: Session,
+    answer: Answer,
+    type: QuestionType,
+    value: Union[int, float, str, bool, List[str], List[int], List[float]],
+    history: Optional[History] = None,
 ) -> AnswerDict:
     answer.updated = datetime.now()
     answer = append_value(answer, value, type)
-    session.add(history)
+    if history:
+        session.add(history)
     session.commit()
     session.flush()
     session.refresh(answer)
