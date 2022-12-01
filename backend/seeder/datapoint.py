@@ -51,9 +51,9 @@ def seed_datapoint(token, data, form):
                     if question.type == QuestionType.geo:
                         geoVal = [aval.get('lat'), aval.get('long')]
                     answer = Answer(
-                        data=datapoint_id,
                         question=question.id,
-                        created=fi.get('createdAt'))
+                        created=fi.get('createdAt'),
+                        updated=fi.get('modifiedAt'))
                     # if datapoint exist, move current answer as history
                     if datapoint_exist:
                         current_answers = \
@@ -62,16 +62,26 @@ def seed_datapoint(token, data, form):
                                 data=datapoint_exist.id,
                                 questions=[question.id])
                         if len(current_answers):
-                            # create history and update current answer
                             current_answer = current_answers[0]
+                            # create history
                             history = History(
                                 question=question.id,
                                 data=datapoint_exist.id,
-                                created=current_answer.created)
+                                text=current_answer.text,
+                                value=current_answer.value,
+                                options=current_answer.options,
+                                created=current_answer.created,
+                                updated=current_answer.updated)
+                            # update current answer
+                            update_answer = answer
+                            update_answer.id = current_answer.id,
+                            update_answer.data = datapoint_exist.id,
                             crud_answer.update_answer(
-                                session=session, answer=answer,
+                                session=session, answer=update_answer,
                                 history=history, type=question.type,
                                 value=aval)
+                            print(f"Update Datapoint {datapoint_exist.id}")
+                            print(f"Update Answer {answer.id}")
                         else:
                             # add answer
                             crud_answer.add_answer(
@@ -81,22 +91,28 @@ def seed_datapoint(token, data, form):
                         answer = crud_answer.append_value(
                             answer=answer, value=aval, type=question.type)
                         answers.append(answer)
-        data = crud_data.add_data(
-            session=session,
-            id=datapoint_id,
-            identifier=fi.get('identifier'),
-            name=fi.get('displayName'),
-            form=form_id,
-            geo=geoVal,
-            created=fi.get('createdAt'),
-            answers=answers)
-        print(f"Datapoint: {data.id}")
+        if not datapoint_exist:
+            # add new datapoint
+            data = crud_data.add_data(
+                session=session,
+                datapoint_id=datapoint_id,
+                identifier=fi.get('identifier'),
+                name=fi.get('displayName'),
+                form=form_id,
+                registration=False if monitoring else True,
+                geo=geoVal,
+                created=fi.get('createdAt'),
+                updated=fi.get('modifiedAt'),
+                answers=answers)
+            print(f"New Datapoint: {data.id}")
+    print("------------------------------------------")
     if nextPageUrl:
-        print(f"### nextPageUrl: {nextPageUrl}")
+        print("fetch next page")
         data = flow_auth.get_data(
             url=nextPageUrl, token=token)
         if len(data.get('formInstances')):
             seed_datapoint(data=data)
+    print("------------------------------------------")
     print(f"{form_id}: seed complete")
     print("------------------------------------------")
 

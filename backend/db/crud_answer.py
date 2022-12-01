@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 from typing import List, Union, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, desc
@@ -48,7 +47,7 @@ def add_answer(
     session.add(answer)
     session.commit()
     session.flush()
-    # session.refresh(answer)
+    session.refresh(answer)
     return answer
 
 
@@ -59,13 +58,17 @@ def update_answer(
     value: Union[int, float, str, bool, List[str], List[int], List[float]],
     history: Optional[History] = None,
 ) -> AnswerDict:
-    answer.updated = datetime.now()
-    answer = append_value(answer, value, type)
+    # delete old answer
+    delete_answer_by_id(session=session, id=answer.id)
+    # add update answer
+    new_answer = append_value(answer, value, type)
+    if new_answer:
+        session.add(new_answer)
     if history:
         session.add(history)
     session.commit()
     session.flush()
-    # session.refresh(answer)
+    session.refresh(new_answer)
     return answer
 
 
@@ -91,3 +94,7 @@ def get_history(session: Session, data: int, question: int):
     ).order_by(desc(History.id)).all()
     history = [h.simplified for h in history]
     return [answer] + history
+
+
+def delete_answer_by_id(session: Session, id: int) -> None:
+    return session.query(Answer).filter(Answer.id == id).delete()

@@ -15,16 +15,18 @@ class PaginatedData(TypedDict):
 
 
 def add_data(
-    session: Session, name: str, form: int,
+    session: Session, name: str, form: int, registration: bool,
     answers: List[AnswerBase], geo: Optional[List[float]] = None,
     id: Optional[int] = None, created: Optional[datetime] = None,
     updated: Optional[datetime] = None,
-    identifier: Optional[str] = None
+    identifier: Optional[str] = None,
+    datapoint_id: Optional[int] = None,
 ) -> DataDict:
     data = Data(
         id=id, name=name, form=form, geo=geo,
         created=created if created else datetime.now(),
-        updated=updated, identifier=identifier)
+        updated=updated, identifier=identifier,
+        datapoint_id=datapoint_id, registration=registration)
     for answer in answers:
         data.answer.append(answer)
     session.add(data)
@@ -71,6 +73,15 @@ def get_data(
 
 def get_data_by_id(session: Session, id: int) -> DataDict:
     return session.query(Data).filter(Data.id == id).first()
+
+
+def get_data_by_datapoint_id(
+    session: Session, datapoint_id: int, form: Optional[int] = None
+) -> DataDict:
+    data = session.query(Data).filter(Data.datapoint_id == datapoint_id)
+    if form:
+        data = data.filter(Data.form == form)
+    return data.first()
 
 
 def get_data_by_identifier(
