@@ -56,6 +56,7 @@ def seed_datapoint(token, data, form):
                         updated=fi.get('modifiedAt'))
                     # if datapoint exist, move current answer as history
                     if datapoint_exist:
+                        print(f"Update Datapoint {datapoint_exist.id}")
                         current_answers = \
                             crud_answer.get_answer_by_data_and_question(
                                 session=session,
@@ -80,13 +81,16 @@ def seed_datapoint(token, data, form):
                                 session=session, answer=update_answer,
                                 history=history, type=question.type,
                                 value=aval)
-                            print(f"Update Datapoint {datapoint_exist.id}")
                             print(f"Update Answer {answer.id}")
                         else:
                             # add answer
+                            new_answer = answer
+                            new_answer.data = datapoint_exist.id
                             crud_answer.add_answer(
-                                session=session, answer=answer,
+                                session=session, answer=new_answer,
                                 type=question.type, value=aval)
+                            print(f"New Answer {answer.id}")
+                    # new datapoint and answers
                     if not datapoint_exist:
                         answer = crud_answer.append_value(
                             answer=answer, value=aval, type=question.type)
