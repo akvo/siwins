@@ -1,6 +1,7 @@
 # import jwt
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from routes.data import data_route
 
 
 app = FastAPI(
@@ -29,7 +30,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# app.include_router(hint_route)
+app.include_router(data_route)
 
 
 @app.get("/", tags=["Dev"])
@@ -40,11 +41,6 @@ def read_main():
 @app.get("/health-check", tags=["Dev"])
 def health_check():
     return "OK"
-
-
-@app.get("/hello")
-def read_root():
-    return {"Hello": "World"}
 
 
 # @app.middleware("http")

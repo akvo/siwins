@@ -41,6 +41,12 @@ class DataResponse(BaseModel):
     total_page: int
 
 
+class MapsData(BaseModel):
+    id: int
+    name: str
+    geo: GeoData
+
+
 class Data(Base):
     __tablename__ = "data"
     id = Column(BigInteger, primary_key=True, index=True, nullable=True)
@@ -92,6 +98,17 @@ class Data(Base):
             "updated":
             self.updated.strftime("%B %d, %Y") if self.updated else None,
             "answer": [a.formatted for a in self.answer],
+        }
+
+    @property
+    def to_maps(self) -> MapsData:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "geo": {
+                "lat": self.geo[0],
+                "long": self.geo[1]
+            } if self.geo else None,
         }
 
 

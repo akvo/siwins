@@ -71,6 +71,11 @@ def get_data(
     return PaginatedData(data=data, count=count)
 
 
+def get_all_data(session: Session, registration: bool) -> DataDict:
+    return session.query(Data).filter(
+        Data.registration == registration).all()
+
+
 def get_data_by_id(session: Session, id: int) -> DataDict:
     return session.query(Data).filter(Data.id == id).first()
 
