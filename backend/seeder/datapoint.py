@@ -29,13 +29,16 @@ def seed_datapoint(token, data, form):
     formInstances = data.get('formInstances')
     nextPageUrl = data.get('nextPageUrl')
     for fi in formInstances:
+        datapoint_id = fi.get('dataPointId')
         answers = []
         geoVal = None
-        # check if datapoint exist for monitoring then seed new answer
+        # check if first monitoring datapoint exist
         datapoint_exist = False
         if monitoring:
             datapoint_exist = crud_data.get_data_by_identifier(
-                session=session, identifier=fi.get('identifier'))
+                session=session,
+                identifier=fi.get('identifier'),
+                form=form_id)
         # fetching answers value into answer model
         for key, value in fi.get('responses').items():
             for val in value:
@@ -48,7 +51,7 @@ def seed_datapoint(token, data, form):
                     if question.type == QuestionType.geo:
                         geoVal = [aval.get('lat'), aval.get('long')]
                     answer = Answer(
-                        data=fi.get('id'),
+                        data=datapoint_id,
                         question=question.id,
                         created=fi.get('createdAt'))
                     # if datapoint exist, move current answer as history
@@ -80,7 +83,7 @@ def seed_datapoint(token, data, form):
                         answers.append(answer)
         data = crud_data.add_data(
             session=session,
-            id=fi.get('id'),
+            id=datapoint_id,
             identifier=fi.get('identifier'),
             name=fi.get('displayName'),
             form=form_id,
