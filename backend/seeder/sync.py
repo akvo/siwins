@@ -20,12 +20,19 @@ start_time = time.process_time()
 
 
 def sync(sync_data: dict):
+    # TODO:: Support delete datapoint / other changes
     changes = sync_data.get('changes')
     print(changes)
     next_sync_url = sync_data.get('nextSyncUrl')
     # save next sync URL
     if next_sync_url:
         crud_sync.add_sync(session=session, url=next_sync_url)
+    # manage deleted datapoint
+    if changes.get('dataPointDeleted'):
+        deleted_data_ids = [int(dpid) for dpid
+                            in changes.get('dataPointDeleted')]
+        crud_data.delete_bulk(session=session, ids=deleted_data_ids)
+        print(f"Sync | Delete Datapoints: {deleted_data_ids}")
     # manage form instance changes
     for fi in changes.get('formInstanceChanged'):
         form = crud_form.get_form_by_id(
@@ -103,7 +110,7 @@ def sync(sync_data: dict):
                 geo=geoVal,
                 created=fi.get('createdAt'),
                 answers=answers)
-            print(f"Sync New Datapoint: {data.id}")
+            print(f"Sync | New Datapoint: {data.id}")
             continue
         # update datapoint
         update_data = current_data
@@ -112,7 +119,7 @@ def sync(sync_data: dict):
         update_data.geo = geoVal,
         update_data.updated = fi.get('modifiedAt'),
         updated = crud_data.update_data(session=session, data=update_data)
-        print(f"Sync Update Datapoint: {updated.id}")
+        print(f"Sync | Update Datapoint: {updated.id}")
     # call next sync URL
     sync_data = flow_auth.get_data(url=next_sync_url, token=token)
     if sync_data:

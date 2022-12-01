@@ -65,7 +65,7 @@ def update_answer(
         session.add(history)
     session.commit()
     session.flush()
-    session.refresh(answer)
+    # session.refresh(answer)
     return answer
 
 
