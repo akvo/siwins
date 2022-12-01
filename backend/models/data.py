@@ -6,7 +6,7 @@ from typing_extensions import TypedDict
 from typing import Optional, List
 from pydantic import BaseModel
 from pydantic import confloat
-from sqlalchemy import Column, Float, String
+from sqlalchemy import Column, Float, String, Boolean
 from sqlalchemy import ForeignKey, DateTime, BigInteger
 import sqlalchemy.dialects.postgresql as pg
 from sqlalchemy.orm import relationship
@@ -25,6 +25,8 @@ class DataDict(TypedDict):
     id: int
     name: str
     form: int
+    registration: bool
+    datapoint_id: Optional[int] = None
     identifier: Optional[str] = None
     geo: Optional[GeoData] = None
     created: Optional[str] = None
@@ -42,9 +44,11 @@ class DataResponse(BaseModel):
 class Data(Base):
     __tablename__ = "data"
     id = Column(BigInteger, primary_key=True, index=True, nullable=True)
+    datapoint_id = Column(BigInteger, nullable=True)
     identifier = Column(String, nullable=True)
     name = Column(String)
     form = Column(BigInteger, ForeignKey(Form.id))
+    registration = Column(Boolean, default=True)
     geo = Column(pg.ARRAY(Float), nullable=True)
     created = Column(DateTime, nullable=True)
     updated = Column(DateTime, nullable=True)
@@ -54,13 +58,16 @@ class Data(Base):
 
     def __init__(
         self, name: str, form: int, geo: List[float],
-        updated: datetime, created: datetime,
-        id: Optional[int] = None, identifier: Optional[str] = None
+        updated: datetime, created: datetime, registration: bool,
+        id: Optional[int] = None, identifier: Optional[str] = None,
+        datapoint_id: Optional[int] = None
     ):
         self.id = id
+        self.datapoint_id = datapoint_id
         self.identifier = identifier
         self.name = name
         self.form = form
+        self.registration = registration
         self.geo = geo
         self.updated = updated
         self.created = created
@@ -72,9 +79,11 @@ class Data(Base):
     def serialize(self) -> DataDict:
         return {
             "id": self.id,
+            "datapoint_id": self.datapoint_id,
             "identifier": self.identifier,
             "name": self.name,
             "form": self.form,
+            "registration": self.registration,
             "geo": {
                 "lat": self.geo[0],
                 "long": self.geo[1]
@@ -90,6 +99,8 @@ class DataBase(BaseModel):
     id: int
     name: str
     form: int
+    registration: bool
+    datapoint_id: Optional[int] = None
     identifier: Optional[str] = None
     geo: Optional[GeoData] = None
     created: Optional[str] = None

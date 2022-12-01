@@ -21,9 +21,11 @@ def upgrade() -> None:
     op.create_table(
         'data',
         sa.Column('id', sa.BigInteger(), nullable=False),
+        sa.Column('datapoint_id', sa.BigInteger(), nullable=True),
         sa.Column('identifier', sa.String(), nullable=True),
         sa.Column('name', sa.String()),
         sa.Column('form', sa.BigInteger(), sa.ForeignKey('form.id')),
+        sa.Column('registration', sa.Boolean(), nullable=False),
         sa.Column('geo', pg.ARRAY(sa.Float()), nullable=True),
         sa.Column(
             'created', sa.DateTime(), nullable=True,
