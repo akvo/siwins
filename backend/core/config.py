@@ -6,12 +6,18 @@ from fastapi.responses import FileResponse
 from functools import lru_cache
 from pydantic import BaseSettings
 from routes.data import data_route
+from source.geoconfig import GeoLevels
 
+CONFIG_NAME = "bali"
 SOURCE_PATH = "./source"
 TOPO_JSON = f"{SOURCE_PATH}/bali-topojson.json"
 TOPO_JSON = open(TOPO_JSON).read()
+GEO_CONFIG = GeoLevels[CONFIG_NAME].value
 
 MINJS = jsmin("".join([
+    "var levels=" + str([g["alias"] for g in GEO_CONFIG]) + ";"
+    "var map_config={shapeLevels:" + str(
+        [g["name"] for g in GEO_CONFIG]) + "};",
     "var topojson=", TOPO_JSON, ";"
 ]))
 JS_FILE = f"{SOURCE_PATH}/config.min.js"

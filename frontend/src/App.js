@@ -1,6 +1,7 @@
 import React from "react";
-import { Layout, Menu } from "antd";
 import "./App.css";
+import { Row, Col, Layout, Menu } from "antd";
+import { Map } from "./components";
 
 const { Header, Footer, Content } = Layout;
 
@@ -22,7 +23,15 @@ const App = () => {
           })}
         />
       </Header>
-      <Content className="site-layout-content">Content</Content>
+      <Content className="site-layout-content">
+        <Row>
+          <Col span={24}>
+            <div className="map-wrapper">
+              <Map />
+            </div>
+          </Col>
+        </Row>
+      </Content>
       <Footer className="site-layout-footer">
         SI-WINS ©2022 Created by <strong>Akvo</strong>
       </Footer>
