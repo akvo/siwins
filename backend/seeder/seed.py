@@ -18,7 +18,14 @@ forms_config = "./config/forms.json"
 with open(forms_config) as json_file:
     forms = json.load(json_file)
 
-for table in ["sync"]:
+for table in [
+    "sync", "form", "question_group", "question", "option"
+]:
+    action = truncate(session=session, table=table)
+    print(action)
+
+
+for table in ["data", "answer", "history"]:
     action = truncate(session=session, table=table)
     print(action)
 
@@ -33,5 +40,5 @@ if sync_res.get('nextSyncUrl'):
     print(f"Init Sync URL: {sync_res.url}")
     print("------------------------------------------")
 
-form_seeder(token=token, forms=forms)
-datapoint_seeder(token=token, forms=forms)
+form_seeder(session=session, token=token, forms=forms)
+datapoint_seeder(session=session, token=token, forms=forms)

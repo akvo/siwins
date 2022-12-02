@@ -1,29 +1,19 @@
-import os
 import time
 from typing import List
+from sqlalchemy.orm import Session
 from datetime import timedelta
 from db import crud_form
 from db import crud_question
 from db import crud_data
-from db.connection import Base, SessionLocal, engine
-from db.truncator import truncate
 from db import crud_answer
 from models.question import QuestionType
 from models.answer import Answer
 from models.history import History
+from models.form import Form
 import flow.auth as flow_auth
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-Base.metadata.create_all(bind=engine)
-session = SessionLocal()
-
-# TODO:: MONITORING DATAPOINT
-# 3. we need to seed both registration and monitoring datapoints
-# (while monitoring will be have histories)
-
-
-def seed_datapoint(token, data, form):
+def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
     form_id = form.id
     monitoring = True if form.registration_form else False
     formInstances = data.get('formInstances')
@@ -121,12 +111,8 @@ def seed_datapoint(token, data, form):
     print("------------------------------------------")
 
 
-def datapoint_seeder(token: dict, forms: List[dict]):
+def datapoint_seeder(session: Session, token: dict, forms: List[dict]):
     start_time = time.process_time()
-
-    for table in ["data", "answer", "history"]:
-        action = truncate(session=session, table=table)
-        print(action)
 
     for form in forms:
         # fetch datapoint
@@ -140,7 +126,8 @@ def datapoint_seeder(token: dict, forms: List[dict]):
         if not data:
             print(f"{form_id}: seed ERROR!")
             break
-        seed_datapoint(token=token, data=data, form=check_form)
+        seed_datapoint(
+            session=session, token=token, data=data, form=check_form)
 
     elapsed_time = time.process_time() - start_time
     elapsed_time = str(timedelta(seconds=elapsed_time)).split(".")[0]

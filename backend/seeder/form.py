@@ -1,27 +1,16 @@
-import os
 import time
 from typing import List
+from sqlalchemy.orm import Session
 from datetime import timedelta
 from db import crud_form
 from db import crud_question_group
 from db import crud_question
-from db.truncator import truncate
-from db.connection import Base, SessionLocal, engine
 from models.question import QuestionType
 import flow.auth as flow_auth
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-Base.metadata.create_all(bind=engine)
-session = SessionLocal()
-
-
-def form_seeder(token: dict, forms: List[dict]):
+def form_seeder(session: Session, token: dict, forms: List[dict]):
     start_time = time.process_time()
-
-    for table in ["form", "question_group", "question", "option"]:
-        action = truncate(session=session, table=table)
-        print(action)
 
     for form in forms:
         # fetch form
