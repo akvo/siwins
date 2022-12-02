@@ -1,9 +1,28 @@
 # import jwt
-from fastapi import FastAPI
+from jsmin import jsmin
+from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from functools import lru_cache
+from pydantic import BaseSettings
 from routes.data import data_route
 
+SOURCE_PATH = "./source"
+TOPO_JSON = f"{SOURCE_PATH}/bali-topojson.json"
+TOPO_JSON = open(TOPO_JSON).read()
 
+MINJS = jsmin("".join([
+    "var topojson=", TOPO_JSON, ";"
+]))
+JS_FILE = f"{SOURCE_PATH}/config.min.js"
+open(JS_FILE, 'w').write(MINJS)
+
+
+class Settings(BaseSettings):
+    js_file: str = JS_FILE
+
+
+settings = Settings()
 app = FastAPI(
     root_path="/api",
     title="SI-WINS",
@@ -31,6 +50,22 @@ app.add_middleware(
 )
 
 app.include_router(data_route)
+
+
+@lru_cache()
+def get_setting():
+    return Settings()
+
+
+@app.get(
+    "/config.js",
+    response_class=FileResponse,
+    tags=["Config"],
+    name="config.js",
+    description="static javascript config")
+async def main(res: Response):
+    res.headers["Content-Type"] = "application/x-javascript; charset=utf-8"
+    return settings.js_file
 
 
 @app.get("/", tags=["Dev"])

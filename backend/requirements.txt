@@ -22,6 +22,7 @@ importlib-metadata==5.0.0
 importlib-resources==5.10.0
 iniconfig==1.1.1
 inquirer==2.9.2
+jsmin==3.0.1
 Mako==1.2.4
 MarkupSafe==2.1.1
 mccabe==0.6.1
