@@ -10,11 +10,24 @@ from sqlalchemy import ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 import sqlalchemy.dialects.postgresql as pg
 from db.connection import Base
+from models.answer import append_value
 
 
 class HistoryDict(TypedDict):
     question: int
-    value: Union[int, float, str, bool, List[str], List[int], List[float]]
+    value: Union[
+        int, float, str, bool, List[str],
+        List[int], List[float], None]
+
+
+class MonitoringHistoryDict(TypedDict):
+    question_id: int
+    question: str
+    value: Union[
+        int, float, str, bool, dict, List[str],
+        List[int], List[float], None]
+    date: str
+    history: bool
 
 
 class History(Base):
@@ -58,6 +71,17 @@ class History(Base):
             "created": self.created,
             "updated": self.updated,
         }
+
+    @property
+    def to_monitoring(self) -> MonitoringHistoryDict:
+        answer = {
+            "history": True,
+            "question_id": self.question,
+            "question": self.question_detail.name,
+            "date": self.created.strftime("%B %d, %Y"),
+        }
+        answer = append_value(self, answer)
+        return answer
 
 
 class HistoryBase(BaseModel):

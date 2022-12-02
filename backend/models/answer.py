@@ -1,6 +1,7 @@
 # Please don't use **kwargs
 # Keep the code clean and CLEAR
 
+import json
 from datetime import datetime
 from typing_extensions import TypedDict
 from typing import Optional, List, Union
@@ -10,13 +11,44 @@ from sqlalchemy import ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 import sqlalchemy.dialects.postgresql as pg
 from db.connection import Base
+from models.question import QuestionType
+
+
+# util
+def append_value(self, answer):
+    type = self.question_detail.type
+    if type in [QuestionType.number]:
+        answer.update({"value": self.value})
+    if type in [QuestionType.text,
+                QuestionType.geo,
+                QuestionType.date]:
+        answer.update({"value": self.text})
+    if type == QuestionType.option:
+        answer.update({"value": self.options[0]})
+    if type == QuestionType.multiple_option:
+        answer.update({"value": self.options})
+    if type == QuestionType.photo:
+        answer.update({"value": json.loads(self.text)})
+    if type == QuestionType.geoshape:
+        answer.update({"value": json.loads(self.text)})
+    return answer
 
 
 class AnswerDict(TypedDict):
     question: int
     value: Union[
-        int, float, str, bool, dict, List[str], List[int],
-        List[float], None]
+        int, float, str, bool, dict, List[str],
+        List[int], List[float], None]
+
+
+class MonitoringAnswerDict(TypedDict):
+    question_id: int
+    question: str
+    value: Union[
+        int, float, str, bool, dict, List[str],
+        List[int], List[float], None]
+    date: str
+    history: bool
 
 
 class Answer(Base):
@@ -65,6 +97,25 @@ class Answer(Base):
             "created": self.created,
             "updated": self.updated,
         }
+
+    @property
+    def formatted(self) -> AnswerDict:
+        answer = {
+            "question": self.question,
+        }
+        answer = append_value(self, answer)
+        return answer
+
+    @property
+    def to_monitoring(self) -> MonitoringAnswerDict:
+        answer = {
+            "history": False,
+            "question_id": self.question,
+            "question": self.question_detail.name,
+            "date": self.created.strftime("%B %d, %Y"),
+        }
+        answer = append_value(self, answer)
+        return answer
 
 
 class AnswerBase(BaseModel):

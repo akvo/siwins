@@ -11,9 +11,10 @@ from sqlalchemy import ForeignKey, DateTime, BigInteger
 import sqlalchemy.dialects.postgresql as pg
 from sqlalchemy.orm import relationship
 from db.connection import Base
-from models.answer import AnswerDict, AnswerBase
-from .form import Form
-from .answer import Answer
+from models.answer import Answer, AnswerDict
+from models.answer import AnswerBase, MonitoringAnswerDict
+from models.form import Form
+from models.history import History
 
 
 class GeoData(BaseModel):
@@ -47,6 +48,12 @@ class MapsData(BaseModel):
     geo: GeoData
 
 
+class MonitoringData(TypedDict):
+    id: int
+    name: str
+    monitoring: Optional[List[MonitoringAnswerDict]] = []
+
+
 class Data(Base):
     __tablename__ = "data"
     id = Column(BigInteger, primary_key=True, index=True, nullable=True)
@@ -60,7 +67,10 @@ class Data(Base):
     updated = Column(DateTime, nullable=True)
     answer = relationship(
         Answer, cascade="all, delete", passive_deletes=True,
-        backref="answer", order_by=Answer.id.asc())
+        backref="answer", order_by=Answer.id.desc())
+    history = relationship(
+        History, cascade="all, delete", passive_deletes=True,
+        backref="history", order_by=History.id.desc())
 
     def __init__(
         self, name: str, form: int, geo: List[float],
@@ -109,6 +119,16 @@ class Data(Base):
                 "lat": self.geo[0],
                 "long": self.geo[1]
             } if self.geo else None,
+        }
+
+    @property
+    def to_monitoring_data(self) -> MonitoringData:
+        answers = [a.to_monitoring for a in self.answer]
+        histories = [h.to_monitoring for h in self.history]
+        return {
+            "id": self.id,
+            "name": self.name,
+            "monitoring": answers + histories
         }
 
 

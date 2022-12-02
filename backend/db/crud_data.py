@@ -2,7 +2,8 @@ from datetime import datetime
 from typing import List, Optional
 from typing_extensions import TypedDict
 from sqlalchemy.orm import Session
-from sqlalchemy import desc
+from sqlalchemy import desc, and_
+from sqlalchemy.sql.expression import false
 from models.data import Data, DataDict
 from models.answer import Answer
 from models.history import History
@@ -96,3 +97,11 @@ def get_data_by_identifier(
     if form:
         data = data.filter(Data.form == form)
     return data.first()
+
+
+def get_monitoring_data(
+    session: Session, identifier: str
+):
+    return session.query(Data).filter(and_(
+        Data.identifier == identifier,
+        Data.registration == false())).all()
