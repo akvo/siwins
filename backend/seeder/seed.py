@@ -14,7 +14,7 @@ session = SessionLocal()
 
 
 forms = []
-forms_config = "./config/forms.json"
+forms_config = "./source/forms.json"
 with open(forms_config) as json_file:
     forms = json.load(json_file)
 

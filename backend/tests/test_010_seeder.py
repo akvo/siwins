@@ -16,7 +16,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 forms = []
-forms_config = "./config/forms.json"
+forms_config = "./source/forms.json"
 with open(forms_config) as json_file:
     forms = json.load(json_file)
 
