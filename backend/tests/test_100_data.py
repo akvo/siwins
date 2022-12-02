@@ -17,12 +17,27 @@ class TestDataRoutes():
             app.url_path_for("data:get_maps_data"))
         assert res.status_code == 200
         res = res.json()
-        assert res == [{
-            "id": 1,
-            "name": "SMA N 1 Nusa Penida - High school",
-            "geo": {"long": 115.49182166666667, "lat": -8.676368333333333},
-        }, {
-            "id": 2,
-            "name": "SMK N 1 Nusa Penida - High school",
-            "geo": {"long": 115.49200166666667, "lat": -8.676591666666667},
-        }]
+        for r in res:
+            assert "id" in r
+            assert "name" in r
+            assert "geo" in r
+            assert "lat" in r.get('geo')
+            assert "long" in r.get('geo')
+
+    @pytest.mark.asyncio
+    async def test_get_chart_data(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        res = await client.get(
+            app.url_path_for("data:get_chart_data", data_id=1))
+        assert res.status_code == 200
+        res = res.json()
+        assert "id" in res
+        assert "name" in res
+        assert "monitoring" in res
+        for m in res.get('monitoring'):
+            assert "question_id" in m
+            assert "question" in m
+            assert "value" in m
+            assert "value" in m
+            assert "history" in m

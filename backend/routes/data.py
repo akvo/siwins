@@ -33,8 +33,8 @@ def get_maps(
 @data_route.get(
     "/data/chart/{data_id}",
     response_model=MonitoringData,
-    name="data:get_data_detail",
-    summary="get data registration and monitoring detail",
+    name="data:get_chart_data",
+    summary="get monitoring data for chart",
     tags=["Data"])
 def get_data_detail(
     req: Request,
