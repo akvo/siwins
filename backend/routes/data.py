@@ -15,7 +15,7 @@ data_route = APIRouter()
 
 
 @data_route.get(
-    "/maps/",
+    "/data/maps/",
     response_model=List[MapsData],
     name="data:get_maps_data",
     summary="get maps data",
@@ -31,7 +31,7 @@ def get_maps(
 
 
 @data_route.get(
-    "/data/{data_id}",
+    "/data/chart/{data_id}",
     response_model=MonitoringData,
     name="data:get_data_detail",
     summary="get data registration and monitoring detail",
