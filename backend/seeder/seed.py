@@ -7,8 +7,8 @@ from db.connection import Base, SessionLocal, engine
 from db import crud_sync
 from db.truncator import truncate
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TESTING = os.environ.get("TESTING")
 Base.metadata.create_all(bind=engine)
 session = SessionLocal()
 
@@ -18,16 +18,17 @@ forms_config = "./config/forms.json"
 with open(forms_config) as json_file:
     forms = json.load(json_file)
 
-for table in [
-    "sync", "form", "question_group", "question", "option"
-]:
-    action = truncate(session=session, table=table)
-    print(action)
+if not TESTING:
+    # don't truncate when running test
+    for table in [
+        "sync", "form", "question_group", "question", "option"
+    ]:
+        action = truncate(session=session, table=table)
+        print(action)
 
-
-for table in ["data", "answer", "history"]:
-    action = truncate(session=session, table=table)
-    print(action)
+    for table in ["data", "answer", "history"]:
+        action = truncate(session=session, table=table)
+        print(action)
 
 token = flow_auth.get_token()
 
