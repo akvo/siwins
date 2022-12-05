@@ -111,7 +111,9 @@ const Markers = ({ data, getChartData }) => {
         }}
         radius={r * (hovered ? 3 : 1)}
         stroke={stroke}
-        eventHandlers={{ click: () => getChartData(id) }}
+        eventHandlers={{
+          click: () => getChartData(id),
+        }}
       >
         <Tooltip direction="top">{name}</Tooltip>
       </Circle>

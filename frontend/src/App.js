@@ -9,8 +9,10 @@ const App = () => {
   return (
     <Layout className="layout">
       <Header className="site-layout-header">
-        <div className="logo" />
-        <Menu
+        <div className="logo">
+          <h1>SI-WINS</h1>
+        </div>
+        {/* <Menu
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={["2"]}
@@ -21,7 +23,7 @@ const App = () => {
               label: `nav ${key}`,
             };
           })}
-        />
+        /> */}
       </Header>
       <Content className="site-layout-content">
         <Row>
