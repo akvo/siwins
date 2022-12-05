@@ -24,13 +24,14 @@ const RenderChart = ({ data }) => {
   data = orderBy(
     data.map((d) => ({
       value: d.value,
-      date: d.date,
+      date: d.date?.split(" - ").join("\n"),
     })),
     ["date"],
     "desc"
   );
   let config = {
     data,
+    color: "#00b96b",
     // legend: {
     //   position: "top-left",
     // },
@@ -48,15 +49,17 @@ const RenderChart = ({ data }) => {
           // 'top', 'bottom', 'middle',
           style: {
             fill: "#FFFFFF",
-            opacity: 0.6,
+            opacity: 0.9,
           },
         },
         xAxis: {
           label: {
             autoHide: true,
-            autoRotate: false,
+            autoRotate: true,
           },
         },
+        minColumnWidth: 10,
+        maxColumnWidth: 50,
       };
       return <Column {...config} />;
   }

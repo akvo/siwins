@@ -79,7 +79,7 @@ class History(Base):
             "history": True,
             "question_id": self.question,
             "question": self.question_detail.name,
-            "date": self.created.strftime("%B %d, %Y - %-I:%M:%-S%p"),
+            "date": self.created.strftime("%b %d, %Y - %-I:%M:%-S %p"),
             "type": self.question_detail.type.value
         }
         answer = append_value(self, answer)
