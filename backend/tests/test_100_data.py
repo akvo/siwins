@@ -21,8 +21,6 @@ class TestDataRoutes():
             assert "id" in r
             assert "name" in r
             assert "geo" in r
-            assert "lat" in r.get('geo')
-            assert "long" in r.get('geo')
 
     @pytest.mark.asyncio
     async def test_get_chart_data(

@@ -15,7 +15,7 @@ data_route = APIRouter()
 
 
 @data_route.get(
-    "/data/maps/",
+    "/data/maps",
     response_model=List[MapsData],
     name="data:get_maps_data",
     summary="get maps data",

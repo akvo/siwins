@@ -45,7 +45,7 @@ class DataResponse(BaseModel):
 class MapsData(BaseModel):
     id: int
     name: str
-    geo: GeoData
+    geo: List[float]
 
 
 class MonitoringData(TypedDict):
@@ -115,10 +115,7 @@ class Data(Base):
         return {
             "id": self.id,
             "name": self.name,
-            "geo": {
-                "lat": self.geo[0],
-                "long": self.geo[1]
-            } if self.geo else None,
+            "geo": self.geo,
         }
 
     @property
