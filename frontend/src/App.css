@@ -39,3 +39,10 @@
   width: 100% !important;
   height: 87vh !important;
 }
+
+.loading-wrapper {
+  padding: 50px 0 25px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
