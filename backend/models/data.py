@@ -67,10 +67,10 @@ class Data(Base):
     updated = Column(DateTime, nullable=True)
     answer = relationship(
         Answer, cascade="all, delete", passive_deletes=True,
-        backref="answer", order_by=Answer.id.desc())
+        backref="answer", order_by=Answer.created.desc())
     history = relationship(
         History, cascade="all, delete", passive_deletes=True,
-        backref="history", order_by=History.id.desc())
+        backref="history", order_by=History.created.desc())
 
     def __init__(
         self, name: str, form: int, geo: List[float],

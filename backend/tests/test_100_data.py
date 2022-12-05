@@ -36,6 +36,7 @@ class TestDataRoutes():
         for m in res.get('monitoring'):
             assert "question_id" in m
             assert "question" in m
+            assert "type" in m
             assert "value" in m
             assert "value" in m
             assert "history" in m

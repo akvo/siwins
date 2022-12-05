@@ -23,6 +23,7 @@ class HistoryDict(TypedDict):
 class MonitoringHistoryDict(TypedDict):
     question_id: int
     question: str
+    type: str
     value: Union[
         int, float, str, bool, dict, List[str],
         List[int], List[float], None]
@@ -78,7 +79,8 @@ class History(Base):
             "history": True,
             "question_id": self.question,
             "question": self.question_detail.name,
-            "date": self.created.strftime("%B %d, %Y"),
+            "date": self.created.strftime("%B %d, %Y - %-I:%M:%-S%p"),
+            "type": self.question_detail.type.value
         }
         answer = append_value(self, answer)
         return answer
