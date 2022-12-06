@@ -67,8 +67,7 @@ const RenderChart = ({ data }) => {
   }
 };
 
-const Charts = ({ chartData }) => {
-  const [activePanel, setActivePanel] = useState(1);
+const Charts = ({ activePanel, setActivePanel, chartData }) => {
   const { monitoring } = chartData;
   const grouped = chain(
     groupBy(
@@ -79,7 +78,7 @@ const Charts = ({ chartData }) => {
 
   return (
     <Collapse
-      defaultActiveKey={[activePanel]}
+      activeKey={[activePanel]}
       onChange={setActivePanel}
       accordion={true}
     >
@@ -175,6 +174,7 @@ const Map = () => {
   const [data, setData] = useState([]);
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [chartData, setChartData] = useState(null);
+  const [activePanel, setActivePanel] = useState(1);
 
   useEffect(() => {
     setLoading(true);
@@ -251,16 +251,24 @@ const Map = () => {
       <Modal
         title={selectedPoint?.name}
         open={selectedPoint}
-        onCancel={() => setSelectedPoint(null)}
+        onCancel={() => {
+          setSelectedPoint(null);
+          setActivePanel(1);
+        }}
         footer={null}
         width={650}
+        maskClosable={false}
       >
         {!chartData ? (
           <div className="loading-wrapper">
             <Spin />
           </div>
         ) : (
-          <Charts chartData={chartData} />
+          <Charts
+            activePanel={activePanel}
+            setActivePanel={setActivePanel}
+            chartData={chartData}
+          />
         )}
       </Modal>
     </>
