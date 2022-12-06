@@ -4,7 +4,7 @@ import {
   MapContainer,
   GeoJSON,
   TileLayer,
-  Circle,
+  CircleMarker,
   Tooltip,
 } from "react-leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
@@ -99,43 +99,40 @@ const Markers = ({ zoom, data, getChartData }) => {
     zoomend: () => setCurrentZoom(map?._zoom || currentZoom),
   });
 
-  const rSize = useMemo(() => {
-    if (currentZoom <= 8) {
-      return 200;
-    }
-    if (currentZoom <= 10) {
-      return 100;
-    }
-    if (currentZoom <= 12) {
-      return 40;
-    }
-    if (currentZoom < 14) {
-      return 20;
-    }
-    if (currentZoom < 16) {
-      return 4;
-    }
-    return 1;
-  }, [currentZoom]);
+  // const rSize = useMemo(() => {
+  //   if (currentZoom <= 8) {
+  //     return 200;
+  //   }
+  //   if (currentZoom <= 10) {
+  //     return 100;
+  //   }
+  //   if (currentZoom <= 12) {
+  //     return 40;
+  //   }
+  //   if (currentZoom < 14) {
+  //     return 20;
+  //   }
+  //   if (currentZoom < 16) {
+  //     return 4;
+  //   }
+  //   return 1;
+  // }, [currentZoom]);
 
   data = data.filter((d) => d.geo);
   return data.map(({ id, geo, name }) => {
     const isHovered = id === hovered;
-    const fill = "#F00";
-    const r = 5;
-    const stroke = "#fff";
     return (
-      <Circle
+      <CircleMarker
         key={id}
         center={geo}
         pathOptions={{
-          fillColor: isHovered ? "#FFF" : fill,
-          color: fill,
+          fillColor: isHovered ? "#FFF" : "#d30808",
+          color: "#F00",
           opacity: 1,
           fillOpacity: 1,
         }}
-        radius={r * rSize * (isHovered ? 2 : 1)}
-        stroke={stroke}
+        radius={5 * (isHovered ? 2 : 1)}
+        stroke="#fff"
         eventHandlers={{
           click: () => getChartData(id),
           mouseover: () => setHovered(id),
@@ -143,7 +140,7 @@ const Markers = ({ zoom, data, getChartData }) => {
         }}
       >
         <Tooltip direction="top">{name}</Tooltip>
-      </Circle>
+      </CircleMarker>
     );
   });
 };
