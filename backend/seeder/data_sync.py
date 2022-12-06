@@ -29,6 +29,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
         crud_data.delete_bulk(session=session, ids=deleted_data_ids)
         print(f"Sync | Delete Datapoints: {deleted_data_ids}")
     # manage form instance changes
+    # TODO:: Need to sort value by createdAt?
     for fi in changes.get('formInstanceChanged'):
         form = crud_form.get_form_by_id(
             session=session, id=fi.get('formId'))

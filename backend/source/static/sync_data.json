@@ -9,8 +9,8 @@
         "displayName": "SMA N 1 Nusa Penida - High school",
         "latitude": null,
         "longitude": null,
-        "createdAt": "2022-12-01T02:38:35.601Z",
-        "modifiedAt": "2022-12-01T03:03:27.033Z"
+        "createdAt": "2022-12-02T02:38:35.601Z",
+        "modifiedAt": "2022-12-02T03:03:27.033Z"
       }
     ],
     "formChanged": [],
@@ -21,14 +21,14 @@
         "formVersion": 3.0,
         "deviceIdentifier": "wgprtm_redmi_note8",
         "dataPointId": "716330915",
-        "submissionDate": "2022-12-01T03:02:55Z",
-        "modifiedAt": "2022-12-01T03:03:00.997Z",
+        "submissionDate": "2022-12-02T03:02:55Z",
+        "modifiedAt": "2022-12-02T03:03:00.997Z",
         "id": "729930913",
         "responses": {
           "733010971": [
             {
-              "725310914": 200.0,
-              "735090984": 10.0,
+              "725310914": 110.0,
+              "735090984": 11.0,
               "738950915": [{ "text": "Clean" }]
             }
           ]
@@ -38,20 +38,20 @@
         "formId": "729240983",
         "surveyalTime": 8,
         "submitter": "galih redmi 8",
-        "createdAt": "2022-12-01T03:02:59.068Z"
+        "createdAt": "2022-12-02T03:02:59.068Z"
       },
       {
         "formVersion": 3.0,
         "deviceIdentifier": "wgprtm_redmi_note8",
         "dataPointId": "716330915",
-        "submissionDate": "2022-12-01T03:03:22Z",
-        "modifiedAt": "2022-12-01T03:03:27.115Z",
+        "submissionDate": "2022-12-02T03:03:22Z",
+        "modifiedAt": "2022-12-02T03:03:27.115Z",
         "id": "733410921",
         "responses": {
           "733010971": [
             {
-              "725310914": 225.0,
-              "735090984": 15.0,
+              "725310914": 100.0,
+              "735090984": 10.0,
               "738950915": [{ "text": "Clean" }]
             }
           ]
@@ -61,7 +61,7 @@
         "formId": "729240983",
         "surveyalTime": 6,
         "submitter": "galih redmi 8",
-        "createdAt": "2022-12-01T03:03:25.288Z"
+        "createdAt": "2022-12-02T03:03:25.288Z"
       }
     ],
     "formDeleted": [],
