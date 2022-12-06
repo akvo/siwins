@@ -22,8 +22,9 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
     TESTING = os.environ.get("TESTING")
     form_id = form.id
     monitoring = True if form.registration_form else False
-    formInstances = data.get('formInstances')
     nextPageUrl = data.get('nextPageUrl')
+    formInstances = data.get('formInstances')
+    formInstances.sort(key=lambda fi: fi['createdAt'], reverse=False)
     for fi in formInstances:
         datapoint_id = fi.get('dataPointId')
         answers = []

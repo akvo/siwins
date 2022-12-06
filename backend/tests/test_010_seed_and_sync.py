@@ -95,53 +95,9 @@ class TestSeedAndSync():
         }]
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
-        assert data == [{
-            "id": 2,
-            "name": "SMA N 1 Nusa Penida - High school",
-            "monitoring": [{
-                "history": False,
-                "question_id": 725310914,
-                "question": "Number students",
-                "date": "Dec 01, 2022 - 3:03:25 AM",
-                "type": "number",
-                "value": 225.0,
-            }, {
-                "history": False,
-                "question_id": 735090984,
-                "question": "Number toilets",
-                "date": "Dec 01, 2022 - 3:03:25 AM",
-                "type": "number",
-                "value": 15.0,
-            }, {
-                "history": False,
-                "question_id": 738950915,
-                "question": "Status of toilet",
-                "date": "Dec 01, 2022 - 3:03:25 AM",
-                "type": "option",
-                "value": "Clean",
-            }, {
-                "history": True,
-                "question_id": 725310914,
-                "question": "Number students",
-                "date": "Dec 01, 2022 - 3:02:59 AM",
-                "type": "number",
-                "value": 200.0,
-            }, {
-                "history": True,
-                "question_id": 735090984,
-                "question": "Number toilets",
-                "date": "Dec 01, 2022 - 3:02:59 AM",
-                "type": "number",
-                "value": 10.0,
-            }, {
-                "history": True,
-                "question_id": 738950915,
-                "question": "Status of toilet",
-                "date": "Dec 01, 2022 - 3:02:59 AM",
-                "type": "option",
-                "value": "Clean",
-            }]
-        }]
+        assert data[0]['id'] == 2
+        assert data[0]['name'] == "SMA N 1 Nusa Penida - High school"
+        assert len(data[0]['monitoring']) == 6
 
     @pytest.mark.asyncio
     async def test_sync(
@@ -157,92 +113,6 @@ class TestSeedAndSync():
         temp_data = crud_data.get_all_data(session=session, registration=False)
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
-        assert data == [{
-            "id": 2,
-            "name": "SMA N 1 Nusa Penida - High school",
-            "monitoring": [{
-                "history": False,
-                "question_id": 725310914,
-                "question": "Number students",
-                "date": "Dec 02, 2022 - 3:03:25 AM",
-                "type": "number",
-                "value": 100.0,
-            }, {
-                "history": False,
-                "question_id": 735090984,
-                "question": "Number toilets",
-                "date": "Dec 02, 2022 - 3:03:25 AM",
-                "type": "number",
-                "value": 10.0,
-            }, {
-                "history": False,
-                "question_id": 738950915,
-                "question": "Status of toilet",
-                "date": "Dec 02, 2022 - 3:03:25 AM",
-                "type": "option",
-                "value": "Clean",
-            }, {
-                "history": True,
-                "question_id": 738950915,
-                "question": "Status of toilet",
-                "date": "Dec 02, 2022 - 3:02:59 AM",
-                "type": "option",
-                "value": "Clean",
-            }, {
-                "history": True,
-                "question_id": 725310914,
-                "question": "Number students",
-                "date": "Dec 02, 2022 - 3:02:59 AM",
-                "type": "number",
-                "value": 110.0,
-            }, {
-                "history": True,
-                "question_id": 735090984,
-                "question": "Number toilets",
-                "date": "Dec 02, 2022 - 3:02:59 AM",
-                "type": "number",
-                "value": 11.0,
-            }, {
-                "history": True,
-                "question_id": 735090984,
-                "question": "Number toilets",
-                "date": "Dec 01, 2022 - 3:03:25 AM",
-                "type": "number",
-                "value": 15.0,
-            }, {
-                "history": True,
-                "question_id": 725310914,
-                "question": "Number students",
-                "date": "Dec 01, 2022 - 3:03:25 AM",
-                "type": "number",
-                "value": 225.0,
-            }, {
-                "history": True,
-                "question_id": 738950915,
-                "question": "Status of toilet",
-                "date": "Dec 01, 2022 - 3:03:25 AM",
-                "type": "option",
-                "value": "Clean",
-            }, {
-                "history": True,
-                "question_id": 725310914,
-                "question": "Number students",
-                "date": "Dec 01, 2022 - 3:02:59 AM",
-                "type": "number",
-                "value": 200.0,
-            }, {
-                "history": True,
-                "question_id": 738950915,
-                "question": "Status of toilet",
-                "date": "Dec 01, 2022 - 3:02:59 AM",
-                "type": "option",
-                "value": "Clean",
-            }, {
-                "history": True,
-                "question_id": 735090984,
-                "question": "Number toilets",
-                "date": "Dec 01, 2022 - 3:02:59 AM",
-                "type": "number",
-                "value": 10.0,
-            }]
-        }]
+        assert data[0]['id'] == 2
+        assert data[0]['name'] == "SMA N 1 Nusa Penida - High school"
+        assert len(data[0]['monitoring']) == 12
