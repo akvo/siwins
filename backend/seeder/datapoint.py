@@ -1,3 +1,5 @@
+import os
+import json
 import time
 from typing import List
 from sqlalchemy.orm import Session
@@ -12,8 +14,12 @@ from models.history import History
 from models.form import Form
 import flow.auth as flow_auth
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+test_source = "./source/static"
+
 
 def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
+    TESTING = os.environ.get("TESTING")
     form_id = form.id
     monitoring = True if form.registration_form else False
     formInstances = data.get('formInstances')
@@ -100,7 +106,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                 answers=answers)
             print(f"New Datapoint: {data.id}")
     print("------------------------------------------")
-    if nextPageUrl:
+    if not TESTING and nextPageUrl:
         print("fetch next page")
         data = flow_auth.get_data(
             url=nextPageUrl, token=token)
@@ -112,6 +118,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
 
 
 def datapoint_seeder(session: Session, token: dict, forms: List[dict]):
+    TESTING = os.environ.get("TESTING")
     start_time = time.process_time()
 
     for form in forms:
@@ -121,8 +128,14 @@ def datapoint_seeder(session: Session, token: dict, forms: List[dict]):
         check_form = crud_form.get_form_by_id(session=session, id=form_id)
         if not check_form:
             continue
-        data = flow_auth.get_datapoint(
-            token=token, survey_id=survey_id, form_id=form_id)
+        if TESTING:
+            data_file = f"{test_source}/{form_id}_data.json"
+            data = {}
+            with open(data_file) as json_file:
+                data = json.load(json_file)
+        if not TESTING:
+            data = flow_auth.get_datapoint(
+                token=token, survey_id=survey_id, form_id=form_id)
         if not data:
             print(f"{form_id}: seed ERROR!")
             break

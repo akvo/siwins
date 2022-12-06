@@ -1,0 +1,64 @@
+{
+  "alias": "seap.akvoflow.org",
+  "app": "akvoflow-62",
+  "defaultLanguageCode": "en",
+  "name": "Monitoring Form",
+  "questionGroup": {
+    "heading": "Monitoring Data",
+    "question": [
+      {
+        "id": "738950915",
+        "localeNameFlag": true,
+        "mandatory": true,
+        "options": {
+          "allowMultiple": false,
+          "allowOther": false,
+          "option": [
+            { "text": "Dirty", "value": "Dirty" },
+            { "text": "Clean", "value": "Clean" },
+            { "text": "No toilets", "value": "No toilets" }
+          ],
+          "renderType": "radio"
+        },
+        "order": "1",
+        "text": "Status of toilet",
+        "type": "option"
+      },
+      {
+        "dependency": {
+          "answer-value": "Dirty|Clean",
+          "question": "738950915"
+        },
+        "id": "735090984",
+        "localeNameFlag": false,
+        "mandatory": true,
+        "order": "2",
+        "text": "Number toilets",
+        "type": "free",
+        "validationRule": {
+          "allowDecimal": false,
+          "signed": false,
+          "validationType": "numeric"
+        }
+      },
+      {
+        "id": "725310914",
+        "localeNameFlag": true,
+        "mandatory": true,
+        "order": "3",
+        "text": "Number students",
+        "type": "free",
+        "validationRule": {
+          "allowDecimal": false,
+          "signed": false,
+          "validationType": "numeric"
+        }
+      }
+    ],
+    "repeatable": false
+  },
+  "surveyGroupId": "736950982",
+  "surveyGroupName": "PoC SI-WINS",
+  "surveyId": "729240983",
+  "version": "3.0"
+}

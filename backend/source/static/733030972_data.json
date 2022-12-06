@@ -1,0 +1,33 @@
+{
+  "nextPageUrl": null,
+  "formInstances": [
+    {
+      "formVersion": 2.0,
+      "deviceIdentifier": "wgprtm_redmi_note8",
+      "dataPointId": "716330915",
+      "submissionDate": "2022-12-01T02:38:32Z",
+      "modifiedAt": "2022-12-01T02:38:37.729Z",
+      "id": "642650980",
+      "responses": {
+        "729220971": [
+          {
+            "718001069": [{ "text": "High school" }],
+            "721880978": {
+              "lat": -8.676368333333333,
+              "long": 115.49182166666667,
+              "elev": -39.9,
+              "code": null
+            },
+            "738940972": "SMA N 1 Nusa Penida"
+          }
+        ]
+      },
+      "identifier": "dfmn-hw5g-11se",
+      "displayName": "SMA N 1 Nusa Penida - High school",
+      "formId": "733030972",
+      "surveyalTime": 32,
+      "submitter": "galih redmi 8",
+      "createdAt": "2022-12-01T02:38:35.744Z"
+    }
+  ]
+}

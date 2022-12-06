@@ -1,3 +1,5 @@
+import os
+import json
 import time
 from typing import List
 from sqlalchemy.orm import Session
@@ -8,14 +10,24 @@ from db import crud_question
 from models.question import QuestionType
 import flow.auth as flow_auth
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+test_source = "./source/static"
+
 
 def form_seeder(session: Session, token: dict, forms: List[dict]):
+    TESTING = os.environ.get("TESTING")
     start_time = time.process_time()
 
     for form in forms:
         # fetch form
         form_id = form.get('id')
-        json_form = flow_auth.get_form(token=token, form_id=form_id)
+        if TESTING:
+            form_file = f"{test_source}/{form_id}_form.json"
+            json_form = {}
+            with open(form_file) as json_file:
+                json_form = json.load(json_file)
+        if not TESTING:
+            json_form = flow_auth.get_form(token=token, form_id=form_id)
 
         name = json_form.get('name') \
             if 'name' in json_form else form.get('name')

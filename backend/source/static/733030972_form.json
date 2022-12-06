@@ -1,0 +1,50 @@
+{
+  "alias": "seap.akvoflow.org",
+  "app": "akvoflow-62",
+  "defaultLanguageCode": "en",
+  "name": "Registration Form",
+  "questionGroup": {
+    "heading": "Basic Data",
+    "question": [
+      {
+        "id": "738940972",
+        "localeNameFlag": true,
+        "mandatory": true,
+        "order": "1",
+        "text": "School Name",
+        "type": "free"
+      },
+      {
+        "id": "721880978",
+        "localeNameFlag": false,
+        "mandatory": true,
+        "order": "2",
+        "text": "Location (GPS)",
+        "type": "geo"
+      },
+      {
+        "id": "718001069",
+        "localeNameFlag": true,
+        "mandatory": true,
+        "options": {
+          "allowMultiple": false,
+          "allowOther": false,
+          "option": [
+            { "text": "Junior school", "value": "Junior school" },
+            { "text": "Primary school", "value": "Primary school" },
+            { "text": "High school", "value": "High school" }
+          ],
+          "renderType": "radio"
+        },
+        "order": "3",
+        "text": "Type of school",
+        "type": "option"
+      }
+    ],
+    "repeatable": false
+  },
+  "surveyGroupId": "736950982",
+  "surveyGroupName": "PoC SI-WINS",
+  "surveyId": "733030972",
+  "version": "2.0"
+}
