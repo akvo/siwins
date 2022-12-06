@@ -46,3 +46,14 @@
   align-items: center;
   justify-content: center;
 }
+
+.custom-marker-cluster {
+  background: #ffffff;
+  border: 15px solid #f00800;
+  border-radius: 50%;
+  color: #000000;
+  height: 33px;
+  line-height: 37px;
+  text-align: center;
+  width: 33px;
+}

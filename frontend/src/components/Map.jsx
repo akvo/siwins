@@ -6,8 +6,11 @@ import {
   TileLayer,
   CircleMarker,
   Tooltip,
+  Marker,
 } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import { useMapEvents } from "react-leaflet/hooks";
+import L, { MarkerCluster } from "leaflet";
 import { /*defaultPos,*/ geojson, tileOSM } from "../util/geo-util";
 import { api } from "../lib";
 import { Modal, Spin, Collapse } from "antd";
@@ -122,17 +125,18 @@ const Markers = ({ zoom, data, getChartData }) => {
   return data.map(({ id, geo, name }) => {
     const isHovered = id === hovered;
     return (
-      <CircleMarker
+      <Marker
         key={id}
-        center={geo}
-        pathOptions={{
-          fillColor: isHovered ? "#FFF" : "#d30808",
-          color: "#F00",
-          opacity: 1,
-          fillOpacity: 1,
-        }}
-        radius={5 * (isHovered ? 2 : 1)}
-        stroke="#fff"
+        position={geo}
+        icon={customIcon}
+        // pathOptions={{
+        //   fillColor: isHovered ? "#FFF" : "#d30808",
+        //   color: "#F00",
+        //   opacity: 1,
+        //   fillOpacity: 1,
+        // }}
+        // radius={5 * (isHovered ? 2 : 1)}
+        // stroke="#fff"
         eventHandlers={{
           click: () => getChartData(id),
           mouseover: () => setHovered(id),
@@ -140,8 +144,23 @@ const Markers = ({ zoom, data, getChartData }) => {
         }}
       >
         <Tooltip direction="top">{name}</Tooltip>
-      </CircleMarker>
+      </Marker>
     );
+  });
+};
+
+const customIcon = new L.Icon({
+  iconUrl: require("../location.svg").default,
+  iconSize: new L.Point(40, 47),
+});
+
+// NOTE: iconCreateFunction is running by leaflet, which is not support ES6 arrow func syntax
+// eslint-disable-next-line
+const createClusterCustomIcon = function (MarkerCluster) {
+  return L.divIcon({
+    html: `<span>${MarkerCluster.getChildCount()}</span>`,
+    className: "custom-marker-cluster",
+    iconSize: L.point(33, 33, true),
   });
 };
 
@@ -208,7 +227,22 @@ const Map = () => {
             data={geojson}
           />
           {!loading && (
+            // <MarkerClusterGroup
+            //   onClick={(e) => console.log("onClick", e)}
+            //   iconCreateFunction={createClusterCustomIcon}
+            //   maxClusterRadius={150}
+            //   spiderfyOnMaxZoom={true}
+            //   polygonOptions={{
+            //     fillColor: "#ffffff",
+            //     color: "#f00800",
+            //     weight: 5,
+            //     opacity: 1,
+            //     fillOpacity: 0.8,
+            //   }}
+            //   showCoverageOnHover={true}
+            // >
             <Markers zoom={defZoom} data={data} getChartData={getChartData} />
+            // </MarkerClusterGroup>
           )}
         </MapContainer>
       </div>
