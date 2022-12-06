@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import "leaflet/dist/leaflet.css";
 import {
   MapContainer,
@@ -7,13 +7,12 @@ import {
   Circle,
   Tooltip,
 } from "react-leaflet";
-import { defaultPos, geojson, tileOSM } from "../util/geo-util";
+import { useMapEvents } from "react-leaflet/hooks";
+import { /*defaultPos,*/ geojson, tileOSM } from "../util/geo-util";
 import { api } from "../lib";
 import { Modal, Spin, Collapse } from "antd";
 import { Column } from "@ant-design/plots";
 import { chain, groupBy, orderBy } from "lodash";
-
-const defPos = defaultPos();
 
 const { Panel } = Collapse;
 
@@ -92,27 +91,55 @@ const Charts = ({ chartData }) => {
   );
 };
 
-const Markers = ({ data, getChartData }) => {
+const Markers = ({ zoom, data, getChartData }) => {
+  const [hovered, setHovered] = useState(null);
+  const [currentZoom, setCurrentZoom] = useState(zoom);
+
+  const map = useMapEvents({
+    zoomend: () => setCurrentZoom(map?._zoom || currentZoom),
+  });
+
+  const rSize = useMemo(() => {
+    if (currentZoom <= 8) {
+      return 200;
+    }
+    if (currentZoom <= 10) {
+      return 100;
+    }
+    if (currentZoom <= 12) {
+      return 40;
+    }
+    if (currentZoom < 14) {
+      return 20;
+    }
+    if (currentZoom < 16) {
+      return 4;
+    }
+    return 1;
+  }, [currentZoom]);
+
   data = data.filter((d) => d.geo);
   return data.map(({ id, geo, name }) => {
-    const hovered = false;
+    const isHovered = id === hovered;
     const fill = "#F00";
-    const r = 3;
+    const r = 5;
     const stroke = "#fff";
     return (
       <Circle
         key={id}
         center={geo}
         pathOptions={{
-          fillColor: hovered ? "#FFF" : fill,
+          fillColor: isHovered ? "#FFF" : fill,
           color: fill,
           opacity: 1,
           fillOpacity: 1,
         }}
-        radius={r * (hovered ? 3 : 1)}
+        radius={r * rSize * (isHovered ? 2 : 1)}
         stroke={stroke}
         eventHandlers={{
           click: () => getChartData(id),
+          mouseover: () => setHovered(id),
+          mouseout: () => setHovered(null),
         }}
       >
         <Tooltip direction="top">{name}</Tooltip>
@@ -123,7 +150,11 @@ const Markers = ({ data, getChartData }) => {
 
 const Map = () => {
   // use tile layer from config
+  // const defPos = defaultPos();
   const baseMap = tileOSM;
+  const map = useRef();
+  const defZoom = 15;
+  const defCenter = [-8.68856, 115.494846];
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [selectedPoint, setSelectedPoint] = useState(null);
@@ -154,12 +185,17 @@ const Map = () => {
     <>
       <div className="map-container">
         <MapContainer
-          bounds={defPos.bbox}
+          ref={map}
+          center={defCenter}
+          zoom={defZoom}
           zoomControl={false}
           scrollWheelZoom={true}
           style={{
             height: "100%",
             width: "100%",
+          }}
+          eventHandlers={{
+            scroll: () => console.log("aaa"),
           }}
         >
           <TileLayer {...baseMap} />
@@ -174,7 +210,9 @@ const Map = () => {
             }}
             data={geojson}
           />
-          {!loading && <Markers data={data} getChartData={getChartData} />}
+          {!loading && (
+            <Markers zoom={defZoom} data={data} getChartData={getChartData} />
+          )}
         </MapContainer>
       </div>
 
