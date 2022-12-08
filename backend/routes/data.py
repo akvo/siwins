@@ -1,14 +1,15 @@
 from http import HTTPStatus
-# from datetime import datetime
 from fastapi import Depends, Request
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.security import HTTPBearer
 # from fastapi.security import HTTPBasicCredentials as credentials
-from typing import List
+from typing import List, Optional
 from sqlalchemy.orm import Session
 from db import crud_data
 from db.connection import get_session
 from models.data import MapsData, MonitoringData
+from models.answer import Answer
+from models.history import History
 
 security = HTTPBearer()
 data_route = APIRouter()
@@ -39,6 +40,8 @@ def get_maps(
 def get_data_detail(
     req: Request,
     data_id: int,
+    question_ids: Optional[List[int]] = Query(default=None),
+    history: Optional[bool] = Query(default=False),
     session: Session = Depends(get_session)
 ):
     # get registration data
@@ -50,11 +53,30 @@ def get_data_detail(
     # get monitoring data for that datapoint
     monitoring_data = crud_data.get_monitoring_data(
         session=session, identifier=data.identifier)
-    monitoring = []
-    monitoring_data = [m.to_monitoring_data for m in monitoring_data]
-    for md in monitoring_data:
-        for m in md.get('monitoring'):
-            monitoring.append(m)
+    monitoring_data_ids = [md.id for md in monitoring_data]
+    # get answers
+    answers = session.query(Answer).filter(
+        Answer.data.in_(monitoring_data_ids))
+    if question_ids:
+        answers = answers.filter(
+            Answer.question.in_(question_ids))
+    answers = answers.all()
+    answers = [a.to_monitoring for a in answers]
+    # get histories
+    histories = None
+    if history:
+        histories = session.query(History).filter(
+            History.data.in_(monitoring_data_ids))
+    if history and question_ids:
+        histories = histories.filter(
+            History.question.in_(question_ids))
+    if history:
+        histories = histories.all()
+        histories = [h.to_monitoring for h in histories]
+    # merge monitoring data
+    monitoring = answers
+    if histories:
+        monitoring = answers + histories
     return {
         "id": data.id,
         "name": data.name,
