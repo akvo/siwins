@@ -17,26 +17,202 @@ class TestDataRoutes():
             app.url_path_for("data:get_maps_data"))
         assert res.status_code == 200
         res = res.json()
-        for r in res:
-            assert "id" in r
-            assert "name" in r
-            assert "geo" in r
+        assert res == [{
+            "id": 1,
+            "name": "SMA N 1 Nusa Penida - High school",
+            "geo": [-8.676368333333333, 115.49182166666667],
+        }]
 
     @pytest.mark.asyncio
     async def test_get_chart_data(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
+        # get chart data without query params
         res = await client.get(
             app.url_path_for("data:get_chart_data", data_id=1))
         assert res.status_code == 200
         res = res.json()
-        assert "id" in res
-        assert "name" in res
-        assert "monitoring" in res
-        for m in res.get('monitoring'):
-            assert "question_id" in m
-            assert "question" in m
-            assert "type" in m
-            assert "value" in m
-            assert "value" in m
-            assert "history" in m
+        assert res == {
+            "id": 1,
+            "name": "SMA N 1 Nusa Penida - High school",
+            "monitoring": [{
+                "question_id": 725310914,
+                "question": "Number students",
+                "type": "number",
+                "value": 100,
+                "date": "Dec 02, 2022 - 3:03:25 AM",
+                "history": False,
+            }, {
+                "question_id": 735090984,
+                "question": "Number toilets",
+                "type": "number",
+                "value": 10,
+                "date": "Dec 02, 2022 - 3:03:25 AM",
+                "history": False,
+            }, {
+                "question_id": 738950915,
+                "question": "Status of toilet",
+                "type": "option",
+                "value": "Clean",
+                "date": "Dec 02, 2022 - 3:03:25 AM",
+                "history": False,
+            }]
+        }
+        # get chart data with history param True
+        res = await client.get(
+            app.url_path_for("data:get_chart_data", data_id=1),
+            params={"history": True}
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == {
+            "id": 1,
+            "name": "SMA N 1 Nusa Penida - High school",
+            "monitoring": [{
+                "question_id": 725310914,
+                "question": "Number students",
+                "type": "number",
+                "value": 100,
+                "date": "Dec 02, 2022 - 3:03:25 AM",
+                "history": False,
+            }, {
+                "question_id": 735090984,
+                "question": "Number toilets",
+                "type": "number",
+                "value": 10,
+                "date": "Dec 02, 2022 - 3:03:25 AM",
+                "history": False,
+            }, {
+                "question_id": 738950915,
+                "question": "Status of toilet",
+                "type": "option",
+                "value": "Clean",
+                "date": "Dec 02, 2022 - 3:03:25 AM",
+                "history": False,
+            }, {
+                "question_id": 725310914,
+                "question": "Number students",
+                "type": "number",
+                "value": 200,
+                "date": "Dec 01, 2022 - 3:02:59 AM",
+                "history": True,
+            }, {
+                "question_id": 735090984,
+                "question": "Number toilets",
+                "type": "number",
+                "value": 10,
+                "date": "Dec 01, 2022 - 3:02:59 AM",
+                "history": True,
+            }, {
+                "question_id": 738950915,
+                "question": "Status of toilet",
+                "type": "option",
+                "value": "Clean",
+                "date": "Dec 01, 2022 - 3:02:59 AM",
+                "history": True,
+            }, {
+                "question_id": 725310914,
+                "question": "Number students",
+                "type": "number",
+                "value": 225,
+                "date": "Dec 01, 2022 - 3:03:25 AM",
+                "history": True,
+            }, {
+                "question_id": 735090984,
+                "question": "Number toilets",
+                "type": "number",
+                "value": 15,
+                "date": "Dec 01, 2022 - 3:03:25 AM",
+                "history": True,
+            }, {
+                "question_id": 738950915,
+                "question": "Status of toilet",
+                "type": "option",
+                "value": "Clean",
+                "date": "Dec 01, 2022 - 3:03:25 AM",
+                "history": True,
+            }, {
+                "question_id": 725310914,
+                "question": "Number students",
+                "type": "number",
+                "value": 110,
+                "date": "Dec 02, 2022 - 3:02:59 AM",
+                "history": True,
+            }, {
+                "question_id": 735090984,
+                "question": "Number toilets",
+                "type": "number",
+                "value": 11,
+                "date": "Dec 02, 2022 - 3:02:59 AM",
+                "history": True,
+            }, {
+                "question_id": 738950915,
+                "question": "Status of toilet",
+                "type": "option",
+                "value": "Clean",
+                "date": "Dec 02, 2022 - 3:02:59 AM",
+                "history": True,
+            }]
+        }
+        # get chart data with question_ids param
+        res = await client.get(
+            app.url_path_for("data:get_chart_data", data_id=1),
+            params={"question_ids": [735090984]}
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == {
+            'id': 1,
+            'name': 'SMA N 1 Nusa Penida - High school',
+            'monitoring': [{
+                'question_id': 735090984,
+                'question': 'Number toilets',
+                'type': 'number',
+                'value': 10,
+                'date': 'Dec 02, 2022 - 3:03:25 AM',
+                'history': False
+            }]
+        }
+        # get chart data with question_ids and history param
+        res = await client.get(
+            app.url_path_for("data:get_chart_data", data_id=1),
+            params={
+                "question_ids": [735090984],
+                "history": True
+            }
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == {
+            "id": 1,
+            "name": "SMA N 1 Nusa Penida - High school",
+            "monitoring": [{
+                "question_id": 735090984,
+                "question": "Number toilets",
+                "type": "number",
+                "value": 10,
+                "date": "Dec 02, 2022 - 3:03:25 AM",
+                "history": False,
+            }, {
+                "question_id": 735090984,
+                "question": "Number toilets",
+                "type": "number",
+                "value": 10,
+                "date": "Dec 01, 2022 - 3:02:59 AM",
+                "history": True,
+            }, {
+                "question_id": 735090984,
+                "question": "Number toilets",
+                "type": "number",
+                "value": 15,
+                "date": "Dec 01, 2022 - 3:03:25 AM",
+                "history": True,
+            }, {
+                "question_id": 735090984,
+                "question": "Number toilets",
+                "type": "number",
+                "value": 11,
+                "date": "Dec 02, 2022 - 3:02:59 AM",
+                "history": True,
+            }]
+        }
