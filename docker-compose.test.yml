@@ -18,7 +18,8 @@ services:
     volumes:
       - ./:/app:delegated
     environment:
-      - DATABASE_URL=postgresql://siwins:password@db:5432/siwins_test
+      - DATABASE_URL=postgresql://siwins:password@db:5432/siwins
+      - COVERALLS_REPO_TOKEN=${COVERALLS_REPO_TOKEN:-}
       - AUTH0_CLIENT=$AUTH0_CLIENT
       - AUTH0_USER=$AUTH0_USER
       - AUTH0_PWD=$AUTH0_PWD

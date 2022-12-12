@@ -6,7 +6,7 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=postgresql://siwins:password@db:5432/siwins
+      - DATABASE_URL=postgresql://siwins:password@db:5432/siwins_test
       - AUTH0_CLIENT=$AUTH0_CLIENT
       - AUTH0_USER=$AUTH0_USER
       - AUTH0_PWD=$AUTH0_PWD
