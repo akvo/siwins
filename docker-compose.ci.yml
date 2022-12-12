@@ -7,6 +7,9 @@ services:
       - db
     environment:
       - DATABASE_URL=postgresql://siwins:password@db:5432/siwins
+      - AUTH0_CLIENT=$AUTH0_CLIENT
+      - AUTH0_USER=$AUTH0_USER
+      - AUTH0_PWD=$AUTH0_PWD
     image: eu.gcr.io/akvo-lumen/siwins/backend:latest
     network_mode: service:mainnetwork
     restart: always

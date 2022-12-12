@@ -19,6 +19,9 @@ services:
       - ./:/app:delegated
     environment:
       - DATABASE_URL=postgresql://siwins:password@db:5432/siwins_test
+      - AUTH0_CLIENT=$AUTH0_CLIENT
+      - AUTH0_USER=$AUTH0_USER
+      - AUTH0_PWD=$AUTH0_PWD
     depends_on:
       - db
 volumes:

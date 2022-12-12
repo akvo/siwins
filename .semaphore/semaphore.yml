@@ -10,6 +10,7 @@ global_job_config:
     - name: GCP
     - name: docker-hub-credentials
     - name: coveralls
+    - name: siwins
   prologue:
     commands:
       - echo "${DOCKER_PASSWORD}" | docker login --username
@@ -23,7 +24,9 @@ global_job_config:
       - export COMPOSE_INTERACTIVE_NO_CLI=1
       - export COVERALLS_REPO_TOKEN="${COVERALLS_SIWINS_TOKEN}"
       - export MAILJET_VERIFICATION_FILE="${MAILJET_VERIFICATION_FILE}"
-      - export SERVICE_ACCOUNT=/home/semaphore/credentials
+      - export AUTH0_CLIENT="${AUTH0_CLIENT}"
+      - export AUTH0_PWD="${AUTH0_PWD}"
+      - export AUTH0_USER="${AUTH0_USER}"
 blocks:
   - name: 'Build, Test & Deploy'
     skip:
