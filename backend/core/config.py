@@ -13,12 +13,14 @@ SOURCE_PATH = "./source"
 TOPO_JSON = f"{SOURCE_PATH}/bali-topojson.json"
 TOPO_JSON = open(TOPO_JSON).read()
 GEO_CONFIG = GeoLevels[CONFIG_NAME].value
+CHART_CONFIG = f"{SOURCE_PATH}/charts.js"
+CHART_CONFIG = jsmin(open(CHART_CONFIG).read())
 
 MINJS = jsmin("".join([
     "var levels=" + str([g["alias"] for g in GEO_CONFIG]) + ";"
     "var map_config={shapeLevels:" + str(
         [g["name"] for g in GEO_CONFIG]) + "};",
-    "var topojson=", TOPO_JSON, ";"
+    "var topojson=", TOPO_JSON, ";", CHART_CONFIG
 ]))
 JS_FILE = f"{SOURCE_PATH}/config.min.js"
 open(JS_FILE, 'w').write(MINJS)
