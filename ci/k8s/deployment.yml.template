@@ -44,6 +44,21 @@ spec:
                 secretKeyRef:
                   name: siwins
                   key: database-url
+            - name: AUTH0_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: siwins
+                  key: auth0-pwd
+            - name: AUTH0_USER
+              valueFrom:
+                secretKeyRef:
+                  name: siwins
+                  key: auth0-user
+            - name: AUTH0_CLIENT
+              valueFrom:
+                secretKeyRef:
+                  name: siwins
+                  key: auth0-client
           readinessProbe:
             httpGet:
               path: /health-check
