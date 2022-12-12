@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import {
   MapContainer,
@@ -9,87 +9,10 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
-import { /*defaultPos,*/ geojson, tileOSM } from "../util/geo-util";
+import { geojson, tileOSM } from "../util/geo-util";
 import { api } from "../lib";
-import { Modal, Spin, Collapse } from "antd";
-import { Column } from "@ant-design/plots";
-import { chain, groupBy, orderBy } from "lodash";
-
-const { Panel } = Collapse;
-
-const RenderChart = ({ data }) => {
-  // get sample data to find question type
-  const sample = data?.[0] || {};
-  const qtype = sample?.type;
-  data = orderBy(
-    data.map((d) => ({
-      value: d.value,
-      date: d.date?.split(" - ").join("\n"),
-    })),
-    ["date"],
-    "desc"
-  );
-  let config = {
-    data,
-    color: "#00b96b",
-    // legend: {
-    //   position: "top-left",
-    // },
-  };
-  switch (qtype) {
-    case "option":
-      return null;
-    default:
-      config = {
-        ...config,
-        xField: "date",
-        yField: "value",
-        label: {
-          position: "middle",
-          // 'top', 'bottom', 'middle',
-          style: {
-            fill: "#FFFFFF",
-            opacity: 0.9,
-          },
-        },
-        xAxis: {
-          label: {
-            autoHide: true,
-            autoRotate: true,
-          },
-        },
-        minColumnWidth: 10,
-        maxColumnWidth: 50,
-      };
-      return <Column {...config} />;
-  }
-};
-
-const Charts = ({ activePanel, setActivePanel, chartData }) => {
-  const { monitoring } = chartData;
-  const grouped = chain(
-    groupBy(
-      monitoring.filter((d) => d.type === "number"),
-      "question"
-    )
-  ).value();
-
-  return (
-    <Collapse
-      activeKey={[activePanel]}
-      onChange={setActivePanel}
-      accordion={true}
-    >
-      {Object.keys(grouped).map((key, ki) => {
-        return (
-          <Panel header={key} key={ki + 1}>
-            <RenderChart data={grouped?.[key] || []} />
-          </Panel>
-        );
-      })}
-    </Collapse>
-  );
-};
+import { Modal, Spin } from "antd";
+import { Chart } from "./supports";
 
 const Markers = ({ zoom, data, getChartData }) => {
   const [hovered, setHovered] = useState(null);
@@ -210,7 +133,7 @@ const Map = () => {
             <Spin />
           </div>
         ) : (
-          <Charts
+          <Chart
             activePanel={activePanel}
             setActivePanel={setActivePanel}
             chartData={chartData}
