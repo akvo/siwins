@@ -1,0 +1,64 @@
+---
+version: v1.0
+name: SIWINS
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+global_job_config:
+  secrets:
+    - name: GCP
+    - name: docker-hub-credentials
+    - name: coveralls
+    - name: siwins
+  prologue:
+    commands:
+      - echo "${DOCKER_PASSWORD}" | docker login --username
+        "${DOCKER_USERNAME}" --password-stdin
+      - export CI_COMMIT="${SEMAPHORE_GIT_SHA:0:7}"
+      - export CI_BRANCH="${SEMAPHORE_GIT_BRANCH}"
+      - export CI_TAG="${SEMAPHORE_GIT_TAG_NAME}"
+      - export CI_PULL_REQUEST="${SEMAPHORE_GIT_REF_TYPE/pull-request/true}"
+      - export CI_COMMIT_RANGE="${SEMAPHORE_GIT_COMMIT_RANGE}"
+      - export CLOUDSDK_CORE_DISABLE_PROMPTS=1
+      - export COMPOSE_INTERACTIVE_NO_CLI=1
+      - export COVERALLS_REPO_TOKEN="${COVERALLS_SIWINS_TOKEN}"
+      - export MAILJET_VERIFICATION_FILE="${MAILJET_VERIFICATION_FILE}"
+      - export AUTH0_CLIENT="${AUTH0_CLIENT}"
+      - export AUTH0_PWD="${AUTH0_PWD}"
+      - export AUTH0_USER="${AUTH0_USER}"
+blocks:
+  - name: 'Build, Test & Deploy'
+    skip:
+      when: "tag =~ '.*'"
+    task:
+      prologue:
+        commands:
+          - checkout
+          - cache restore "npm-$(checksum frontend/package.json)"
+          - cache restore "node-modules-$(checksum frontend/package.json)"
+          - cache restore "pip-$(checksum backend/requirements.txt)"
+          - cache restore "$SEMAPHORE_PROJECT_ID-$SEMAPHORE_GIT_BRANCH"
+      epilogue:
+        commands:
+          - cache store "npm-$(checksum frontend/package.json)" "$HOME/.npm"
+          - cache store "node-modules-$(checksum frontend/package.json)"
+            "frontend/node_modules"
+          - cache store "pip-$(checksum backend/requirements.txt)"
+            "backend/.pip"
+          - cache store "$SEMAPHORE_PROJECT_ID-$SEMAPHORE_GIT_BRANCH"
+            "$HOME/.cache"
+      jobs:
+        - name: Build and test
+          commands:
+            - ./ci/build.sh
+            - ./ci/deploy.sh
+  - name: "Promote to production"
+    run:
+      when: "tag =~ '.*'"
+    task:
+      jobs:
+        - name: Promote to production
+          commands:
+            - checkout
+            - ./ci/deploy.sh
