@@ -49,7 +49,8 @@ const customIcon = new L.Icon({
 
 const Map = () => {
   // use tile layer from config
-  // const defPos = defaultPos();
+  const charts = window.charts;
+  const showHistory = window.chart_features.show_history;
   const baseMap = tileOSM;
   const map = useRef();
   const defZoom = 15;
@@ -73,8 +74,17 @@ const Map = () => {
 
   const getChartData = (id) => {
     setSelectedPoint(data.find((d) => d.id === id));
+    const qids = charts.map((c) => c.question_id);
+    let url = `/data/chart/${id}?history=false`;
+    if (showHistory) {
+      url = `${url}?history=true`;
+    }
+    if (qids.length) {
+      const queries = qids.map((qid) => `question_ids=${qid}`).join("&");
+      url = `${url}&${queries}`;
+    }
     api
-      .get(`/data/chart/${id}`)
+      .get(url)
       .then((res) => {
         setChartData(res.data);
       })
