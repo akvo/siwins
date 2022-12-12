@@ -38,7 +38,6 @@ apply_deployment () {
 
 auth
 
-# PUSH TO CONTAINER REGISTRY
 if [[ -z "${CI_TAG:=}" ]]; then
     push_image backend
     push_image frontend
@@ -46,6 +45,5 @@ fi
 
 prepare_deployment
 apply_deployment
-
 
 ci/k8s/wait-for-k8s-deployment-to-be-ready.sh
