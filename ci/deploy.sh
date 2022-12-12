@@ -29,7 +29,6 @@ prepare_deployment () {
 
     sed -e "s/\${CI_COMMIT}/${CI_COMMIT}/g;" \
         ci/k8s/deployment.yml.template > ci/k8s/deployment.yml
-    mv ci/k8s/service.yml.template ci/k8s/service.yml
 }
 
 apply_deployment () {
