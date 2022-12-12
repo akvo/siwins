@@ -1,0 +1,25 @@
+---
+version: "3"
+services:
+  db:
+    command: "postgres -c 'shared_buffers=128MB' -c 'fsync=off' -c 'synchronous_commit=off' -c 'full_page_writes=off' -c 'max_connections=100' -c 'bgwriter_lru_maxpages=0' -c 'client_min_messages=warning'"
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./db/docker-entrypoint-initdb.d.ci:/docker-entrypoint-initdb.d
+      - pg-data:/var/lib/postgresql/data
+      - ./db/script:/script:ro
+    restart: always
+  backend:
+    image: eu.gcr.io/akvo-lumen/siwins/backend:latest
+    working_dir: /app/backend
+    command: tail -f /dev/null
+    volumes:
+      - ./:/app:delegated
+    environment:
+      - DATABASE_URL=postgresql://siwins:password@db:5432/siwins_test
+    depends_on:
+      - db
+volumes:
+  pg-data:
