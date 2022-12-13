@@ -24,7 +24,7 @@ frontend_build () {
 
     echo "PUBLIC_URL=/" > frontend/.env
 
-    # sed 's/"warn"/"error"/g' < frontend/.eslintrc.json > frontend/.eslintrc.prod.json
+    sed 's/"warn"/"error"/g' < frontend/.eslintrc.json > frontend/.eslintrc.prod.json
 
     dc run \
        --rm \
