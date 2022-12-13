@@ -61,7 +61,7 @@ Folder Path: **/backend/source/**
 
 ##### Initial Forms & Data Points seeder
 
-Assuming that you have **forms.json** inside `./backend/source/` folder and have correct `.env` setup you will be able to run.
+Assuming that you have **forms.json** inside `./backend/source/` folder and have correct [Environment setup](#1-environment-setup) you will be able to run.
 
 ```
 docker-compose exec backend ./seed.sh
