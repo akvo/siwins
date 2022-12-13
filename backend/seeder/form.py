@@ -70,6 +70,7 @@ def form_seeder(session: Session, token: dict, forms: List[dict]):
                     type = QuestionType.number.value
                 if type == 'option' and allowMultiple:
                     type == QuestionType.multiple_option.value
+                meta_geo = q.get('localeLocationFlag')
                 question = crud_question.add_question(
                     session=session,
                     name=q.get('text'),
@@ -78,6 +79,7 @@ def form_seeder(session: Session, token: dict, forms: List[dict]):
                     question_group=question_group.id,
                     type=type,
                     meta=q.get("localeNameFlag"),
+                    meta_geo=meta_geo if meta_geo else False,
                     order=q.get('order'),
                     required=q.get('mandatory'),
                     dependency=q["dependency"] if "dependency" in q else None,
