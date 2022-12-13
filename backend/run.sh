@@ -4,4 +4,4 @@ if [[ -z "${SKIP_MIGRATION}" ]]; then
     alembic upgrade head
 fi
 
-python main.py
+gunicorn main:app --workers 4 --worker-class --bind 0.0.0.0:5000
