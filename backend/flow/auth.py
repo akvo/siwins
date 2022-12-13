@@ -41,7 +41,7 @@ def get_data(url: str, token: dict):
     header = get_header(token)
     response = r.get(url, headers=header)
     status_code = response.status_code
-    print("FETCH: " + str(status_code) + " | " + url)
+    # print("FETCH: " + str(status_code) + " | " + url)
     if status_code == 200:
         response = response.json()
         return response
