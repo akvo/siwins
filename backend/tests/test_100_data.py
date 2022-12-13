@@ -35,7 +35,6 @@ class TestDataRoutes():
         assert res == {
             "id": 1,
             "name": "SMA N 1 Nusa Penida - High school",
-            "history": False,
             "monitoring": [{
                 "question_id": 725310914,
                 "question": "Number students",
@@ -69,7 +68,6 @@ class TestDataRoutes():
         assert res == {
             "id": 1,
             "name": "SMA N 1 Nusa Penida - High school",
-            "history": True,
             "monitoring": [{
                 "question_id": 725310914,
                 "question": "Number students",
@@ -166,7 +164,6 @@ class TestDataRoutes():
         assert res == {
             'id': 1,
             'name': 'SMA N 1 Nusa Penida - High school',
-            'history': False,
             'monitoring': [{
                 'question_id': 735090984,
                 'question': 'Number toilets',
@@ -189,7 +186,6 @@ class TestDataRoutes():
         assert res == {
             "id": 1,
             "name": "SMA N 1 Nusa Penida - High school",
-            "history": True,
             "monitoring": [{
                 "question_id": 735090984,
                 "question": "Number toilets",

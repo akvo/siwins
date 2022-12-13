@@ -51,7 +51,6 @@ class MapsData(BaseModel):
 class MonitoringData(TypedDict):
     id: int
     name: str
-    history: bool
     monitoring: Optional[List[MonitoringAnswerDict]] = []
 
 
