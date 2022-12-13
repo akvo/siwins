@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -eu
-
 if [[ -z "${SKIP_MIGRATION}" ]]; then
     alembic upgrade head
 fi
