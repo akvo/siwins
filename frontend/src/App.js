@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Row, Col, Layout, Menu } from "antd";
+import { Row, Col, Layout } from "antd";
 import { Map } from "./components";
 
 const { Header, Footer, Content } = Layout;

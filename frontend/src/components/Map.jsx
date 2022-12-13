@@ -25,6 +25,7 @@ const Markers = ({ zoom, data, getChartData }) => {
   data = data.filter((d) => d.geo);
   return data.map(({ id, geo, name }) => {
     const isHovered = id === hovered;
+    console.info(isHovered);
     return (
       <Marker
         key={id}
@@ -131,7 +132,7 @@ const Map = () => {
             width: "100%",
           }}
           eventHandlers={{
-            scroll: () => console.log("aaa"),
+            scroll: () => {},
           }}
         >
           <TileLayer {...baseMap} />
