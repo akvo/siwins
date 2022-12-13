@@ -6,7 +6,7 @@
 
 #### 1. Environment Setup
 
-##### Seed & Sync Auth Service
+##### Seed & Sync Auth
 
 This app requires [Akvo Flow API Authentication](https://github.com/akvo/akvo-flow-api/wiki/Authentication) to provides correct credentials when seed or sync form and data points from Akvo FLOW.
 
