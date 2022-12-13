@@ -1,7 +1,7 @@
 import React from "react";
 import { Column } from "@ant-design/plots";
 import { chain, groupBy, orderBy } from "lodash";
-import { Collapse } from "antd";
+import { Collapse, Button } from "antd";
 
 const { Panel } = Collapse;
 
@@ -53,11 +53,19 @@ const RenderChart = ({ data }) => {
   }
 };
 
-const Chart = ({ activePanel, setActivePanel, chartData }) => {
-  const { monitoring } = chartData;
+const Chart = ({
+  activePanel,
+  setActivePanel,
+  chartData,
+  getChartDataWithHistory,
+}) => {
+  const { id, monitoring } = chartData;
   const grouped = chain(
     groupBy(
-      monitoring.filter((d) => d.type === "number"),
+      orderBy(
+        monitoring.filter((d) => d.type === "number"),
+        ["question_id"]
+      ),
       "question"
     )
   ).value();
@@ -69,9 +77,23 @@ const Chart = ({ activePanel, setActivePanel, chartData }) => {
       accordion={true}
     >
       {Object.keys(grouped).map((key, ki) => {
+        const data = grouped?.[key] || [];
+        const qid = data?.[0]?.question_id;
+        const show_history = data?.[0]?.show_history;
         return (
           <Panel header={key} key={ki + 1}>
-            <RenderChart data={grouped?.[key] || []} />
+            <RenderChart data={data} />
+            {!show_history && (
+              <Button
+                size="small"
+                onClick={() => {
+                  getChartDataWithHistory(id, qid);
+                }}
+                disabled={show_history}
+              >
+                Show History
+              </Button>
+            )}
           </Panel>
         );
       })}

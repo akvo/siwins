@@ -86,7 +86,33 @@ const Map = () => {
     api
       .get(url)
       .then((res) => {
-        setChartData(res.data);
+        const data = res.data;
+        const monitoring = data.monitoring.map((m) => ({
+          show_history: showHistory,
+          ...m,
+        }));
+        setChartData({ ...data, monitoring: monitoring });
+      })
+      .catch((e) => console.error(e));
+  };
+
+  const getChartDataWithHistory = (id, question_id) => {
+    const url = `/data/chart/${id}?history=true&question_ids=${question_id}`;
+    api
+      .get(url)
+      .then((res) => {
+        const currentData = chartData;
+        const currentMonitoring = currentData.monitoring.filter(
+          (m) => m.question_id !== question_id
+        );
+        const newMonitoring = res.data.monitoring.map((m) => ({
+          show_history: true,
+          ...m,
+        }));
+        setChartData({
+          ...currentData,
+          monitoring: [...currentMonitoring, ...newMonitoring],
+        });
       })
       .catch((e) => console.error(e));
   };
@@ -147,6 +173,7 @@ const Map = () => {
             activePanel={activePanel}
             setActivePanel={setActivePanel}
             chartData={chartData}
+            getChartDataWithHistory={getChartDataWithHistory}
           />
         )}
       </Modal>
