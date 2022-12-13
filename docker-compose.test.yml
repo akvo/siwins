@@ -23,6 +23,7 @@ services:
       - AUTH0_CLIENT=$AUTH0_CLIENT
       - AUTH0_USER=$AUTH0_USER
       - AUTH0_PWD=$AUTH0_PWD
+      - SKIP_MIGRATION=yes
     depends_on:
       - db
 volumes:

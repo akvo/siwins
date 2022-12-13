@@ -10,7 +10,7 @@ services:
       - AUTH0_CLIENT=$AUTH0_CLIENT
       - AUTH0_USER=$AUTH0_USER
       - AUTH0_PWD=$AUTH0_PWD
-      - SKIP_MIGRATION="true"
+      - SKIP_MIGRATION=yes
     image: eu.gcr.io/akvo-lumen/siwins/backend:latest
     network_mode: service:mainnetwork
     restart: always
