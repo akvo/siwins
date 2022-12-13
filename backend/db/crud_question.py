@@ -38,6 +38,7 @@ def add_question(
     question_group: int,
     type: QuestionType,
     meta: bool,
+    meta_geo: bool,
     id: Optional[int] = None,
     order: Optional[int] = None,
     option: Optional[List[OptionDict]] = None,
@@ -47,9 +48,16 @@ def add_question(
     last_question = get_last_question(
         session=session, form=form, question_group=question_group)
     question = Question(
-        id=id, name=name, order=order if order else last_question,
-        form=form, meta=meta, question_group=question_group,
-        type=type, required=required, dependency=dependency)
+        id=id,
+        name=name,
+        order=order if order else last_question,
+        question_group=question_group,
+        form=form,
+        meta=meta,
+        meta_geo=meta_geo if meta_geo else False,
+        type=type,
+        required=required,
+        dependency=dependency)
     if option:
         for o in option:
             opt = generateOptionObj(obj=o)
@@ -68,6 +76,7 @@ def update_question(
     question_group: int,
     type: QuestionType,
     meta: bool,
+    meta_geo: bool,
     id: int,
     order: Optional[int] = None,
     option: Optional[List[OptionDict]] = None,
@@ -86,6 +95,7 @@ def update_question(
     question.name = name
     question.order = order if order else last_question
     question.meta = meta
+    question.meta_geo = meta_geo if meta_geo else False
     question.question_group = question_group
     question.type = type
     question.required = required
