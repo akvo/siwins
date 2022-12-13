@@ -80,5 +80,6 @@ def get_data_detail(
     return {
         "id": data.id,
         "name": data.name,
+        "history": history,
         "monitoring": monitoring
     }
