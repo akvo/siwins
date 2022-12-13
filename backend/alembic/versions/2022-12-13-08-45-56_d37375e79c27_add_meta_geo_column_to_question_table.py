@@ -19,7 +19,9 @@ depends_on = None
 def upgrade() -> None:
     op.add_column(
         'question',
-        sa.Column('meta_geo', sa.Boolean(), nullable=False))
+        sa.Column('meta_geo', sa.Boolean(), nullable=True))
+    op.execute("UPDATE question SET meta_geo = false")
+    op.alter_column('question', 'meta_geo', nullable=False)
 
 
 def downgrade() -> None:
