@@ -37,6 +37,7 @@ class QuestionDict(TypedDict):
     order: Optional[int] = None
     name: str
     meta: bool
+    meta_geo: bool
     type: QuestionType
     required: bool
     option: Optional[List[OptionBase]] = None
@@ -51,6 +52,7 @@ class Question(Base):
     name = Column(String)
     order = Column(Integer, nullable=True)
     meta = Column(Boolean, default=False)
+    meta_geo = Column(Boolean, default=False)
     type = Column(Enum(QuestionType), default=QuestionType.text)
     required = Column(Boolean, nullable=True)
     dependency = Column(pg.ARRAY(pg.JSONB), nullable=True)
@@ -61,7 +63,7 @@ class Question(Base):
 
     def __init__(
         self, id: Optional[int], name: str, order: int, form: int,
-        question_group: int, meta: bool, type: QuestionType,
+        question_group: int, meta: bool, meta_geo: bool, type: QuestionType,
         required: Optional[bool], dependency: Optional[List[dict]],
     ):
         self.id = id
@@ -70,6 +72,7 @@ class Question(Base):
         self.question_group = question_group
         self.name = name
         self.meta = meta
+        self.meta_geo = meta_geo
         self.type = type
         self.required = required
         self.dependency = dependency
@@ -86,6 +89,7 @@ class Question(Base):
             "name": self.name,
             "order": self.order,
             "meta": self.meta,
+            "meta_geo": self.meta_geo,
             "type": self.type,
             "required": self.required,
             "dependency": self.dependency,
@@ -100,6 +104,7 @@ class QuestionBase(BaseModel):
     name: str
     order: Optional[int] = None
     meta: bool
+    meta_geo: bool
     type: QuestionType
     required: bool
     option: List[OptionBase]
