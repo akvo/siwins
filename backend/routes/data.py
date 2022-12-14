@@ -8,8 +8,10 @@ from sqlalchemy.orm import Session
 from db import crud_data
 from db.connection import get_session
 from models.data import MapsData, MonitoringData
+from models.data import DataDetail
 from models.answer import Answer
 from models.history import History
+import json
 
 security = HTTPBearer()
 data_route = APIRouter()
@@ -81,4 +83,50 @@ def get_data_detail(
         "id": data.id,
         "name": data.name,
         "monitoring": monitoring
+    }
+
+@data_route.get(
+    "/data/{datapoint_id}",
+    response_model=DataDetail,
+    name="data:get_chart_data",
+    summary="get data detail by data point id",
+    tags=["Data"])
+def get_data_detail(
+    req: Request,
+    datapoint_id: int,
+    question_ids: Optional[List[int]] = Query(default=None),
+    history: Optional[bool] = Query(default=False),
+    session: Session = Depends(get_session)
+):
+    # get data
+    data = crud_data.get_data_by_datapoint_id(session=session, datapoint_id=datapoint_id)
+    if not data:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail="Data not found")
+    # get monitoring data for that datapoint
+    monitoring_data = crud_data.get_monitoring_data(
+        session=session, identifier=data.identifier)
+    monitoring_data_ids = [md.id for md in monitoring_data]
+
+    # get answers
+    answers = session.query(Answer).filter(
+        Answer.data.in_(monitoring_data_ids))
+
+    if question_ids:
+        answers = answers.filter(
+            Answer.question.in_(question_ids))
+    answers = answers.all()
+    answers = [a.to_detail for a in answers]
+
+    print (answers, sep=",")
+
+    return {
+        "id": data.id,
+        "name": data.name,
+        "geo": {
+            "lat": data.geo[0],
+            "long": data.geo[1]
+        } if data.geo else None,
+        "answers": answers
     }

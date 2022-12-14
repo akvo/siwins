@@ -40,6 +40,13 @@ class AnswerDict(TypedDict):
         int, float, str, bool, dict, List[str],
         List[int], List[float], None]
 
+class AnswerDictForDetail(TypedDict):
+    question_id: int
+    value: Union[
+        int, float, str, bool, dict, List[str],
+        List[int], List[float], None]
+    history: bool
+
 
 class MonitoringAnswerDict(TypedDict):
     question_id: int
@@ -115,6 +122,15 @@ class Answer(Base):
             "question": self.question_detail.name,
             "date": self.created.strftime("%b %d, %Y - %-I:%M:%-S %p"),
             "type": self.question_detail.type.value
+        }
+        answer = append_value(self, answer)
+        return answer
+ 
+    @property
+    def to_detail(self) -> AnswerDictForDetail:
+        answer = {
+            "history": False,
+            "question_id": self.question,
         }
         answer = append_value(self, answer)
         return answer
