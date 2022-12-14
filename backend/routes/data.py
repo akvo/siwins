@@ -2,6 +2,7 @@ from http import HTTPStatus
 from fastapi import Depends, Request
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.security import HTTPBearer
+
 # from fastapi.security import HTTPBasicCredentials as credentials
 from typing import List, Optional
 from sqlalchemy.orm import Session
@@ -11,7 +12,6 @@ from models.data import MapsData, MonitoringData
 from models.data import DataDetail
 from models.answer import Answer
 from models.history import History
-import json
 
 security = HTTPBearer()
 data_route = APIRouter()
@@ -22,7 +22,8 @@ data_route = APIRouter()
     response_model=List[MapsData],
     name="data:get_maps_data",
     summary="get maps data",
-    tags=["Data"])
+    tags=["Data"],
+)
 def get_maps(
     req: Request,
     session: Session = Depends(get_session),
@@ -38,40 +39,42 @@ def get_maps(
     response_model=MonitoringData,
     name="data:get_chart_data",
     summary="get monitoring data for chart",
-    tags=["Data"])
+    tags=["Data"],
+)
 def get_data_detail(
     req: Request,
     data_id: int,
     question_ids: Optional[List[int]] = Query(default=None),
     history: Optional[bool] = Query(default=False),
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
 ):
     # get registration data
     data = crud_data.get_data_by_id(session=session, id=data_id)
     if not data:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND,
-            detail="Data not found")
+            status_code=HTTPStatus.NOT_FOUND, detail="Data not found"
+        )
     # get monitoring data for that datapoint
     monitoring_data = crud_data.get_monitoring_data(
-        session=session, identifier=data.identifier)
+        session=session, identifier=data.identifier
+    )
     monitoring_data_ids = [md.id for md in monitoring_data]
     # get answers
     answers = session.query(Answer).filter(
-        Answer.data.in_(monitoring_data_ids))
+        Answer.data.in_(monitoring_data_ids)
+    )
     if question_ids:
-        answers = answers.filter(
-            Answer.question.in_(question_ids))
+        answers = answers.filter(Answer.question.in_(question_ids))
     answers = answers.all()
     answers = [a.to_monitoring for a in answers]
     # get histories
     histories = None
     if history:
         histories = session.query(History).filter(
-            History.data.in_(monitoring_data_ids))
+            History.data.in_(monitoring_data_ids)
+        )
     if history and question_ids:
-        histories = histories.filter(
-            History.question.in_(question_ids))
+        histories = histories.filter(History.question.in_(question_ids))
     if history:
         histories = histories.all()
         histories = [h.to_monitoring for h in histories]
@@ -79,54 +82,50 @@ def get_data_detail(
     monitoring = answers
     if histories:
         monitoring = answers + histories
-    return {
-        "id": data.id,
-        "name": data.name,
-        "monitoring": monitoring
-    }
+    return {"id": data.id, "name": data.name, "monitoring": monitoring}
+
 
 @data_route.get(
     "/data/{datapoint_id}",
     response_model=DataDetail,
     name="data:get_chart_data",
     summary="get data detail by data point id",
-    tags=["Data"])
-def get_data_detail(
+    tags=["Data"],
+)
+def get_data_detail_by_datapoint(
     req: Request,
     datapoint_id: int,
     question_ids: Optional[List[int]] = Query(default=None),
     history: Optional[bool] = Query(default=False),
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
 ):
     # get data
-    data = crud_data.get_data_by_datapoint_id(session=session, datapoint_id=datapoint_id)
+    data = crud_data.get_data_by_datapoint_id(
+        session=session, datapoint_id=datapoint_id
+    )
     if not data:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND,
-            detail="Data not found")
+            status_code=HTTPStatus.NOT_FOUND, detail="Data not found"
+        )
     # get monitoring data for that datapoint
     monitoring_data = crud_data.get_monitoring_data(
-        session=session, identifier=data.identifier)
+        session=session, identifier=data.identifier
+    )
     monitoring_data_ids = [md.id for md in monitoring_data]
 
     # get answers
     answers = session.query(Answer).filter(
-        Answer.data.in_(monitoring_data_ids))
+        Answer.data.in_(monitoring_data_ids)
+    )
 
     if question_ids:
-        answers = answers.filter(
-            Answer.question.in_(question_ids))
+        answers = answers.filter(Answer.question.in_(question_ids))
     answers = answers.all()
     answers = [a.to_detail for a in answers]
-
-    print (answers, sep=",")
 
     return {
         "id": data.id,
         "name": data.name,
-        "geo": {
-            "lat": data.geo[0],
-            "long": data.geo[1]
-        } if data.geo else None,
-        "answers": answers
+        "geo": {"lat": data.geo[0], "long": data.geo[1]} if data.geo else None,
+        "answers": answers,
     }
