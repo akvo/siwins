@@ -38,53 +38,58 @@ with open(source_geo, "r") as geo:
     geo = json.load(geo)
     ob = geo["objects"]
     ob_name = list(ob)[0]
-parent_administration = set([
-    d[levels[-2]]
-    for d in [p["properties"] for p in ob[ob_name]["geometries"]]
-])
+parent_administration = set(
+    [
+        d[levels[-2]]
+        for d in [p["properties"] for p in ob[ob_name]["geometries"]]
+    ]
+)
 forms = crud_form.get_form(session=session)
 forms = [f.id for f in forms]
 
 MONITORING_FORM_ID = 729240983
-if len(sys.argv) < 2:
-    print("You should provide number of datapoints")
-    sys.exit()
+DEFAULT_NUMBER_OF_SEEDER = 10
+repeats = sys.argv[1] if len(sys.argv) == 2 else DEFAULT_NUMBER_OF_SEEDER
 
 fake = Faker()
 
-for form in forms:
-    # get form from database
-    form = crud_form.get_form_by_id(session=session, id=form)
-
-    monitoring = form.id == MONITORING_FORM_ID
-
-    datapoint_id = None
-    if monitoring:
-        datapoints = crud_data.get_all_data(session=session, registration=True)
-        if len(datapoints):
-            datapoint = random.choice(datapoints)
-            datapoint_id = datapoint.id
-
-    repeats = int(sys.argv[1])
-    for i in range(repeats):
+for i in range(repeats):
+    for form in forms:
         answers = []
         names = []
         iloc = i % (len(sample_geo) - 1)
         geo = sample_geo[iloc]
 
+        # get form from database
+        form = crud_form.get_form_by_id(session=session, id=form)
+
+        monitoring = form.id == MONITORING_FORM_ID
+
+        datapoint = None
+        if monitoring:
+            datapoints = crud_data.get_all_data(
+                session=session, registration=True
+            )
+            if len(datapoints):
+                datapoint = random.choice(datapoints)
         for qg in form.question_group:
             for q in qg.question:
                 answer = Answer(question=q.id, created=datetime.now())
                 if q.type in [
-                    QuestionType.option, QuestionType.multiple_option
+                    QuestionType.option,
+                    QuestionType.multiple_option,
                 ]:
+                    options = crud_option.get_option_by_question_id(
+                        session=session, question=q.id
+                    )
+                    fa = random.choice(options)
+                    answer.options = [fa.name]
                     if q.meta:
-                        static_options = crud_option.get_option_by_question_id(
-                            session=session, question=q.id
+                        names.append(
+                            datapoint.name
+                            if monitoring and datapoint
+                            else fa.name
                         )
-                        fa = random.choice(static_options)
-                        answer.options = [fa.name]
-                        names.append(fa.name)
 
                 if q.type == QuestionType.number:
                     fa = fake.random_int(min=10, max=50)
@@ -96,7 +101,7 @@ for form in forms:
                     fd = fa.strftime("%d")
                     answer.text = f"2019-{fm}-{fd}"
                 if q.type == QuestionType.geo and geo:
-                    answer.text = ("{}|{}").format(geo['lat'], geo['long'])
+                    answer.text = ("{}|{}").format(geo["lat"], geo["long"])
 
                 if q.type == QuestionType.text:
                     fa = fake.company()
@@ -113,9 +118,8 @@ for form in forms:
         identifier = "-".join(str(uuid1()).split("-")[1:4])
 
         # add new datapoint
-        print(datapoint_id)
         data = crud_data.add_data(
-            datapoint_id=datapoint_id,
+            datapoint_id=datapoint.id if datapoint else None,
             identifier=identifier,
             session=session,
             name=displayName,
