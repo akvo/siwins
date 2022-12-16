@@ -49,7 +49,7 @@ forms = [f.id for f in forms]
 
 MONITORING_FORM_ID = 729240983
 DEFAULT_NUMBER_OF_SEEDER = 10
-repeats = sys.argv[1] if len(sys.argv) == 2 else DEFAULT_NUMBER_OF_SEEDER
+repeats = int(sys.argv[1]) if len(sys.argv) == 2 else DEFAULT_NUMBER_OF_SEEDER
 
 fake = Faker()
 
