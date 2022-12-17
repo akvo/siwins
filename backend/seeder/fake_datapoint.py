@@ -12,6 +12,7 @@ from models.question import QuestionType
 from models.answer import Answer
 from db.connection import Base, SessionLocal, engine
 from source.geoconfig import GeoLevels
+from seeder.fake_history import generate_fake_history
 
 start_time = time.process_time()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -65,13 +66,11 @@ for i in range(repeats):
 
         monitoring = form.id == MONITORING_FORM_ID
 
-        datapoint = None
-        if monitoring:
-            datapoints = crud_data.get_all_data(
-                session=session, registration=True
-            )
-            if len(datapoints):
-                datapoint = random.choice(datapoints)
+        datapoint = (
+            crud_data.get_registration_only(session=session)
+            if monitoring
+            else None
+        )
         for qg in form.question_group:
             for q in qg.question:
                 answer = Answer(question=q.id, created=datetime.now())
@@ -116,7 +115,7 @@ for i in range(repeats):
         displayName = " - ".join(names)
         geoVal = [geo.get("lat"), geo.get("long")]
         identifier = "-".join(str(uuid1()).split("-")[1:4])
-
+        # print(identifier)
         # add new datapoint
         data = crud_data.add_data(
             datapoint_id=datapoint.id if datapoint else None,
@@ -129,3 +128,9 @@ for i in range(repeats):
             created=datetime.now(),
             answers=answers,
         )
+
+# populate data monitoring history
+
+data_monitoring = crud_data.get_all_data(session=session, registration=False)
+for dm in data_monitoring:
+    generate_fake_history(datapoint=dm)
