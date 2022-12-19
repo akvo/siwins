@@ -24,11 +24,14 @@ class Form(Base):
     name = Column(String)
     description = Column(Text, nullable=True)
     version = Column(Float, nullable=True, default=0.0)
-    registration_form = Column(BigInteger, ForeignKey('form.id'))
+    registration_form = Column(BigInteger, ForeignKey("form.id"))
 
     question_group = relationship(
-        "QuestionGroup", cascade="all, delete",
-        passive_deletes=True, backref="question_group")
+        "QuestionGroup",
+        cascade="all, delete",
+        passive_deletes=True,
+        backref="question_group",
+    )
 
     def __init__(
         self,
@@ -36,7 +39,7 @@ class Form(Base):
         name: str,
         version: Optional[float] = 0.0,
         description: Optional[str] = None,
-        registration_form: Optional[int] = None
+        registration_form: Optional[int] = None,
     ):
         self.id = id
         self.name = name
@@ -54,7 +57,7 @@ class Form(Base):
             "name": self.name,
             "version": self.version,
             "description": self.description,
-            "registration_form": self.registration_form
+            "registration_form": self.registration_form,
         }
 
 

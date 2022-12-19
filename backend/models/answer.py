@@ -19,9 +19,7 @@ def append_value(self, answer):
     type = self.question_detail.type
     if type in [QuestionType.number]:
         answer.update({"value": self.value})
-    if type in [QuestionType.text,
-                QuestionType.geo,
-                QuestionType.date]:
+    if type in [QuestionType.text, QuestionType.geo, QuestionType.date]:
         answer.update({"value": self.text})
     if type == QuestionType.option:
         answer.update({"value": self.options[0]})
@@ -37,8 +35,8 @@ def append_value(self, answer):
 class AnswerDict(TypedDict):
     question: int
     value: Union[
-        int, float, str, bool, dict, List[str],
-        List[int], List[float], None]
+        int, float, str, bool, dict, List[str], List[int], List[float], None
+    ]
 
 
 class MonitoringAnswerDict(TypedDict):
@@ -46,8 +44,8 @@ class MonitoringAnswerDict(TypedDict):
     question: str
     type: str
     value: Union[
-        int, float, str, bool, dict, List[str],
-        List[int], List[float], None]
+        int, float, str, bool, dict, List[str], List[int], List[float], None
+    ]
     date: str
     history: bool
 
@@ -57,12 +55,14 @@ class Answer(Base):
     id = Column(Integer, primary_key=True, index=True, nullable=True)
     question = Column(
         BigInteger,
-        ForeignKey('question.id', onupdate="CASCADE", ondelete="CASCADE"),
-        primary_key=True)
+        ForeignKey("question.id", onupdate="CASCADE", ondelete="CASCADE"),
+        primary_key=True,
+    )
     data = Column(
         BigInteger,
-        ForeignKey('data.id', onupdate="CASCADE", ondelete="CASCADE"),
-        primary_key=True)
+        ForeignKey("data.id", onupdate="CASCADE", ondelete="CASCADE"),
+        primary_key=True,
+    )
     text = Column(Text, nullable=True)
     value = Column(Float, nullable=True)
     options = Column(pg.ARRAY(String), nullable=True)
@@ -71,9 +71,14 @@ class Answer(Base):
     question_detail = relationship("Question", backref="answer")
 
     def __init__(
-        self, question: int, created: datetime, data: Optional[int] = None,
-        text: Optional[str] = None, value: Optional[float] = None,
-        options: Optional[List[str]] = None, updated: Optional[datetime] = None
+        self,
+        question: int,
+        created: datetime,
+        data: Optional[int] = None,
+        text: Optional[str] = None,
+        value: Optional[float] = None,
+        options: Optional[List[str]] = None,
+        updated: Optional[datetime] = None,
     ):
         self.question = question
         self.data = data
@@ -114,7 +119,7 @@ class Answer(Base):
             "question_id": self.question,
             "question": self.question_detail.name,
             "date": self.created.strftime("%b %d, %Y - %-I:%M:%-S %p"),
-            "type": self.question_detail.type.value
+            "type": self.question_detail.type.value,
         }
         answer = append_value(self, answer)
         return answer

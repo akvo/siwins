@@ -76,9 +76,7 @@ def form_seeder(session: Session, token: dict, forms: List[dict]):
                 options = []
                 if "options" in q:
                     options = [
-                        {
-                            "name": a["text"]
-                        } for a in q["options"]["option"]
+                        {"name": a["text"]} for a in q["options"]["option"]
                     ]
                 question = crud_question.add_question(
                     session=session,

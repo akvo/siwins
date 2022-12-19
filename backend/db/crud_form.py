@@ -13,10 +13,12 @@ def add_form(
     registration_form: Optional[int] = None,
 ) -> FormDict:
     form = Form(
-        id=id, name=name,
+        id=id,
+        name=name,
         version=version if version else 1.0,
         description=description,
-        registration_form=registration_form)
+        registration_form=registration_form,
+    )
     session.add(form)
     session.commit()
     session.flush()

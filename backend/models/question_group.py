@@ -23,16 +23,18 @@ class QuestionGroupDict(TypedDict):
 class QuestionGroup(Base):
     __tablename__ = "question_group"
     id = Column(BigInteger, primary_key=True, index=True, nullable=True)
-    form = Column(BigInteger, ForeignKey('form.id'))
+    form = Column(BigInteger, ForeignKey("form.id"))
     name = Column(String)
     order = Column(Integer, nullable=True)
     description = Column(Text, nullable=True)
     repeatable = Column(Boolean, nullable=True)
 
-    question = relationship("Question",
-                            cascade="all, delete",
-                            passive_deletes=True,
-                            backref="question")
+    question = relationship(
+        "Question",
+        cascade="all, delete",
+        passive_deletes=True,
+        backref="question",
+    )
 
     def __init__(
         self,

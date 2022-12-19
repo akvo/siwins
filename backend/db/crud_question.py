@@ -8,11 +8,17 @@ import db.crud_option as crud_option
 
 
 def get_last_question(session: Session, form: int, question_group: int):
-    last_question = session.query(Question).filter(
-        and_(
-            Question.form == form,
-            Question.question_group == question_group)).order_by(
-                Question.order.desc()).first()
+    last_question = (
+        session.query(Question)
+        .filter(
+            and_(
+                Question.form == form,
+                Question.question_group == question_group,
+            )
+        )
+        .order_by(Question.order.desc())
+        .first()
+    )
     if last_question:
         last_question = last_question.order + 1
     else:
@@ -46,7 +52,8 @@ def add_question(
     dependency: Optional[List[dict]] = None,
 ) -> QuestionBase:
     last_question = get_last_question(
-        session=session, form=form, question_group=question_group)
+        session=session, form=form, question_group=question_group
+    )
     question = Question(
         id=id,
         name=name,
@@ -57,7 +64,8 @@ def add_question(
         meta_geo=meta_geo if meta_geo else False,
         type=type,
         required=required,
-        dependency=dependency)
+        dependency=dependency,
+    )
     if option:
         for o in option:
             opt = generateOptionObj(obj=o)
@@ -84,14 +92,18 @@ def update_question(
     dependency: Optional[List[dict]] = None,
 ) -> QuestionBase:
     last_question = get_last_question(
-        session=session, form=form, question_group=question_group)
-    question = session.query(Question).filter(and_(
-        Question.form == form,
-        Question.id == id)).first()
+        session=session, form=form, question_group=question_group
+    )
+    question = (
+        session.query(Question)
+        .filter(and_(Question.form == form, Question.id == id))
+        .first()
+    )
     # clear option when question type change
     if question.type in [QuestionType.option, QuestionType.multiple_option]:
-        session.query(Option).filter(
-            Option.question == question.id).delete(synchronize_session='fetch')
+        session.query(Option).filter(Option.question == question.id).delete(
+            synchronize_session="fetch"
+        )
     question.name = name
     question.order = order if order else last_question
     question.meta = meta
@@ -102,18 +114,20 @@ def update_question(
     question.dependency = dependency
     if option:
         for o in option:
-            find_option = session.query(Option).filter(
-                Option.id == o['id']).first()
+            find_option = (
+                session.query(Option).filter(Option.id == o["id"]).first()
+            )
             if not find_option:
                 opt = opt = generateOptionObj(obj=o)
                 question.option.append(opt)
             if find_option:
                 crud_option.update_option(
                     session=session,
-                    id=o.get('id'),
-                    name=o.get('name'),
-                    order=o.get('order'),
-                    code=o.get('code'))
+                    id=o.get("id"),
+                    name=o.get("name"),
+                    order=o.get("order"),
+                    code=o.get("code"),
+                )
     session.commit()
     session.flush()
     session.refresh(question)
@@ -128,8 +142,11 @@ def get_question(
     if form:
         return session.query(Question).filter(Question.form == form).all()
     if form and type:
-        return session.query(Question).filter(and_(
-            Question.form == form, Question.type == type)).all()
+        return (
+            session.query(Question)
+            .filter(and_(Question.form == form, Question.type == type))
+            .all()
+        )
     return session.query(Question).all()
 
 
@@ -149,7 +166,8 @@ def validate_dependency(session: Session, dependency: List[dict]):
         if not question:
             errors.append(f"Question {qid} not found")
         if question.type not in [
-                QuestionType.option, QuestionType.multiple_option
+            QuestionType.option,
+            QuestionType.multiple_option,
         ]:
             errors.append(f"Question {qid} type should be option")
         options = [o.name for o in question.option]

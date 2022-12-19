@@ -13,5 +13,4 @@ def add_sync(session: Session, url: str) -> SyncDict:
 
 
 def get_last_sync(session: Session) -> SyncDict:
-    return session.query(Sync).order_by(
-        desc(Sync.id)).first()
+    return session.query(Sync).order_by(desc(Sync.id)).first()
