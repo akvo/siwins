@@ -5,7 +5,7 @@ from seeder.form import form_seeder
 from seeder.datapoint import datapoint_seeder
 from db.connection import Base, SessionLocal, engine
 from db import crud_sync
-from db.truncator import truncate
+from db.truncator import truncate, truncate_datapoint
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TESTING = os.environ.get("TESTING")
@@ -24,9 +24,7 @@ if not TESTING:
         action = truncate(session=session, table=table)
         print(action)
 
-    for table in ["data", "answer", "history"]:
-        action = truncate(session=session, table=table)
-        print(action)
+    truncate_datapoint(session=session)
 
 token = flow_auth.get_token()
 
