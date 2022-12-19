@@ -1,7 +1,7 @@
 import React from "react";
 import { Column } from "@ant-design/plots";
 import { chain, groupBy, orderBy } from "lodash";
-import { Row, Collapse, Button } from "antd";
+import { Collapse, Button } from "antd";
 
 const { Panel } = Collapse;
 

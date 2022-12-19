@@ -11,7 +11,7 @@ from sqlalchemy import ForeignKey, DateTime, BigInteger
 import sqlalchemy.dialects.postgresql as pg
 from sqlalchemy.orm import relationship
 from db.connection import Base
-from models.answer import Answer, AnswerDict
+from models.answer import Answer, AnswerDict, AnswerDictForDetail
 from models.answer import AnswerBase, MonitoringAnswerDict
 from models.form import Form
 from models.history import History
@@ -46,6 +46,13 @@ class MapsData(BaseModel):
     id: int
     name: str
     geo: List[float]
+
+
+class DataDetail(BaseModel):
+    id: int
+    name: str
+    geo: Optional[GeoData] = None
+    answers: List[AnswerDictForDetail]
 
 
 class MonitoringData(TypedDict):
