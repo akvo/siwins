@@ -16,14 +16,22 @@ GEO_CONFIG = GeoLevels[CONFIG_NAME].value
 CHART_CONFIG = f"{SOURCE_PATH}/charts.js"
 CHART_CONFIG = jsmin(open(CHART_CONFIG).read())
 
-MINJS = jsmin("".join([
-    "var levels=" + str([g["alias"] for g in GEO_CONFIG]) + ";"
-    "var map_config={shapeLevels:" + str(
-        [g["name"] for g in GEO_CONFIG]) + "};",
-    "var topojson=", TOPO_JSON, ";", CHART_CONFIG
-]))
+MINJS = jsmin(
+    "".join(
+        [
+            "var levels=" + str([g["alias"] for g in GEO_CONFIG]) + ";"
+            "var map_config={shapeLevels:"
+            + str([g["name"] for g in GEO_CONFIG])
+            + "};",
+            "var topojson=",
+            TOPO_JSON,
+            ";",
+            CHART_CONFIG,
+        ]
+    )
+)
 JS_FILE = f"{SOURCE_PATH}/config.min.js"
-open(JS_FILE, 'w').write(MINJS)
+open(JS_FILE, "w").write(MINJS)
 
 
 class Settings(BaseSettings):
@@ -70,7 +78,8 @@ def get_setting():
     response_class=FileResponse,
     tags=["Config"],
     name="config.js",
-    description="static javascript config")
+    description="static javascript config",
+)
 async def main(res: Response):
     res.headers["Content-Type"] = "application/x-javascript; charset=utf-8"
     return settings.js_file

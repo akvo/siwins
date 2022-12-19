@@ -23,14 +23,14 @@ with open(forms_config) as json_file:
     forms = json.load(json_file)
 
 
-class TestSeedAndSync():
+class TestSeedAndSync:
     @pytest.mark.asyncio
     async def test_seed_form_and_data(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
-        token = {'token': None, 'time': 0}
+        token = {"token": None, "time": 0}
         # init sync
-        url = 'test init add sync url'
+        url = "test init add sync url"
         sync_res = crud_sync.add_sync(session=session, url=url)
         last_sync = crud_sync.get_last_sync(session=session)
         assert last_sync.url == sync_res.url
@@ -38,9 +38,8 @@ class TestSeedAndSync():
         form_seeder(session=session, token=token, forms=forms)
         datapoint_seeder(session=session, token=token, forms=forms)
         for form in forms:
-            fid = form.get('id')
-            check_form = crud_form.get_form_by_id(
-                session=session, id=fid)
+            fid = form.get("id")
+            check_form = crud_form.get_form_by_id(session=session, id=fid)
             assert check_form.id == fid
 
     @pytest.mark.asyncio
@@ -50,60 +49,59 @@ class TestSeedAndSync():
         # registration data
         data = crud_data.get_all_data(session=session, registration=True)
         data = [d.serialize for d in data]
-        assert data == [{
-            "id": 1,
-            "datapoint_id": 716330915,
-            "identifier": "dfmn-hw5g-11se",
-            "name": "SMA N 1 Nusa Penida - High school",
-            "form": 733030972,
-            "registration": True,
-            "geo": {
-                "lat": -8.676368333333333,
-                "long": 115.49182166666667
-            },
-            "created": "December 01, 2022",
-            "updated": "December 01, 2022",
-            "answer": [{
-                "question": 718001069,
-                "value": "High school"
-            }, {
-                "question": 721880978,
-                "value": "-8.676368333333333|115.49182166666667"
-            }, {
-                "question": 738940972,
-                "value": "SMA N 1 Nusa Penida"
-            }]
-        }]
+        assert data == [
+            {
+                "id": 1,
+                "datapoint_id": 716330915,
+                "identifier": "dfmn-hw5g-11se",
+                "name": "SMA N 1 Nusa Penida - High school",
+                "form": 733030972,
+                "registration": True,
+                "geo": {"lat": -8.676368333333333, "long": 115.49182166666667},
+                "created": "December 01, 2022",
+                "updated": "December 01, 2022",
+                "answer": [
+                    {"question": 718001069, "value": "High school"},
+                    {
+                        "question": 721880978,
+                        "value": "-8.676368333333333|115.49182166666667",
+                    },
+                    {"question": 738940972, "value": "SMA N 1 Nusa Penida"},
+                ],
+            }
+        ]
         # monitoring data
         temp_data = crud_data.get_all_data(session=session, registration=False)
         data = [d.serialize for d in temp_data]
-        assert data == [{
-            "id": 2,
-            "datapoint_id": 716330915,
-            "identifier": "dfmn-hw5g-11se",
-            "name": "SMA N 1 Nusa Penida - High school",
-            "form": 729240983,
-            "registration": False,
-            "geo": None,
-            "created": "December 01, 2022",
-            "updated": "December 01, 2022",
-            "answer": [
-                {"question": 725310914, "value": 225.0},
-                {"question": 735090984, "value": 15.0},
-                {"question": 738950915, "value": "Clean"},
-            ]
-        }]
+        assert data == [
+            {
+                "id": 2,
+                "datapoint_id": 716330915,
+                "identifier": "dfmn-hw5g-11se",
+                "name": "SMA N 1 Nusa Penida - High school",
+                "form": 729240983,
+                "registration": False,
+                "geo": None,
+                "created": "December 01, 2022",
+                "updated": "December 01, 2022",
+                "answer": [
+                    {"question": 725310914, "value": 225.0},
+                    {"question": 735090984, "value": 15.0},
+                    {"question": 738950915, "value": "Clean"},
+                ],
+            }
+        ]
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
-        assert data[0]['id'] == 2
-        assert data[0]['name'] == "SMA N 1 Nusa Penida - High school"
-        assert len(data[0]['monitoring']) == 6
+        assert data[0]["id"] == 2
+        assert data[0]["name"] == "SMA N 1 Nusa Penida - High school"
+        assert len(data[0]["monitoring"]) == 6
 
     @pytest.mark.asyncio
     async def test_sync(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
-        token = {'token': None, 'time': 0}
+        token = {"token": None, "time": 0}
         sync_data_file = "./source/static/sync_data.json"
         sync_data = {}
         with open(sync_data_file) as json_file:
@@ -113,6 +111,6 @@ class TestSeedAndSync():
         temp_data = crud_data.get_all_data(session=session, registration=False)
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
-        assert data[0]['id'] == 2
-        assert data[0]['name'] == "SMA N 1 Nusa Penida - High school"
-        assert len(data[0]['monitoring']) == 12
+        assert data[0]["id"] == 2
+        assert data[0]["name"] == "SMA N 1 Nusa Penida - High school"
+        assert len(data[0]["monitoring"]) == 12

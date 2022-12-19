@@ -19,14 +19,17 @@ class OptionDict(TypedDict):
 class Option(Base):
     __tablename__ = "option"
     id = Column(Integer, primary_key=True, index=True, nullable=True)
-    question = Column(Integer, ForeignKey('question.id'))
+    question = Column(Integer, ForeignKey("question.id"))
     name = Column(String)
     order = Column(Integer, nullable=True)
     code = Column(String, nullable=True)
 
     def __init__(
-        self, name: str, id: Optional[int] = None,
-        order: Optional[int] = None, code: Optional[str] = None,
+        self,
+        name: str,
+        id: Optional[int] = None,
+        order: Optional[int] = None,
+        code: Optional[str] = None,
     ):
         self.id = id
         self.name = name

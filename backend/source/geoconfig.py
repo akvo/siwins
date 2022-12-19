@@ -2,28 +2,15 @@ import enum
 
 
 class GeoLevels(enum.Enum):
-    notset = [{
-        "level": 0,
-        "name": "provinsi",
-        "alias": "Provinsi"
-    }, {
-        "level": 1,
-        "name": "kabkot",
-        "alias": "Kabupaten / Kota"
-    }]
-    bali = [{
-        "level": 0,
-        "name": "NAME_2",
-        "alias": "District"
-    }, {
-        "level": 1,
-        "name": "NAME_3",
-        "alias": "Sub-District"
-    }, {
-        "level": 2,
-        "name": "NAME_4",
-        "alias": "Village"
-    }]
+    notset = [
+        {"level": 0, "name": "provinsi", "alias": "Provinsi"},
+        {"level": 1, "name": "kabkot", "alias": "Kabupaten / Kota"},
+    ]
+    bali = [
+        {"level": 0, "name": "NAME_2", "alias": "District"},
+        {"level": 1, "name": "NAME_3", "alias": "Sub-District"},
+        {"level": 2, "name": "NAME_4", "alias": "Village"},
+    ]
 
 
 # Landing Page

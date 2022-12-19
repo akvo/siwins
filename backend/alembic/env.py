@@ -21,7 +21,7 @@ config = context.config
 # overwrite sqlalchemy.url path with local environment
 # check docker-compose.yml deh
 DATABASE_URL = os.environ["DATABASE_URL"]
-DATABASE_URL = DATABASE_URL.replace('%', '%%')
+DATABASE_URL = DATABASE_URL.replace("%", "%%")
 
 # sets up loggers
 fileConfig(config.config_file_name)
@@ -52,16 +52,15 @@ def run_migrations_online():
     if TESTING:
         # connect to primary db
         default_engine = create_engine(
-            DATABASE_URL, isolation_level="AUTOCOMMIT")
+            DATABASE_URL, isolation_level="AUTOCOMMIT"
+        )
         # drop testing db if it exists and create a fresh one
-        DB_NAME = DATABASE_URL.split('/')[-1]
+        DB_NAME = DATABASE_URL.split("/")[-1]
         if "test" in DB_NAME:
             DB_NAME = DB_NAME.split("_")[0]
         with default_engine.connect() as default_conn:
-            default_conn.execute(
-                f"DROP DATABASE IF EXISTS {DB_NAME}_test")
-            default_conn.execute(
-                f"CREATE DATABASE {DB_NAME}_test")
+            default_conn.execute(f"DROP DATABASE IF EXISTS {DB_NAME}_test")
+            default_conn.execute(f"CREATE DATABASE {DB_NAME}_test")
     connectable = config.attributes.get("connection", None)
     config.set_main_option("sqlalchemy.url", DB_URL)
 

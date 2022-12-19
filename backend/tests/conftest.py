@@ -31,10 +31,12 @@ def apply_migrations():
 @pytest.fixture
 def app(apply_migrations: None) -> FastAPI:
     from core.config import app
+
     engine = create_engine(get_db_url())
     Base.metadata.create_all(bind=engine)
     TestingSessionLocal = sessionmaker(
-        autocommit=False, autoflush=False, bind=engine)
+        autocommit=False, autoflush=False, bind=engine
+    )
 
     def override_get_db():
         try:
@@ -53,7 +55,8 @@ def session() -> Session:
     engine = create_engine(get_db_url())
     Base.metadata.create_all(bind=engine)
     TestingSessionLocal = sessionmaker(
-        autocommit=False, autoflush=False, bind=engine)
+        autocommit=False, autoflush=False, bind=engine
+    )
     return TestingSessionLocal()
 
 

@@ -20,9 +20,7 @@ with open(forms_config) as json_file:
 
 if not TESTING:
     # don't truncate when running test
-    for table in [
-        "sync", "form", "question_group", "question", "option"
-    ]:
+    for table in ["sync", "form", "question_group", "question", "option"]:
         action = truncate(session=session, table=table)
         print(action)
 
@@ -34,9 +32,10 @@ token = flow_auth.get_token()
 
 # init sync
 sync_res = flow_auth.init_sync(token=token)
-if sync_res.get('nextSyncUrl'):
+if sync_res.get("nextSyncUrl"):
     sync_res = crud_sync.add_sync(
-        session=session, url=sync_res.get('nextSyncUrl'))
+        session=session, url=sync_res.get("nextSyncUrl")
+    )
     print("------------------------------------------")
     print(f"Init Sync URL: {sync_res.url}")
     print("------------------------------------------")

@@ -64,7 +64,7 @@ class MonitoringData(TypedDict):
 class Data(Base):
     __tablename__ = "data"
     id = Column(BigInteger, primary_key=True, index=True, nullable=True)
-    datapoint_id = Column(BigInteger, nullable=True)
+    datapoint_id = Column(BigInteger, ForeignKey("data.id"), nullable=True)
     identifier = Column(String, nullable=True)
     name = Column(String)
     form = Column(BigInteger, ForeignKey(Form.id))
@@ -86,6 +86,7 @@ class Data(Base):
         backref="history",
         order_by=History.created.desc(),
     )
+    monitoring = relationship("Data", remote_side=[id])
 
     def __init__(
         self,

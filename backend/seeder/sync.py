@@ -16,8 +16,7 @@ last_sync_url = crud_sync.get_last_sync(session=session)
 sync_data = None
 if last_sync_url:
     token = flow_auth.get_token()
-    sync_data = flow_auth.get_data(
-        url=last_sync_url.url, token=token)
+    sync_data = flow_auth.get_data(url=last_sync_url.url, token=token)
 
 if sync_data:
     data_sync(token=token, session=session, sync_data=sync_data)
