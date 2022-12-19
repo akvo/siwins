@@ -2,12 +2,13 @@ from datetime import datetime
 from typing import List, Optional
 from typing_extensions import TypedDict
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, and_
+from sqlalchemy import desc, and_, select
 from sqlalchemy.sql.expression import false
 from models.data import Data, DataDict
 from models.answer import Answer
 from models.history import History
 from models.answer import AnswerBase
+from sqlalchemy.orm import aliased
 
 
 class PaginatedData(TypedDict):
@@ -16,18 +17,29 @@ class PaginatedData(TypedDict):
 
 
 def add_data(
-    session: Session, name: str, form: int, registration: bool,
-    answers: List[AnswerBase], geo: Optional[List[float]] = None,
-    id: Optional[int] = None, created: Optional[datetime] = None,
+    session: Session,
+    name: str,
+    form: int,
+    registration: bool,
+    answers: List[AnswerBase],
+    geo: Optional[List[float]] = None,
+    id: Optional[int] = None,
+    created: Optional[datetime] = None,
     updated: Optional[datetime] = None,
     identifier: Optional[str] = None,
     datapoint_id: Optional[int] = None,
 ) -> DataDict:
     data = Data(
-        id=id, name=name, form=form, geo=geo,
+        id=id,
+        name=name,
+        form=form,
+        geo=geo,
         created=created if created else datetime.now(),
-        updated=updated, identifier=identifier,
-        datapoint_id=datapoint_id, registration=registration)
+        updated=updated,
+        identifier=identifier,
+        datapoint_id=datapoint_id,
+        registration=registration,
+    )
     for answer in answers:
         data.answer.append(answer)
     session.add(data)
@@ -52,18 +64,25 @@ def delete_by_id(session: Session, id: int) -> None:
 
 
 def delete_bulk(session: Session, ids: List[int]) -> None:
-    session.query(History).filter(
-        History.data.in_(ids)).delete(synchronize_session='fetch')
-    session.query(Answer).filter(
-        Answer.data.in_(ids)).delete(synchronize_session='fetch')
-    session.query(Data).filter(
-        Data.id.in_(ids)).delete(synchronize_session='fetch')
+    session.query(History).filter(History.data.in_(ids)).delete(
+        synchronize_session="fetch"
+    )
+    session.query(Answer).filter(Answer.data.in_(ids)).delete(
+        synchronize_session="fetch"
+    )
+    session.query(Data).filter(Data.id.in_(ids)).delete(
+        synchronize_session="fetch"
+    )
     session.commit()
 
 
 def get_data(
-    session: Session, form: int, skip: int, perpage: int,
-    options: List[str] = None, question: List[int] = None
+    session: Session,
+    form: int,
+    skip: int,
+    perpage: int,
+    options: List[str] = None,
+    question: List[int] = None,
 ) -> PaginatedData:
     data = session.query(Data).filter(Data.form == form)
     count = data.count()
@@ -73,8 +92,7 @@ def get_data(
 
 
 def get_all_data(session: Session, registration: bool) -> DataDict:
-    return session.query(Data).filter(
-        Data.registration == registration).all()
+    return session.query(Data).filter(Data.registration == registration).all()
 
 
 def get_data_by_id(session: Session, id: int) -> DataDict:
@@ -99,9 +117,33 @@ def get_data_by_identifier(
     return data.first()
 
 
-def get_monitoring_data(
-    session: Session, identifier: str
-):
-    return session.query(Data).filter(and_(
-        Data.identifier == identifier,
-        Data.registration == false())).all()
+def get_monitoring_data(session: Session, identifier: str):
+    return (
+        session.query(Data)
+        .filter(
+            and_(Data.identifier == identifier, Data.registration == false())
+        )
+        .all()
+    )
+
+
+def get_registration_only(session: Session):
+    nodealias = aliased(Data)
+    adp = session.scalars(
+        select(Data).join(Data.monitoring.of_type(nodealias))
+    ).all()
+    ids = [d.datapoint_id if d else None for d in adp]
+    return (
+        session.query(Data)
+        .filter(and_(Data.datapoint_id.is_(None), Data.id.not_in(ids)))
+        .first()
+    )
+
+
+def get_monitoring_by_id(session: Session, datapoint: Data) -> DataDict:
+    nodealias = aliased(Data)
+    return session.scalars(
+        select(Data)
+        .where(Data.datapoint_id == datapoint.id)
+        .join(Data.monitoring.of_type(nodealias))
+    ).first()

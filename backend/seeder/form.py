@@ -20,7 +20,7 @@ def form_seeder(session: Session, token: dict, forms: List[dict]):
 
     for form in forms:
         # fetch form
-        form_id = form.get('id')
+        form_id = form.get("id")
         if TESTING:
             form_file = f"{test_source}/{form_id}_form.json"
             json_form = {}
@@ -29,61 +29,71 @@ def form_seeder(session: Session, token: dict, forms: List[dict]):
         if not TESTING:
             json_form = flow_auth.get_form(token=token, form_id=form_id)
 
-        name = json_form.get('name') \
-            if 'name' in json_form else form.get('name')
-        version = json_form.get('version') if 'version' in json_form else 1.0
+        form_name = form.get("name")
+        name = json_form.get("name") if "name" in json_form else form_name
+        version = json_form.get("version") if "version" in json_form else 1.0
         form = crud_form.add_form(
             session=session,
             name=name,
-            id=json_form.get('surveyId'),
-            registration_form=form.get('registration_form'),
+            id=json_form.get("surveyId"),
+            registration_form=form.get("registration_form"),
             version=version,
-            description=json_form.get('description'))
+            description=json_form.get("description"),
+        )
         print(f"Form: {form.name}")
 
-        questionGroups = json_form.get('questionGroup')
+        questionGroups = json_form.get("questionGroup")
         if isinstance(questionGroups, dict):
             questionGroups = [questionGroups]
         for qg in questionGroups:
             question_group = crud_question_group.add_question_group(
                 session=session,
-                name=qg.get('heading'),
+                name=qg.get("heading"),
                 form=form.id,
-                description=qg.get('description'),
-                repeatable=True if qg.get('repeatable') else False)
+                description=qg.get("description"),
+                repeatable=True if qg.get("repeatable") else False,
+            )
             print(f"Question Group: {question_group.name}")
 
-            questions = qg.get('question')
+            questions = qg.get("question")
             if isinstance(questions, dict):
                 questions = [questions]
             for i, q in enumerate(questions):
                 # handle question type
-                type = q.get('type')
+                type = q.get("type")
                 validationType = None
-                allowMultiple = q.get('allowMultiple')
-                if 'validationRule' in q:
-                    vr = q.get('validationRule')
-                    validationType = vr.get('validationType')
-                if type == 'free' and not validationType:
+                allowMultiple = q.get("allowMultiple")
+                if "validationRule" in q:
+                    vr = q.get("validationRule")
+                    validationType = vr.get("validationType")
+                if type == "free" and not validationType:
                     type = QuestionType.text.value
-                if type == 'free' and validationType == 'numeric':
+                if type == "free" and validationType == "numeric":
                     type = QuestionType.number.value
-                if type == 'option' and allowMultiple:
+                if type == "option" and allowMultiple:
                     type == QuestionType.multiple_option.value
-                meta_geo = q.get('localeLocationFlag')
+                meta_geo = q.get("localeLocationFlag")
+                options = []
+                if "options" in q:
+                    options = [
+                        {
+                            "name": a["text"]
+                        } for a in q["options"]["option"]
+                    ]
                 question = crud_question.add_question(
                     session=session,
-                    name=q.get('text'),
-                    id=q.get('id') if "id" in q else None,
+                    name=q.get("text"),
+                    id=q.get("id") if "id" in q else None,
                     form=form.id,
                     question_group=question_group.id,
                     type=type,
                     meta=q.get("localeNameFlag"),
                     meta_geo=meta_geo if meta_geo else False,
-                    order=q.get('order'),
-                    required=q.get('mandatory'),
+                    order=q.get("order"),
+                    required=q.get("mandatory"),
                     dependency=q["dependency"] if "dependency" in q else None,
-                    option=[])
+                    option=options,
+                )
                 print(f"{i}.{question.name}")
         print("------------------------------------------")
 

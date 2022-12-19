@@ -57,7 +57,7 @@ class MonitoringData(TypedDict):
 class Data(Base):
     __tablename__ = "data"
     id = Column(BigInteger, primary_key=True, index=True, nullable=True)
-    datapoint_id = Column(BigInteger, nullable=True)
+    datapoint_id = Column(BigInteger, ForeignKey("data.id"), nullable=True)
     identifier = Column(String, nullable=True)
     name = Column(String)
     form = Column(BigInteger, ForeignKey(Form.id))
@@ -66,17 +66,32 @@ class Data(Base):
     created = Column(DateTime, nullable=True)
     updated = Column(DateTime, nullable=True)
     answer = relationship(
-        Answer, cascade="all, delete", passive_deletes=True,
-        backref="answer", order_by=Answer.created.desc())
+        Answer,
+        cascade="all, delete",
+        passive_deletes=True,
+        backref="answer",
+        order_by=Answer.created.desc(),
+    )
     history = relationship(
-        History, cascade="all, delete", passive_deletes=True,
-        backref="history", order_by=History.created.desc())
+        History,
+        cascade="all, delete",
+        passive_deletes=True,
+        backref="history",
+        order_by=History.created.desc(),
+    )
+    monitoring = relationship("Data", remote_side=[id])
 
     def __init__(
-        self, name: str, form: int, geo: List[float],
-        updated: datetime, created: datetime, registration: bool,
-        id: Optional[int] = None, identifier: Optional[str] = None,
-        datapoint_id: Optional[int] = None
+        self,
+        name: str,
+        form: int,
+        geo: List[float],
+        updated: datetime,
+        created: datetime,
+        registration: bool,
+        id: Optional[int] = None,
+        identifier: Optional[str] = None,
+        datapoint_id: Optional[int] = None,
     ):
         self.id = id
         self.datapoint_id = datapoint_id
@@ -100,13 +115,13 @@ class Data(Base):
             "name": self.name,
             "form": self.form,
             "registration": self.registration,
-            "geo": {
-                "lat": self.geo[0],
-                "long": self.geo[1]
-            } if self.geo else None,
+            "geo": {"lat": self.geo[0], "long": self.geo[1]}
+            if self.geo
+            else None,
             "created": self.created.strftime("%B %d, %Y"),
-            "updated":
-            self.updated.strftime("%B %d, %Y") if self.updated else None,
+            "updated": self.updated.strftime("%B %d, %Y")
+            if self.updated
+            else None,
             "answer": [a.formatted for a in self.answer],
         }
 
@@ -125,7 +140,7 @@ class Data(Base):
         return {
             "id": self.id,
             "name": self.name,
-            "monitoring": answers + histories
+            "monitoring": answers + histories,
         }
 
 
