@@ -126,6 +126,9 @@ def get_data_detail_by_datapoint(
     return {
         "id": data.id,
         "name": data.name,
+        # TODO: get data province and head_teacher from the answer table
+        "province": "",
+        "head_teacher": "",
         "geo": {"lat": data.geo[0], "long": data.geo[1]} if data.geo else None,
         "answers": answers,
     }

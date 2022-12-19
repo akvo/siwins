@@ -51,6 +51,8 @@ class MapsData(BaseModel):
 class DataDetail(BaseModel):
     id: int
     name: str
+    province: str
+    head_teacher: str
     geo: Optional[GeoData] = None
     answers: List[AnswerDictForDetail]
 
