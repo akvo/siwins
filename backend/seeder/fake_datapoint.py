@@ -4,7 +4,6 @@ import time
 import json
 import pandas as pd
 import random
-from uuid import uuid1
 from datetime import datetime
 from faker import Faker
 from db import crud_form, crud_data, crud_option
@@ -114,12 +113,11 @@ for i in range(repeats):
 
         displayName = " - ".join(names)
         geoVal = [geo.get("lat"), geo.get("long")]
-        identifier = "-".join(str(uuid1()).split("-")[1:4])
-        # print(identifier)
+        identifier = "-".join(fake.uuid4().split("-")[1:4])
         # add new datapoint
         data = crud_data.add_data(
             datapoint_id=datapoint.id if datapoint else None,
-            identifier=identifier,
+            identifier=datapoint.identifier if datapoint else identifier,
             session=session,
             name=displayName,
             form=form.id,
