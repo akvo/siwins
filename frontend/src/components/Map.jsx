@@ -26,6 +26,7 @@ const Markers = ({ zoom, data, getChartData, getRegistrationData }) => {
   data = data.filter((d) => d.geo);
   return data.map(({ id, geo, name }) => {
     const isHovered = id === hovered;
+    console.info(isHovered);
     return (
       <Marker
         key={id}
@@ -103,7 +104,7 @@ const Map = () => {
 
   const getRegistrationData = (id) => {
     setSelectedPoint(data.find((d) => d.id === id));
-    let url = `/data/${id}?history=false`;
+    const url = `/data/${id}?history=false`;
     api
       .get(url)
       .then((res) => {
