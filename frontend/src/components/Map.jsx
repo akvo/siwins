@@ -13,8 +13,9 @@ import { geojson, tileOSM } from "../util/geo-util";
 import { api } from "../lib";
 import { Modal, Spin } from "antd";
 import { Chart } from "./supports";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
-const Markers = ({ zoom, data, getChartData }) => {
+const Markers = ({ zoom, data, getChartData, getRegistrationData }) => {
   const [hovered, setHovered] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(zoom);
 
@@ -25,14 +26,16 @@ const Markers = ({ zoom, data, getChartData }) => {
   data = data.filter((d) => d.geo);
   return data.map(({ id, geo, name }) => {
     const isHovered = id === hovered;
-    console.info(isHovered);
     return (
       <Marker
         key={id}
         position={geo}
         icon={customIcon}
         eventHandlers={{
-          click: () => getChartData(id),
+          click: () => {
+            getChartData(id);
+            getRegistrationData(id);
+          },
           mouseover: () => setHovered(id),
           mouseout: () => setHovered(null),
         }}
@@ -58,6 +61,7 @@ const Map = () => {
   const defCenter = [-8.68856, 115.494846];
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [registrationData, setRegistrationData] = useState([]);
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [chartData, setChartData] = useState(null);
   const [activePanel, setActivePanel] = useState(1);
@@ -97,6 +101,18 @@ const Map = () => {
       .catch((e) => console.error(e));
   };
 
+  const getRegistrationData = (id) => {
+    setSelectedPoint(data.find((d) => d.id === id));
+    let url = `/data/${id}?history=false`;
+    api
+      .get(url)
+      .then((res) => {
+        const data = res.data;
+        setRegistrationData(data?.registration_data);
+      })
+      .catch((e) => console.error(e));
+  };
+
   const getChartDataWithHistory = (id, question_id) => {
     const url = `/data/chart/${id}?history=true&question_ids=${question_id}`;
     api
@@ -120,65 +136,102 @@ const Map = () => {
 
   return (
     <>
-      <div className="map-container">
-        <MapContainer
-          ref={map}
-          center={defCenter}
-          zoom={defZoom}
-          zoomControl={false}
-          scrollWheelZoom={true}
-          style={{
-            height: "100%",
-            width: "100%",
-          }}
-          eventHandlers={{
-            scroll: () => {},
-          }}
-        >
-          <TileLayer {...baseMap} />
-          <GeoJSON
-            key="geodata"
+      <div id="map-view">
+        <div className="map-container">
+          <MapContainer
+            ref={map}
+            center={defCenter}
+            zoom={defZoom}
+            zoomControl={false}
+            scrollWheelZoom={true}
             style={{
-              weight: 1,
-              fillColor: "#00989f",
-              fillOpacity: 0.25,
-              opacity: 0.25,
-              color: "#FFF",
+              height: "100%",
+              width: "100%",
             }}
-            data={geojson}
-          />
-          {!loading && (
-            <Markers zoom={defZoom} data={data} getChartData={getChartData} />
-          )}
-        </MapContainer>
-      </div>
+            eventHandlers={{
+              scroll: () => {},
+            }}
+          >
+            <TileLayer {...baseMap} />
+            <GeoJSON
+              key="geodata"
+              style={{
+                weight: 1,
+                fillColor: "#00989f",
+                fillOpacity: 0.25,
+                opacity: 0.25,
+                color: "#FFF",
+              }}
+              data={geojson}
+            />
+            {!loading && (
+              <Markers
+                zoom={defZoom}
+                data={data}
+                getChartData={getChartData}
+                getRegistrationData={getRegistrationData}
+              />
+            )}
+          </MapContainer>
+        </div>
 
-      {/* Chart Modal */}
-      <Modal
-        title={selectedPoint?.name}
-        open={selectedPoint}
-        onCancel={() => {
-          setSelectedPoint(null);
-          setActivePanel(1);
-        }}
-        footer={null}
-        width={650}
-        maskClosable={false}
-      >
-        {!chartData ? (
-          <div className="loading-wrapper">
-            <Spin />
-          </div>
-        ) : (
-          <Chart
-            activePanel={activePanel}
-            setActivePanel={setActivePanel}
-            chartData={chartData}
-            getChartDataWithHistory={getChartDataWithHistory}
-          />
-        )}
-      </Modal>
+        {/* Chart Modal */}
+        <Modal
+          title={
+            <>
+              <div className="title-holder">
+                <p>{selectedPoint?.name}</p>
+                <CloseCircleOutlined
+                  onClick={() => {
+                    setSelectedPoint(null);
+                    setActivePanel(1);
+                  }}
+                />
+              </div>
+            </>
+          }
+          open={selectedPoint}
+          onCancel={() => {
+            setSelectedPoint(null);
+            setActivePanel(1);
+          }}
+          closable={false}
+          footer={null}
+          width={650}
+          maskClosable={false}
+          className="detail-modal"
+        >
+          {!chartData ? (
+            <div className="loading-wrapper">
+              <Spin />
+            </div>
+          ) : (
+            <>
+              <RegistrationDetail data={registrationData} />
+              <Chart
+                activePanel={activePanel}
+                setActivePanel={setActivePanel}
+                chartData={chartData}
+                getChartDataWithHistory={getChartDataWithHistory}
+              />
+            </>
+          )}
+        </Modal>
+      </div>
     </>
+  );
+};
+
+const RegistrationDetail = ({ data }) => {
+  return (
+    <div className="registration-table">
+      {data?.map((detail) => (
+        <div className="registration-row" key={detail.question}>
+          <div className="registration-question">{detail.question}:</div>
+          <div className="registration-answer">{detail.answer}</div>
+        </div>
+      ))}
+    </div>
   );
 };
 

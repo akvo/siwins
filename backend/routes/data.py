@@ -82,7 +82,11 @@ def get_data_detail(
     monitoring = answers
     if histories:
         monitoring = answers + histories
-    return {"id": data.id, "name": data.name, "monitoring": monitoring}
+    return {
+        "id": data.id,
+        "name": data.name,
+        "monitoring": monitoring,
+    }
 
 
 @data_route.get(
@@ -132,10 +136,23 @@ def get_data_detail_by_datapoint(
     answers = answers.all()
     answers = [a.to_detail for a in answers]
 
+    # get histories
+    histories = None
+    if history:
+        histories = session.query(History).filter(
+            History.data.in_(monitoring_data_ids)
+        )
+    if history and question_ids:
+        histories = histories.filter(History.question.in_(question_ids))
+    if history:
+        histories = histories.all()
+        histories = [h.to_monitoring for h in histories]
+    if histories:
+        answers = answers + histories
+
     return {
         "id": data.id,
         "name": data.name,
-        "geo": {"lat": data.geo[0], "long": data.geo[1]} if data.geo else None,
         "answers": answers,
         "registration_data": rd,
     }

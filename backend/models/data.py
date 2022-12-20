@@ -56,7 +56,6 @@ class RegistrationDict(TypedDict):
 class DataDetail(BaseModel):
     id: int
     name: str
-    geo: Optional[GeoData] = None
     answers: List[AnswerDictForDetail]
     registration_data: Optional[List[RegistrationDict]] = []
 
