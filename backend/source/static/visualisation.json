@@ -1,0 +1,145 @@
+[
+    {
+        "type": "CRITERIA",
+        "title": "Drinking water service level",
+        "options": [
+            {
+                "name": "Basic",
+                "score": 10,
+                "color": "#753780",
+                "options": [
+                    {
+                        "question": 698070972,
+                        "option": [
+                            "Piped water supply",
+                            "Protected well/spring",
+                            "Rainwater",
+                            "Unprotected well/spring",
+                            "Packaged bottled water"
+                        ]
+                    },
+                    {
+                        "question": 737900979,
+                        "option": [
+                            "Yes"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Limited",
+                "score": -1,
+                "color": "#FDF177",
+                "options": [
+                    {
+                        "question": 698070972,
+                        "option": [
+                            "Piped water supply",
+                            "Protected well/spring",
+                            "Rainwater",
+                            "Unprotected well/spring",
+                            "Packaged bottled water"
+                        ]
+                    },
+                    {
+                        "question": 737900979,
+                        "option": [
+                            "No"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "No Service",
+                "score": -2,
+                "color": "#F1AC2A",
+                "options": [
+                    {
+                        "question": 698070972,
+                        "option": [
+                            "Tanker-truck or cart",
+                            "Surface water (lake, river, stream)",
+                            "No water source"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "CRITERIA",
+        "title": "Sanitation service level",
+        "options": [
+            {
+                "name": "Basic",
+                "score": 10,
+                "color": "#753780",
+                "options": [
+                    {
+                        "question": 698060978,
+                        "option": [
+                            "Flush / Pour-flush toilets",
+                            "Pit latrines with slab",
+                            "Composting toilets"
+                        ]
+                    },
+                    {
+                        "question": 698070974,
+                        "option": [
+                            "Yes"
+                        ]
+                    },
+                    {
+                        "question": 739680972,
+                        "option": [
+                            "Yes"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Limited",
+                "score": -1,
+                "color": "#FDF177",
+                "options": [
+                    {
+                        "question": 698060978,
+                        "option": [
+                            "Flush / Pour-flush toilets",
+                            "Pit latrines with slab",
+                            "Composting toilets"
+                        ]
+                    },
+                    {
+                        "question": 698070974,
+                        "option": [
+                            "No"
+                        ]
+                    },
+                    {
+                        "question": 739680972,
+                        "option": [
+                            "Yes"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "No Service",
+                "score": -2,
+                "color": "#F1AC2A",
+                "options": [
+                    {
+                        "question": 698060978,
+                        "option": [
+                            "Pit latrines without slab",
+                            "Hanging latrines",
+                            "Bucket latrines",
+                            "No toilets or latrines"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
