@@ -107,3 +107,7 @@ def get_history(session: Session, data: int, question: int):
 
 def delete_answer_by_id(session: Session, id: int) -> None:
     return session.query(Answer).filter(Answer.id == id).delete()
+
+
+def get_answer_by_data(session: Session, data: int) -> List[AnswerBase]:
+    return session.query(Answer).filter(Answer.data == data).all()

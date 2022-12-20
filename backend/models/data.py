@@ -3,7 +3,7 @@
 
 from datetime import datetime
 from typing_extensions import TypedDict
-from typing import Optional, List
+from typing import Optional, List, Union
 from pydantic import BaseModel
 from pydantic import confloat
 from sqlalchemy import Column, Float, String, Boolean
@@ -48,13 +48,17 @@ class MapsData(BaseModel):
     geo: List[float]
 
 
+class RegistrationDict(TypedDict):
+    question: str
+    answer: Union[str, int, List[str]]
+
+
 class DataDetail(BaseModel):
     id: int
     name: str
-    province: str
-    head_teacher: str
     geo: Optional[GeoData] = None
     answers: List[AnswerDictForDetail]
+    registration_data: Optional[List[RegistrationDict]] = []
 
 
 class MonitoringData(TypedDict):
