@@ -130,6 +130,7 @@ class Data(Base):
             if self.updated
             else None,
             "answer": [a.formatted for a in self.answer],
+            "history": [h.formatted for h in self.history],
         }
 
     @property

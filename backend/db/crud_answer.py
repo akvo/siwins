@@ -3,7 +3,7 @@ from typing import List, Union, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, desc
 from models.answer import Answer, AnswerDict, AnswerBase
-from models.history import History
+from models.history import History, HistoryBase, HistoryDict
 from models.question import QuestionType
 
 
@@ -51,6 +51,14 @@ def add_answer(
     return answer
 
 
+def add_history(session: Session, history: History) -> HistoryDict:
+    session.add(history)
+    session.commit()
+    session.flush()
+    # session.refresh(answer)
+    return history
+
+
 def update_answer(
     session: Session,
     answer: Answer,
@@ -72,6 +80,24 @@ def update_answer(
     return answer
 
 
+def update_history(
+    session: Session,
+    history: History,
+    type: QuestionType,
+    value: Union[int, float, str, bool, List[str], List[int], List[float]],
+) -> HistoryDict:
+    # delete old history
+    delete_history_by_id(session=session, id=history.id)
+    # add update history
+    new_history = append_value(history, value, type)
+    if new_history:
+        session.add(new_history)
+    session.commit()
+    session.flush()
+    session.refresh(new_history)
+    return history
+
+
 def get_answer_by_question(
     session: Session, question: int
 ) -> List[AnswerDict]:
@@ -84,6 +110,16 @@ def get_answer_by_data_and_question(
     return (
         session.query(Answer)
         .filter(and_(Answer.question.in_(questions), Answer.data == data))
+        .all()
+    )
+
+
+def get_history_by_data_and_question(
+    session: Session, data: int, questions: List[int]
+) -> List[HistoryBase]:
+    return (
+        session.query(History)
+        .filter(and_(History.question.in_(questions), History.data == data))
         .all()
     )
 
@@ -107,3 +143,7 @@ def get_history(session: Session, data: int, question: int):
 
 def delete_answer_by_id(session: Session, id: int) -> None:
     return session.query(Answer).filter(Answer.id == id).delete()
+
+
+def delete_history_by_id(session: Session, id: int) -> None:
+    return session.query(History).filter(History.id == id).delete()
