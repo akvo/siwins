@@ -106,6 +106,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
         if not datapoint_exist:
             # add new datapoint
             data = crud_data.add_data(
+                id=fi.get('id'),
                 session=session,
                 datapoint_id=datapoint_id,
                 identifier=fi.get("identifier"),
