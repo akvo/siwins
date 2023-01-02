@@ -47,7 +47,7 @@ def add_answer(
     session.add(answer)
     session.commit()
     session.flush()
-    session.refresh(answer)
+    # session.refresh(answer)
     return answer
 
 
