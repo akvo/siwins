@@ -18,7 +18,7 @@ class TestDataRoutes:
         res = res.json()
         assert res == [
             {
-                "id": 1,
+                "id": 642650980,
                 "name": "SMA N 1 Nusa Penida - High school",
                 "geo": [-8.676368333333333, 115.49182166666667],
             }
@@ -30,12 +30,12 @@ class TestDataRoutes:
     ) -> None:
         # get chart data without query params
         res = await client.get(
-            app.url_path_for("data:get_chart_data", data_id=1)
+            app.url_path_for("data:get_chart_data", data_id=642650980)
         )
         assert res.status_code == 200
         res = res.json()
         assert res == {
-            "id": 1,
+            "id": 642650980,
             "name": "SMA N 1 Nusa Penida - High school",
             "monitoring": [
                 {
@@ -66,13 +66,13 @@ class TestDataRoutes:
         }
         # get chart data with history param True
         res = await client.get(
-            app.url_path_for("data:get_chart_data", data_id=1),
+            app.url_path_for("data:get_chart_data", data_id=642650980),
             params={"history": True},
         )
         assert res.status_code == 200
         res = res.json()
         assert res == {
-            "id": 1,
+            "id": 642650980,
             "name": "SMA N 1 Nusa Penida - High school",
             "monitoring": [
                 {
@@ -175,13 +175,13 @@ class TestDataRoutes:
         }
         # get chart data with question_ids param
         res = await client.get(
-            app.url_path_for("data:get_chart_data", data_id=1),
+            app.url_path_for("data:get_chart_data", data_id=642650980),
             params={"question_ids": [735090984]},
         )
         assert res.status_code == 200
         res = res.json()
         assert res == {
-            "id": 1,
+            "id": 642650980,
             "name": "SMA N 1 Nusa Penida - High school",
             "monitoring": [
                 {
@@ -196,13 +196,13 @@ class TestDataRoutes:
         }
         # get chart data with question_ids and history param
         res = await client.get(
-            app.url_path_for("data:get_chart_data", data_id=1),
+            app.url_path_for("data:get_chart_data", data_id=642650980),
             params={"question_ids": [735090984], "history": True},
         )
         assert res.status_code == 200
         res = res.json()
         assert res == {
-            "id": 1,
+            "id": 642650980,
             "name": "SMA N 1 Nusa Penida - High school",
             "monitoring": [
                 {

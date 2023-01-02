@@ -51,7 +51,7 @@ class TestSeedAndSync:
         data = [d.serialize for d in data]
         assert data == [
             {
-                "id": 1,
+                "id": 642650980,
                 "datapoint_id": 716330915,
                 "identifier": "dfmn-hw5g-11se",
                 "name": "SMA N 1 Nusa Penida - High school",
@@ -75,7 +75,7 @@ class TestSeedAndSync:
         data = [d.serialize for d in temp_data]
         assert data == [
             {
-                "id": 2,
+                "id": 729930913,
                 "datapoint_id": 716330915,
                 "identifier": "dfmn-hw5g-11se",
                 "name": "SMA N 1 Nusa Penida - High school",
@@ -93,7 +93,7 @@ class TestSeedAndSync:
         ]
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
-        assert data[0]["id"] == 2
+        assert data[0]["id"] == 729930913
         assert data[0]["name"] == "SMA N 1 Nusa Penida - High school"
         assert len(data[0]["monitoring"]) == 6
 
@@ -111,6 +111,6 @@ class TestSeedAndSync:
         temp_data = crud_data.get_all_data(session=session, registration=False)
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
-        assert data[0]["id"] == 2
+        assert data[0]["id"] == 729930913
         assert data[0]["name"] == "SMA N 1 Nusa Penida - High school"
         assert len(data[0]["monitoring"]) == 12
