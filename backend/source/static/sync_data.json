@@ -11,6 +11,15 @@
         "longitude": null,
         "createdAt": "2022-12-02T02:38:35.601Z",
         "modifiedAt": "2022-12-02T03:03:27.033Z"
+      },
+      {
+        "id": "642770963",
+        "identifier": "9n00-mfwk-rkdj",
+        "displayName": "SMA Example - Junior school",
+        "latitude": null,
+        "longitude": null,
+        "createdAt": "2022-12-13T03:12:03.109Z",
+        "modifiedAt": "2023-01-02T05:11:24.755Z"
       }
     ],
     "formChanged": [],
@@ -62,6 +71,29 @@
         "surveyalTime": 6,
         "submitter": "galih redmi 8",
         "createdAt": "2022-12-02T03:03:25.288Z"
+      },
+      {
+        "formVersion": 5.0,
+        "deviceIdentifier": "wgprtm_redmi_note8",
+        "dataPointId": "642770963",
+        "submissionDate": "2023-01-02T05:11:10Z",
+        "modifiedAt": "2023-01-02T05:11:24.891Z",
+        "id": "754830913",
+        "responses": {
+          "733010971": [
+            {
+              "725310914": 222.0,
+              "735090984": 11.0,
+              "738950915": [{ "text": "Clean" }]
+            }
+          ]
+        },
+        "identifier": "9n00-mfwk-rkdj",
+        "displayName": "SMA Example - Junior school",
+        "formId": "729240983",
+        "surveyalTime": 23,
+        "submitter": "galih redmi 8",
+        "createdAt": "2023-01-02T05:11:21.365Z"
       }
     ],
     "formDeleted": [],
