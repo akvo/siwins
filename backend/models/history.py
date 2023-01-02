@@ -78,6 +78,14 @@ class History(Base):
         }
 
     @property
+    def formatted(self) -> HistoryDict:
+        answer = {
+            "question": self.question,
+        }
+        answer = append_value(self, answer)
+        return answer
+
+    @property
     def to_monitoring(self) -> MonitoringHistoryDict:
         answer = {
             "history": True,
