@@ -30,6 +30,12 @@ class DependencyDict(TypedDict):
     options: List[str]
 
 
+class QuestionDictForFilter(TypedDict):
+    id: int
+    name: str
+    option: Optional[List[OptionBase]] = None
+
+
 class QuestionDict(TypedDict):
     id: int
     form: int
@@ -101,6 +107,14 @@ class Question(Base):
             "type": self.type,
             "required": self.required,
             "dependency": self.dependency,
+            "option": self.option,
+        }
+
+    @property
+    def serialize_advance_filter(self) -> QuestionDictForFilter:
+        return {
+            "id": self.id,
+            "name": self.name,
             "option": self.option,
         }
 
