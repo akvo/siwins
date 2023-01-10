@@ -6,6 +6,7 @@ from fastapi.responses import FileResponse
 from functools import lru_cache
 from pydantic import BaseSettings
 from routes.data import data_route
+from routes.question import question_route
 from source.geoconfig import GeoLevels
 
 CONFIG_NAME = "bali"
@@ -19,8 +20,9 @@ CHART_CONFIG = jsmin(open(CHART_CONFIG).read())
 MINJS = jsmin(
     "".join(
         [
-            "var levels=" + str([g["alias"] for g in GEO_CONFIG]) + ";"
-            "var map_config={shapeLevels:"
+            "var levels="
+            + str([g["alias"] for g in GEO_CONFIG])
+            + ";var map_config={shapeLevels:"
             + str([g["name"] for g in GEO_CONFIG])
             + "};",
             "var topojson=",
@@ -66,6 +68,7 @@ app.add_middleware(
 )
 
 app.include_router(data_route)
+app.include_router(question_route)
 
 
 @lru_cache()
