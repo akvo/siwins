@@ -6,7 +6,7 @@ from fastapi.security import HTTPBearer
 # from fastapi.security import HTTPBasicCredentials as credentials
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from db import crud_data
+from db import crud_data, crud_answer
 from db.connection import get_session
 from models.data import MapsData, MonitoringData
 from models.data import DataDetail
@@ -82,13 +82,17 @@ def get_data_detail(
     monitoring = answers
     if histories:
         monitoring = answers + histories
-    return {"id": data.id, "name": data.name, "monitoring": monitoring}
+    return {
+        "id": data.id,
+        "name": data.name,
+        "monitoring": monitoring,
+    }
 
 
 @data_route.get(
     "/data/{datapoint_id}",
     response_model=DataDetail,
-    name="data:get_chart_data",
+    name="data:get_data_detail",
     summary="get data detail by data point id",
     tags=["Data"],
 )
@@ -117,15 +121,38 @@ def get_data_detail_by_datapoint(
     answers = session.query(Answer).filter(
         Answer.data.in_(monitoring_data_ids)
     )
-
+    ra = crud_answer.get_answer_by_data(session=session, data=datapoint_id)
+    rd = [
+        {
+            "question": r.question_detail.name
+            if r.question_detail
+            else r.question,
+            "answer": r.options if r.options else r.text,
+        }
+        for r in ra
+    ]
     if question_ids:
         answers = answers.filter(Answer.question.in_(question_ids))
     answers = answers.all()
     answers = [a.to_detail for a in answers]
 
+    # get histories
+    histories = None
+    if history:
+        histories = session.query(History).filter(
+            History.data.in_(monitoring_data_ids)
+        )
+    if history and question_ids:
+        histories = histories.filter(History.question.in_(question_ids))
+    if history:
+        histories = histories.all()
+        histories = [h.to_monitoring for h in histories]
+    if histories:
+        answers = answers + histories
+
     return {
         "id": data.id,
         "name": data.name,
-        "geo": {"lat": data.geo[0], "long": data.geo[1]} if data.geo else None,
         "answers": answers,
+        "registration_data": rd,
     }

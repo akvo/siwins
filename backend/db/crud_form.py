@@ -72,3 +72,9 @@ def get_form_list():
 
 def get_registration_form(session: Session) -> FormDict:
     return session.query(Form).filter(Form.registration_form.is_(None))
+
+
+def get_monitoring_form(session: Session) -> FormDict:
+    return (
+        session.query(Form).filter(Form.registration_form.is_not(None)).all()
+    )

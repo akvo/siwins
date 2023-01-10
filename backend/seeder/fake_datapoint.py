@@ -12,6 +12,7 @@ from models.answer import Answer
 from db.connection import Base, SessionLocal, engine
 from source.geoconfig import GeoLevels
 from seeder.fake_history import generate_fake_history
+from db.truncator import truncate_datapoint
 
 start_time = time.process_time()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -47,11 +48,12 @@ parent_administration = set(
 forms = crud_form.get_form(session=session)
 forms = [f.id for f in forms]
 
-MONITORING_FORM_ID = 729240983
 DEFAULT_NUMBER_OF_SEEDER = 10
 repeats = int(sys.argv[1]) if len(sys.argv) == 2 else DEFAULT_NUMBER_OF_SEEDER
 
 fake = Faker()
+# truncate datapoints before running faker
+truncate_datapoint(session=session)
 
 for i in range(repeats):
     for form in forms:
@@ -63,7 +65,7 @@ for i in range(repeats):
         # get form from database
         form = crud_form.get_form_by_id(session=session, id=form)
 
-        monitoring = form.id == MONITORING_FORM_ID
+        monitoring = True if form.registration_form is not None else False
 
         datapoint = (
             crud_data.get_registration_only(session=session)
@@ -131,4 +133,4 @@ for i in range(repeats):
 
 data_monitoring = crud_data.get_all_data(session=session, registration=False)
 for dm in data_monitoring:
-    generate_fake_history(datapoint=dm)
+    generate_fake_history(session=session, datapoint=dm)
