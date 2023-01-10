@@ -1,5 +1,6 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
+from sqlalchemy import and_
 from models.option import Option, OptionDict
 from models.question import Question
 
@@ -48,3 +49,14 @@ def update_option(
     session.commit()
     session.refresh(option)
     return option
+
+
+def update_score(
+    session: Session, question: int, names: List[str], score: int
+):
+    print(f"score: {score}")
+    session.query(Option).filter(
+        and_(Option.question == question, Option.name.in_(names))
+    ).update({Option.score: score}, synchronize_session=False)
+    session.flush()
+    session.commit()

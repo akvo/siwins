@@ -14,6 +14,7 @@ class OptionDict(TypedDict):
     name: str
     order: Optional[int] = None
     code: Optional[str] = None
+    score: Optional[int] = None
 
 
 class Option(Base):
@@ -23,6 +24,7 @@ class Option(Base):
     name = Column(String)
     order = Column(Integer, nullable=True)
     code = Column(String, nullable=True)
+    score = Column(Integer, nullable=True)
 
     def __init__(
         self,
@@ -30,11 +32,13 @@ class Option(Base):
         id: Optional[int] = None,
         order: Optional[int] = None,
         code: Optional[str] = None,
+        score: Optional[int] = None,
     ):
         self.id = id
         self.name = name
         self.order = order
         self.code = code
+        self.score = score
 
     def __repr__(self) -> int:
         return f"<Option {self.id}>"
@@ -46,6 +50,7 @@ class Option(Base):
             "name": self.name,
             "order": self.order,
             "code": self.code,
+            "score": self.score,
         }
 
 
@@ -54,6 +59,7 @@ class OptionBase(BaseModel):
     name: str
     order: Optional[int] = None
     code: Optional[str] = None
+    score: Optional[int] = None
 
     class Config:
         orm_mode = True

@@ -1,7 +1,7 @@
 import random
 from db import crud_form, crud_option, crud_answer
-from faker import Faker
 from sqlalchemy.orm import Session
+from faker import Faker
 from datetime import datetime
 from models.answer import Answer
 from models.question import QuestionType
