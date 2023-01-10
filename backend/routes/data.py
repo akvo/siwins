@@ -12,6 +12,7 @@ from models.data import MapsData, MonitoringData
 from models.data import DataDetail
 from models.answer import Answer
 from models.history import History
+from middleware import check_query
 
 security = HTTPBearer()
 data_route = APIRouter()
@@ -27,10 +28,16 @@ data_route = APIRouter()
 def get_maps(
     req: Request,
     session: Session = Depends(get_session),
-    indicator: int = Query(None, description="indicator is a question id")
+    indicator: int = Query(None, description="indicator is a question id"),
+    q: Optional[List[str]] = Query(None),
     # credentials: credentials = Depends(security)
 ):
-    data = crud_data.get_all_data(session=session, registration=True)
+    options = check_query(q) if q else None
+    data = crud_data.get_all_data(
+        session=session,
+        registration=True,
+        options=options,
+    )
     data = [d.to_maps for d in data]
     # get all answers by indicator
     answer_temp = {}
