@@ -100,8 +100,11 @@
 .advance-search-container {
   padding: 20px;
 }
-.advance-search-container .ant-collapse {
-  margin-bottom: 20px;
+.advance-search-container .ant-tag {
+  margin-top: 20px;
+}
+.advance-search-container .ant-collapse-header {
+  padding: 0 !important;
 }
 .advance-search-container .ant-checkbox-wrapper {
   display: block;
