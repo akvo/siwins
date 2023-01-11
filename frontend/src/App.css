@@ -97,3 +97,16 @@
   padding: 20px 20px;
   margin-bottom: 0px;
 }
+.advance-search-container {
+  padding: 20px;
+}
+.advance-search-container .ant-collapse {
+  margin-bottom: 20px;
+}
+.advance-search-container .ant-checkbox-wrapper {
+  display: block;
+  margin-left: 0;
+}
+.advance-search-container .ant-checkbox-inner {
+  display: inline-block;
+}
