@@ -1,8 +1,13 @@
 from typing import List, Optional
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 from models.question import Question
-from models.question import QuestionDict, QuestionBase, QuestionType
+from models.question import (
+    QuestionDict,
+    QuestionBase,
+    QuestionType,
+    QuestionDictForFilter,
+)
 from models.option import Option, OptionDict
 import db.crud_option as crud_option
 
@@ -148,6 +153,21 @@ def get_question(
             .all()
         )
     return session.query(Question).all()
+
+
+def get_question_for_advance_filter(
+    session: Session,
+) -> List[QuestionDictForFilter]:
+    return (
+        session.query(Question)
+        .filter(
+            or_(
+                Question.type == QuestionType.option,
+                Question.type == QuestionType.multiple_option,
+            )
+        )
+        .all()
+    )
 
 
 def get_question_by_id(session: Session, id: int) -> QuestionDict:

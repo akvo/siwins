@@ -2,12 +2,14 @@ import React from "react";
 import "./App.css";
 import { Row, Col, Layout } from "antd";
 import { Map } from "./components";
+import AdvanceFilter from "./components/filter";
 
 const { Header, Footer, Content } = Layout;
 
 const App = () => {
   return (
     <Layout className="layout">
+      <AdvanceFilter />
       <Header className="site-layout-header">
         <div className="logo">
           <h1>SI-WINS</h1>
