@@ -98,7 +98,7 @@ def get_all_data(
     registration: bool,
     options: List[str] = None,
 ) -> DataDict:
-    data = session.query(Data).filter(Data.registration == registration).all()
+    data = session.query(Data).filter(Data.registration == registration)
     if options:
         # support multiple select options filter
         # change query to filter data by or_ condition
@@ -107,6 +107,7 @@ def get_all_data(
         )
         data_id = session.query(ViewAdvanceFilter.data).filter(or_query).all()
         data = data.filter(Data.id.in_([d.data for d in data_id]))
+    data = data.all()
     return data
 
 
