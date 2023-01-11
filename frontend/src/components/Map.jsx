@@ -14,6 +14,8 @@ import { api } from "../lib";
 import { Modal, Spin } from "antd";
 import { Chart } from "./supports";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { generateAdvanceFilterURL } from "../util/utils";
+import { UIState } from "../state/ui";
 
 const Markers = ({ zoom, data, getChartData, getRegistrationData }) => {
   const [hovered, setHovered] = useState(null);
@@ -56,6 +58,7 @@ const Map = () => {
   // use tile layer from config
   const charts = window.charts;
   const showHistory = window.chart_features.show_history;
+  const { advanceSearchValue } = UIState.useState((s) => s);
   const baseMap = tileOSM;
   const map = useRef();
   const defZoom = 9;
@@ -69,14 +72,16 @@ const Map = () => {
 
   useEffect(() => {
     setLoading(true);
+    let url = `data/maps`;
+    url = generateAdvanceFilterURL(advanceSearchValue, url);
     api
-      .get("/data/maps")
+      .get(url)
       .then((res) => {
         setData(res.data);
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
-  }, []);
+  }, [advanceSearchValue]);
 
   const getChartData = (id) => {
     setSelectedPoint(data.find((d) => d.id === id));
