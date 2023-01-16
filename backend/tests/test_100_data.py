@@ -19,7 +19,7 @@ class TestDataRoutes:
         assert res == [
             {
                 "id": 642650980,
-                "name": "SMA N 1 Nusa Penida - High school",
+                "name": "SMA Negeri 1 Nusa Penida - High school",
                 "geo": [-8.676368333333333, 115.49182166666667],
             }
         ]
@@ -36,7 +36,7 @@ class TestDataRoutes:
         res = res.json()
         assert res == {
             "id": 642650980,
-            "name": "SMA N 1 Nusa Penida - High school",
+            "name": "SMA Negeri 1 Nusa Penida - High school",
             "monitoring": [
                 {
                     "question_id": 725310914,
@@ -73,7 +73,7 @@ class TestDataRoutes:
         res = res.json()
         assert res == {
             "id": 642650980,
-            "name": "SMA N 1 Nusa Penida - High school",
+            "name": "SMA Negeri 1 Nusa Penida - High school",
             "monitoring": [
                 {
                     "question_id": 725310914,
@@ -134,7 +134,7 @@ class TestDataRoutes:
         res = res.json()
         assert res == {
             "id": 642650980,
-            "name": "SMA N 1 Nusa Penida - High school",
+            "name": "SMA Negeri 1 Nusa Penida - High school",
             "monitoring": [
                 {
                     "question_id": 735090984,
@@ -155,7 +155,7 @@ class TestDataRoutes:
         res = res.json()
         assert res == {
             "id": 642650980,
-            "name": "SMA N 1 Nusa Penida - High school",
+            "name": "SMA Negeri 1 Nusa Penida - High school",
             "monitoring": [
                 {
                     "question_id": 735090984,

@@ -48,9 +48,6 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             datapoint_exist = crud_data.get_data_by_identifier(
                 session=session, identifier=fi.get("identifier"), form=form.id
             )
-        current_data = crud_data.get_data_by_datapoint_id(
-            session=session, datapoint_id=datapoint_id, form=form.id
-        )
         updated_data = crud_data.get_data_by_id(
             session=session, id=data_id
         )
@@ -160,21 +157,33 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                             # print(f"Sync | New Answer {answer.id}")
                     # Registration
                     # update registration datapoint
-                    if current_data and not datapoint_exist:
+                    if updated_data and not datapoint_exist:
+                        current_answers = (
+                            crud_answer.get_answer_by_data_and_question(
+                                session=session,
+                                data=updated_data.id,
+                                questions=[question.id],
+                            )
+                        )
+                        current_answer = current_answers[0]
+                        update_answer = answer
+                        update_answer.id = current_answer.id
+                        update_answer.data = current_answer.data
+                        update_answer.created = current_answer.created
+                        update_answer.updated = fi.get("modifiedAt")
                         crud_answer.update_answer(
                             session=session,
-                            answer=answer,
+                            answer=update_answer,
                             type=question.type,
                             value=aval,
                         )
                     # new datapoint and answers
-                    if not datapoint_exist and not current_data:
+                    if not datapoint_exist and not updated_data:
                         answer = crud_answer.append_value(
                             answer=answer, value=aval, type=question.type
                         )
                         answers.append(answer)
-        if not updated_data and not current_data \
-                and not datapoint_exist or answers:
+        if not updated_data and not datapoint_exist or answers:
             # add new datapoint
             data = crud_data.add_data(
                 id=fi.get('id'),
@@ -190,13 +199,13 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             )
             print(f"Sync | New Datapoint: {data.id}")
             continue
-        if updated_data and current_data:
+        if updated_data:
             # update datapoint
-            update_data = current_data
-            update_data.name = (fi.get("displayName"),)
-            update_data.form = (form.id,)
-            update_data.geo = (geoVal,)
-            update_data.updated = (fi.get("modifiedAt"),)
+            update_data = updated_data
+            update_data.name = fi.get("displayName")
+            update_data.form = form.id
+            update_data.geo = geoVal
+            update_data.updated = fi.get("modifiedAt")
             updated = crud_data.update_data(session=session, data=update_data)
             print(f"Sync | Update Datapoint: {updated.id}")
             continue
