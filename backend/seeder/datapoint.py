@@ -27,6 +27,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
     formInstances.sort(key=lambda fi: fi["createdAt"], reverse=False)
     for fi in formInstances:
         datapoint_id = fi.get("dataPointId")
+        data_id = fi.get('id')
         answers = []
         geoVal = None
         # check if first monitoring datapoint exist
@@ -52,6 +53,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                         created=fi.get("createdAt"),
                         updated=fi.get("modifiedAt"),
                     )
+                    # Monitoring
                     # if datapoint exist, move current answer as history
                     if datapoint_exist:
                         # print(f"Update Datapoint {datapoint_exist.id}")
@@ -74,38 +76,30 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                                 created=current_answer.created,
                                 updated=current_answer.updated,
                             )
-                            # update current answer
-                            update_answer = answer
-                            update_answer.id = (current_answer.id,)
-                            update_answer.data = (datapoint_exist.id,)
-                            crud_answer.update_answer(
+                            # add history
+                            crud_answer.add_history(
                                 session=session,
-                                answer=update_answer,
-                                history=history,
-                                type=question.type,
-                                value=aval,
+                                history=history
                             )
+                            # delete current answer and add new answer
+                            crud_answer.delete_answer_by_id(
+                                session=session, id=current_answer.id
+                            )
+                            answer = crud_answer.append_value(
+                                answer=answer, value=aval, type=question.type
+                            )
+                            answers.append(answer)
                             # print(f"Update Answer {answer.id}")
-                        else:
-                            # add answer
-                            new_answer = answer
-                            new_answer.data = datapoint_exist.id
-                            crud_answer.add_answer(
-                                session=session,
-                                answer=new_answer,
-                                type=question.type,
-                                value=aval,
-                            )
-                            # print(f"New Answer {answer.id}")
                     # new datapoint and answers
                     if not datapoint_exist:
                         answer = crud_answer.append_value(
                             answer=answer, value=aval, type=question.type
                         )
                         answers.append(answer)
-        if not datapoint_exist:
-            # add new datapoint
+        # add new datapoint
+        if answers:
             data = crud_data.add_data(
+                id=data_id,
                 session=session,
                 datapoint_id=datapoint_id,
                 identifier=fi.get("identifier"),
@@ -117,7 +111,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                 updated=fi.get("modifiedAt"),
                 answers=answers,
             )
-            # print(f"New Datapoint: {data.id}")
+        # print(f"New Datapoint: {data.id}")
     # print("------------------------------------------")
     if not TESTING and nextPageUrl:
         data = flow_auth.get_data(url=nextPageUrl, token=token)
