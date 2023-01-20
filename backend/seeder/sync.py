@@ -5,6 +5,7 @@ from datetime import timedelta
 from db.connection import Base, SessionLocal, engine
 from db import crud_sync
 from seeder.data_sync import data_sync
+from utils.functions import refresh_materialized_data
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 Base.metadata.create_all(bind=engine)
@@ -20,6 +21,8 @@ if last_sync_url:
 
 if sync_data:
     data_sync(token=token, session=session, sync_data=sync_data)
+    # refresh materialized view
+    refresh_materialized_data()
 
 
 elapsed_time = time.process_time() - start_time

@@ -13,6 +13,7 @@ from db.connection import Base, SessionLocal, engine
 from source.geoconfig import GeoLevels
 from seeder.fake_history import generate_fake_history
 from db.truncator import truncate_datapoint
+from utils.functions import refresh_materialized_data
 
 start_time = time.process_time()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -134,3 +135,5 @@ for i in range(repeats):
 data_monitoring = crud_data.get_all_data(session=session, registration=False)
 for dm in data_monitoring:
     generate_fake_history(session=session, datapoint=dm)
+# refresh materialized view
+refresh_materialized_data()
