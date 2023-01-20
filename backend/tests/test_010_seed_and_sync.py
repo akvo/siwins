@@ -51,7 +51,7 @@ class TestSeedAndSync:
         data = [d.serialize for d in data]
         assert data == [
             {
-                "id": 1,
+                "id": 642650980,
                 "datapoint_id": 716330915,
                 "identifier": "dfmn-hw5g-11se",
                 "name": "SMA N 1 Nusa Penida - High school",
@@ -68,6 +68,7 @@ class TestSeedAndSync:
                     },
                     {"question": 738940972, "value": "SMA N 1 Nusa Penida"},
                 ],
+                "history": [],
             }
         ]
         # monitoring data
@@ -75,7 +76,24 @@ class TestSeedAndSync:
         data = [d.serialize for d in temp_data]
         assert data == [
             {
-                "id": 2,
+                "id": 729930913,
+                "datapoint_id": 716330915,
+                "identifier": "dfmn-hw5g-11se",
+                "name": "SMA N 1 Nusa Penida - High school",
+                "form": 729240983,
+                "registration": False,
+                "geo": None,
+                "created": "December 01, 2022",
+                "updated": "December 01, 2022",
+                "answer": [],
+                "history": [
+                    {'question': 725310914, 'value': 200.0},
+                    {'question': 735090984, 'value': 10.0},
+                    {'question': 738950915, 'value': 'Clean'},
+                ],
+            },
+            {
+                "id": 733410921,
                 "datapoint_id": 716330915,
                 "identifier": "dfmn-hw5g-11se",
                 "name": "SMA N 1 Nusa Penida - High school",
@@ -89,13 +107,14 @@ class TestSeedAndSync:
                     {"question": 735090984, "value": 15.0},
                     {"question": 738950915, "value": "Clean"},
                 ],
+                "history": [],
             }
         ]
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
-        assert data[0]["id"] == 2
+        assert data[0]["id"] == 729930913
         assert data[0]["name"] == "SMA N 1 Nusa Penida - High school"
-        assert len(data[0]["monitoring"]) == 6
+        assert len(data[0]["monitoring"]) == 3
 
     @pytest.mark.asyncio
     async def test_sync(
@@ -111,6 +130,6 @@ class TestSeedAndSync:
         temp_data = crud_data.get_all_data(session=session, registration=False)
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
-        assert data[0]["id"] == 2
+        assert data[0]["id"] == 729930913
         assert data[0]["name"] == "SMA N 1 Nusa Penida - High school"
-        assert len(data[0]["monitoring"]) == 12
+        assert len(data[0]["monitoring"]) == 3

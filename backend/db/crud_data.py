@@ -129,7 +129,7 @@ def get_data_by_identifier(
     data = session.query(Data).filter(Data.identifier == identifier)
     if form:
         data = data.filter(Data.form == form)
-    return data.first()
+    return data.order_by(desc(Data.created)).first()
 
 
 def get_monitoring_data(session: Session, identifier: str):

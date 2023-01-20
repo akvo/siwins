@@ -75,6 +75,20 @@ To get updated data points from akvo-flow instance, you need to run:
 docker-compose exec backend ./sync.sh
 ```
 
+##### Run Fake Data Points & History seeder
+
+To seed fake data points, run command below:
+
+```
+docker-compose exec backend python -m seeder.fake_datapoint <number_of_data_points>
+```
+
+To seed fake history for data points, run command below:
+
+```
+docker-compose exec backend python -m seeder.fake_history
+```
+
 #### Running Test
 
 ```bash

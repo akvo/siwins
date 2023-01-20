@@ -38,6 +38,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
         if not form:
             continue
         datapoint_id = fi.get("dataPointId")
+        data_id = fi.get("id")
         answers = []
         geoVal = None
         monitoring = True if form.registration_form else False
@@ -47,8 +48,8 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             datapoint_exist = crud_data.get_data_by_identifier(
                 session=session, identifier=fi.get("identifier"), form=form.id
             )
-        current_data = crud_data.get_data_by_datapoint_id(
-            session=session, datapoint_id=datapoint_id, form=form.id
+        updated_data = crud_data.get_data_by_id(
+            session=session, id=data_id
         )
         # fetching answers value into answer model
         for key, value in fi.get("responses").items():
@@ -63,10 +64,10 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                     if question.type == QuestionType.geo:
                         geoVal = [aval.get("lat"), aval.get("long")]
                     answer = Answer(
-                        data=datapoint_id,
                         question=question.id,
                         created=fi.get("createdAt"),
                     )
+                    # Monitoring
                     # if datapoint exist, move current answer as history
                     if datapoint_exist:
                         print(f"Sync | Update Datapoint {datapoint_exist.id}")
@@ -77,8 +78,48 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                                 questions=[question.id],
                             )
                         )
-                        if len(current_answers):
-                            # create history and update current answer
+                        # check if history need to update
+                        current_history = None
+                        if updated_data:
+                            current_history = (
+                                crud_answer.get_history_by_data_and_question(
+                                    session=session,
+                                    data=data_id,
+                                    questions=[question.id]
+                                )
+                            )
+                        # answer
+                        if updated_data and current_answers:
+                            # handle sync updated monitoring data
+                            current_answer = current_answers[0]
+                            update_answer = answer
+                            update_answer.id = (current_answer.id,)
+                            update_answer.data = (datapoint_exist.id,)
+                            crud_answer.update_answer(
+                                session=session,
+                                answer=update_answer,
+                                type=question.type,
+                                value=aval,
+                            )
+                        # history
+                        if updated_data and current_history:
+                            # handle sync updated history of monitoring data
+                            current_history = current_history[0]
+                            update_history = History(
+                                data=data_id,
+                                question=question.id,
+                                created=fi.get("createdAt"),
+                            )
+                            update_history.id = (current_history.id,)
+                            update_history.data = (updated_data.id,)
+                            crud_answer.update_history(
+                                session=session,
+                                history=update_history,
+                                type=question.type,
+                                value=aval,
+                            )
+                        # new answer and move current answer to history
+                        if not updated_data and len(current_answers):
                             current_answer = current_answers[0]
                             # create history
                             history = History(
@@ -90,19 +131,20 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                                 created=current_answer.created,
                                 updated=current_answer.updated,
                             )
-                            # update current answer
-                            update_answer = answer
-                            update_answer.id = (current_answer.id,)
-                            update_answer.data = (datapoint_exist.id,)
-                            crud_answer.update_answer(
+                            # add history
+                            crud_answer.add_history(
                                 session=session,
-                                answer=update_answer,
-                                history=history,
-                                type=question.type,
-                                value=aval,
+                                history=history
                             )
-                            print(f"Sync | Update Answer {answer.id}")
-                        else:
+                            # delete current answer and add new answer
+                            crud_answer.delete_answer_by_id(
+                                session=session, id=current_answer.id
+                            )
+                            answer = crud_answer.append_value(
+                                answer=answer, value=aval, type=question.type
+                            )
+                            answers.append(answer)
+                        if not len(current_answers):
                             # add answer
                             new_answer = answer
                             new_answer.data = datapoint_exist.id
@@ -112,24 +154,39 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                                 type=question.type,
                                 value=aval,
                             )
-                            print(f"Sync | New Answer {answer.id}")
+                            # print(f"Sync | New Answer {answer.id}")
+                    # Registration
                     # update registration datapoint
-                    if current_data and not datapoint_exist:
+                    if updated_data and not datapoint_exist:
+                        current_answers = (
+                            crud_answer.get_answer_by_data_and_question(
+                                session=session,
+                                data=updated_data.id,
+                                questions=[question.id],
+                            )
+                        )
+                        current_answer = current_answers[0]
+                        update_answer = answer
+                        update_answer.id = current_answer.id
+                        update_answer.data = current_answer.data
+                        update_answer.created = current_answer.created
+                        update_answer.updated = fi.get("modifiedAt")
                         crud_answer.update_answer(
                             session=session,
-                            answer=answer,
+                            answer=update_answer,
                             type=question.type,
                             value=aval,
                         )
                     # new datapoint and answers
-                    if not datapoint_exist and not current_data:
+                    if not datapoint_exist and not updated_data:
                         answer = crud_answer.append_value(
                             answer=answer, value=aval, type=question.type
                         )
                         answers.append(answer)
-        if not current_data and not datapoint_exist:
+        if not updated_data and not datapoint_exist or answers:
             # add new datapoint
             data = crud_data.add_data(
+                id=fi.get('id'),
                 session=session,
                 datapoint_id=datapoint_id,
                 identifier=fi.get("identifier"),
@@ -142,13 +199,13 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             )
             print(f"Sync | New Datapoint: {data.id}")
             continue
-        if current_data:
+        if updated_data:
             # update datapoint
-            update_data = current_data
-            update_data.name = (fi.get("displayName"),)
-            update_data.form = (form.id,)
-            update_data.geo = (geoVal,)
-            update_data.updated = (fi.get("modifiedAt"),)
+            update_data = updated_data
+            update_data.name = fi.get("displayName")
+            update_data.form = form.id
+            update_data.geo = geoVal
+            update_data.updated = fi.get("modifiedAt")
             updated = crud_data.update_data(session=session, data=update_data)
             print(f"Sync | Update Datapoint: {updated.id}")
             continue
