@@ -104,3 +104,4 @@ def health_check():
 #         request.state.authenticated = auth
 #     response = await call_next(request)
 #     return response
+
