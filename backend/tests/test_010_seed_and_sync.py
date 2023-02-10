@@ -7,7 +7,7 @@ from httpx import AsyncClient
 from sqlalchemy.orm import Session
 from seeder.form import form_seeder
 from seeder.datapoint import datapoint_seeder
-from seeder.data_sync import data_sync
+from seeder.data_sync import data_sync, deleted_data_sync
 from db import crud_sync
 from db import crud_form
 from db import crud_data
@@ -87,9 +87,9 @@ class TestSeedAndSync:
                 "updated": "December 01, 2022",
                 "answer": [],
                 "history": [
-                    {'question': 725310914, 'value': 200.0},
-                    {'question': 735090984, 'value': 10.0},
-                    {'question': 738950915, 'value': 'Clean'},
+                    {"question": 725310914, "value": 200.0},
+                    {"question": 735090984, "value": 10.0},
+                    {"question": 738950915, "value": "Clean"},
                 ],
             },
             {
@@ -108,7 +108,7 @@ class TestSeedAndSync:
                     {"question": 738950915, "value": "Clean"},
                 ],
                 "history": [],
-            }
+            },
         ]
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
@@ -133,3 +133,16 @@ class TestSeedAndSync:
         assert data[0]["id"] == 729930913
         assert data[0]["name"] == "SMA N 1 Nusa Penida - High school"
         assert len(data[0]["monitoring"]) == 3
+
+    @pytest.mark.asyncio
+    async def test_sync_deleted_data_monitoring_history(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        changes = {"formInstanceDeleted": [754830913]}
+        data = changes.get("formInstanceDeleted")
+        deleted_data_sync(session=session, data=data)
+        monitoring = crud_data.get_all_data(
+            session=session, registration=False
+        )
+        rs = [m.serialize for m in monitoring]
+        assert data[0] not in [r["id"] for r in rs]

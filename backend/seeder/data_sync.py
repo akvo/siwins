@@ -1,6 +1,7 @@
 import os
 import flow.auth as flow_auth
 from sqlalchemy.orm import Session
+from sqlalchemy import exc
 from db import crud_sync
 from db import crud_data
 from db import crud_question
@@ -8,9 +9,67 @@ from db import crud_answer
 from db import crud_form
 from models.question import QuestionType
 from models.answer import Answer
-from models.history import History
+from models.history import History, HistoryDict
+from models.data import Data
+from typing import List
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def delete_current_data_monitoring(
+    session: Session,
+    data: int,
+    lh: List[HistoryDict],
+) -> None:
+    errors = []
+    """
+    get the last history as a replacement for current data monitoring
+    """
+    for history in lh:
+        try:
+            with session.begin_nested():
+                crud_answer.update_answer_from_history(
+                    session=session, data=data, history=history
+                )
+        except exc.IntegrityError:
+            errors.push(history)
+    session.commit()
+    if len(errors):
+        for err in errors:
+            print(f"Error | Delete Datapoint History: {err.id}")
+    else:
+        print(f"Success | Delete Datapoint: {data}")
+
+
+def delete_registration_items(session: Session, items: List[Data]) -> None:
+    for item in items:
+        crud_data.delete_by_id(session=session, id=item.id)
+        print(f"Success| Delete Datapoint: {item.id}")
+
+
+def deleted_data_sync(session: Session, data: list) -> None:
+    for d in data:
+        dp = crud_data.get_data_by_id(session=session, id=d)
+        if dp:
+            if dp.registration:
+                monitoring = crud_data.get_monitoring_data(
+                    session=session, identifier=dp.identifier
+                )
+                items = [dp]
+                if monitoring:
+                    items += monitoring
+                delete_registration_items(session=session, items=items)
+            else:
+                lh = crud_data.get_last_history(
+                    session=session, datapoint_id=dp.datapoint_id, id=dp.id
+                )
+                if len(lh):
+                    delete_current_data_monitoring(
+                        session=session, data=dp.id, lh=lh
+                    )
+                else:
+                    crud_data.delete_by_id(session=session, id=dp.id)
+                    print(f"Success| Delete Datapoint: {dp.id}")
 
 
 def data_sync(token: dict, session: Session, sync_data: dict):
@@ -18,6 +77,10 @@ def data_sync(token: dict, session: Session, sync_data: dict):
     # TODO:: Support other changes from FLOW API
     print("------------------------------------------")
     changes = sync_data.get("changes")
+    # handle on sync deleted data monitoring
+    deleted_items = changes.get("formInstanceDeleted")
+    if len(deleted_items):
+        deleted_data_sync(session=session, data=deleted_items)
     next_sync_url = sync_data.get("nextSyncUrl")
     # save next sync URL
     if next_sync_url:
@@ -48,9 +111,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             datapoint_exist = crud_data.get_data_by_identifier(
                 session=session, identifier=fi.get("identifier"), form=form.id
             )
-        updated_data = crud_data.get_data_by_id(
-            session=session, id=data_id
-        )
+        updated_data = crud_data.get_data_by_id(session=session, id=data_id)
         # fetching answers value into answer model
         for key, value in fi.get("responses").items():
             for val in value:
@@ -85,7 +146,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                                 crud_answer.get_history_by_data_and_question(
                                     session=session,
                                     data=data_id,
-                                    questions=[question.id]
+                                    questions=[question.id],
                                 )
                             )
                         # answer
@@ -133,8 +194,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                             )
                             # add history
                             crud_answer.add_history(
-                                session=session,
-                                history=history
+                                session=session, history=history
                             )
                             # delete current answer and add new answer
                             crud_answer.delete_answer_by_id(
@@ -186,7 +246,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
         if not updated_data and not datapoint_exist or answers:
             # add new datapoint
             data = crud_data.add_data(
-                id=fi.get('id'),
+                id=fi.get("id"),
                 session=session,
                 datapoint_id=datapoint_id,
                 identifier=fi.get("identifier"),

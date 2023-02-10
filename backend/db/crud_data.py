@@ -8,6 +8,7 @@ from models.data import Data, DataDict
 from models.answer import Answer
 from models.history import History
 from models.answer import AnswerBase
+from models.history import HistoryDict
 from sqlalchemy.orm import aliased
 
 
@@ -147,3 +148,15 @@ def get_monitoring_by_id(session: Session, datapoint: Data) -> DataDict:
         .where(Data.datapoint_id == datapoint.id)
         .join(Data.monitoring.of_type(nodealias))
     ).first()
+
+
+def get_last_history(
+    session: Session, datapoint_id: int, id: int
+) -> List[HistoryDict]:
+    data = (
+        session.query(Data)
+        .filter(and_(Data.datapoint_id == datapoint_id, Data.id != id))
+        .order_by(desc(Data.created))
+        .first()
+    )
+    return [h.serialize for h in data.history] if data else []
