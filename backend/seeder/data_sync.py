@@ -48,9 +48,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             datapoint_exist = crud_data.get_data_by_identifier(
                 session=session, identifier=fi.get("identifier"), form=form.id
             )
-        updated_data = crud_data.get_data_by_id(
-            session=session, id=data_id
-        )
+        updated_data = crud_data.get_data_by_id(session=session, id=data_id)
         # fetching answers value into answer model
         for key, value in fi.get("responses").items():
             for val in value:
@@ -85,7 +83,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                                 crud_answer.get_history_by_data_and_question(
                                     session=session,
                                     data=data_id,
-                                    questions=[question.id]
+                                    questions=[question.id],
                                 )
                             )
                         # answer
@@ -133,8 +131,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                             )
                             # add history
                             crud_answer.add_history(
-                                session=session,
-                                history=history
+                                session=session, history=history
                             )
                             # delete current answer and add new answer
                             crud_answer.delete_answer_by_id(
@@ -186,7 +183,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
         if not updated_data and not datapoint_exist or answers:
             # add new datapoint
             data = crud_data.add_data(
-                id=fi.get('id'),
+                id=fi.get("id"),
                 session=session,
                 datapoint_id=datapoint_id,
                 identifier=fi.get("identifier"),

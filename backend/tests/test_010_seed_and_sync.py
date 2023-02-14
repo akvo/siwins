@@ -87,9 +87,9 @@ class TestSeedAndSync:
                 "updated": "December 01, 2022",
                 "answer": [],
                 "history": [
-                    {'question': 725310914, 'value': 200.0},
-                    {'question': 735090984, 'value': 10.0},
-                    {'question': 738950915, 'value': 'Clean'},
+                    {"question": 725310914, "value": 200.0},
+                    {"question": 735090984, "value": 10.0},
+                    {"question": 738950915, "value": "Clean"},
                 ],
             },
             {
@@ -108,7 +108,7 @@ class TestSeedAndSync:
                     {"question": 738950915, "value": "Clean"},
                 ],
                 "history": [],
-            }
+            },
         ]
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
