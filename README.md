@@ -2,6 +2,14 @@
 
 [![Build Status](https://akvo.semaphoreci.com/badges/siwins/branches/main.svg?style=shields&key=c2b55481-925e-495b-a4f8-1f0decc20df9)](https://akvo.semaphoreci.com/projects/siwins) [![Repo Size](https://img.shields.io/github/repo-size/akvo/siwins)](https://img.shields.io/github/repo-size/akvo/siwins) [![Coverage Status](https://coveralls.io/repos/github/akvo/siwins/badge.svg?branch=main)](https://coveralls.io/github/akvo/siwins?branch=main) [![Languages](https://img.shields.io/github/languages/count/akvo/siwins)](https://img.shields.io/github/languages/count/akvo/siwins) [![Issues](https://img.shields.io/github/issues/akvo/siwins)](https://img.shields.io/github/issues/akvo/siwins) [![Last Commit](https://img.shields.io/github/last-commit/akvo/siwins/main)](https://img.shields.io/github/last-commit/akvo/siwins/main) [![Documentation Status](https://readthedocs.org/projects/siwins/badge/?version=latest)](https://siwins.readthedocs.io/en/latest/?badge=latest) [![GitHub license](https://img.shields.io/github/license/akvo/siwins.svg)](https://github.com/akvo/siwins/blob/main/LICENSE)
 
+## Pre-commit Setup
+
+Once you clone this repository. Please run:
+
+```bash
+./.pre-commit.sh
+```
+
 ## Development
 
 #### 1. Environment Setup
