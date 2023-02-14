@@ -3,6 +3,7 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
+from db import crud_data
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
@@ -175,3 +176,12 @@ class TestDataRoutes:
                 },
             ],
         }
+
+    @pytest.mark.asyncio
+    async def test_get_last_history_empty(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        fd = crud_data.get_last_history(
+            session=session, datapoint_id=642770963, id=754830913
+        )
+        assert fd == []
