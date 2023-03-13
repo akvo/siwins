@@ -58,8 +58,8 @@ const Map = () => {
   const showHistory = window.chart_features.show_history;
   const baseMap = tileOSM;
   const map = useRef();
-  const defZoom = 15;
-  const defCenter = [-8.68856, 115.494846];
+  const defZoom = 8;
+  const defCenter = [-7.983908, 112.621391];
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [registrationData, setRegistrationData] = useState([]);
