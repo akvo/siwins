@@ -46,6 +46,7 @@ class MapsData(BaseModel):
     id: int
     name: str
     geo: List[float]
+    answer: List[AnswerDict]
 
 
 class RegistrationDict(TypedDict):
@@ -143,7 +144,7 @@ class Data(Base):
         return {
             "id": self.id,
             "name": self.name,
-            "geo": self.geo,
+            "geo": self.geo
         }
 
     @property

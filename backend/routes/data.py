@@ -27,10 +27,17 @@ data_route = APIRouter()
 def get_maps(
     req: Request,
     session: Session = Depends(get_session),
+    indicator: int = Query(None)
     # credentials: credentials = Depends(security)
 ):
     data = crud_data.get_all_data(session=session, registration=True)
     data = [d.to_maps for d in data]
+    # TODO:: how about the history ?
+    for d in data:
+        d["answer"] = [{
+            "question": 1,
+            "value": 50
+        }]
     return data
 
 
