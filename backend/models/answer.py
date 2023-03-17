@@ -29,6 +29,8 @@ def append_value(self, answer):
         answer.update({"value": json.loads(self.text)})
     if type == QuestionType.geoshape:
         answer.update({"value": json.loads(self.text)})
+    if type == QuestionType.cascade:
+        answer.update({"value": self.options})
     return answer
 
 

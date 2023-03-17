@@ -34,6 +34,9 @@ def append_value(
         answer.text = json.dumps(value)
     if type == QuestionType.geoshape:
         answer.text = json.dumps(value)
+    if type == QuestionType.cascade:
+        cascades = [v.get("name") for v in value] if value else []
+        answer.options = cascades
     return answer
 
 
