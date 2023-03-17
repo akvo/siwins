@@ -22,7 +22,8 @@ class Administration(Base):
     parent = Column(Integer, ForeignKey('administration.id'), nullable=True)
     name = Column(String)
     children = relationship("Administration")
-    parent_detail = relationship("Administration", remote_side=[id])
+    parent_detail = relationship(
+        "Administration", remote_side=[id], overlaps="children")
 
     def __init__(self, id: int, parent: int, name: str):
         self.id = id
