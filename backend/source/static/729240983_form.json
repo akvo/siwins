@@ -32,7 +32,8 @@
           },
           "order": "1",
           "text": "Status of toilet",
-          "type": "option"
+          "type": "option",
+          "attributes": ["advanced_filter", "indicator"]
         },
         {
           "dependency": {
@@ -49,7 +50,8 @@
             "allowDecimal": false,
             "signed": false,
             "validationType": "numeric"
-          }
+          },
+          "attributes": ["indicator"]
         },
         {
           "id": "725310914",
@@ -65,7 +67,8 @@
           }
         }
       ],
-      "repeatable": false
+      "repeatable": false,
+      "attributes": ["indicator"]
     },
     {
       "heading": "Drinking Water Service Level",
@@ -119,7 +122,8 @@
           },
           "order": "1",
           "text": "What is the main source of drinking water in the school?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator", "advanced_filter"]
         },
         {
           "id": "737900979",
@@ -142,7 +146,8 @@
           },
           "order": "2",
           "text": "Is drinking water from the main source currently available at the school?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator", "advanced_filter"]
         },
         {
           "id": "742980980",
@@ -204,7 +209,8 @@
           },
           "order": "1",
           "text": "What type of student toilets/ latrines are at the school? (check one - most common)",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator", "advanced_filter"]
         },
         {
           "id": "698070974",
@@ -227,7 +233,8 @@
           },
           "order": "2",
           "text": "Are there gender separated toilets?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator", "advanced_filter"]
         },
         {
           "id": "739680972",
@@ -250,7 +257,8 @@
           },
           "order": "3",
           "text": "Are the latrines being used?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator", "advanced_filter"]
         }
       ],
       "repeatable": false
