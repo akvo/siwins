@@ -100,6 +100,7 @@ for i in range(repeats):
                     fm = fake.random_int(min=11, max=12)
                     fd = fa.strftime("%d")
                     answer.text = f"2019-{fm}-{fd}"
+
                 if q.type == QuestionType.geo and geo:
                     answer.text = ("{}|{}").format(geo["lat"], geo["long"])
 
@@ -107,10 +108,17 @@ for i in range(repeats):
                     fa = fake.company()
                     answer.text = fa
                     if q.meta:
-                        fa += " - "
-                        fa += geo.get("village")
-                        answer.text = fa
+                        # fa += " - "
+                        # fa += geo.get("village")
+                        # answer.text = fa
                         names.append(fa)
+
+                if q.type == QuestionType.cascade:
+                    cascades = [geo.get(key) for key in [
+                        "city", "district", "village"]]
+                    answer.options = cascades
+                    if q.meta:
+                        names += cascades
                 answers.append(answer)
 
         displayName = " - ".join(names)
