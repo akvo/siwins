@@ -61,4 +61,5 @@ with open(source_file, 'r') as geo:
         parent = adm["parent"] if adm["parent"] == adm["parent"] else None
         add_administration(session=session, data=Administration(
             id=int(adm["id"]), parent=parent, name=adm["name"]))
-    # res.to_csv("./source/cascade.csv", index=False)
+    res.to_csv("./source/cascade.csv", index=False)
+print("Seed Administration Done")
