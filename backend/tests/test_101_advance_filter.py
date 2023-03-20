@@ -19,26 +19,8 @@ class TestQuestionRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res[0] == {
-            "id": 718001069,
-            "name": "Type of school",
-            "option": [
-                {
-                    "id": 1,
-                    "name": "Junior school",
-                    "order": None,
-                    "code": None,
-                },
-                {
-                    "id": 2,
-                    "name": "Primary school",
-                    "order": None,
-                    "code": None,
-                },
-                {
-                    "id": 3,
-                    "name": "High school",
-                    "order": None,
-                    "code": None,
-                },
-            ],
+            "id": 738940972,
+            "name": "Example School Name",
+            "option": [],
+            "attributes": []
         }
