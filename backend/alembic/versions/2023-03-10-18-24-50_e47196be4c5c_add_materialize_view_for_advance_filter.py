@@ -1,8 +1,8 @@
 """add_materialize_view_for_advance_filter
 
 Revision ID: e47196be4c5c
-Revises: d37375e79c27
-Create Date: 2023-01-10 07:24:50.778049
+Revises: 40164b45b0be
+Create Date: 2023-03-18 07:24:50.778049
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ from alembic_utils.pg_materialized_view import PGMaterializedView
 
 # revision identifiers, used by Alembic.
 revision = "e47196be4c5c"
-down_revision = "d37375e79c27"
+down_revision = "40164b45b0be"
 branch_labels = None
 depends_on = None
 
