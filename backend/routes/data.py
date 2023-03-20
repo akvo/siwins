@@ -28,6 +28,7 @@ data_route = APIRouter()
 def get_maps(
     req: Request,
     session: Session = Depends(get_session),
+    indicator: int = Query(None, description="indicator is a question id"),
     q: Optional[List[str]] = Query(None),
     # credentials: credentials = Depends(security)
 ):
@@ -38,6 +39,23 @@ def get_maps(
         options=options,
     )
     data = [d.to_maps for d in data]
+    # get all answers by indicator
+    answer_temp = {}
+    if indicator:
+        answers = crud_answer.get_answer_by_question(
+            session=session, question=indicator)
+        answers = [
+            a.formatted_with_data for a in answers
+        ] if answers else []
+        for a in answers:
+            key = a.get('identifier')
+            del a['data']
+            del a['identifier']
+            answer_temp.update({key: a})
+    # map answer by identifier for each datapoint
+    for d in data:
+        data_id = str(d.get('identifier'))
+        d["answer"] = answer_temp.get(data_id) or {}
     return data
 
 

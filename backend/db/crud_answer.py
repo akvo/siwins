@@ -34,6 +34,9 @@ def append_value(
         answer.text = json.dumps(value)
     if type == QuestionType.geoshape:
         answer.text = json.dumps(value)
+    if type == QuestionType.cascade:
+        cascades = [v.get("name") for v in value] if value else []
+        answer.options = cascades
     return answer
 
 
@@ -151,3 +154,21 @@ def get_answer_by_data(session: Session, data: int) -> List[AnswerBase]:
 
 def delete_history_by_id(session: Session, id: int) -> None:
     return session.query(History).filter(History.id == id).delete()
+
+
+def update_answer_from_history(
+    session: Session, data: int, history: HistoryDict
+) -> None:
+    session.query(Answer).filter(
+        and_(Answer.data == data, Answer.question == history["question"])
+    ).update(
+        {
+            "text": history["text"],
+            "value": history["value"],
+            "options": history["options"],
+            "created": history["created"],
+            "updated": history["updated"],
+        },
+        synchronize_session="evaluate",
+    )
+    session.query(History).filter(History.data == history["data"]).delete()

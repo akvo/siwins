@@ -1,0 +1,781 @@
+id,name,parent
+1,Badung,
+2,Bangli,
+3,Buleleng,
+4,Denpasar,
+5,Gianyar,
+6,Jembrana,
+7,Karangasem,
+8,Klungkung,
+9,Tabanan,
+10,Abang,7.0
+11,Abiansemal,1.0
+12,Bangli,2.0
+13,Banjar,3.0
+14,Banjarangkan,8.0
+15,Banjarankan,8.0
+16,Baturiti,9.0
+17,Bebandem,7.0
+18,Blahbatuh,5.0
+19,Buleleng,3.0
+20,Busungbiu,3.0
+21,Dawan,8.0
+22,Denpasar Barat,4.0
+23,Denpasar Selatan,4.0
+24,Denpasar Timur,4.0
+25,Denpasar Utara,4.0
+26,Gerokgak,3.0
+27,Gianyar,5.0
+28,Jembrana,6.0
+29,Karangasem,7.0
+30,Kediri,9.0
+31,Kerambitan,9.0
+32,Kintamani,2.0
+33,Klungkung,8.0
+34,Kubu,7.0
+35,Kubutambahan,3.0
+36,Kuta,1.0
+37,Kuta Selatan,1.0
+38,Kuta Utara,1.0
+39,Manggis,7.0
+40,Marga,9.0
+41,Melaya,6.0
+42,Menddoyo,6.0
+43,Mendoyo,6.0
+44,Mengwi,1.0
+45,Negara,6.0
+46,Nusapenida,8.0
+47,Payangan,5.0
+48,Pekutatan,6.0
+49,Penebel,9.0
+50,Petang,1.0
+51,Pupuan,9.0
+52,Rendang,7.0
+53,Sawan,3.0
+54,Selat,7.0
+55,Selemadeg,9.0
+56,Selemadeg Barat,9.0
+57,Selemadeg Timur,9.0
+58,Seririt,3.0
+59,Sidemen,7.0
+60,Sukasada,3.0
+61,Sukawati,5.0
+62,Susut,2.0
+63,Tabanan,9.0
+64,Tampaksiring,5.0
+65,Tegallalang,5.0
+66,Tejakula,3.0
+67,Tembuku,2.0
+68,Ubud,5.0
+69,Aan,15.0
+70,Ababi,10.0
+71,Abang,10.0
+72,Abang Batu Dinding,32.0
+73,Abang Songan,32.0
+74,Abian Tuwung,30.0
+75,Abianbase,44.0
+76,Abianbase,27.0
+77,Abiansemal,11.0
+78,Abuan,32.0
+79,Abuan,62.0
+80,Air Kuning,28.0
+81,Akah,33.0
+82,Alasangker,19.0
+83,Ambengan,60.0
+84,Amerta Bhuana,54.0
+85,Angantaka,11.0
+86,Angkah,56.0
+87,Angseri,16.0
+88,Antap,55.0
+89,Antapan,16.0
+90,Antiga,39.0
+91,Antiga Kelod,39.0
+92,Antosari,56.0
+93,Anturan,19.0
+94,Apuan,62.0
+95,Apuan,16.0
+96,Asahduren,48.0
+97,Astina,19.0
+98,Awan,32.0
+99,Ayunan,11.0
+100,Babahan,49.0
+101,Baha,44.0
+102,Bajera,55.0
+103,Bajera Utara,55.0
+104,Bakas,14.0
+105,Bakbakan,27.0
+106,Baktiseraga,19.0
+107,Baler Bale Agung,45.0
+108,Baluk,45.0
+109,Ban,34.0
+110,Bangbang,67.0
+111,Bangli,16.0
+112,Banjar,13.0
+113,Banjar Anyar,30.0
+114,Banjar Asem,58.0
+115,Banjar Bali,19.0
+116,Banjar Jawa,19.0
+117,Banjar Tegal,19.0
+118,Banjar Tegeha,13.0
+119,Banjar Tengah,45.0
+120,Banjarangkan,14.0
+121,Bantang,32.0
+122,Bantas,57.0
+123,Bantiran,51.0
+124,Banua,32.0
+125,Banyuasri,19.0
+126,Banyuatis,13.0
+127,Banyubiru,45.0
+128,Banyuning,19.0
+129,Banyupoh,26.0
+130,Banyusri,13.0
+131,Batannyuh,40.0
+132,Batuagung,28.0
+133,Batuaji,31.0
+134,Batuan,61.0
+135,Batuan Kaler,61.0
+136,Batubulan,61.0
+137,Batubulan Kangin,61.0
+138,Batukaang,32.0
+139,Batukandik,46.0
+140,Batumadeg,46.0
+141,Batungsel,51.0
+142,Batununggul,46.0
+143,Batunya,16.0
+144,Batur Selatan,32.0
+145,Batur Tengah,32.0
+146,Batur Utara,32.0
+147,Baturinggit,34.0
+148,Baturiti,16.0
+149,Baturiti,31.0
+150,Bayungcerik,32.0
+151,Bayunggede,32.0
+152,Bebalang,12.0
+153,Bebandem,17.0
+154,Bebetin,53.0
+155,Bedulu,18.0
+156,Belalang,30.0
+157,Belancan,32.0
+158,Belandingan,32.0
+159,Belanga,32.0
+160,Belantih,32.0
+161,Belatungan,51.0
+162,Belega,18.0
+163,Belimbing,51.0
+164,Belok,50.0
+165,Belumbang,31.0
+166,Beng,27.0
+167,Bengkala,35.0
+168,Bengkel,20.0
+169,Bengkel,30.0
+170,Bengkel Sari,56.0
+171,Benoa,37.0
+172,Beraban,30.0
+173,Beraban,57.0
+174,Berangbang,45.0
+175,Beratan,19.0
+176,Berembeng,55.0
+177,Beresela,47.0
+178,Beringkit,40.0
+179,Besakih,52.0
+180,Besan,21.0
+181,Bestala,58.0
+182,Bhuana Giri,17.0
+183,Biaung,49.0
+184,Bila,35.0
+185,Binyan,32.0
+186,Bitera,27.0
+187,Blahbatuh,18.0
+188,Blahkiuh,11.0
+189,Blimbingsari,41.0
+190,Bona,18.0
+191,Bondalem,66.0
+192,Bongan,63.0
+193,Bongancina,20.0
+194,Bongkasa,11.0
+195,Bongkasa Pertiwi,11.0
+196,Bontihing,35.0
+197,Bonyoh,32.0
+198,Buahan,32.0
+199,Buahan,47.0
+200,Buahan,63.0
+201,Buahan Kaja,47.0
+202,Bubunan,58.0
+203,Budakeling,17.0
+204,Budeng,28.0
+205,Buduk,44.0
+206,Bugbug,29.0
+207,Bukian,47.0
+208,Bukit,29.0
+209,Bukti,35.0
+210,Bulian,35.0
+211,Bunga Mekar,46.0
+212,Bungaya,17.0
+213,Bungaya Kangin,17.0
+214,Bungbungan,15.0
+215,Bungkulan,53.0
+216,Bunutan,10.0
+217,Bunutin,12.0
+218,Bunutin,32.0
+219,Buruan,18.0
+220,Buruan,49.0
+221,Busungbiu,20.0
+222,Candikuning,16.0
+223,Candikusuma,41.0
+224,Canggu,38.0
+225,Carangsari,50.0
+226,Catur,32.0
+227,Caubelayu,40.0
+228,Celuk,61.0
+229,Celukan Bawang,26.0
+230,Cemagi,44.0
+231,Cempaga,12.0
+232,Cempaga,13.0
+233,Cepaka,30.0
+234,Culik,10.0
+235,Cupel,45.0
+236,Dajan Peken,63.0
+237,Dajan Puri,40.0
+238,Dalang,57.0
+239,Dalung,38.0
+240,Dangin Puri,24.0
+241,Dangin Puri Kaja,25.0
+242,Dangin Puri Kangin,25.0
+243,Dangin Puri Kauh,25.0
+244,Dangin Puri Klod,24.0
+245,Dangin Tukadaya,28.0
+246,Darmasaba,11.0
+247,Datah,10.0
+248,Dauh Peken,63.0
+249,Dauh Puri,22.0
+250,Dauh Puri,40.0
+251,Dauh Puri Kaja,25.0
+252,Dauh Puri Kangin,22.0
+253,Dauh Puri Kauh,22.0
+254,Dauh Puri Klod,22.0
+255,Dauh Yeh Cani,11.0
+256,Dauhwaru,28.0
+257,Daup,32.0
+258,Dausa,32.0
+259,Dawan Kaler,21.0
+260,Dawan Klod,21.0
+261,Delod Berawah,43.0
+262,Delod Peken,63.0
+263,Demulih,62.0
+264,Denbantas,63.0
+265,Dencarik,13.0
+266,Depeha,35.0
+267,Duda,54.0
+268,Duda Timur,54.0
+269,Duda Utara,54.0
+270,Dukuh,34.0
+271,Ekasari,41.0
+272,Gadung Sari,57.0
+273,Gadungan,57.0
+274,Galungan,53.0
+275,Gegelang,39.0
+276,Gelgel,33.0
+277,Geluntung,40.0
+278,Gerokgak,26.0
+279,Gesing,13.0
+280,Getakan,14.0
+281,Getasan,50.0
+282,Gianyar,27.0
+283,Gilimanuk,41.0
+284,Giri Emas,53.0
+285,Gitgit,60.0
+286,Gobleg,13.0
+287,Gubug,63.0
+288,Gulingan,44.0
+289,Gumbrih,48.0
+290,Gunaksa,21.0
+291,Gunung Salak,57.0
+292,Gunungbau,32.0
+293,Gunungsari,58.0
+294,Guwang,61.0
+295,Jagapati,11.0
+296,Jagaraga,53.0
+297,Jatiluwih,49.0
+298,Jegu,49.0
+299,Jehem,67.0
+300,Jelijih Punggang,51.0
+301,Jimbaran,37.0
+302,Jinengdalem,19.0
+303,Joanyar,58.0
+304,Julah,66.0
+305,Jumpai,33.0
+306,Jungutan,17.0
+307,Jungutbatu,46.0
+308,Kaba-kaba,30.0
+309,Kaliakah,45.0
+310,Kalianget,58.0
+311,Kaliasem,13.0
+312,Kalisada,58.0
+313,Kaliuntu,19.0
+314,Kamasan,33.0
+315,Kampung Anyar,19.0
+316,Kampung Baru,19.0
+317,Kampung Bugis,19.0
+318,Kampung Gelgel,33.0
+319,Kampung Kajanan,19.0
+320,Kampung Kusamba,21.0
+321,Kampung Singaraja,19.0
+322,Kampung Toyapakeh,46.0
+323,Kapal,44.0
+324,Karangasem,29.0
+325,Karya Sari,51.0
+326,Katung,32.0
+327,Kawan,12.0
+328,Kayubihi,12.0
+329,Kayuputih,13.0
+330,Kayuputih,60.0
+331,Kebon Padangan,51.0
+332,Kedewatan,68.0
+333,Kediri,30.0
+334,Kedis,20.0
+335,Kedisan,32.0
+336,Kedisan,65.0
+337,Kedonganan,36.0
+338,Kekeran,44.0
+339,Kekeran,20.0
+340,Kelating,31.0
+341,Keliki,65.0
+342,Kelusa,47.0
+343,Kemenuh,61.0
+344,Kenderan,65.0
+345,Kendran,19.0
+346,Keramas,18.0
+347,Kerambitan,31.0
+348,Kerobokan,38.0
+349,Kerobokan,53.0
+350,Kerobokan Kaja,38.0
+351,Kerobokan Kelod,38.0
+352,Kerta,47.0
+353,Kerta Mandala,10.0
+354,Kertha Buana,59.0
+355,Kesiman,24.0
+356,Kesiman Kertalangu,24.0
+357,Kesiman Petilan,24.0
+358,Kesimpar,10.0
+359,Kesiut,31.0
+360,Ketewel,61.0
+361,Kintamani,32.0
+362,Klumpu,46.0
+363,Kubu,12.0
+364,Kubu,34.0
+365,Kubutambahan,35.0
+366,Kukuh,31.0
+367,Kukuh,40.0
+368,Kusamba,21.0
+369,Kuta,36.0
+370,Kutampi,46.0
+371,Kutampi Kaler,46.0
+372,Kutuh,37.0
+373,Kutuh,32.0
+374,Kuwum,44.0
+375,Kuwum,40.0
+376,Laba Sari,10.0
+377,Lalang Linggah,56.0
+378,Landih,12.0
+379,Langgahan,32.0
+380,Lebih,27.0
+381,Legian,36.0
+382,Lelateng,45.0
+383,Lembean,32.0
+384,Lembongan,46.0
+385,Lemukih,53.0
+386,Les,66.0
+387,Liligundi,19.0
+388,Lodtunduh,68.0
+389,Loka Sari,59.0
+390,Lokapaksa,58.0
+391,Loloan Barat,45.0
+392,Loloan Timur,28.0
+393,Lukluk,44.0
+394,Lumbung,56.0
+395,Lumbung Kauh,56.0
+396,Luwus,16.0
+397,Macang,17.0
+398,Madenan,66.0
+399,Mambal,11.0
+400,Mambang,57.0
+401,Manduang,33.0
+402,Manggis,39.0
+403,Manggissari,48.0
+404,Mangguh,32.0
+405,Manikliyu,32.0
+406,Manikyang,55.0
+407,Manistutu,41.0
+408,Manukaya,64.0
+409,Marga,40.0
+410,Mas,68.0
+411,Mayong,58.0
+412,Medahan,18.0
+413,Medewi,48.0
+414,Megati,57.0
+415,Mekar Bhuwana,11.0
+416,Mekarsari,16.0
+417,Melaya,41.0
+418,Meliling,31.0
+419,Melinggih,47.0
+420,Melinggih Kelod,47.0
+421,Menanga,52.0
+422,Mendoyo Dangin Tukad,43.0
+423,Mendoyo Dauh Tukad,43.0
+424,Mengani,32.0
+425,Mengening,35.0
+426,Mengeste,49.0
+427,Mengwi,44.0
+428,Mengwitani,44.0
+429,Menyali,53.0
+430,Muncan,54.0
+431,Mundeh,56.0
+432,Mundeh Kangin,56.0
+433,Mundeh Kauh,56.0
+434,Munduk,13.0
+435,Munduk Bestala,58.0
+436,Munduk Temu,51.0
+437,Munggu,44.0
+438,Musi,26.0
+439,Nagasepaha,19.0
+440,Nawakerti,10.0
+441,Negari,14.0
+442,Ngis,39.0
+443,Nongan,52.0
+444,Nusa Sari,41.0
+445,Nyalian,14.0
+446,Nyambu,30.0
+447,Nyanglan,15.0
+448,Nyitdah,30.0
+449,Nyuh Tebel,39.0
+450,Pacung,66.0
+451,Padang Kerta,29.0
+452,Padangan,51.0
+453,Padangbai,39.0
+454,Padangbulia,60.0
+455,Padangsambian,22.0
+456,Padangsambian Kaja,22.0
+457,Padangsambian Klod,22.0
+458,Pajahan,51.0
+459,Paket Agung,19.0
+460,Pakisan,35.0
+461,Paksebali,21.0
+462,Pancasari,60.0
+463,Pandak Bandung,30.0
+464,Pandak Gede,30.0
+465,Pangkung Karung,31.0
+466,Pangkung Tibah,30.0
+467,Pangkungparuk,58.0
+468,Pangsan,50.0
+469,Pangyangan,48.0
+470,Panjer,23.0
+471,Panji,60.0
+472,Panji Anom,60.0
+473,Patas,26.0
+474,Patemon,58.0
+475,Payangan,40.0
+476,Pecatu,37.0
+477,Ped,46.0
+478,Pedawa,13.0
+479,Pedungan,23.0
+480,Pegadungan,60.0
+481,Pegayaman,60.0
+482,Peguyangan,25.0
+483,Peguyangan Kaja,25.0
+484,Peguyangan Kangin,25.0
+485,Pejarakan,26.0
+486,Pejaten,30.0
+487,Pejeng,64.0
+488,Pejeng Kaja,64.0
+489,Pejeng Kangin,64.0
+490,Pejeng Kawan,64.0
+491,Pejeng Kelod,64.0
+492,Pejukutan,46.0
+493,Peken Belayu,40.0
+494,Pekutatan,48.0
+495,Pelaga,50.0
+496,Pelapuan,20.0
+497,Peliatan,68.0
+498,Pemaron,19.0
+499,Pemecutan,22.0
+500,Pemecutan Kaja,25.0
+501,Pemecutan Klod,22.0
+502,Pemogan,23.0
+503,Pempatan,52.0
+504,Pemuteran,26.0
+505,Penarukan,19.0
+506,Penarukan,31.0
+507,Penarungan,44.0
+508,Penatahan,49.0
+509,Penatih,24.0
+510,Penatih Dangin Puri,24.0
+511,Pendem,28.0
+512,Penebel,49.0
+513,Pengambengan,45.0
+514,Pengastulan,58.0
+515,Pengejaran,32.0
+516,Pengeragoan,48.0
+517,Pengiangan,62.0
+518,Penglatan,19.0
+519,Penglumbaran,62.0
+520,Pengotan,12.0
+521,Pengulon,26.0
+522,Peninjoan,67.0
+523,Penuktukan,66.0
+524,Penyabangan,26.0
+525,Penyaringan,43.0
+526,Perancak,28.0
+527,Perean,16.0
+528,Perean Kangin,16.0
+529,Perean Tengah,16.0
+530,Pererenan,44.0
+531,Pergung,43.0
+532,Pering,18.0
+533,Pering Sari,54.0
+534,Pertima,29.0
+535,Pesaban,52.0
+536,Pesagi,49.0
+537,Pesedahan,39.0
+538,Pesinggahan,21.0
+539,Petak,27.0
+540,Petak Kaja,27.0
+541,Petandakan,19.0
+542,Petang,50.0
+543,Petiga,40.0
+544,Petulu,68.0
+545,Pidpid,10.0
+546,Pikat,21.0
+547,Pinggan,32.0
+548,Pitra,49.0
+549,Poh Bergong,19.0
+550,Pohsanten,43.0
+551,Pucaksari,20.0
+552,Puhu,47.0
+553,Pujungan,51.0
+554,Pulukan,48.0
+555,Punggul,11.0
+556,Pupuan,65.0
+557,Pupuan,51.0
+558,Pupuan Sawah,55.0
+559,Purwakerti,10.0
+560,Rangdu,58.0
+561,Rejasa,49.0
+562,Rendang,52.0
+563,Renon,23.0
+564,Riang Gede,49.0
+565,Ringdikit,58.0
+566,Saba,18.0
+567,Sading,44.0
+568,Sakti,46.0
+569,Sambangan,60.0
+570,Sambirenteng,66.0
+571,Sampalan Klod,21.0
+572,Sampalan Tengah,21.0
+573,Samplangan,27.0
+574,Samsam,31.0
+575,Sanda,51.0
+576,Sanding,64.0
+577,Sangeh,11.0
+578,Sanggalangit,26.0
+579,Sangkan Gunung,59.0
+580,Sangkaragung,28.0
+581,Sangketan,49.0
+582,Sangsit,53.0
+583,Sanur,23.0
+584,Sanur Kaja,23.0
+585,Sanur Kauh,23.0
+586,Sari Mekar,19.0
+587,Satra,32.0
+588,Satra,33.0
+589,Sawan,53.0
+590,Sayan,68.0
+591,Sebatu,65.0
+592,Sebudi,54.0
+593,Sedang,11.0
+594,Sekaan,32.0
+595,Sekardadi,32.0
+596,Sekartaji,46.0
+597,Sekumpul,53.0
+598,Selabih,56.0
+599,Selanbawak,40.0
+600,Selat,11.0
+601,Selat,62.0
+602,Selat,60.0
+603,Selat,54.0
+604,Selat,33.0
+605,Selemadeg,55.0
+606,Selisihan,33.0
+607,Selulung,32.0
+608,Selumbung,39.0
+609,Semarapura Kaja,33.0
+610,Semarapura Kangin,33.0
+611,Semarapura Kauh,33.0
+612,Semarapura Kelod,33.0
+613,Semarapura Kelod Kangin,33.0
+614,Semarapura Tengah,33.0
+615,Sembiran,66.0
+616,Sembung,44.0
+617,Sembung Gede,31.0
+618,Seminyak,36.0
+619,Sempidi,44.0
+620,Senganan,49.0
+621,Sengkidu,39.0
+622,Sepang,20.0
+623,Sepang Kelod,20.0
+624,Serahi,32.0
+625,Serampingan,55.0
+626,Serangan,23.0
+627,Seraya,29.0
+628,Seraya Barat,29.0
+629,Seraya Timur,29.0
+630,Seririt,58.0
+631,Serongga,27.0
+632,Sesandan,63.0
+633,Sesetan,23.0
+634,Siangan,27.0
+635,Sibang Gede,11.0
+636,Sibang Kaja,11.0
+637,Sibetan,17.0
+638,Sidakarya,23.0
+639,Sidan,27.0
+640,Sidemen,59.0
+641,Sidetapa,13.0
+642,Silangjana,60.0
+643,Sinabun,53.0
+644,Sindu Wati,59.0
+645,Singapadu,61.0
+646,Singapadu Kaler,61.0
+647,Singapadu Tengah,61.0
+648,Singekerta,68.0
+649,Siyakin,32.0
+650,Sobangan,44.0
+651,Songan A,32.0
+652,Songan B,32.0
+653,Suana,46.0
+654,Subagan,29.0
+655,Subamia,63.0
+656,Subaya,32.0
+657,Subuk,20.0
+658,Sudaji,53.0
+659,Sudimara,63.0
+660,Sukadana,34.0
+661,Sukasada,60.0
+662,Sukawana,32.0
+663,Sukawati,61.0
+664,Sulahan,62.0
+665,Sulang,21.0
+666,Sulangai,50.0
+667,Sulanyah,58.0
+668,Sumber Klampok,26.0
+669,Sumberkima,26.0
+670,Sumerta,24.0
+671,Sumerta Kaja,24.0
+672,Sumerta Kauh,24.0
+673,Sumerta Kelod,24.0
+674,Sumita,27.0
+675,Susut,62.0
+676,Suter,32.0
+677,Suwat,27.0
+678,Suwug,53.0
+679,Tajen,49.0
+680,Tajun,35.0
+681,Takmung,14.0
+682,Talibeng,59.0
+683,Taman,11.0
+684,Taman Bali,12.0
+685,Tambakan,35.0
+686,Tamblang,35.0
+687,Tampaksiring,64.0
+688,Tampekan,13.0
+689,Tangguntiti,57.0
+690,Tangguwisia,58.0
+691,Tangkas,33.0
+692,Tangkup,59.0
+693,Tanglad,46.0
+694,Tanjung Benoa,37.0
+695,Taro,65.0
+696,Tegak,33.0
+697,Tegal Badeng Barat,45.0
+698,Tegal Badeng Timur,45.0
+699,Tegal Cangkring,43.0
+700,Tegal Harum,22.0
+701,Tegal Kertha,22.0
+702,Tegal Linggah,60.0
+703,Tegal Mengkeb,57.0
+704,Tegal Tugu,27.0
+705,Tegalinggah,49.0
+706,Tegaljadi,40.0
+707,Tegallalang,65.0
+708,Tegallinggah,29.0
+709,Tejakula,66.0
+710,Telaga,20.0
+711,Telaga Tawang,59.0
+712,Tembok,66.0
+713,Tembuku,67.0
+714,Temesi,27.0
+715,Temukus,13.0
+716,Tenganan,39.0
+717,Tengkudak,49.0
+718,Terunyan,32.0
+719,Tianyar,34.0
+720,Tianyar Barat,34.0
+721,Tianyar Tengah,34.0
+722,Tibubeneng,38.0
+723,Tibubiyu,31.0
+724,Tiga,62.0
+725,Tigawasa,13.0
+726,Tihingan,14.0
+727,Timpag,31.0
+728,Timuhun,15.0
+729,Tinga Tinga,26.0
+730,Tinggarsari,20.0
+731,Tirtasari,13.0
+732,Tista,20.0
+733,Tista,10.0
+734,Tista,31.0
+735,Titab,20.0
+736,Tiying Gading,56.0
+737,Tiyingtali,10.0
+738,Tohpati,15.0
+739,Tojan,33.0
+740,Tonja,25.0
+741,Tri Buana,10.0
+742,Tri Eka Buana,59.0
+743,Tua,40.0
+744,Tuban,36.0
+745,Tukad Sumaga,26.0
+746,Tukadaya,41.0
+747,Tukadmungga,19.0
+748,Tulamben,34.0
+749,Tulikup,27.0
+750,Tumbak Bayuh,44.0
+751,Tumbu,29.0
+752,Tunjuk,63.0
+753,Tunjung,35.0
+754,Tusan,14.0
+755,Tuwed,41.0
+756,Ubud,68.0
+757,Ubung,25.0
+758,Ubung  Kaja,25.0
+759,Ulakan,39.0
+760,Ularan,58.0
+761,Ulian,32.0
+762,Umeanyar,58.0
+763,Umejero,20.0
+764,Undisan,67.0
+765,Ungasan,37.0
+766,Unggahan,58.0
+767,Wanagiri,60.0
+768,Wanagiri,55.0
+769,Wanagiri Kauh,55.0
+770,Wanasari,63.0
+771,Warnasari,41.0
+772,Werdi Bhuwana,44.0
+773,Wisma Kerta,59.0
+774,Wongaya Gede,49.0
+775,Yangapi,67.0
+776,Yeh Embang,43.0
+777,Yeh Embang Kangin,43.0
+778,Yeh Embang Kauh,42.0
+779,Yeh Kuning,28.0
+780,Yeh Sumbul,43.0

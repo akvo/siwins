@@ -23,19 +23,19 @@ export AUTH0_PWD="string"
 Now you have all the required environment ready, then run the App using:
 
 ```bash
-docker-compose up -d
+./dc.sh up -d
 ```
 
 To stop:
 
 ```bash
-docker-compose down
+./dc.sh down -t 1
 ```
 
 Reset the app:
 
 ```bash
-docker-compose down -v
+./dc.sh down -v
 ```
 
 The app should be running at: [localhost:3000](http://localhost:3000). Any endpoints with prefix

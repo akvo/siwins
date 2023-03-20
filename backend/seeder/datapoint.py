@@ -27,7 +27,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
     formInstances.sort(key=lambda fi: fi["createdAt"], reverse=False)
     for fi in formInstances:
         datapoint_id = fi.get("dataPointId")
-        data_id = fi.get('id')
+        data_id = fi.get("id")
         answers = []
         geoVal = None
         # check if first monitoring datapoint exist
@@ -78,8 +78,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                             )
                             # add history
                             crud_answer.add_history(
-                                session=session,
-                                history=history
+                                session=session, history=history
                             )
                             # delete current answer and add new answer
                             crud_answer.delete_answer_by_id(

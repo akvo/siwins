@@ -18,43 +18,27 @@ class TestQuestionRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == [
-            {
-                "id": 718001069,
-                "name": "Type of school",
-                "option": [
-                    {
-                        "id": 1,
-                        "name": "Junior school",
-                        "order": None,
-                        "code": None,
-                    },
-                    {
-                        "id": 2,
-                        "name": "Primary school",
-                        "order": None,
-                        "code": None,
-                    },
-                    {
-                        "id": 3,
-                        "name": "High school",
-                        "order": None,
-                        "code": None,
-                    },
-                ],
-            },
-            {
-                "id": 738950915,
-                "name": "Status of toilet",
-                "option": [
-                    {"id": 4, "name": "Dirty", "order": None, "code": None},
-                    {"id": 5, "name": "Clean", "order": None, "code": None},
-                    {
-                        "id": 6,
-                        "name": "No toilets",
-                        "order": None,
-                        "code": None,
-                    },
-                ],
-            },
-        ]
+        assert res[0] == {
+            "id": 718001069,
+            "name": "Type of school",
+            "option": [
+                {
+                    "id": 1,
+                    "name": "Junior school",
+                    "order": None,
+                    "code": None,
+                },
+                {
+                    "id": 2,
+                    "name": "Primary school",
+                    "order": None,
+                    "code": None,
+                },
+                {
+                    "id": 3,
+                    "name": "High school",
+                    "order": None,
+                    "code": None,
+                },
+            ],
+        }

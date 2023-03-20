@@ -35,6 +35,7 @@ def generate_fake_history(session: Session, datapoint: DataDict):
                 if q.type == QuestionType.text:
                     aval = fake.company()
                     answer.text = aval
+
                 current_answers = crud_answer.get_answer_by_data_and_question(
                     session=session, data=datapoint.id, questions=[q.id]
                 )

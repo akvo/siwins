@@ -3,62 +3,269 @@
   "app": "akvoflow-62",
   "defaultLanguageCode": "en",
   "name": "Monitoring Form",
-  "questionGroup": {
-    "heading": "Monitoring Data",
-    "question": [
-      {
-        "id": "738950915",
-        "localeNameFlag": true,
-        "mandatory": true,
-        "options": {
-          "allowMultiple": false,
-          "allowOther": false,
-          "option": [
-            { "text": "Dirty", "value": "Dirty" },
-            { "text": "Clean", "value": "Clean" },
-            { "text": "No toilets", "value": "No toilets" }
-          ],
-          "renderType": "radio"
+  "questionGroup": [
+    {
+      "heading": "Monitoring Data",
+      "question": [
+        {
+          "id": "738950915",
+          "localeNameFlag": true,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              {
+                "text": "Dirty",
+                "value": "Dirty"
+              },
+              {
+                "text": "Clean",
+                "value": "Clean"
+              },
+              {
+                "text": "No toilets",
+                "value": "No toilets"
+              }
+            ],
+            "renderType": "radio"
+          },
+          "order": "1",
+          "text": "Status of toilet",
+          "type": "option",
+          "attributes": ["advanced_filter", "indicator"]
         },
-        "order": "1",
-        "text": "Status of toilet",
-        "type": "option"
-      },
-      {
-        "dependency": {
-          "answer-value": "Dirty|Clean",
-          "question": "738950915"
+        {
+          "dependency": {
+            "answer-value": "Dirty|Clean",
+            "question": "738950915"
+          },
+          "id": "735090984",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "2",
+          "text": "Number toilets",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          },
+          "attributes": ["indicator"]
         },
-        "id": "735090984",
-        "localeNameFlag": false,
-        "mandatory": true,
-        "order": "2",
-        "text": "Number toilets",
-        "type": "free",
-        "validationRule": {
-          "allowDecimal": false,
-          "signed": false,
-          "validationType": "numeric"
+        {
+          "id": "725310914",
+          "localeNameFlag": true,
+          "mandatory": true,
+          "order": "3",
+          "text": "Number students",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
         }
-      },
-      {
-        "id": "725310914",
-        "localeNameFlag": true,
-        "mandatory": true,
-        "order": "3",
-        "text": "Number students",
-        "type": "free",
-        "validationRule": {
-          "allowDecimal": false,
-          "signed": false,
-          "validationType": "numeric"
+      ],
+      "repeatable": false,
+      "attributes": ["indicator"]
+    },
+    {
+      "heading": "Drinking Water Service Level",
+      "question": [
+        {
+          "help": {
+            "text": null
+          },
+          "id": "698070972",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              {
+                "code": "",
+                "text": "Piped water supply",
+                "value": "Piped water supply"
+              },
+              {
+                "text": "Protected well/spring",
+                "value": "Protected well/spring"
+              },
+              {
+                "text": "Rainwater",
+                "value": "Rainwater"
+              },
+              {
+                "text": "Unprotected well/spring",
+                "value": "Unprotected well/spring"
+              },
+              {
+                "text": "Packaged bottled water",
+                "value": "Packaged bottled water"
+              },
+              {
+                "text": "Tanker-truck or cart",
+                "value": "Tanker-truck or cart"
+              },
+              {
+                "text": "Surface water (lake, river, stream)",
+                "value": "Surface water (lake, river, stream)"
+              },
+              {
+                "text": "No water source",
+                "value": "No water source"
+              }
+            ],
+            "renderType": "radio"
+          },
+          "order": "1",
+          "text": "What is the main source of drinking water in the school?",
+          "type": "option",
+          "attributes": ["indicator", "advanced_filter"]
+        },
+        {
+          "id": "737900979",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              {
+                "text": "Yes",
+                "value": "Yes"
+              },
+              {
+                "text": "No",
+                "value": "No"
+              }
+            ],
+            "renderType": "radio"
+          },
+          "order": "2",
+          "text": "Is drinking water from the main source currently available at the school?",
+          "type": "option",
+          "attributes": ["indicator", "advanced_filter"]
+        },
+        {
+          "id": "742980980",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "3",
+          "text": "How many drinking water source in the school?",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
         }
-      }
-    ],
-    "repeatable": false
-  },
+      ],
+      "repeatable": false
+    },
+    {
+      "heading": "Sanitation Service Level",
+      "question": [
+        {
+          "id": "698060978",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              {
+                "text": "Flush / Pour-flush toilets",
+                "value": "Flush / Pour-flush toilets"
+              },
+              {
+                "text": "Pit latrines with slab",
+                "value": "Pit latrines with slab"
+              },
+              {
+                "text": "Composting toilet",
+                "value": "Composting toilet"
+              },
+              {
+                "text": "Pit latrines without slab",
+                "value": "Pit latrines without slab"
+              },
+              {
+                "text": "Hanging latrines",
+                "value": "Hanging latrines"
+              },
+              {
+                "text": "Bucket latrines",
+                "value": "Bucket latrines"
+              },
+              {
+                "text": "No toilets or latrines",
+                "value": "No toilets or latrines"
+              }
+            ],
+            "renderType": "radio"
+          },
+          "order": "1",
+          "text": "What type of student toilets/ latrines are at the school? (check one - most common)",
+          "type": "option",
+          "attributes": ["indicator", "advanced_filter"]
+        },
+        {
+          "id": "698070974",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              {
+                "text": "Yes",
+                "value": "Yes"
+              },
+              {
+                "text": "No",
+                "value": "No"
+              }
+            ],
+            "renderType": "radio"
+          },
+          "order": "2",
+          "text": "Are there gender separated toilets?",
+          "type": "option",
+          "attributes": ["indicator", "advanced_filter"]
+        },
+        {
+          "id": "739680972",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              {
+                "text": "Yes",
+                "value": "Yes"
+              },
+              {
+                "text": "No",
+                "value": "No"
+              }
+            ],
+            "renderType": "radio"
+          },
+          "order": "3",
+          "text": "Are the latrines being used?",
+          "type": "option",
+          "attributes": ["indicator", "advanced_filter"]
+        }
+      ],
+      "repeatable": false
+    }
+  ],
   "surveyGroupId": "736950982",
   "surveyGroupName": "PoC SI-WINS",
   "surveyId": "729240983",
-  "version": "3.0"
+  "version": "5.0"
 }
