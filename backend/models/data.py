@@ -44,8 +44,10 @@ class DataResponse(BaseModel):
 
 class MapsData(BaseModel):
     id: int
+    identifier: str
     name: str
     geo: List[float]
+    answer: Union[AnswerDict, dict]
 
 
 class RegistrationDict(TypedDict):
@@ -142,8 +144,10 @@ class Data(Base):
     def to_maps(self) -> MapsData:
         return {
             "id": self.id,
+            "identifier": self.identifier,
             "name": self.name,
             "geo": self.geo,
+            "answer": {}
         }
 
     @property
