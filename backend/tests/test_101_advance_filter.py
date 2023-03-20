@@ -14,7 +14,7 @@ class TestQuestionRoutes:
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         res = await client.get(
-            app.url_path_for("question:question_route_for_advance_filter")
+            app.url_path_for("question:get_all_question")
         )
         assert res.status_code == 200
         res = res.json()
