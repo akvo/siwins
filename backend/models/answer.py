@@ -143,6 +143,16 @@ class Answer(Base):
         answer = append_value(self, answer)
         return answer
 
+    @property
+    def formatted_with_data(self) -> AnswerDict:
+        answer = {
+            "data": self.data,
+            "identifier": self.answer.identifier,
+            "question": self.question,
+        }
+        answer = append_value(self, answer)
+        return answer
+
 
 class AnswerBase(BaseModel):
     id: int
