@@ -30,7 +30,7 @@
         "order": "2",
         "text": "Location",
         "type": "cascade",
-        "attributes": ["advanced_filter"]
+        "attributes": ["advance_filter"]
       },
       {
         "id": "721880978",
@@ -67,7 +67,7 @@
         "order": "4",
         "text": "Type of school",
         "type": "option",
-        "attributes": ["advanced_filter", "indicator"]
+        "attributes": ["advance_filter", "indicator"]
       },
       {
         "help": {
