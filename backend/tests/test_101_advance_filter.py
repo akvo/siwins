@@ -24,3 +24,31 @@ class TestQuestionRoutes:
             "option": [],
             "attributes": []
         }
+        # filter by question attribute
+        res = await client.get(
+            app.url_path_for("question:get_all_question"),
+            params={"attribute": "indicator"}
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res[0] == {
+            "id": 718001069,
+            "name": "Type of school",
+            "attributes": ["advance_filter", "indicator"],
+            "option": [{
+                "id": 1,
+                "name": "Junior school",
+                "code": None,
+                "order": None
+            }, {
+                "id": 2,
+                "name": "Primary school",
+                "code": None,
+                "order": None
+            }, {
+                "id": 3,
+                "name": "High school",
+                "code": None,
+                "order": None
+            }],
+        }
