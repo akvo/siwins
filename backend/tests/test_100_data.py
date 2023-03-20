@@ -14,14 +14,32 @@ class TestDataRoutes:
     async def test_get_maps_data(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
+        # without indicator
         res = await client.get(app.url_path_for("data:get_maps_data"))
         assert res.status_code == 200
         res = res.json()
         assert res == [
             {
                 "id": 642650980,
+                "identifier": "dfmn-hw5g-11se",
                 "name": "SMA Negeri 1 Nusa Penida - High school",
                 "geo": [-8.676368333333333, 115.49182166666667],
+                "answer": {}
+            }
+        ]
+        # with indicator
+        res = await client.get(
+            app.url_path_for("data:get_maps_data"),
+            params={"indicator": 738950915})
+        assert res.status_code == 200
+        res = res.json()
+        assert res == [
+            {
+                "id": 642650980,
+                "identifier": "dfmn-hw5g-11se",
+                "name": "SMA Negeri 1 Nusa Penida - High school",
+                "geo": [-8.676368333333333, 115.49182166666667],
+                "answer": {"question": 738950915, "value": 'Clean'}
             }
         ]
 
