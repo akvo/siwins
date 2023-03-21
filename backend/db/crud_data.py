@@ -105,8 +105,9 @@ def get_all_data(
         or_query = or_(
             ViewAdvanceFilter.options.contains([opt]) for opt in options
         )
-        data_id = session.query(ViewAdvanceFilter.data).filter(or_query).all()
-        data = data.filter(Data.id.in_([d.data for d in data_id]))
+        data_id = session.query(
+            ViewAdvanceFilter.identifier).filter(or_query).all()
+        data = data.filter(Data.identifier.in_([d.data for d in data_id]))
     data = data.all()
     return data
 
