@@ -24,7 +24,7 @@ class GeoData(BaseModel):
 
 class DataDict(TypedDict):
     id: int
-    name: str
+    name: Optional[str] = None
     form: int
     registration: bool
     datapoint_id: Optional[int] = None

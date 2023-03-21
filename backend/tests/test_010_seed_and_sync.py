@@ -232,11 +232,13 @@ class TestSeedAndSync:
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         # registration data
-        data = crud_data.get_all_data(session=session, registration=True)
+        data = crud_data.get_data_by_registration(
+            session=session, registration=True)
         data = [d.serialize for d in data]
         assert data == res_data
         # monitoring data
-        temp_data = crud_data.get_all_data(session=session, registration=False)
+        temp_data = crud_data.get_data_by_registration(
+            session=session, registration=False)
         data = [d.serialize for d in temp_data]
         assert data == []
         # monitoring format

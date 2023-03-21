@@ -80,13 +80,15 @@ def delete_bulk(session: Session, ids: List[int]) -> None:
 
 def get_data(
     session: Session,
-    form: int,
     skip: int,
     perpage: int,
+    form: Optional[int] = None,
     options: List[str] = None,
     question: List[int] = None,
 ) -> PaginatedData:
-    data = session.query(Data).filter(Data.form == form)
+    data = session.query(Data)
+    if form:
+        data = data.filter(Data.form == form)
     count = data.count()
     data = data.order_by(desc(Data.id))
     data = data.offset(skip).limit(perpage).all()

@@ -140,7 +140,8 @@ for i in range(repeats):
 
 # populate data monitoring history
 
-data_monitoring = crud_data.get_all_data(session=session, registration=False)
+data_monitoring = crud_data.get_data_by_registration(
+    session=session, registration=False)
 for dm in data_monitoring:
     generate_fake_history(session=session, datapoint=dm)
 # refresh materialized view

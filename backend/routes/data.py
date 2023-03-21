@@ -1,3 +1,4 @@
+from math import ceil
 from http import HTTPStatus
 from fastapi import Depends, Request
 from fastapi import APIRouter, HTTPException, Query
@@ -9,7 +10,7 @@ from sqlalchemy.orm import Session
 from db import crud_data, crud_answer, crud_question
 from db.connection import get_session
 from models.data import MapsData, MonitoringData
-from models.data import DataDetail
+from models.data import DataDetail, DataResponse
 from models.answer import Answer
 from models.history import History
 from models.question import QuestionType
@@ -17,6 +18,39 @@ from middleware import check_query
 
 security = HTTPBearer()
 data_route = APIRouter()
+
+
+@data_route.get(
+    "/data",
+    response_model=DataResponse,
+    name="data:get_all",
+    summary="get all data with pagination",
+    tags=["Data"]
+)
+def get_data(
+    req: Request,
+    page: int = 1,
+    perpage: int = 10,
+    form_id: int = Query(None),
+    session: Session = Depends(get_session)
+):
+    res = crud_data.get_data(
+        session=session,
+        skip=(perpage * (page - 1)),
+        perpage=perpage)
+    count = res.get("count")
+    if not count:
+        return []
+    total_page = ceil(count / perpage) if count > 0 else 0
+    if total_page < page:
+        return []
+    data = [d.serialize for d in res.get("data")]
+    return {
+        "current": page,
+        "data": data,
+        "total": count,
+        "total_page": total_page,
+    }
 
 
 @data_route.get(
