@@ -17,7 +17,7 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { generateAdvanceFilterURL } from "../util/utils";
 import { UIState } from "../state/ui";
 
-const Markers = ({ zoom, data, getChartData, getRegistrationData }) => {
+const Markers = ({ zoom, data, getChartData }) => {
   const [hovered, setHovered] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(zoom);
 
@@ -37,7 +37,6 @@ const Markers = ({ zoom, data, getChartData, getRegistrationData }) => {
         eventHandlers={{
           click: () => {
             getChartData(id);
-            getRegistrationData(id);
           },
           mouseover: () => setHovered(id),
           mouseout: () => setHovered(null),
@@ -65,7 +64,6 @@ const Map = () => {
   const defCenter = [-8.670677602749869, 115.21310410475814];
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [registrationData, setRegistrationData] = useState([]);
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [chartData, setChartData] = useState(null);
   const [activePanel, setActivePanel] = useState(1);
@@ -103,18 +101,6 @@ const Map = () => {
           ...m,
         }));
         setChartData({ ...data, monitoring: monitoring });
-      })
-      .catch((e) => console.error(e));
-  };
-
-  const getRegistrationData = (id) => {
-    setSelectedPoint(data.find((d) => d.id === id));
-    const url = `/data/${id}?history=false`;
-    api
-      .get(url)
-      .then((res) => {
-        const data = res.data;
-        setRegistrationData(data?.registration_data);
       })
       .catch((e) => console.error(e));
   };
@@ -171,12 +157,7 @@ const Map = () => {
               data={geojson}
             />
             {!loading && (
-              <Markers
-                zoom={defZoom}
-                data={data}
-                getChartData={getChartData}
-                getRegistrationData={getRegistrationData}
-              />
+              <Markers zoom={defZoom} data={data} getChartData={getChartData} />
             )}
           </MapContainer>
         </div>
@@ -213,7 +194,7 @@ const Map = () => {
             </div>
           ) : (
             <>
-              <RegistrationDetail data={registrationData} />
+              <RegistrationDetail data={chartData} />
               <Chart
                 activePanel={activePanel}
                 setActivePanel={setActivePanel}
@@ -229,12 +210,16 @@ const Map = () => {
 };
 
 const RegistrationDetail = ({ data }) => {
+  const { registration } = data;
+  if (!registration && !registration?.length) {
+    return "";
+  }
   return (
     <div className="registration-table">
-      {data?.map((detail) => (
-        <div className="registration-row" key={detail.question}>
+      {registration?.map((detail) => (
+        <div className="registration-row" key={detail.question_id}>
           <div className="registration-question">{detail.question}:</div>
-          <div className="registration-answer">{detail.answer}</div>
+          <div className="registration-answer">{detail.value}</div>
         </div>
       ))}
     </div>
