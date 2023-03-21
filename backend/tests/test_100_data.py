@@ -11,6 +11,42 @@ pytestmark = pytest.mark.asyncio
 
 class TestDataRoutes:
     @pytest.mark.asyncio
+    async def test_get_paginated_data(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        res = await client.get(app.url_path_for("data:get_all"))
+        assert res.status_code == 200
+        res = res.json()
+        assert res == {
+            "current": 1,
+            "data": [{
+                "id": 642650980,
+                "name": "SMA Negeri 1 Nusa Penida - High school",
+                "form": 733030972,
+                "registration": True,
+                "datapoint_id": 716330915,
+                "identifier": "dfmn-hw5g-11se",
+                "geo": {
+                    "long": 115.49182166666667,
+                    "lat": -8.676368333333333},
+                "created": "December 01, 2022",
+                "updated": "December 01, 2022",
+                "answer": [{
+                    "question": 718001069,
+                    "value": "High school"
+                }, {
+                    "question": 721880978,
+                    "value": "-8.676368333333333|115.49182166666667",
+                }, {
+                    "question": 738940972,
+                    "value": "SMA Negeri 1 Nusa Penida"
+                }],
+            }],
+            "total": 1,
+            "total_page": 1,
+        }
+
+    @pytest.mark.asyncio
     async def test_get_maps_data(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:

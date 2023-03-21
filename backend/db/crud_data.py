@@ -83,12 +83,15 @@ def get_data(
     skip: int,
     perpage: int,
     form: Optional[int] = None,
+    registration: Optional[bool] = None,
     options: List[str] = None,
     question: List[int] = None,
 ) -> PaginatedData:
     data = session.query(Data)
     if form:
         data = data.filter(Data.form == form)
+    if registration is not None:
+        data = data.filter(Data.registration == registration)
     count = data.count()
     data = data.order_by(desc(Data.id))
     data = data.offset(skip).limit(perpage).all()
@@ -150,6 +153,7 @@ def get_monitoring_data(session: Session, identifier: str):
     )
 
 
+# only for fake datapoint seeder
 def get_registration_only(session: Session):
     nodealias = aliased(Data)
     adp = session.scalars(
@@ -163,6 +167,7 @@ def get_registration_only(session: Session):
     )
 
 
+# not used
 def get_monitoring_by_id(session: Session, datapoint: Data) -> DataDict:
     nodealias = aliased(Data)
     return session.scalars(
@@ -172,6 +177,7 @@ def get_monitoring_by_id(session: Session, datapoint: Data) -> DataDict:
     ).first()
 
 
+# used on data_sync
 def get_last_history(
     session: Session, datapoint_id: int, id: int
 ) -> List[HistoryDict]:

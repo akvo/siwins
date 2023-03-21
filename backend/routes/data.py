@@ -34,8 +34,14 @@ def get_data(
     form_id: int = Query(None),
     session: Session = Depends(get_session)
 ):
+    # TODO:: How we handle registration monitoring form data ?
+    # if we do the pagination like this, the data will contains
+    # mix of registration and monitoring data
+    # I think better if we wait for the design
+    # for now only show registration data
     res = crud_data.get_data(
         session=session,
+        registration=True,
         skip=(perpage * (page - 1)),
         perpage=perpage)
     count = res.get("count")
