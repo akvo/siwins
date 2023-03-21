@@ -9,7 +9,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from db import crud_data, crud_answer, crud_question
 from db.connection import get_session
-from models.data import MapsData, MonitoringData
+from models.data import MapsData, ChartDataDetail
 from models.data import DataDetail, DataResponse
 from models.answer import Answer
 from models.history import History
@@ -132,7 +132,7 @@ def get_maps(
 
 @data_route.get(
     "/data/chart/{data_id}",
-    response_model=MonitoringData,
+    response_model=ChartDataDetail,
     name="data:get_chart_data",
     summary="get monitoring data for chart",
     tags=["Data"],
@@ -178,11 +178,10 @@ def get_data_detail_for_chart(
     monitoring = answers
     if histories:
         monitoring = answers + histories
-    return {
-        "id": data.id,
-        "name": data.name,
-        "monitoring": monitoring,
-    }
+    # serialize and update monitoring data
+    res = data.to_chart_detail
+    res["monitoring"] = monitoring
+    return res
 
 
 @data_route.get(

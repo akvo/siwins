@@ -62,9 +62,10 @@ class DataDetail(BaseModel):
     answer: List[AnswerDetailDict]
 
 
-class MonitoringData(TypedDict):
+class ChartDataDetail(TypedDict):
     id: int
     name: str
+    registration: Optional[List[AnswerDict]] = []
     monitoring: Optional[List[MonitoringAnswerDict]] = []
 
 
@@ -150,13 +151,15 @@ class Data(Base):
             "answer": {}
         }
 
+    # only used in test case
     @property
-    def to_monitoring_data(self) -> MonitoringData:
+    def to_monitoring_data(self) -> ChartDataDetail:
         answers = [a.to_monitoring for a in self.answer]
         histories = [h.to_monitoring for h in self.history]
         return {
             "id": self.id,
             "name": self.name,
+            "registration": [a.formatted for a in self.answer],
             "monitoring": answers + histories,
         }
 
@@ -169,6 +172,15 @@ class Data(Base):
                 "lat": self.geo[0], "long": self.geo[1]
             } if self.geo else None,
             "answer": [a.to_detail for a in self.answer]
+        }
+
+    @property
+    def to_chart_detail(self) -> ChartDataDetail:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "registration": [a.formatted for a in self.answer],
+            "monitoring": [],
         }
 
 

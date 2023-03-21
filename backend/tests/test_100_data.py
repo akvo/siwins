@@ -28,7 +28,8 @@ class TestDataRoutes:
                 "identifier": "dfmn-hw5g-11se",
                 "geo": {
                     "long": 115.49182166666667,
-                    "lat": -8.676368333333333},
+                    "lat": -8.676368333333333
+                },
                 "created": "December 01, 2022",
                 "updated": "December 01, 2022",
                 "answer": [{
