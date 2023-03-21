@@ -48,6 +48,36 @@ class TestDataRoutes:
         }
 
     @pytest.mark.asyncio
+    async def test_get_data_detail(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        res = await client.get(
+            app.url_path_for("data:get_data_detail", data_id=642650980))
+        assert res.status_code == 200
+        res = res.json()
+        assert res == {
+            "id": 642650980,
+            "name": "SMA Negeri 1 Nusa Penida - High school",
+            "geo": {
+                "long": 115.49182166666667,
+                "lat": -8.676368333333333
+            },
+            "answer": [{
+                "question_id": 718001069,
+                "value": "High school",
+                "history": False,
+            }, {
+                "question_id": 721880978,
+                "value": "-8.676368333333333|115.49182166666667",
+                "history": False,
+            }, {
+                "question_id": 738940972,
+                "value": "SMA Negeri 1 Nusa Penida",
+                "history": False,
+            }],
+        }
+
+    @pytest.mark.asyncio
     async def test_get_maps_data(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
