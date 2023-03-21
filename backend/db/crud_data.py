@@ -107,7 +107,8 @@ def get_all_data(
         )
         data_id = session.query(
             ViewAdvanceFilter.identifier).filter(or_query).all()
-        data = data.filter(Data.identifier.in_([d.data for d in data_id]))
+        data = data.filter(Data.identifier.in_(
+            [d.identifier for d in data_id]))
     data = data.all()
     return data
 

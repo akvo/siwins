@@ -7,6 +7,7 @@ class ViewAdvanceFilter(Base):
     __tablename__ = "advance_filter"
     data = Column(Integer, primary_key=True)
     options = Column(pg.ARRAY(Text))
+    identifier = Column(Text, nullable=True)
 
     def __repr__(self) -> int:
         return f"<ViewAdvanceFilter {self.data}>"
