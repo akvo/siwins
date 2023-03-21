@@ -19,25 +19,17 @@ advance_filter_with_multiple_option_value = PGMaterializedView(
     schema="public",
     signature="advance_filter",
     definition="""
-    SELECT 
-	tmp.data,
-	tmp.identifier,
-	tmp.registration,
-	tmp.form,
-	array_agg(CONCAT(tmp.question, '||', lower(tmp.options))) as options
+    SELECT 	tmp.data,
+        tmp.identifier,
+        tmp.registration,
+        tmp.form,
+        array_agg(CONCAT(tmp.question, '||', lower(tmp.options))) as options
     FROM (
-        SELECT 
-            a.data, 
-            a.question, 
-            a.id as answer_id,
-            unnest(a.options) as options,
-            d.identifier,
-            d.registration,
-            d.form
-        FROM answer a 
-        LEFT JOIN question q on q.id = a.question
+        SELECT a.data, a.question, a.id as answer_id,
+        unnest(a.options) as options, d.identifier, d.registration, d.form
+        FROM answer a LEFT JOIN question q on q.id = a.question
         LEFT JOIN data d on d.id = a.data
-        WHERE q.type = 'option'  or q.type = 'multiple_option' 
+        WHERE q.type = 'option'  or q.type = 'multiple_option'
     ) tmp GROUP BY tmp.data, tmp.identifier, tmp.registration, tmp.form;
     """,
 )
