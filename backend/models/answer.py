@@ -41,7 +41,7 @@ class AnswerDict(TypedDict):
     ]
 
 
-class AnswerDictForDetail(TypedDict):
+class AnswerDetailDict(TypedDict):
     question_id: int
     value: Union[
         int, float, str, bool, dict, List[str], List[int], List[float], None
@@ -135,7 +135,7 @@ class Answer(Base):
         return answer
 
     @property
-    def to_detail(self) -> AnswerDictForDetail:
+    def to_detail(self) -> AnswerDetailDict:
         answer = {
             "history": False,
             "question_id": self.question,
