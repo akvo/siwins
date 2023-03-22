@@ -30,7 +30,7 @@
         "order": "2",
         "text": "Location",
         "type": "cascade",
-        "attributes": ["advance_filter"]
+        "attributes": ["indicator"]
       },
       {
         "id": "721880978",

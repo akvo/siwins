@@ -31,7 +31,7 @@ class TestQuestionRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res[0] == {
+        assert res[1] == {
             "id": 718001069,
             "name": "Type of school",
             "attributes": ["advance_filter", "indicator"],
