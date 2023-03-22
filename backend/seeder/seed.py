@@ -6,6 +6,7 @@ from seeder.datapoint import datapoint_seeder
 from db.connection import Base, SessionLocal, engine
 from db import crud_sync
 from db.truncator import truncate, truncate_datapoint
+from utils.functions import refresh_materialized_data
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TESTING = os.environ.get("TESTING")
@@ -40,3 +41,5 @@ if sync_res.get("nextSyncUrl"):
 
 form_seeder(session=session, token=token, forms=forms)
 datapoint_seeder(session=session, token=token, forms=forms)
+# refresh materialized view
+refresh_materialized_data()

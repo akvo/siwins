@@ -10,7 +10,12 @@ from sqlalchemy import Boolean, Integer, String, Enum
 from sqlalchemy.orm import relationship
 import sqlalchemy.dialects.postgresql as pg
 from db.connection import Base
-from models.option import OptionBase
+from models.option import OptionDict, OptionBase
+
+
+class QuestionAttributes(enum.Enum):
+    indicator = "indicator"
+    advance_filter = "advance_filter"
 
 
 class QuestionType(enum.Enum):
@@ -28,6 +33,19 @@ class QuestionType(enum.Enum):
 class DependencyDict(TypedDict):
     id: int
     options: List[str]
+
+
+class QuestionFormatted(TypedDict):
+    id: int
+    name: str
+    option: Optional[List[OptionDict]] = []
+
+
+class QuestionFormattedWithAttributes(TypedDict):
+    id: int
+    name: str
+    attributes: Optional[List[str]] = []
+    option: Optional[List[OptionDict]] = []
 
 
 class QuestionDict(TypedDict):
@@ -58,7 +76,10 @@ class Question(Base):
     dependency = Column(pg.ARRAY(pg.JSONB), nullable=True)
 
     option = relationship(
-        "Option", cascade="all, delete", passive_deletes=True, backref="option"
+        "Option",
+        cascade="all, delete",
+        passive_deletes=True,
+        backref="option"
     )
 
     def __init__(
@@ -102,6 +123,23 @@ class Question(Base):
             "required": self.required,
             "dependency": self.dependency,
             "option": self.option,
+        }
+
+    @property
+    def formatted(self) -> QuestionFormatted:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "option": [o.serialize for o in self.option] or [],
+        }
+
+    @property
+    def formatted_with_attributes(self) -> QuestionFormatted:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "attributes": [],
+            "option": [o.serialize for o in self.option] or [],
         }
 
 

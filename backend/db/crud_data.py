@@ -2,13 +2,14 @@ from datetime import datetime
 from typing import List, Optional
 from typing_extensions import TypedDict
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, and_, select
+from sqlalchemy import desc, and_, select, or_
 from sqlalchemy.sql.expression import false
 from models.data import Data, DataDict
 from models.answer import Answer
 from models.history import History
 from models.answer import AnswerBase
 from models.history import HistoryDict
+from models.advance_filter import ViewAdvanceFilter
 from sqlalchemy.orm import aliased
 
 
@@ -92,8 +93,24 @@ def get_data(
     return PaginatedData(data=data, count=count)
 
 
-def get_all_data(session: Session, registration: bool) -> DataDict:
-    return session.query(Data).filter(Data.registration == registration).all()
+def get_all_data(
+    session: Session,
+    registration: bool,
+    options: List[str] = None,
+) -> DataDict:
+    data = session.query(Data).filter(Data.registration == registration)
+    if options:
+        # support multiple select options filter
+        # change query to filter data by or_ condition
+        or_query = or_(
+            ViewAdvanceFilter.options.contains([opt]) for opt in options
+        )
+        data_id = session.query(
+            ViewAdvanceFilter.identifier).filter(or_query).all()
+        data = data.filter(Data.identifier.in_(
+            [d.identifier for d in data_id]))
+    data = data.all()
+    return data
 
 
 def get_data_by_id(session: Session, id: int) -> DataDict:
