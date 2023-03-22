@@ -30,7 +30,7 @@ function AdvanceFilter({ customStyle = {} }) {
   };
 
   const getFilterData = useCallback(() => {
-    const url = `/question`;
+    const url = `/question?attribute=advance_filter`;
     api
       .get(url)
       .then((res) => {
