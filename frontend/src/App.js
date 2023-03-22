@@ -9,6 +9,7 @@ const { Header, Footer, Content } = Layout;
 const App = () => {
   return (
     <Layout className="layout">
+      <AdvanceFilter />
       <Header className="site-layout-header">
         <div className="logo">
           <h1>SI-WINS</h1>
@@ -26,7 +27,6 @@ const App = () => {
           })}
         /> */}
       </Header>
-      <AdvanceFilter />
       <Content className="site-layout-content">
         <Row>
           <Col span={24}>
