@@ -107,6 +107,8 @@ const Map = () => {
       .catch((e) => console.error(e));
   };
 
+  console.log(chartData);
+
   const getRegistrationData = (id) => {
     setSelectedPoint(data.find((d) => d.id === id));
     const url = `/data/${id}?history=false`;
@@ -214,12 +216,7 @@ const Map = () => {
           ) : (
             <>
               <RegistrationDetail data={registrationData} />
-              <Chart
-                activePanel={activePanel}
-                setActivePanel={setActivePanel}
-                chartData={chartData}
-                getChartDataWithHistory={getChartDataWithHistory}
-              />
+              <Chart type={"BAR"} data={[400, 300, 350, 200, 280]} />
             </>
           )}
         </Modal>

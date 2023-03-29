@@ -1,0 +1,55 @@
+@import "../../variables";
+
+#root {
+  .layout {
+    min-width: 100vw;
+    min-height: 100vh;
+    background-color: $white;
+    display: block;
+  }
+
+  .header {
+    width: 100%;
+    padding: $padding-container-y $padding-container-x;
+    background-color: $white;
+    color: $black;
+    z-index: 999;
+
+    .left {
+      a {
+        color: $black;
+      }
+
+      .brand {
+        .title {
+          font-size: 1.25rem;
+          display: inline-block;
+          line-height: inherit;
+          white-space: nowrap;
+          text-transform: uppercase;
+        }
+      }
+
+      .navigation {
+        font-size: 0.9rem;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
+    }
+
+    .right {
+      font-size: 0.9rem;
+      font-weight: 400;
+      text-transform: uppercase;
+
+      .translation-selection {
+        button {
+          color: #777777;
+          &.active {
+            color: #1890ff;
+          }
+        }
+      }
+    }
+  }
+}
