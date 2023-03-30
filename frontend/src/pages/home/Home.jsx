@@ -47,6 +47,7 @@ const Home = () => {
         </Row>
         <Row justify="space-between" align="middle" gutter={[48, 48]}>
           <Col span={8} className="icon-group">
+            <Image src="/images/icons/wash.png" preview={false} />
             <h3>WASH in Schools</h3>
             <p>
               Insights into the state of water sanitation and hygiene
@@ -55,6 +56,7 @@ const Home = () => {
             </p>
           </Col>
           <Col span={8} className="icon-group">
+            <Image src="/images/icons/jmp.png" preview={false} />
             <h3>JMP Indicators</h3>
             <p>
               Insights into the state of water sanitation and hygiene
@@ -63,6 +65,7 @@ const Home = () => {
             </p>
           </Col>
           <Col span={8} className="icon-group">
+            <Image src="/images/icons/summary.png" preview={false} />
             <h3>National Summaries</h3>
             <p>
               Insights into the state of water sanitation and hygiene
@@ -71,6 +74,7 @@ const Home = () => {
             </p>
           </Col>
           <Col span={8} className="icon-group">
+            <Image src="/images/icons/access.png" preview={false} />
             <h3>Access to Clean Water</h3>
             <p>
               Insights into the state of water sanitation and hygiene
@@ -79,6 +83,7 @@ const Home = () => {
             </p>
           </Col>
           <Col span={8} className="icon-group">
+            <Image src="/images/icons/sanitation.png" preview={false} />
             <h3>Sanitation Coverage</h3>
             <p>
               Insights into the state of water sanitation and hygiene
@@ -87,6 +92,7 @@ const Home = () => {
             </p>
           </Col>
           <Col span={8} className="icon-group">
+            <Image src="/images/icons/hygiene.png" preview={false} />
             <h3>Hygiene behaviour Change</h3>
             <p>
               Insights into the state of water sanitation and hygiene

@@ -99,6 +99,12 @@
           text-transform: capitalize;
           color: $blackTheme;
         }
+        .ant-image {
+          background: rgba(0, 155, 242, 0.2);
+          padding: 20px;
+          border-radius: 100%;
+          margin-bottom: 20px;
+        }
       }
     }
   }
