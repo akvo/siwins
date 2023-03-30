@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-import {
-  PieChartOutlined,
-  DesktopOutlined,
-  MenuUnfoldOutlined,
-} from "@ant-design/icons";
-import { Image, Layout, Menu, theme } from "antd";
+import { PieChartOutlined, DesktopOutlined } from "@ant-design/icons";
+import { Image, Layout, Menu } from "antd";
 const { Header, Content, Sider } = Layout;
 import "./style.scss";
 
@@ -14,10 +9,9 @@ const items = [
 ];
 
 const Dashboard = () => {
-  const [collapsed, setCollapsed] = useState(false);
   return (
     <Layout className="dashboard-layout">
-      <Sider width={300} trigger={null} collapsible collapsed={collapsed}>
+      <Sider width={300} trigger={null} collapsible>
         <div className="logo-container">
           <Image src="/images/dashboard-logo.png" preview={false} />
         </div>
