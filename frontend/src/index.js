@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import "antd/dist/reset.css";
@@ -8,12 +8,11 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 const history = createBrowserHistory();
-
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <Router history={history}>
     <App />
-  </Router>,
-  document.getElementById("root")
+  </Router>
 );
 
 // If you want to start measuring performance in your app, pass a function
