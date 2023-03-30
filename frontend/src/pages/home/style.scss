@@ -1,0 +1,44 @@
+@import "../../variables";
+
+#root {
+  #home {
+    .home-landing {
+      .intro-text {
+        h1 {
+          font-weight: 700;
+          font-size: 56px;
+          color: $blackTheme;
+          text-transform: capitalize;
+          line-height: 80px;
+        }
+        p {
+          color: $blackTheme;
+          font-weight: 400;
+          font-size: 20px;
+          text-transform: capitalize;
+          line-height: 35px;
+        }
+      }
+      padding-bottom: 20px;
+    }
+    .explore-button {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 25px 32px;
+      border: 4px solid $blackTheme;
+      border-radius: 4px;
+
+      span {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 23px;
+        color: $blackTheme;
+      }
+    }
+    .scroll-button {
+      padding: 0px 5px 0px 0px;
+    }
+  }
+}
