@@ -1,0 +1,41 @@
+@import "../../variables";
+
+#root {
+  .dashboard-layout {
+    min-height: 100vh;
+    aside {
+      background-color: $bg-grey-dashboard;
+      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+      .ant-menu {
+        background-color: $bg-grey-dashboard;
+        text-align: right;
+        .ant-menu-item {
+          flex-direction: column;
+          margin: 0;
+          height: auto;
+          line-height: normal;
+          width: 100%;
+        }
+        .ant-menu-title-content {
+          margin: 0;
+        }
+      }
+      .ant-layout-sider-trigger {
+        background-color: $bg-grey-dashboard;
+      }
+      .ant-layout-sider-children {
+        text-align: right;
+        .logo-container {
+          padding: 20px 40px;
+        }
+      }
+    }
+    .site-layout {
+      background-color: $white;
+      .ant-layout-header {
+        background-color: $bg-grey-dashboard;
+        padding: 20px;
+      }
+    }
+  }
+}

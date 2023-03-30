@@ -1,10 +1,13 @@
 import React from "react";
+import { Layout } from "antd";
 
 const Body = ({ children, className = "body", ...props }) => {
   return (
-    <div className={className} {...props}>
-      {children}
-    </div>
+    <Layout className="site-layout">
+      <div className={className} {...props}>
+        {children}
+      </div>
+    </Layout>
   );
 };
 

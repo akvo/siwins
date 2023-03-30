@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Space, Button, Image } from "antd";
+import { Row, Col, Space, Image } from "antd";
 import { Link } from "react-router-dom";
 
 const Header = ({ className = "header" }) => {
@@ -17,15 +17,9 @@ const Header = ({ className = "header" }) => {
       <Col className="right">
         <Space size="large" align="center">
           <div>
-            <Button type="link" size="large">
-              Maps
-            </Button>
-            <Button type="link" size="large">
-              Dashboard
-            </Button>
-            <Button type="link" size="large">
-              Documentation
-            </Button>
+            <Link to="/survey">Maps</Link>
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/documentation">Documentation</Link>
           </div>
         </Space>
       </Col>
