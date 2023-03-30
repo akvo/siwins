@@ -2,7 +2,11 @@
 
 #root {
   #home {
+    .container {
+      padding-bottom: 0;
+    }
     .home-landing {
+      background-color: $bg-grey;
       .intro-text {
         h1 {
           font-weight: 700;
@@ -19,26 +23,83 @@
           line-height: 35px;
         }
       }
-      padding-bottom: 20px;
-    }
-    .explore-button {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      padding: 25px 32px;
-      border: 4px solid $blackTheme;
-      border-radius: 4px;
+      .explore-row {
+        padding-top: 20px;
+        padding-bottom: 100px;
+        .explore-button {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          padding: 25px 32px;
+          border: 4px solid $blackTheme;
+          border-radius: 4px;
 
-      span {
+          span {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 23px;
+            color: $blackTheme;
+          }
+        }
+      }
+      .ant-image {
+        border-width: 8px 8px 0px 8px;
+        border-style: solid;
+        border-color: #000000;
+        box-shadow: 0px -16px 48px 16px rgba(0, 0, 0, 0.1);
+        border-radius: 8px 8px 0px 0px;
+      }
+    }
+    .metrics-section {
+      padding-top: 60px;
+      padding-bottom: 60px;
+      .title {
+        text-align: center;
         font-weight: 600;
         font-size: 16px;
         line-height: 23px;
-        color: $blackTheme;
+        text-transform: capitalize;
+        color: #009bf2;
+        padding-bottom: 10px;
       }
-    }
-    .scroll-button {
-      padding: 0px 5px 0px 0px;
+      h2 {
+        text-align: center;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 52px;
+        text-transform: capitalize;
+        color: $blackTheme;
+        padding-bottom: 10px;
+      }
+      .content {
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 174%;
+        text-align: center;
+        text-transform: capitalize;
+        color: #262626;
+        padding-bottom: 60px;
+      }
+      .icon-group {
+        text-align: center;
+        h3 {
+          font-weight: 600;
+          font-size: 20px;
+          line-height: 174%;
+          text-align: center;
+          text-transform: capitalize;
+          color: $blackTheme;
+        }
+        p {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 174%;
+          text-align: center;
+          text-transform: capitalize;
+          color: $blackTheme;
+        }
+      }
     }
   }
 }
