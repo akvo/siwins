@@ -29,6 +29,7 @@
           margin: auto 0 auto auto;
           display: block;
           text-align: center;
+          line-height: normal;
           p {
             margin-bottom: 0;
           }
@@ -36,6 +37,10 @@
             display: block;
             line-height: initial;
             margin: 0;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 23px;
+            color: #262626;
           }
         }
       }
@@ -56,6 +61,9 @@
         background-color: $bg-grey-dashboard;
         padding: 20px 40px;
         height: 140px;
+      }
+      .dashboard-content {
+        padding: 20px;
       }
     }
   }
