@@ -63,7 +63,110 @@
         height: 140px;
       }
       .dashboard-content {
-        padding: 20px;
+        padding: 20px 30px;
+        #map,
+        #dashboard {
+          h2 {
+            font-weight: 600;
+            font-size: 36px;
+            line-height: 52px;
+            color: #4d4d4d;
+          }
+          p {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 23px;
+            color: #4d4d4d;
+            span {
+              color: #0093d5;
+            }
+          }
+
+          .map-wrapper {
+            margin-top: 30px;
+            background: rgba(69, 173, 217, 0.15) 0% 0% no-repeat padding-box;
+            border: 1px solid rgba(69, 173, 217, 0.15);
+            border-radius: 20px 0px 0px 20px;
+          }
+          .map-container {
+            width: 100% !important;
+            height: 87vh !important;
+          }
+
+          .loading-wrapper {
+            padding: 50px 0 25px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .custom-marker-cluster {
+            background: #ffffff;
+            border: 2px solid #f00800;
+            border-radius: 50%;
+            color: #000000;
+            height: 33px;
+            line-height: 30px;
+            text-align: center;
+            width: 33px;
+          }
+
+          .registration-table {
+            width: 100%;
+            margin-bottom: 10px;
+          }
+          .registration-table .registration-row {
+            display: flex;
+            align-items: center;
+            padding: 10px 0px;
+          }
+          .registration-table .registration-row:not(:last-of-type) {
+            border-bottom: 0.25px solid #a5b0c9;
+          }
+          .registration-row .registration-question {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 20px;
+            color: #181818;
+            padding-right: 10px;
+          }
+          .detail-modal .title-holder {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+          .detail-modal .title-holder p {
+            margin-bottom: 0px;
+          }
+          .detail-modal .ant-modal-content {
+            padding: 0px;
+          }
+          .detail-modal .ant-modal-body {
+            padding: 10px 20px 20px;
+          }
+          .detail-modal .ant-modal-header {
+            border-bottom: 0.25px solid #a5b0c9;
+            padding-bottom: 10px;
+            padding: 20px 20px;
+            margin-bottom: 0px;
+          }
+          .advance-search-container {
+            padding: 20px;
+          }
+          .advance-search-container .ant-tag {
+            margin-top: 20px;
+          }
+          .advance-search-container .ant-collapse-header {
+            padding: 0 !important;
+          }
+          .advance-search-container .ant-checkbox-wrapper {
+            display: block;
+            margin-left: 0;
+          }
+          .advance-search-container .ant-checkbox-inner {
+            display: inline-block;
+          }
+        }
       }
     }
   }
