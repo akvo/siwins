@@ -41,13 +41,12 @@
       font-size: 0.9rem;
       font-weight: 400;
       text-transform: uppercase;
-
-      .translation-selection {
-        button {
-          color: #777777;
-          &.active {
-            color: #1890ff;
-          }
+      button {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 23px;
+        &.active {
+          color: #1890ff;
         }
       }
     }

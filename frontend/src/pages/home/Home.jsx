@@ -102,6 +102,22 @@ const Home = () => {
           </Col>
         </Row>
       </section>
+      <section className="about-section container">
+        <Row align="middle" justify="center">
+          <Col>
+            <Image src="/images/unicef-logo.png" preview={false} />
+            <p className="about-content">
+              We are able to monitor the performance of our projects across the
+              country thanks to the data explorer
+            </p>
+            <div className="info-content">
+              <Image src="/images/about.png" preview={false} />
+              <h3>Jeremy Abula</h3>
+              <p>Programme Manager, UNICEF</p>
+            </div>
+          </Col>
+        </Row>
+      </section>
     </div>
   );
 };
