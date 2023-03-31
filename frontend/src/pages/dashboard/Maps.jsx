@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col } from "antd";
 import { Map } from "../../components";
+import AdvanceFilter from "../../components/filter";
 
 function Maps() {
   return (
@@ -13,6 +14,11 @@ function Maps() {
               Last Updated : <span>22 / 03 / 2023 </span>
             </p>
           </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
+          <AdvanceFilter />
         </Col>
       </Row>
       <Row>

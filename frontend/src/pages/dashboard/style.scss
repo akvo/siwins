@@ -61,6 +61,7 @@
         background-color: $bg-grey-dashboard;
         padding: 20px 40px;
         height: 140px;
+        border: 1px solid #dcdcdc;
       }
       .dashboard-content {
         padding: 20px 30px;
@@ -157,9 +158,18 @@
             margin-bottom: 0px;
           }
           .advance-search-container {
-            padding: 20px;
+            width: 100%;
+            button {
+              width: 100%;
+              span {
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 23px;
+                color: #4d4d4d;
+              }
+            }
           }
-          .advance-search-container .ant-tag {
+          .ant-tag {
             margin-top: 20px;
           }
           .advance-search-container .ant-collapse-header {
@@ -171,6 +181,9 @@
           }
           .advance-search-container .ant-checkbox-inner {
             display: inline-block;
+          }
+          .search-question-option-wrapper {
+            margin-top: 20px;
           }
         }
       }

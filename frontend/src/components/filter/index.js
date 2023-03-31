@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
-  Collapse,
   Button,
   Space,
   Select,
@@ -8,20 +7,21 @@ import {
   Checkbox,
   Tag,
   Popover,
+  Row,
+  Col,
 } from "antd";
-import { FilterOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import { UIState } from "../../state/ui";
 import isEmpty from "lodash/isEmpty";
 import sortBy from "lodash/sortBy";
 import { api } from "../../lib";
 
-const { Panel } = Collapse;
-
 function AdvanceFilter({ customStyle = {} }) {
   const { advanceSearchValue } = UIState.useState((s) => s);
-  const [selectedPanel, setSelectedPanel] = useState([]);
+  const [showAdvanceFilter, setShowAdvanceFilter] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState([]);
   const [question, setQuestion] = useState([]);
+  const [indicatorQuestion, setIndicatorQuestion] = useState([]);
   const [advancedFilterFeature] = useState({ isMultiSelect: true });
 
   const handleOnChangeQuestionDropdown = (id) => {
@@ -39,9 +39,20 @@ function AdvanceFilter({ customStyle = {} }) {
       .catch((e) => console.error(e));
   }, []);
 
+  const getIndicatorData = useCallback(() => {
+    const url = `/question?attribute=indicator`;
+    api
+      .get(url)
+      .then((res) => {
+        setIndicatorQuestion(res?.data);
+      })
+      .catch((e) => console.error(e));
+  }, []);
+
   useEffect(() => {
     getFilterData();
-  }, [getFilterData]);
+    getIndicatorData();
+  }, [getFilterData, getIndicatorData]);
 
   const handleOnChangeQuestionOption = (value, type) => {
     const filterAdvanceSearchValue = advanceSearchValue.filter(
@@ -65,61 +76,70 @@ function AdvanceFilter({ customStyle = {} }) {
 
   return (
     <div>
-      <div className="advance-search-container" style={customStyle}>
-        {/* Question filter */}
-        <Collapse
-          ghost
-          collapsible="header"
-          className="advance-search-collapse"
-          activeKey={selectedPanel}
-          onChange={(e) => setSelectedPanel(e)}
-        >
-          <Panel
-            className="advance-search-panel"
-            header={<Button icon={<FilterOutlined />}>Advance Filter</Button>}
-            showArrow={false}
-            key="advance-search"
+      <Row className="advance-search-container">
+        <Col span={18}>
+          <Select
+            style={{ width: "98%" }}
+            showSearch
+            placeholder="Select"
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+            options={indicatorQuestion.map((q) => ({
+              label: q.name,
+              value: q.id,
+            }))}
+          />
+        </Col>
+        <Col span={6}>
+          <Button onClick={() => setShowAdvanceFilter(!showAdvanceFilter)}>
+            Advance Filter
+          </Button>
+        </Col>
+      </Row>
+      {showAdvanceFilter && (
+        <div style={customStyle}>
+          {/* Question filter */}
+          <Space
+            direction="vertical"
+            className="search-question-option-wrapper"
+            size="middle"
+            style={{ width: "100%" }}
           >
-            <Space
-              direction="vertical"
-              className="search-question-option-wrapper"
-              size="middle"
+            <Select
               style={{ width: "100%" }}
-            >
-              <Select
-                style={{ width: "100%" }}
-                showSearch
-                placeholder="Advance Filter"
-                className="search-question-select"
-                options={question.map((q) => ({
-                  label: q.name,
-                  value: q.id,
-                }))}
-                optionFilterProp="label"
-                filterOption={(input, option) =>
-                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                value={!isEmpty(selectedQuestion) ? [selectedQuestion?.id] : []}
-                onChange={handleOnChangeQuestionDropdown}
-              />
-              {!isEmpty(selectedQuestion) && (
-                <>
-                  <RenderQuestionOption
-                    selectedQuestion={selectedQuestion}
-                    handleOnChangeQuestionOption={handleOnChangeQuestionOption}
-                    advancedFilterFeature={advancedFilterFeature}
-                  />
-                  <Button block={true} onClick={() => setSelectedPanel([])}>
-                    Close
-                  </Button>
-                </>
-              )}
-            </Space>
-          </Panel>
-        </Collapse>
-        {/* Tags of selected filter */}
-        {!isEmpty(advanceSearchValue) && <RenderFilterTag />}
-      </div>
+              showSearch
+              placeholder="Advance Filter"
+              className="search-question-select"
+              options={question.map((q) => ({
+                label: q.name,
+                value: q.id,
+              }))}
+              optionFilterProp="label"
+              filterOption={(input, option) =>
+                option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              value={!isEmpty(selectedQuestion) ? [selectedQuestion?.id] : []}
+              onChange={handleOnChangeQuestionDropdown}
+            />
+            {!isEmpty(selectedQuestion) && (
+              <>
+                <RenderQuestionOption
+                  selectedQuestion={selectedQuestion}
+                  handleOnChangeQuestionOption={handleOnChangeQuestionOption}
+                  advancedFilterFeature={advancedFilterFeature}
+                />
+                <Button block={true} onClick={() => setSelectedQuestion([])}>
+                  Close
+                </Button>
+              </>
+            )}
+          </Space>
+          {/* Tags of selected filter */}
+          {!isEmpty(advanceSearchValue) && <RenderFilterTag />}
+        </div>
+      )}
     </div>
   );
 }
