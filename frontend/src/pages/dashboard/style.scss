@@ -86,11 +86,17 @@
             margin-top: 30px;
             background: rgba(69, 173, 217, 0.15) 0% 0% no-repeat padding-box;
             border: 1px solid rgba(69, 173, 217, 0.15);
-            border-radius: 20px 0px 0px 20px;
+            border-radius: 10px;
           }
           .map-container {
             width: 100% !important;
             height: 87vh !important;
+            filter: drop-shadow(4px 4px 12px rgba(0, 0, 0, 0.1));
+            border-radius: 10px;
+          }
+          .leaflet-container {
+            filter: drop-shadow(4px 4px 12px rgba(0, 0, 0, 0.1));
+            border-radius: 10px;
           }
 
           .loading-wrapper {
