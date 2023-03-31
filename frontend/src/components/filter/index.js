@@ -81,7 +81,7 @@ function AdvanceFilter({ customStyle = {} }) {
           <Select
             style={{ width: "98%" }}
             showSearch
-            placeholder="Select"
+            placeholder="Select question"
             optionFilterProp="children"
             filterOption={(input, option) =>
               (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
@@ -94,7 +94,7 @@ function AdvanceFilter({ customStyle = {} }) {
         </Col>
         <Col span={6}>
           <Button onClick={() => setShowAdvanceFilter(!showAdvanceFilter)}>
-            Advance Filter
+            Advanced Filter
           </Button>
         </Col>
       </Row>
