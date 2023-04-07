@@ -46,7 +46,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                     if not question:
                         # print(f"{kval}: 404 not found")
                         continue
-                    if question.type == QuestionType.geo and question.meta_geo:
+                    if question.type == QuestionType.geo or question.meta_geo:
                         geoVal = [aval.get("lat"), aval.get("long")]
                     answer = Answer(
                         question=question.id,
