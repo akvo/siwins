@@ -582,7 +582,8 @@
           },
           "order": "2",
           "text": "In the previous two weeks, was drinking water from the main source available at the school throughout each school day?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator", "advance_filter"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "624660930" },
@@ -626,7 +627,8 @@
           },
           "order": "4",
           "text": "Is drinking water from the main source typically available throughout the school year?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator", "advance_filter"]
         }
       ],
       "repeatable": false
@@ -659,7 +661,8 @@
           },
           "order": "1",
           "text": "Is drinking water accessible to those with limited mobility or vision?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator", "advance_filter"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "630020922" },
@@ -690,7 +693,8 @@
           },
           "order": "3",
           "text": "Is drinking water accessible to the smallest children at the school?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator", "advance_filter"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "630020920" },
@@ -712,7 +716,8 @@
             "allowDecimal": false,
             "signed": false,
             "validationType": "numeric"
-          }
+          },
+          "attributes": ["indicator", "advance_filter"]
         }
       ],
       "repeatable": false
@@ -884,7 +889,8 @@
           },
           "order": "7",
           "text": "Does the school do anything (treatment) to the water from the main source to make it safe to drink?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator", "advance_filter"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "624680928" },
@@ -918,7 +924,8 @@
           },
           "order": "8",
           "text": "If treated, what sort of treatment is conducted?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": {
@@ -961,7 +968,8 @@
           },
           "order": "10",
           "text": "Is the school\u2019s main water source compliant with national standards for drinking water?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         }
       ],
       "repeatable": false
@@ -1287,7 +1295,8 @@
           },
           "order": "12",
           "text": "Where are the student toilets located?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "592240929" },
@@ -1466,7 +1475,8 @@
           },
           "order": "1",
           "text": "How many times per week are the student toilets cleaned?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "649140920" },
@@ -1516,7 +1526,8 @@
           },
           "order": "1",
           "text": "Is there at least one usable toilet/latrine that is accessible to the smallest children at the school?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "643200923" },
@@ -1543,7 +1554,8 @@
           },
           "order": "3",
           "text": "Is there at least one usable toilet/latrine that is accessible to those with limited mobility or vision?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "643200920" },
@@ -1588,7 +1600,8 @@
         },
         "order": "1",
         "text": "When are students permitted to use the school toilets/latrines?",
-        "type": "option"
+        "type": "option",
+        "attributes": ["indicator"]
       },
       "repeatable": false
     },
@@ -1616,7 +1629,8 @@
           },
           "order": "1",
           "text": "Are culturally appropriate anal cleansing materials currently available to all students?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "649140920" },
@@ -1639,7 +1653,8 @@
           },
           "order": "2",
           "text": "Is there currently functional lighting in the student toilets?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": {
@@ -1661,7 +1676,8 @@
           },
           "order": "3",
           "text": "Are latrines or septic tanks emptied (or latrines safely covered) when they fill up?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         }
       ],
       "repeatable": false
@@ -1828,7 +1844,8 @@
           },
           "order": "1",
           "text": "Are there handwashing facilities accessible to those with limited mobility or vision?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "638770930" },
@@ -1847,7 +1864,8 @@
           },
           "order": "2",
           "text": "Are there handwashing facilities accessible to the smallest children at the school?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "638770930" },
@@ -1925,7 +1943,8 @@
           },
           "order": "1",
           "text": "Where are handwashing facilities with water and soap located at the school? (mark all that apply)",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "638770930" },
@@ -1939,7 +1958,8 @@
             "allowDecimal": false,
             "signed": false,
             "validationType": "numeric"
-          }
+          },
+          "attributes": ["indicator"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "638770930" },
@@ -1993,7 +2013,8 @@
         },
         "order": "1",
         "text": "How many times per week are group handwashing activities conducted for all students?",
-        "type": "option"
+        "type": "option",
+        "attributes": ["indicator"]
       },
       "repeatable": false
     },
@@ -2025,7 +2046,8 @@
           },
           "order": "1",
           "text": "Are water and soap available in a private space for girls to manage menstrual hygiene?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": { "answer-value": "Yes", "question": "649140920" },
@@ -2048,7 +2070,8 @@
           },
           "order": "2",
           "text": "Are there covered bins for disposal of menstrual materials in the toilets used by women and girls?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "id": "638790936",
@@ -2100,7 +2123,8 @@
           },
           "order": "4",
           "text": "Which of the following provisions for Menstrual Hygiene Management (MHM) are available at the school?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "id": "638790932",
@@ -2188,7 +2212,8 @@
             "allowDecimal": false,
             "signed": false,
             "validationType": "numeric"
-          }
+          },
+          "attributes": ["indicator"]
         },
         {
           "dependency": {
@@ -2209,7 +2234,8 @@
           },
           "order": "2",
           "text": "Are there separate facilities or times for students and residential staff to bathe?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": {
@@ -2230,7 +2256,8 @@
           },
           "order": "3",
           "text": "Is there at least one bathing area that is accessible for females with limited mobility and a separate one for males with limited mobility?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         },
         {
           "dependency": {
@@ -2252,7 +2279,8 @@
           },
           "order": "4",
           "text": "Is there hot water available in the student bathing areas?",
-          "type": "option"
+          "type": "option",
+          "attributes": ["indicator"]
         }
       ],
       "repeatable": false

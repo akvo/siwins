@@ -41,4 +41,31 @@ class TestQuestionRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == []
+        name = 'Is drinking water from the main source '
+        name += 'typically available throughout the school year?'
+        assert res[1] == {
+            'id': 624660927,
+            'name': name,
+            'attributes': ['indicator', 'advance_filter'],
+            'option': [{
+                'id': 47,
+                'name': 'Yes (always available)',
+                'order': None,
+                'code': None
+            }, {
+                'id': 48,
+                'name': 'Mostly (unavailable ≤ 30 days total)',
+                'order': None,
+                'code': None
+            }, {
+                'id': 49,
+                'name': 'No (unavailable > 30 days total)',
+                'order': None,
+                'code': None
+            }, {
+                'id': 50,
+                'name': "Don't know/can't say",
+                'order': None,
+                'code': None
+            }]
+        }
