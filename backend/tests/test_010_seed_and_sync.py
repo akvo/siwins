@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
 from seeder.form import form_seeder
-# from seeder.datapoint import datapoint_seeder
+from seeder.datapoint import datapoint_seeder
 # from seeder.data_sync import data_sync, deleted_data_sync
 from db import crud_sync
 from db import crud_form
@@ -16,6 +16,188 @@ sys.path.append("..")
 pytestmark = pytest.mark.asyncio
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+res_answers = [{
+    "question": 649140920,
+    "value": "No"
+}, {
+    "question": 592240932,
+    "value": "Sea"
+}, {
+    "question": 634450928,
+    "value": "No"
+}, {
+    "question": 634450929,
+    "value": "No"
+}, {
+    "question": 638730944,
+    "value": "Yes"
+}, {
+    "question": 638730951,
+    "value": "Yes"
+}, {
+    "question": 634450922,
+    "value": "No"
+}, {
+    "question": 634450930,
+    "value": "No"
+}, {
+    "question": 638730950,
+    "value": "No"
+}, {
+    "question": 638790937,
+    "value": "Water only"
+}, {
+    "question": 638790936,
+    "value": "No"
+}, {
+    "question": 638790933,
+    "value": "Bathing areas( private and secure, door and lock and hangers)",
+}, {
+    "question": 638790932,
+    "value": "Yes"
+}, {
+    "question": 638790938,
+    "value": "Yes, for free"
+}, {
+    "question": 624680925,
+    "value": "No"
+}, {
+    "question": 624680923,
+    "value": "E-Coli"
+}, {
+    "question": 624680928,
+    "value": "No"
+}, {
+    "question": 624680926,
+    "value": "No"
+}, {
+    "question": 624670931,
+    "value": "Main"
+}, {
+    "question": 638730935,
+    "value": 12.0
+}, {
+    "question": 638730931,
+    "value": "Day School"
+}, {
+    "question": 638730937,
+    "value": "Galih Akvo"
+}, {
+    "question": 624670935,
+    "value": 100.0
+}, {
+    "question": 624670934,
+    "value": 12.0
+}, {
+    "question": 638730934,
+    "value": "12"
+}, {
+    "question": 638730930,
+    "value": 89.0
+}, {
+    "question": 624670930,
+    "value": 111.0
+}, {
+    "question": 624670933,
+    "value": "Mains Electricity"
+}, {
+    "question": 624670926,
+    "value": 7.0
+}, {
+    "question": 638730933,
+    "value": ["Guadalcanal", "Community High School", "AO CHS", "21710"],
+}, {
+    "question": 624670927,
+    "value": "Provincial Secondary School"
+}, {
+    "question": 638730929,
+    "value": "Non-Functioning"
+}, {
+    "question": 624670932,
+    "value": ""
+}, {
+    "question": 624670928,
+    "value": 12.0
+}, {
+    "question": 638730936,
+    "value": "-47.72084919070232|71.64445931032847"
+}, {
+    "question": 624670929,
+    "value": ""
+}, {
+    "question": 638730932,
+    "value": 21.0
+}, {
+    "question": 640620926,
+    "value": "Protected/covered well with pump"
+}, {
+    "question": 640620927,
+    "value": "On the premises of the school"
+}, {
+    "question": 640620928,
+    "value": "Between 500 and 1000 meters/1km"
+}, {
+    "question": 640620929,
+    "value": "Yes"
+}, {
+    "question": 638770930,
+    "value": "No"
+}, {
+    "question": 624660927,
+    "value": "Yes (always available)"
+}, {
+    "question": 624660928,
+    "value": "No"
+}, {
+    "question": 624660930,
+    "value": "No"
+}, {
+    "question": 642230925,
+    "value": "2-4 days/week"
+}, {
+    "question": 654960929,
+    "value": "2018"
+}, {
+    "question": 654960925,
+    "value": "Galih Akvo"
+}, {
+    "question": 654960928,
+    "value": "Tester"
+}, {
+    "question": 654960930,
+    "value": "Wayan Akvo"
+}, {
+    "question": 654960926,
+    "value": "Tester"
+}, {
+    "question": 654960927,
+    "value": 89.0
+}, {
+    "question": 630020922,
+    "value": "No"
+}, {
+    "question": 630020920,
+    "value": "No"
+}, {
+    "question": 630020919,
+    "value": 12.0
+}]
+res_data = [{
+    "id": 632510922,
+    "datapoint_id": 624690917,
+    "identifier": "d5bi-mkoi-qrej",
+    "name": "Untitled",
+    "form": 647170919,
+    "registration": True,
+    "geo": {
+        'lat': -47.72084919070232,
+        'long': 71.64445931032847
+    },
+    "created": "April 07, 2023",
+    "updated": "April 07, 2023",
+    "answer": res_answers,
+    "history": [],
+}]
 
 forms = []
 forms_config = "./source/forms.json"
@@ -36,8 +218,8 @@ class TestSeedAndSync:
         assert last_sync.url == sync_res.url
 
         form_seeder(session=session, token=token, forms=forms)
-        # TODO::enable datapoint seeder test
-        # datapoint_seeder(session=session, token=token, forms=forms)
+        # enable datapoint seeder test
+        datapoint_seeder(session=session, token=token, forms=forms)
         for form in forms:
             fid = form.get("id")
             check_form = crud_form.get_form_by_id(session=session, id=fid)
@@ -50,7 +232,7 @@ class TestSeedAndSync:
         # registration data
         data = crud_data.get_all_data(session=session, registration=True)
         data = [d.serialize for d in data]
-        assert data == []
+        assert data == res_data
         # monitoring data
         temp_data = crud_data.get_all_data(session=session, registration=False)
         data = [d.serialize for d in temp_data]
