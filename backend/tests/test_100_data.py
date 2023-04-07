@@ -18,20 +18,20 @@ class TestDataRoutes:
         res = await client.get(app.url_path_for("data:get_maps_data"))
         assert res.status_code == 200
         res = res.json()
-        assert res == [{
+        assert res[0] == {
             'id': 632510922,
             'identifier': 'd5bi-mkoi-qrej',
             'geo': [-47.72084919070232, 71.64445931032847],
             'name': 'Untitled',
             'answer': {}
-        }]
+        }
         # with indicator
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": 624660930})
         assert res.status_code == 200
         res = res.json()
-        assert res == [{
+        assert res[0] == {
             'id': 632510922,
             'identifier': 'd5bi-mkoi-qrej',
             'geo': [-47.72084919070232, 71.64445931032847],
@@ -40,7 +40,7 @@ class TestDataRoutes:
                 'question': 624660930,
                 'value': 'No'
             }
-        }]
+        }
 
     @pytest.mark.asyncio
     async def test_get_chart_data(

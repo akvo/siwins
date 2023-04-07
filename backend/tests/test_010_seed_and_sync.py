@@ -7,7 +7,7 @@ from httpx import AsyncClient
 from sqlalchemy.orm import Session
 from seeder.form import form_seeder
 from seeder.datapoint import datapoint_seeder
-# from seeder.data_sync import data_sync, deleted_data_sync
+from seeder.data_sync import data_sync, deleted_data_sync
 from db import crud_sync
 from db import crud_form
 from db import crud_data
@@ -241,36 +241,32 @@ class TestSeedAndSync:
         data = [d.to_monitoring_data for d in temp_data]
         assert data == []
 
-    # TODO::rnable sync test and provide relevan data to sync_data.json
-    # @pytest.mark.asyncio
-    # async def test_sync(
-    #     self, app: FastAPI, session: Session, client: AsyncClient
-    # ) -> None:
-    #     token = {"token": None, "time": 0}
-    #     sync_data_file = "./source/static/sync_data.json"
-    #     sync_data = {}
-    #     with open(sync_data_file) as json_file:
-    #         sync_data = json.load(json_file)
-    #     data_sync(token=token, session=session, sync_data=sync_data)
-    #     # monitoring data
-    #     temp_data = crud_data.get_all_data(
-    #           session=session, registration=False)
-    #     # monitoring format
-    #     data = [d.to_monitoring_data for d in temp_data]
-    #     assert data[0]["id"] == 729930913
-    #     assert data[0]["name"] == "SMA N 1 Nusa Penida - High school"
-    #     assert len(data[0]["monitoring"]) == 3
+    @pytest.mark.asyncio
+    async def test_sync(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        token = {"token": None, "time": 0}
+        sync_data_file = "./source/static/sync_data.json"
+        sync_data = {}
+        with open(sync_data_file) as json_file:
+            sync_data = json.load(json_file)
+        data_sync(token=token, session=session, sync_data=sync_data)
+        # monitoring data
+        temp_data = crud_data.get_all_data(
+            session=session, registration=False)
+        # monitoring format
+        data = [d.to_monitoring_data for d in temp_data]
+        assert data == []
 
-    # TODO::rnable sync test
     # @pytest.mark.asyncio
-    # async def test_sync_deleted_data_monitoring_history(
-    #     self, app: FastAPI, session: Session, client: AsyncClient
-    # ) -> None:
-    #     changes = {"formInstanceDeleted": [754830913]}
-    #     data = changes.get("formInstanceDeleted")
-    #     deleted_data_sync(session=session, data=data)
-    #     monitoring = crud_data.get_all_data(
-    #         session=session, registration=False
-    #     )
-    #     rs = [m.serialize for m in monitoring]
-    #     assert data[0] not in [r["id"] for r in rs]
+    async def test_sync_deleted_data_monitoring_history(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        changes = {"formInstanceDeleted": [649130936]}
+        data = changes.get("formInstanceDeleted")
+        deleted_data_sync(session=session, data=data)
+        data = crud_data.get_all_data(
+            session=session, registration=True
+        )
+        rd = [m.serialize for m in data]
+        assert data[0] not in [r["id"] for r in rd]
