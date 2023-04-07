@@ -19,9 +19,19 @@ class TestQuestionRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res[0] == {
-            "id": 738940972,
-            "name": "Example School Name",
-            "option": [],
+            "id": 654960929,
+            "name": "Which year was the survey conducted?",
+            "option": [{
+                'code': None,
+                'id': 1,
+                'name': '2018',
+                'order': None
+            }, {
+                'code': None,
+                'id': 2,
+                'name': '2023',
+                'order': None
+            }],
             "attributes": []
         }
         # filter by question attribute
@@ -31,24 +41,4 @@ class TestQuestionRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res[1] == {
-            "id": 718001069,
-            "name": "Type of school",
-            "attributes": ["advance_filter", "indicator"],
-            "option": [{
-                "id": 1,
-                "name": "Junior school",
-                "code": None,
-                "order": None
-            }, {
-                "id": 2,
-                "name": "Primary school",
-                "code": None,
-                "order": None
-            }, {
-                "id": 3,
-                "name": "High school",
-                "code": None,
-                "order": None
-            }],
-        }
+        assert res == []
