@@ -11,6 +11,7 @@ from seeder.data_sync import data_sync, deleted_data_sync
 from db import crud_sync
 from db import crud_form
 from db import crud_data
+from tests.conftest import test_refresh_materialized_data
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
@@ -220,6 +221,7 @@ class TestSeedAndSync:
         form_seeder(session=session, token=token, forms=forms)
         # enable datapoint seeder test
         datapoint_seeder(session=session, token=token, forms=forms)
+        test_refresh_materialized_data()
         for form in forms:
             fid = form.get("id")
             check_form = crud_form.get_form_by_id(session=session, id=fid)

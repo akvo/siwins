@@ -48,14 +48,14 @@ def get_maps(
         session=session, id=indicator)
     is_number = question.type == QuestionType.number \
         if question else False
-    if number and len(number) != 2:
-        raise HTTPException(
-            status_code=400,
-            detail="Bad Request, number param length must equal to 2")
     if number and not is_number:
         raise HTTPException(
             status_code=400,
             detail="Bad Request, indicator is not number type")
+    if number and len(number) != 2:
+        raise HTTPException(
+            status_code=400,
+            detail="Bad Request, number param length must equal to 2")
     # get all answers by indicator
     answer_data_ids = None
     answer_temp = {}
