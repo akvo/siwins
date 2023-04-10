@@ -96,7 +96,8 @@ def get_data(
 def get_all_data(
     session: Session,
     registration: bool,
-    options: List[str] = None,
+    options: Optional[List[str]] = None,
+    data_ids: Optional[List[int]] = None,
 ) -> DataDict:
     data = session.query(Data).filter(Data.registration == registration)
     if options:
@@ -109,6 +110,8 @@ def get_all_data(
             ViewAdvanceFilter.identifier).filter(or_query).all()
         data = data.filter(Data.identifier.in_(
             [d.identifier for d in data_id]))
+    if data_ids is not None:
+        data = data.filter(Data.id.in_(data_ids))
     data = data.all()
     return data
 
