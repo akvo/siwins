@@ -10,7 +10,9 @@ def check_query(keywords):
         return keys
     for q in keywords:
         if not query_pattern.match(q):
-            raise HTTPException(status_code=400, detail="Bad Request")
+            raise HTTPException(
+                status_code=400,
+                detail="Bad Request, wrong q pattern")
         else:
-            keys.append(q.replace("|", "||"))
+            keys.append(q.replace("|", "||").lower())
     return keys
