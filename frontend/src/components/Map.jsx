@@ -35,9 +35,9 @@ const Markers = ({ zoom, data, getChartData }) => {
         position={geo}
         icon={customIcon}
         eventHandlers={{
-          click: () => {
-            getChartData(id);
-          },
+          // click: () => {
+          //   getChartData(id);
+          // },
           mouseover: () => setHovered(id),
           mouseout: () => setHovered(null),
         }}

@@ -33,6 +33,7 @@ def append_value(
     if type == QuestionType.photo:
         answer.text = json.dumps(value)
     if type == QuestionType.geoshape:
+        print("GEOSHAPE", value)
         answer.text = json.dumps(value)
     if type == QuestionType.cascade:
         cascades = [v.get("name") for v in value] if value else []

@@ -105,6 +105,10 @@ for i in range(repeats):
                 if q.type == QuestionType.geo and geo:
                     answer.text = ("{}|{}").format(geo["lat"], geo["long"])
 
+                if q.type == QuestionType.photo:
+                    # TODO:: change this into flow photo answer format
+                    answer.text = json.dumps({'filename': fake.image_url()})
+
                 if q.type == QuestionType.text:
                     fa = fake.company()
                     answer.text = fa
