@@ -21,6 +21,7 @@ class TestQuestionRoutes:
         assert res[0] == {
             "id": 654960929,
             "name": "Which year was the survey conducted?",
+            "type": "option",
             "option": [{
                 'code': None,
                 'id': 1,
@@ -32,7 +33,8 @@ class TestQuestionRoutes:
                 'name': '2023',
                 'order': None
             }],
-            "attributes": []
+            "attributes": [],
+            "number": []
         }
         # filter by question attribute
         res = await client.get(
@@ -46,6 +48,7 @@ class TestQuestionRoutes:
         assert res[1] == {
             'id': 624660927,
             'name': name,
+            "type": "option",
             'attributes': ['indicator', 'advance_filter'],
             'option': [{
                 'id': 47,
@@ -67,5 +70,11 @@ class TestQuestionRoutes:
                 'name': "Don't know/can't say",
                 'order': None,
                 'code': None
-            }]
+            }],
+            'number': []
         }
+        for r in res:
+            if r['type'] != 'number' or not r['number']:
+                continue
+            assert r['type'] == 'number'
+            assert len(r['number']) == 2
