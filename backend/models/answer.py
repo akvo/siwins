@@ -41,6 +41,14 @@ class AnswerDict(TypedDict):
     ]
 
 
+class AnswerDictWithText(TypedDict):
+    question_id: int
+    question: str
+    value: Union[
+        int, float, str, bool, dict, List[str], List[int], List[float], None
+    ]
+
+
 class AnswerDetailDict(TypedDict):
     question_id: int
     value: Union[
@@ -118,6 +126,15 @@ class Answer(Base):
     def formatted(self) -> AnswerDict:
         answer = {
             "question": self.question,
+        }
+        answer = append_value(self, answer)
+        return answer
+
+    @property
+    def formatted_with_question_text(self) -> AnswerDictWithText:
+        answer = {
+            "question_id": self.question,
+            "question": self.question_detail.name
         }
         answer = append_value(self, answer)
         return answer

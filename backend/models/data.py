@@ -12,7 +12,7 @@ import sqlalchemy.dialects.postgresql as pg
 from sqlalchemy.orm import relationship
 from db.connection import Base
 from models.answer import Answer, AnswerDict, AnswerDetailDict
-from models.answer import AnswerBase, MonitoringAnswerDict
+from models.answer import AnswerBase, MonitoringAnswerDict, AnswerDictWithText
 from models.form import Form
 from models.history import History
 
@@ -65,7 +65,7 @@ class DataDetail(BaseModel):
 class ChartDataDetail(TypedDict):
     id: int
     name: str
-    registration: Optional[List[AnswerDict]] = []
+    registration: Optional[List[AnswerDictWithText]] = []
     monitoring: Optional[List[MonitoringAnswerDict]] = []
 
 
@@ -179,7 +179,10 @@ class Data(Base):
         return {
             "id": self.id,
             "name": self.name,
-            "registration": [a.formatted for a in self.answer],
+            "registration": [
+                a.formatted_with_question_text
+                for a in self.answer
+            ],
             "monitoring": [],
         }
 
