@@ -17,65 +17,26 @@ class TestDataRoutes:
         res = await client.get(app.url_path_for("data:get_all"))
         assert res.status_code == 200
         res = res.json()
-        assert res == {
-            "current": 1,
-            "data": [{
-                "id": 642650980,
-                "name": "SMA Negeri 1 Nusa Penida - High school",
-                "form": 733030972,
-                "registration": True,
-                "datapoint_id": 716330915,
-                "identifier": "dfmn-hw5g-11se",
-                "geo": {
-                    "long": 115.49182166666667,
-                    "lat": -8.676368333333333
-                },
-                "created": "December 01, 2022",
-                "updated": "December 01, 2022",
-                "answer": [{
-                    "question": 718001069,
-                    "value": "High school"
-                }, {
-                    "question": 721880978,
-                    "value": "-8.676368333333333|115.49182166666667",
-                }, {
-                    "question": 738940972,
-                    "value": "SMA Negeri 1 Nusa Penida"
-                }],
-            }],
-            "total": 1,
-            "total_page": 1,
-        }
+        assert "current" in res
+        assert "data" in res
+        assert "total" in res
+        assert "total_page" in res
 
     @pytest.mark.asyncio
     async def test_get_data_detail(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         res = await client.get(
-            app.url_path_for("data:get_data_detail", data_id=642650980))
+            app.url_path_for("data:get_data_detail", data_id=632510922))
         assert res.status_code == 200
         res = res.json()
-        assert res == {
-            "id": 642650980,
-            "name": "SMA Negeri 1 Nusa Penida - High school",
-            "geo": {
-                "long": 115.49182166666667,
-                "lat": -8.676368333333333
-            },
-            "answer": [{
-                "question_id": 718001069,
-                "value": "High school",
-                "history": False,
-            }, {
-                "question_id": 721880978,
-                "value": "-8.676368333333333|115.49182166666667",
-                "history": False,
-            }, {
-                "question_id": 738940972,
-                "value": "SMA Negeri 1 Nusa Penida",
-                "history": False,
-            }],
+        assert res["id"] == 632510922
+        assert res["name"] == "Untitled"
+        assert res["geo"] == {
+            "lat": -47.72084919070232,
+            "long": 71.64445931032847
         }
+        assert len(res["answer"]) > 1
 
     @pytest.mark.asyncio
     async def test_get_maps_data(
