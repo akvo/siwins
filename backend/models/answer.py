@@ -26,7 +26,8 @@ def append_value(self, answer):
     if type == QuestionType.multiple_option:
         answer.update({"value": self.options})
     if type == QuestionType.photo:
-        answer.update({"value": json.loads(self.text)})
+        obj = json.loads(self.text)
+        answer.update({"value": obj.get('filename')})
     if type == QuestionType.geoshape:
         answer.update({"value": json.loads(self.text)})
     if type == QuestionType.cascade:
@@ -44,6 +45,7 @@ class AnswerDict(TypedDict):
 class AnswerDictWithText(TypedDict):
     question_id: int
     question: str
+    type: QuestionType
     value: Union[
         int, float, str, bool, dict, List[str], List[int], List[float], None
     ]
@@ -134,7 +136,8 @@ class Answer(Base):
     def formatted_with_question_text(self) -> AnswerDictWithText:
         answer = {
             "question_id": self.question,
-            "question": self.question_detail.name
+            "question": self.question_detail.name,
+            "type": self.question_detail.type.value
         }
         answer = append_value(self, answer)
         return answer

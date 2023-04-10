@@ -11,7 +11,7 @@ import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
 import { geojson, tileOSM } from "../util/geo-util";
 import { api } from "../lib";
-import { Modal, Spin } from "antd";
+import { Modal, Spin, Image } from "antd";
 import { Chart } from "./supports";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { generateAdvanceFilterURL } from "../util/utils";
@@ -35,9 +35,9 @@ const Markers = ({ zoom, data, getChartData }) => {
         position={geo}
         icon={customIcon}
         eventHandlers={{
-          // click: () => {
-          //   getChartData(id);
-          // },
+          click: () => {
+            getChartData(id);
+          },
           mouseover: () => setHovered(id),
           mouseout: () => setHovered(null),
         }}
@@ -216,12 +216,24 @@ const RegistrationDetail = ({ data }) => {
   }
   return (
     <div className="registration-table">
-      {registration?.map((detail) => (
-        <div className="registration-row" key={detail.question_id}>
-          <div className="registration-question">{detail.question}:</div>
+      {registration?.map((detail) => {
+        let answerValue = (
           <div className="registration-answer">{detail.value}</div>
-        </div>
-      ))}
+        );
+        if (detail.type === "photo") {
+          answerValue = (
+            <div className="registration-answer">
+              <Image src={detail.value} />
+            </div>
+          );
+        }
+        return (
+          <div className="registration-row" key={detail.question_id}>
+            <div className="registration-question">{detail.question}:</div>
+            {answerValue}
+          </div>
+        );
+      })}
     </div>
   );
 };
