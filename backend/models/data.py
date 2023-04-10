@@ -11,8 +11,8 @@ from sqlalchemy import ForeignKey, DateTime, BigInteger
 import sqlalchemy.dialects.postgresql as pg
 from sqlalchemy.orm import relationship
 from db.connection import Base
-from models.answer import Answer, AnswerDict, AnswerDictForDetail
-from models.answer import AnswerBase, MonitoringAnswerDict
+from models.answer import Answer, AnswerDict, AnswerDetailDict
+from models.answer import AnswerBase, MonitoringAnswerDict, AnswerDictWithText
 from models.form import Form
 from models.history import History
 
@@ -24,7 +24,7 @@ class GeoData(BaseModel):
 
 class DataDict(TypedDict):
     id: int
-    name: str
+    name: Optional[str] = None
     form: int
     registration: bool
     datapoint_id: Optional[int] = None
@@ -58,13 +58,14 @@ class RegistrationDict(TypedDict):
 class DataDetail(BaseModel):
     id: int
     name: str
-    answers: List[AnswerDictForDetail]
-    registration_data: Optional[List[RegistrationDict]] = []
+    geo: Optional[GeoData] = None
+    answer: List[AnswerDetailDict]
 
 
-class MonitoringData(TypedDict):
+class ChartDataDetail(TypedDict):
     id: int
     name: str
+    registration: Optional[List[AnswerDictWithText]] = []
     monitoring: Optional[List[MonitoringAnswerDict]] = []
 
 
@@ -129,13 +130,13 @@ class Data(Base):
             "name": self.name,
             "form": self.form,
             "registration": self.registration,
-            "geo": {"lat": self.geo[0], "long": self.geo[1]}
-            if self.geo
-            else None,
+            "geo": {
+                "lat": self.geo[0], "long": self.geo[1]
+            } if self.geo else None,
             "created": self.created.strftime("%B %d, %Y"),
-            "updated": self.updated.strftime("%B %d, %Y")
-            if self.updated
-            else None,
+            "updated": self.updated.strftime(
+                "%B %d, %Y"
+            ) if self.updated else None,
             "answer": [a.formatted for a in self.answer],
             "history": [h.formatted for h in self.history],
         }
@@ -150,14 +151,39 @@ class Data(Base):
             "answer": {}
         }
 
+    # only used in test case
     @property
-    def to_monitoring_data(self) -> MonitoringData:
+    def to_monitoring_data(self) -> ChartDataDetail:
         answers = [a.to_monitoring for a in self.answer]
         histories = [h.to_monitoring for h in self.history]
         return {
             "id": self.id,
             "name": self.name,
+            "registration": [a.formatted for a in self.answer],
             "monitoring": answers + histories,
+        }
+
+    @property
+    def to_detail(self) -> DataDetail:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "geo": {
+                "lat": self.geo[0], "long": self.geo[1]
+            } if self.geo else None,
+            "answer": [a.to_detail for a in self.answer]
+        }
+
+    @property
+    def to_chart_detail(self) -> ChartDataDetail:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "registration": [
+                a.formatted_with_question_text
+                for a in self.answer
+            ],
+            "monitoring": [],
         }
 
 

@@ -11,6 +11,34 @@ pytestmark = pytest.mark.asyncio
 
 class TestDataRoutes:
     @pytest.mark.asyncio
+    async def test_get_paginated_data(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        res = await client.get(app.url_path_for("data:get_all"))
+        assert res.status_code == 200
+        res = res.json()
+        assert "current" in res
+        assert "data" in res
+        assert "total" in res
+        assert "total_page" in res
+
+    @pytest.mark.asyncio
+    async def test_get_data_detail(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        res = await client.get(
+            app.url_path_for("data:get_data_detail", data_id=632510922))
+        assert res.status_code == 200
+        res = res.json()
+        assert res["id"] == 632510922
+        assert res["name"] == "Untitled"
+        assert res["geo"] == {
+            "lat": -47.72084919070232,
+            "long": 71.64445931032847
+        }
+        assert len(res["answer"]) > 1
+
+    @pytest.mark.asyncio
     async def test_get_maps_data(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:

@@ -41,7 +41,15 @@ class AnswerDict(TypedDict):
     ]
 
 
-class AnswerDictForDetail(TypedDict):
+class AnswerDictWithText(TypedDict):
+    question_id: int
+    question: str
+    value: Union[
+        int, float, str, bool, dict, List[str], List[int], List[float], None
+    ]
+
+
+class AnswerDetailDict(TypedDict):
     question_id: int
     value: Union[
         int, float, str, bool, dict, List[str], List[int], List[float], None
@@ -123,6 +131,15 @@ class Answer(Base):
         return answer
 
     @property
+    def formatted_with_question_text(self) -> AnswerDictWithText:
+        answer = {
+            "question_id": self.question,
+            "question": self.question_detail.name
+        }
+        answer = append_value(self, answer)
+        return answer
+
+    @property
     def to_monitoring(self) -> MonitoringAnswerDict:
         answer = {
             "history": False,
@@ -135,7 +152,7 @@ class Answer(Base):
         return answer
 
     @property
-    def to_detail(self) -> AnswerDictForDetail:
+    def to_detail(self) -> AnswerDetailDict:
         answer = {
             "history": False,
             "question_id": self.question,
