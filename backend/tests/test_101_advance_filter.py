@@ -19,10 +19,22 @@ class TestQuestionRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res[0] == {
-            "id": 738940972,
-            "name": "Example School Name",
-            "option": [],
-            "attributes": []
+            "id": 654960929,
+            "name": "Which year was the survey conducted?",
+            "type": "option",
+            "option": [{
+                'code': None,
+                'id': 1,
+                'name': '2018',
+                'order': None
+            }, {
+                'code': None,
+                'id': 2,
+                'name': '2023',
+                'order': None
+            }],
+            "attributes": [],
+            "number": []
         }
         # filter by question attribute
         res = await client.get(
@@ -31,24 +43,38 @@ class TestQuestionRoutes:
         )
         assert res.status_code == 200
         res = res.json()
+        name = 'Is drinking water from the main source '
+        name += 'typically available throughout the school year?'
         assert res[1] == {
-            "id": 718001069,
-            "name": "Type of school",
-            "attributes": ["advance_filter", "indicator"],
-            "option": [{
-                "id": 1,
-                "name": "Junior school",
-                "code": None,
-                "order": None
+            'id': 624660927,
+            'name': name,
+            "type": "option",
+            'attributes': ['indicator', 'advance_filter'],
+            'option': [{
+                'id': 47,
+                'name': 'Yes (always available)',
+                'order': None,
+                'code': None
             }, {
-                "id": 2,
-                "name": "Primary school",
-                "code": None,
-                "order": None
+                'id': 48,
+                'name': 'Mostly (unavailable ≤ 30 days total)',
+                'order': None,
+                'code': None
             }, {
-                "id": 3,
-                "name": "High school",
-                "code": None,
-                "order": None
+                'id': 49,
+                'name': 'No (unavailable > 30 days total)',
+                'order': None,
+                'code': None
+            }, {
+                'id': 50,
+                'name': "Don't know/can't say",
+                'order': None,
+                'code': None
             }],
+            'number': []
         }
+        for r in res:
+            if r['type'] != 'number' or not r['number']:
+                continue
+            assert r['type'] == 'number'
+            assert len(r['number']) == 2

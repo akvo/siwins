@@ -11,11 +11,194 @@ from seeder.data_sync import data_sync, deleted_data_sync
 from db import crud_sync
 from db import crud_form
 from db import crud_data
+from tests.conftest import test_refresh_materialized_data
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+res_answers = [{
+    "question": 649140920,
+    "value": "No"
+}, {
+    "question": 592240932,
+    "value": "Sea"
+}, {
+    "question": 634450928,
+    "value": "No"
+}, {
+    "question": 634450929,
+    "value": "No"
+}, {
+    "question": 638730944,
+    "value": "Yes"
+}, {
+    "question": 638730951,
+    "value": "Yes"
+}, {
+    "question": 634450922,
+    "value": "No"
+}, {
+    "question": 634450930,
+    "value": "No"
+}, {
+    "question": 638730950,
+    "value": "No"
+}, {
+    "question": 638790937,
+    "value": "Water only"
+}, {
+    "question": 638790936,
+    "value": "No"
+}, {
+    "question": 638790933,
+    "value": "Bathing areas( private and secure, door and lock and hangers)",
+}, {
+    "question": 638790932,
+    "value": "Yes"
+}, {
+    "question": 638790938,
+    "value": "Yes, for free"
+}, {
+    "question": 624680925,
+    "value": "No"
+}, {
+    "question": 624680923,
+    "value": "E-Coli"
+}, {
+    "question": 624680928,
+    "value": "No"
+}, {
+    "question": 624680926,
+    "value": "No"
+}, {
+    "question": 624670931,
+    "value": "Main"
+}, {
+    "question": 638730935,
+    "value": 12.0
+}, {
+    "question": 638730931,
+    "value": "Day School"
+}, {
+    "question": 638730937,
+    "value": "Galih Akvo"
+}, {
+    "question": 624670935,
+    "value": 100.0
+}, {
+    "question": 624670934,
+    "value": 12.0
+}, {
+    "question": 638730934,
+    "value": "12"
+}, {
+    "question": 638730930,
+    "value": 89.0
+}, {
+    "question": 624670930,
+    "value": 111.0
+}, {
+    "question": 624670933,
+    "value": "Mains Electricity"
+}, {
+    "question": 624670926,
+    "value": 7.0
+}, {
+    "question": 638730933,
+    "value": ["Guadalcanal", "Community High School", "AO CHS", "21710"],
+}, {
+    "question": 624670927,
+    "value": "Provincial Secondary School"
+}, {
+    "question": 638730929,
+    "value": "Non-Functioning"
+}, {
+    "question": 624670932,
+    "value": ""
+}, {
+    "question": 624670928,
+    "value": 12.0
+}, {
+    "question": 638730936,
+    "value": "-47.72084919070232|71.64445931032847"
+}, {
+    "question": 624670929,
+    "value": ""
+}, {
+    "question": 638730932,
+    "value": 21.0
+}, {
+    "question": 640620926,
+    "value": "Protected/covered well with pump"
+}, {
+    "question": 640620927,
+    "value": "On the premises of the school"
+}, {
+    "question": 640620928,
+    "value": "Between 500 and 1000 meters/1km"
+}, {
+    "question": 640620929,
+    "value": "Yes"
+}, {
+    "question": 638770930,
+    "value": "No"
+}, {
+    "question": 624660927,
+    "value": "Yes (always available)"
+}, {
+    "question": 624660928,
+    "value": "No"
+}, {
+    "question": 624660930,
+    "value": "No"
+}, {
+    "question": 642230925,
+    "value": "2-4 days/week"
+}, {
+    "question": 654960929,
+    "value": "2018"
+}, {
+    "question": 654960925,
+    "value": "Galih Akvo"
+}, {
+    "question": 654960928,
+    "value": "Tester"
+}, {
+    "question": 654960930,
+    "value": "Wayan Akvo"
+}, {
+    "question": 654960926,
+    "value": "Tester"
+}, {
+    "question": 654960927,
+    "value": 89.0
+}, {
+    "question": 630020922,
+    "value": "No"
+}, {
+    "question": 630020920,
+    "value": "No"
+}, {
+    "question": 630020919,
+    "value": 12.0
+}]
+res_data = [{
+    "id": 632510922,
+    "datapoint_id": 624690917,
+    "identifier": "d5bi-mkoi-qrej",
+    "name": "Untitled",
+    "form": 647170919,
+    "registration": True,
+    "geo": {
+        'lat': -47.72084919070232,
+        'long': 71.64445931032847
+    },
+    "created": "April 07, 2023",
+    "updated": "April 07, 2023",
+    "answer": res_answers,
+    "history": [],
+}]
 
 forms = []
 forms_config = "./source/forms.json"
@@ -36,7 +219,9 @@ class TestSeedAndSync:
         assert last_sync.url == sync_res.url
 
         form_seeder(session=session, token=token, forms=forms)
+        # enable datapoint seeder test
         datapoint_seeder(session=session, token=token, forms=forms)
+        test_refresh_materialized_data()
         for form in forms:
             fid = form.get("id")
             check_form = crud_form.get_form_by_id(session=session, id=fid)
@@ -47,74 +232,18 @@ class TestSeedAndSync:
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         # registration data
-        data = crud_data.get_all_data(session=session, registration=True)
+        data = crud_data.get_all_data(
+            session=session, registration=True)
         data = [d.serialize for d in data]
-        assert data == [
-            {
-                "id": 642650980,
-                "datapoint_id": 716330915,
-                "identifier": "dfmn-hw5g-11se",
-                "name": "SMA N 1 Nusa Penida - High school",
-                "form": 733030972,
-                "registration": True,
-                "geo": {"lat": -8.676368333333333, "long": 115.49182166666667},
-                "created": "December 01, 2022",
-                "updated": "December 01, 2022",
-                "answer": [
-                    {"question": 718001069, "value": "High school"},
-                    {
-                        "question": 721880978,
-                        "value": "-8.676368333333333|115.49182166666667",
-                    },
-                    {"question": 738940972, "value": "SMA N 1 Nusa Penida"},
-                ],
-                "history": [],
-            }
-        ]
+        assert data == res_data
         # monitoring data
-        temp_data = crud_data.get_all_data(session=session, registration=False)
+        temp_data = crud_data.get_all_data(
+            session=session, registration=False)
         data = [d.serialize for d in temp_data]
-        assert data == [
-            {
-                "id": 729930913,
-                "datapoint_id": 716330915,
-                "identifier": "dfmn-hw5g-11se",
-                "name": "SMA N 1 Nusa Penida - High school",
-                "form": 729240983,
-                "registration": False,
-                "geo": None,
-                "created": "December 01, 2022",
-                "updated": "December 01, 2022",
-                "answer": [],
-                "history": [
-                    {"question": 725310914, "value": 200.0},
-                    {"question": 735090984, "value": 10.0},
-                    {"question": 738950915, "value": "Clean"},
-                ],
-            },
-            {
-                "id": 733410921,
-                "datapoint_id": 716330915,
-                "identifier": "dfmn-hw5g-11se",
-                "name": "SMA N 1 Nusa Penida - High school",
-                "form": 729240983,
-                "registration": False,
-                "geo": None,
-                "created": "December 01, 2022",
-                "updated": "December 01, 2022",
-                "answer": [
-                    {"question": 725310914, "value": 225.0},
-                    {"question": 735090984, "value": 15.0},
-                    {"question": 738950915, "value": "Clean"},
-                ],
-                "history": [],
-            },
-        ]
+        assert data == []
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
-        assert data[0]["id"] == 729930913
-        assert data[0]["name"] == "SMA N 1 Nusa Penida - High school"
-        assert len(data[0]["monitoring"]) == 3
+        assert data == []
 
     @pytest.mark.asyncio
     async def test_sync(
@@ -127,22 +256,21 @@ class TestSeedAndSync:
             sync_data = json.load(json_file)
         data_sync(token=token, session=session, sync_data=sync_data)
         # monitoring data
-        temp_data = crud_data.get_all_data(session=session, registration=False)
+        temp_data = crud_data.get_all_data(
+            session=session, registration=False)
         # monitoring format
         data = [d.to_monitoring_data for d in temp_data]
-        assert data[0]["id"] == 729930913
-        assert data[0]["name"] == "SMA N 1 Nusa Penida - High school"
-        assert len(data[0]["monitoring"]) == 3
+        assert data == []
 
-    @pytest.mark.asyncio
+    # @pytest.mark.asyncio
     async def test_sync_deleted_data_monitoring_history(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
-        changes = {"formInstanceDeleted": [754830913]}
+        changes = {"formInstanceDeleted": [649130936]}
         data = changes.get("formInstanceDeleted")
         deleted_data_sync(session=session, data=data)
-        monitoring = crud_data.get_all_data(
-            session=session, registration=False
+        data = crud_data.get_all_data(
+            session=session, registration=True
         )
-        rs = [m.serialize for m in monitoring]
-        assert data[0] not in [r["id"] for r in rs]
+        rd = [m.serialize for m in data]
+        assert data[0] not in [r["id"] for r in rd]

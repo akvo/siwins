@@ -44,8 +44,10 @@ class QuestionFormatted(TypedDict):
 class QuestionFormattedWithAttributes(TypedDict):
     id: int
     name: str
+    type: QuestionType
     attributes: Optional[List[str]] = []
     option: Optional[List[OptionDict]] = []
+    number: Optional[List[int]] = []
 
 
 class QuestionDict(TypedDict):
@@ -138,6 +140,7 @@ class Question(Base):
         return {
             "id": self.id,
             "name": self.name,
+            "type": self.type.value,
             "attributes": [],
             "option": [o.serialize for o in self.option] or [],
         }

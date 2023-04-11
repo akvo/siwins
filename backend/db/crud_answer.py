@@ -33,6 +33,7 @@ def append_value(
     if type == QuestionType.photo:
         answer.text = json.dumps(value)
     if type == QuestionType.geoshape:
+        print("GEOSHAPE", value)
         answer.text = json.dumps(value)
     if type == QuestionType.cascade:
         cascades = [v.get("name") for v in value] if value else []
@@ -102,9 +103,20 @@ def update_history(
 
 
 def get_answer_by_question(
-    session: Session, question: int
+    session: Session,
+    question: int,
+    data_ids: Optional[List[int]] = None,
+    number: Optional[List[int]] = None
 ) -> List[AnswerDict]:
-    return session.query(Answer).filter(Answer.question == question).all()
+    answers = session.query(Answer).filter(
+        Answer.question == question)
+    if data_ids:
+        answers = answers.filter(
+            Answer.data.in_(data_ids))
+    if number:
+        answers = answers.filter(
+            Answer.value.between(number[0], number[1]))
+    return answers.all()
 
 
 def get_answer_by_data_and_question(

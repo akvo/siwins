@@ -11,9 +11,10 @@ auth_data = {
     "scope": "openid email",
 }
 
+instance = "sig"
 auth_url = "https://akvofoundation.eu.auth0.com/oauth/token"
-flow_api_url = "https://api-auth0.akvo.org/flow/orgs/seap"
-tc_api_url = "http://tech-consultancy.akvo.org/akvo-flow-web-api/seap"
+flow_api_url = f"https://api-auth0.akvo.org/flow/orgs/{instance}"
+tc_api_url = f"http://tech-consultancy.akvo.org/akvo-flow-web-api/{instance}"
 form_definition_url = f"{tc_api_url}/#form#/update"
 data_url = f"{flow_api_url}/form_instances?survey_id=#survey#&form_id=#form#"
 init_sync_url = f"{flow_api_url}/sync?initial=true"
