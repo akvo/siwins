@@ -18,8 +18,8 @@ flow_api_url = f"https://api-auth0.akvo.org/flow/orgs/{instance}"
 data_url = f"{flow_api_url}/form_instances?survey_id=#survey#&form_id=#form#"
 init_sync_url = f"{flow_api_url}/sync?initial=true"
 
-tc_api_url = f"https://tech-consultancy.akvo.org/akvo-flow-web-api/{instance}"
-form_definition_url = f"{tc_api_url}/#form#/update"
+tc_api_url = "https://tech-consultancy.akvo.org/akvo-flow-web-api"
+form_definition_url = f"{tc_api_url}/{instance}/#form#/update"
 cascade_url = f"{tc_api_url}/cascade/{instance}/#source#/#id#"
 
 
@@ -66,7 +66,7 @@ def get_form(form_id: int):
 
 def get_cascade(source: str, id: int):
     url = cascade_url.replace(
-        "#source#", source).replace("#id#", id)
+        "#source#", source).replace("#id#", str(id))
     return get_data(url=url, token=None)
 
 

@@ -23,9 +23,9 @@ class Cascade(Base):
     parent = Column(Integer, ForeignKey('cascade.id'), nullable=True)
     name = Column(String)
     level = Column(Integer)
-    children = relationship("cascade")
+    children = relationship("Cascade")
     parent_detail = relationship(
-        "cascade", remote_side=[id], overlaps="children")
+        "Cascade", remote_side=[id], overlaps="children")
 
     def __init__(
         self, id: int, parent: int,
