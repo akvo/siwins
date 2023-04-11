@@ -14,7 +14,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 test_source = "./source/static"
 
 
-def form_seeder(session: Session, token: dict, forms: List[dict]):
+def form_seeder(session: Session, forms: List[dict]):
     TESTING = os.environ.get("TESTING")
     start_time = time.process_time()
 
@@ -27,7 +27,7 @@ def form_seeder(session: Session, token: dict, forms: List[dict]):
             with open(form_file) as json_file:
                 json_form = json.load(json_file)
         if not TESTING:
-            json_form = flow_auth.get_form(token=token, form_id=form_id)
+            json_form = flow_auth.get_form(form_id=form_id)
 
         form_name = form.get("name")
         name = json_form.get("name") if "name" in json_form else form_name

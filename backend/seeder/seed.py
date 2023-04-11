@@ -39,7 +39,7 @@ if sync_res.get("nextSyncUrl"):
     print(f"Init Sync URL: {sync_res.url}")
     print("------------------------------------------")
 
-form_seeder(session=session, token=token, forms=forms)
+form_seeder(session=session, forms=forms)
 datapoint_seeder(session=session, token=token, forms=forms)
 # refresh materialized view
 refresh_materialized_data()

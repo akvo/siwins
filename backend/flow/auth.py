@@ -12,12 +12,15 @@ auth_data = {
 }
 
 instance = "sig"
+
 auth_url = "https://akvofoundation.eu.auth0.com/oauth/token"
 flow_api_url = f"https://api-auth0.akvo.org/flow/orgs/{instance}"
-tc_api_url = f"http://tech-consultancy.akvo.org/akvo-flow-web-api/{instance}"
-form_definition_url = f"{tc_api_url}/#form#/update"
 data_url = f"{flow_api_url}/form_instances?survey_id=#survey#&form_id=#form#"
 init_sync_url = f"{flow_api_url}/sync?initial=true"
+
+tc_api_url = f"https://tech-consultancy.akvo.org/akvo-flow-web-api/{instance}"
+form_definition_url = f"{tc_api_url}/#form#/update"
+cascade_url = f"{tc_api_url}/cascade/{instance}/#source#/#id#"
 
 
 def get_token():
@@ -30,12 +33,16 @@ def get_token():
     return {"token": account["id_token"], "time": time()}
 
 
-def get_header(token: dict):
-    return {
-        "Authorization": f"Bearer {token['token']}",
+def get_header(token: Optional[dict] = None):
+    header = {
         "Accept": "application/vnd.akvo.flow.v2+json",
         "Content-Type": "application/json",
     }
+    if (token):
+        header.update({
+            "Authorization": f"Bearer {token['token']}",
+        })
+    return header
 
 
 def get_data(url: str, token: dict):
@@ -52,9 +59,15 @@ def get_data(url: str, token: dict):
     return None
 
 
-def get_form(token: dict, form_id: int):
+def get_form(form_id: int):
     url = form_definition_url.replace("#form#", str(form_id))
-    return get_data(url=url, token=token)
+    return get_data(url=url, token=None)
+
+
+def get_cascade(source: str, id: int):
+    url = cascade_url.replace(
+        "#source#", source).replace("#id#", id)
+    return get_data(url=url, token=None)
 
 
 def get_datapoint(
