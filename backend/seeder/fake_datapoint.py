@@ -14,16 +14,17 @@ from source.geoconfig import GeoLevels
 from seeder.fake_history import generate_fake_history
 from db.truncator import truncate_datapoint
 from utils.functions import refresh_materialized_data
+from core.config import CONFIG_NAME
 
 start_time = time.process_time()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 Base.metadata.create_all(bind=engine)
 session = SessionLocal()
 
-config = GeoLevels.bali.value
+config = GeoLevels[CONFIG_NAME].value
 levels = [c["name"] for c in config]
 
-source_geo = "./source/solomon-topojson.json"
+source_geo = "./source/solomon-island-topojson.json"
 fake_geolocations_file = "./source/fake-geolocations.csv"
 fake_geolocations = os.path.exists(fake_geolocations_file)
 
@@ -40,9 +41,10 @@ with open(source_geo, "r") as geo:
     geo = json.load(geo)
     ob = geo["objects"]
     ob_name = list(ob)[0]
+
 parent_administration = set(
     [
-        d[levels[-2]]
+        d[levels[len(levels) - 1 or 0]]
         for d in [p["properties"] for p in ob[ob_name]["geometries"]]
     ]
 )
@@ -119,8 +121,7 @@ for i in range(repeats):
                         names.append(fa)
 
                 if q.type == QuestionType.cascade:
-                    cascades = [geo.get(key) for key in [
-                        "city", "district", "village"]]
+                    cascades = [geo.get(key) for key in levels]
                     answer.options = cascades
                     if q.meta:
                         names += cascades
@@ -149,3 +150,4 @@ for dm in data_monitoring:
     generate_fake_history(session=session, datapoint=dm)
 # refresh materialized view
 refresh_materialized_data()
+print(f"Seeding {repeats} datapoint done")
