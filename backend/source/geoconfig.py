@@ -6,14 +6,21 @@ class GeoLevels(enum.Enum):
         {"level": 0, "name": "provinsi", "alias": "Provinsi"},
         {"level": 1, "name": "kabkot", "alias": "Kabupaten / Kota"},
     ]
-    bali = [
-        {"level": 0, "name": "NAME_2", "alias": "District"},
-        {"level": 1, "name": "NAME_3", "alias": "Sub-District"},
-        {"level": 2, "name": "NAME_4", "alias": "Village"},
+    solomon_island = [
+        {"level": 0, "name": "NAME_1", "alias": "Province"},
     ]
 
 
 # Landing Page
 class GeoCenter(enum.Enum):
     notset = [106.3715, -8.84902]
-    bali = [-8.670677602749869, 115.21310410475814]
+    solomon_island = [-8.782, 160.957]
+
+
+class RemappingGeoName(enum.Enum):
+    notset = {
+        "adm_name": "updated adm name"
+    }
+    solomon_island = {
+        "makira_and_ulawa": "Makira Ulawa"
+    }

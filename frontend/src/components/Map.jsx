@@ -17,6 +17,9 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { generateAdvanceFilterURL } from "../util/utils";
 import { UIState } from "../state/ui";
 
+const defZoom = 7;
+const defCenter = window.mapConfig.center;
+
 const Markers = ({ zoom, data, getChartData }) => {
   const [hovered, setHovered] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(zoom);
@@ -60,8 +63,6 @@ const Map = () => {
   const { advanceSearchValue } = UIState.useState((s) => s);
   const baseMap = tileOSM;
   const map = useRef();
-  const defZoom = 9;
-  const defCenter = [-8.670677602749869, 115.21310410475814];
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [selectedPoint, setSelectedPoint] = useState(null);

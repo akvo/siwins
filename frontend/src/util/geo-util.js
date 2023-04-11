@@ -4,7 +4,7 @@ import { takeRight } from "lodash";
 
 const topojson = window.topojson;
 const geo = topojson.objects[Object.keys(topojson.objects)[0]];
-const shapeLevels = window.map_config.shapeLevels;
+const shapeLevels = window.mapConfig.shapeLevels;
 
 export const getBounds = (selected, administration) => {
   selected = takeRight(selected, selected.length - 1);
