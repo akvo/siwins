@@ -15,3 +15,12 @@ class GeoLevels(enum.Enum):
 class GeoCenter(enum.Enum):
     notset = [106.3715, -8.84902]
     solomon_island = [-8.782, 160.957]
+
+
+class RemappingGeoName(enum.Enum):
+    notset = {
+        "adm_name": "updated adm name"
+    }
+    solomon_island = {
+        "makira_and_ulawa": "Makira Ulawa"
+    }

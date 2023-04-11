@@ -6,11 +6,13 @@ from db.crud_administration import add_administration
 from models.administration import Administration
 from db.connection import SessionLocal
 from source.geoconfig import GeoLevels
+from core.config import CONFIG_NAME
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 session = SessionLocal()
-class_path = "bali"
-source_file = f"./source/{class_path}-topojson.json"
+class_path = CONFIG_NAME
+filepath = CONFIG_NAME.replace('_', '-')
+source_file = f"./source/{filepath}-topojson.json"
 action = truncate(session=session, table="administration")
 print(action)
 
