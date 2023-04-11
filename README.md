@@ -56,7 +56,7 @@ Folder Path: **/backend/source/**
 └── forms.json
 ├── charts.js
 ├── config.min.js
-└── bali-topojson.json
+└── solomon-island-topojson.json
 ```
 
 ##### Initial Forms & Data Points seeder

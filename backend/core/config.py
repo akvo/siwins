@@ -1,4 +1,5 @@
 # import jwt
+import json
 from jsmin import jsmin
 from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,30 +8,27 @@ from functools import lru_cache
 from pydantic import BaseSettings
 from routes.data import data_route
 from routes.question import question_route
-from source.geoconfig import GeoLevels
+from source.geoconfig import GeoLevels, GeoCenter
 
-CONFIG_NAME = "bali"
+CONFIG_NAME = "solomon_island"
 SOURCE_PATH = "./source"
-TOPO_JSON = f"{SOURCE_PATH}/bali-topojson.json"
+TOPO_JSON = f"{SOURCE_PATH}/solomon-island-topojson.json"
 TOPO_JSON = open(TOPO_JSON).read()
 GEO_CONFIG = GeoLevels[CONFIG_NAME].value
+MAP_CENTER = GeoCenter[CONFIG_NAME].value
 CHART_CONFIG = f"{SOURCE_PATH}/charts.js"
 CHART_CONFIG = jsmin(open(CHART_CONFIG).read())
 
 MINJS = jsmin(
-    "".join(
-        [
-            "var levels="
-            + str([g["alias"] for g in GEO_CONFIG])
-            + ";var map_config={shapeLevels:"
-            + str([g["name"] for g in GEO_CONFIG])
-            + "};",
-            "var topojson=",
-            TOPO_JSON,
-            ";",
-            CHART_CONFIG,
-        ]
-    )
+    "".join([
+        "var levels=",
+        json.dumps([g["alias"] for g in GEO_CONFIG]), ";",
+        "var mapConfig={shapeLevels:",
+        json.dumps([g["name"] for g in GEO_CONFIG]),
+        ", center:", json.dumps(MAP_CENTER), "};",
+        "var topojson=", TOPO_JSON, ";",
+        CHART_CONFIG,
+    ])
 )
 JS_FILE = f"{SOURCE_PATH}/config.min.js"
 open(JS_FILE, "w").write(MINJS)

@@ -23,7 +23,7 @@ session = SessionLocal()
 config = GeoLevels.bali.value
 levels = [c["name"] for c in config]
 
-source_geo = "./source/bali-topojson.json"
+source_geo = "./source/solomon-topojson.json"
 fake_geolocations_file = "./source/fake-geolocations.csv"
 fake_geolocations = os.path.exists(fake_geolocations_file)
 
