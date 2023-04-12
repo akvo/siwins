@@ -23,7 +23,14 @@ def upgrade() -> None:
         sa.Column('parent', sa.Integer(), nullable=True),
         sa.Column('name', sa.String()),
         sa.Column('level', sa.Integer()),
-        sa.PrimaryKeyConstraint(('id')))
+        sa.Column("question", sa.BigInteger(), sa.ForeignKey("question.id")),
+        sa.PrimaryKeyConstraint(('id')),
+        sa.ForeignKeyConstraint(
+            ["question"],
+            ["question.id"],
+            name="question_cascade_constraint",
+            ondelete="CASCADE",
+        ))
     op.create_foreign_key(
         None, 'cascade', 'cascade',
         ['parent'], ['id'])
@@ -34,4 +41,5 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    op.drop_index(op.f("ix_cascade_id"), table_name="cascade")
     op.drop_table('cascade')

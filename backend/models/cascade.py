@@ -4,9 +4,11 @@
 from typing_extensions import TypedDict
 from typing import Optional, List
 from pydantic import BaseModel
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, \
+    ForeignKey, BigInteger
 from sqlalchemy.orm import relationship
 from db.connection import Base
+from models.question import Question
 
 
 class CascadeDict(TypedDict):
@@ -14,6 +16,7 @@ class CascadeDict(TypedDict):
     parent: Optional[int] = None
     name: str
     level: int
+    question: int
     children: Optional[List] = []
 
 
@@ -23,18 +26,21 @@ class Cascade(Base):
     parent = Column(Integer, ForeignKey('cascade.id'), nullable=True)
     name = Column(String)
     level = Column(Integer)
+    question = Column(BigInteger, ForeignKey('question.id'))
+    question_detail = relationship(Question, foreign_keys=[question])
     children = relationship("Cascade")
     parent_detail = relationship(
         "Cascade", remote_side=[id], overlaps="children")
 
     def __init__(
         self, id: int, parent: int,
-        name: str, level: int
+        name: str, level: int, question: int
     ):
         self.id = id
         self.parent = parent
         self.name = name
         self.level = level
+        self.question = question
 
     def __repr__(self) -> int:
         return f"<Cascade {self.id}>"
@@ -46,6 +52,7 @@ class Cascade(Base):
             "parent": self.parent,
             "name": self.name,
             "level": self.level,
+            "question": self.question,
             "children": self.children
         }
 
@@ -55,6 +62,7 @@ class CascadeBase(BaseModel):
     parent: Optional[int] = None
     name: str
     level: int
+    question: int
 
     class Config:
         orm_mode = True
