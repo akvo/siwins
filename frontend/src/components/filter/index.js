@@ -19,14 +19,23 @@ import { api } from "../../lib";
 function AdvanceFilter({ customStyle = {} }) {
   const { advanceSearchValue } = UIState.useState((s) => s);
   const [showAdvanceFilter, setShowAdvanceFilter] = useState(false);
+  const [showIndicatorFilter, setShowIndicatorFilter] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState([]);
   const [question, setQuestion] = useState([]);
   const [indicatorQuestion, setIndicatorQuestion] = useState([]);
   const [advancedFilterFeature] = useState({ isMultiSelect: true });
 
-  const handleOnChangeQuestionDropdown = (id) => {
+  const handleOnChangeQuestionDropdown = (id, type) => {
     const filterQuestion = question.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
+    if (type === "indicator") {
+      setShowIndicatorFilter(true);
+      setShowAdvanceFilter(true);
+      if (!id) {
+        setShowIndicatorFilter(false);
+        setShowAdvanceFilter(false);
+      }
+    }
   };
 
   const getFilterData = useCallback(() => {
@@ -81,6 +90,7 @@ function AdvanceFilter({ customStyle = {} }) {
           <Select
             style={{ width: "98%" }}
             showSearch
+            allowClear
             placeholder="Select question"
             optionFilterProp="children"
             filterOption={(input, option) =>
@@ -90,10 +100,17 @@ function AdvanceFilter({ customStyle = {} }) {
               label: q.name,
               value: q.id,
             }))}
+            onChange={(val) => handleOnChangeQuestionDropdown(val, "indicator")}
           />
         </Col>
         <Col span={6}>
-          <Button onClick={() => setShowAdvanceFilter(!showAdvanceFilter)}>
+          <Button
+            disabled={showIndicatorFilter}
+            onClick={() => {
+              setShowIndicatorFilter(false);
+              setShowAdvanceFilter(!showAdvanceFilter);
+            }}
+          >
             Advanced Filter
           </Button>
         </Col>
@@ -107,22 +124,24 @@ function AdvanceFilter({ customStyle = {} }) {
             size="middle"
             style={{ width: "100%" }}
           >
-            <Select
-              style={{ width: "100%" }}
-              showSearch
-              placeholder="Advance Filter"
-              className="search-question-select"
-              options={question.map((q) => ({
-                label: q.name,
-                value: q.id,
-              }))}
-              optionFilterProp="label"
-              filterOption={(input, option) =>
-                option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              value={!isEmpty(selectedQuestion) ? [selectedQuestion?.id] : []}
-              onChange={handleOnChangeQuestionDropdown}
-            />
+            {!showIndicatorFilter && (
+              <Select
+                style={{ width: "100%" }}
+                showSearch
+                placeholder="Advance Filter"
+                className="search-question-select"
+                options={question.map((q) => ({
+                  label: q.name,
+                  value: q.id,
+                }))}
+                optionFilterProp="label"
+                filterOption={(input, option) =>
+                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                value={!isEmpty(selectedQuestion) ? [selectedQuestion?.id] : []}
+                onChange={handleOnChangeQuestionDropdown}
+              />
+            )}
             {!isEmpty(selectedQuestion) && (
               <>
                 <RenderQuestionOption

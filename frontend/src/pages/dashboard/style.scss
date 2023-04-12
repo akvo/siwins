@@ -59,8 +59,6 @@
       .ant-layout-header {
         background-color: $bg-grey-dashboard;
         padding: 20px 40px;
-        height: 140px;
-        border: 1px solid #dcdcdc;
       }
       .dashboard-content {
         padding: 20px 30px;
@@ -180,6 +178,11 @@
           }
           .search-question-option-wrapper {
             margin-top: 20px;
+            .input-group {
+              .ant-space-item {
+                display: flex;
+              }
+            }
           }
         }
       }
