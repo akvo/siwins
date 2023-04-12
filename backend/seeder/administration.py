@@ -6,7 +6,7 @@ from db.crud_administration import add_administration
 from models.administration import Administration
 from db.connection import SessionLocal
 from source.geoconfig import GeoLevels
-from source.main_config import CLASS_PATH, TOPO_JSON_PATH, SOURCE_PATH
+from source.main_config import CLASS_PATH, TOPO_JSON_PATH, ADMINISTRATION_PATH
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 session = SessionLocal()
@@ -60,5 +60,5 @@ with open(TOPO_JSON_PATH, 'r') as geo:
         parent = adm["parent"] if adm["parent"] == adm["parent"] else None
         add_administration(session=session, data=Administration(
             id=int(adm["id"]), parent=parent, name=adm["name"]))
-    res.to_csv(f"{SOURCE_PATH}/administration.csv", index=False)
+    res.to_csv(f"{ADMINISTRATION_PATH}/administration.csv", index=False)
 print("Seed Administration Done")

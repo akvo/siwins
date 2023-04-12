@@ -14,7 +14,7 @@ from source.geoconfig import GeoLevels
 from seeder.fake_history import generate_fake_history
 from db.truncator import truncate_datapoint
 from utils.functions import refresh_materialized_data
-from source.main_config import CLASS_PATH, TOPO_JSON_PATH, SOURCE_PATH
+from source.main_config import CLASS_PATH, TOPO_JSON_PATH, ADMINISTRATION_PATH
 
 start_time = time.process_time()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +25,7 @@ config = GeoLevels[CLASS_PATH].value
 levels = [c["name"] for c in config]
 
 source_geo = TOPO_JSON_PATH
-fake_geolocations_file = f"{SOURCE_PATH}/fake-geolocations.csv"
+fake_geolocations_file = f"{ADMINISTRATION_PATH}/fake-geolocations.csv"
 fake_geolocations = os.path.exists(fake_geolocations_file)
 
 sample_geo = False
