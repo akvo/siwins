@@ -13,6 +13,11 @@ from db.connection import Base
 from models.option import OptionDict, OptionBase
 
 
+class AnswerNumberCount(TypedDict):
+    value: int
+    count: int
+
+
 class QuestionAttributes(enum.Enum):
     indicator = "indicator"
     advance_filter = "advance_filter"
@@ -47,7 +52,7 @@ class QuestionFormattedWithAttributes(TypedDict):
     type: QuestionType
     attributes: Optional[List[str]] = []
     option: Optional[List[OptionDict]] = []
-    number: Optional[List[int]] = []
+    number: Optional[List[AnswerNumberCount]] = []
 
 
 class QuestionDict(TypedDict):

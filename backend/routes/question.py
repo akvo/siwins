@@ -85,7 +85,12 @@ def get(
         key = q.get('id')
         attr = question_attributes.get(key) or []
         q['attributes'] = attr
+        # number value
+        numbers = []
         numb_val = answer_values.get(int(key)) or []
-        numb_val = list(set(numb_val))  # set alredy sorted the value
-        q['number'] = [min(numb_val), max(numb_val)] if numb_val else []
+        count_numb = {x: numb_val.count(x) for x in numb_val}
+        for val, count in count_numb.items():
+            numbers.append({"value": val, "count": count})
+        numbers.sort(key=lambda x: x.get('value'))
+        q['number'] = numbers
     return question
