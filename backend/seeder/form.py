@@ -89,7 +89,8 @@ def form_seeder(session: Session, forms: List[dict]):
                     meta_geo=meta_geo if meta_geo else False,
                     order=q.get("order"),
                     required=q.get("mandatory"),
-                    dependency=q["dependency"] if "dependency" in q else None,
+                    dependency=[q["dependency"]]
+                    if "dependency" in q else None,
                     option=options,
                 )
                 print(f"{i}.{question.name}")

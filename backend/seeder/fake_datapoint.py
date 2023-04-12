@@ -75,9 +75,24 @@ for i in range(repeats):
             if monitoring
             else None
         )
+        current_answers = {}
         for qg in form.question_group:
             for q in qg.question:
+                # dependency checker, ONLY support single dependency
+                if q.dependency:
+                    current_dependency = q.dependency[0]
+                    cd_question = int(current_dependency['question'])
+                    cd_answer = current_dependency['answer-value'].lower()
+                    # check answer
+                    dependency_answer = current_answers.get(
+                        cd_question).lower() if current_answers.get(
+                            cd_question) else None
+                    if dependency_answer != cd_answer:
+                        # don't answer the question
+                        continue
+                # EOL dependency checker
                 answer = Answer(question=q.id, created=datetime.now())
+                answer_value = None
                 if q.type in [
                     QuestionType.option,
                     QuestionType.multiple_option,
@@ -86,6 +101,7 @@ for i in range(repeats):
                         session=session, question=q.id
                     )
                     fa = random.choice(options)
+                    answer_value = "|".join([fa.name])
                     answer.options = [fa.name]
                     if q.meta:
                         names.append(
@@ -96,34 +112,38 @@ for i in range(repeats):
 
                 if q.type == QuestionType.number:
                     fa = fake.random_int(min=10, max=50)
-                    answer.value = fa
+                    answer_value = fa
+                    answer.value = answer_value
 
                 if q.type == QuestionType.date:
                     fa = fake.date_this_century()
                     fm = fake.random_int(min=11, max=12)
                     fd = fa.strftime("%d")
-                    answer.text = f"2019-{fm}-{fd}"
+                    answer_value = f"2019-{fm}-{fd}"
+                    answer.text = answer_value
 
                 if q.type == QuestionType.geo and geo:
-                    answer.text = ("{}|{}").format(geo["lat"], geo["long"])
+                    answer_value = ("{}|{}").format(geo["lat"], geo["long"])
+                    answer.text = answer_value
 
                 if q.type == QuestionType.photo:
-                    answer.text = json.dumps({'filename': fake.image_url()})
+                    answer_value = json.dumps({'filename': fake.image_url()})
+                    answer.text = answer_value
 
                 if q.type == QuestionType.text:
                     fa = fake.company()
-                    answer.text = fa
+                    answer_value = fa
+                    answer.text = answer_value
                     if q.meta:
-                        # fa += " - "
-                        # fa += geo.get("village")
-                        # answer.text = fa
-                        names.append(fa)
+                        names.append(answer_value)
 
                 if q.type == QuestionType.cascade:
                     cascades = [geo.get(key) for key in levels]
-                    answer.options = cascades
+                    answer_value = cascades
+                    answer.options = answer_value
                     if q.meta:
                         names += cascades
+                current_answers.update({q.id: answer_value})
                 answers.append(answer)
 
         displayName = " - ".join(names)
