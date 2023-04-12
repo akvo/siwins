@@ -10,3 +10,7 @@ def add_cascade(session: Session, data: Cascade) -> CascadeDict:
     session.flush()
     session.refresh(data)
     return data
+
+
+def get_all_cascade(session: Session) -> CascadeDict:
+    return session.query(Cascade).order_by(Cascade.level).all()

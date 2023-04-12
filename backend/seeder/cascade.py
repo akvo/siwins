@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import pandas as pd
 from time import sleep
 import flow.auth as flow_auth
 from typing import List, Optional
@@ -16,7 +17,8 @@ session = SessionLocal()
 
 
 forms = []
-forms_config = "./source/forms.json"
+source_path = "./source"
+forms_config = f"{source_path}/forms.json"
 with open(forms_config) as json_file:
     forms = json.load(json_file)
 
@@ -59,5 +61,27 @@ for form in forms:
         continue
     for cr in form.get("cascade_resources"):
         print("Seeding...")
-        seed_cascade(source=cr, ids=[0])
+        filepath = f"{source_path}/{cr}.csv"
+        cascade_file = os.path.exists(filepath)
+        if cascade_file:
+            print("Seeding from file...")
+            df = pd.read_csv(filepath)
+            df = df.fillna(0)
+            for index, row in df.iterrows():
+                cascade = Cascade(
+                    id=row["id"],
+                    parent=row["parent"] if row["parent"] else None,
+                    name=row["name"],
+                    level=row["level"])
+                crud_cascade.add_cascade(
+                    session=session, data=cascade)
+        else:
+            print("Seeding from source...")
+            seed_cascade(source=cr, ids=[0])
+            # get all cascade & save to csv
+            cascades = crud_cascade.get_all_cascade(session=session)
+            cascades = [c.serialize for c in cascades]
+            df = pd.DataFrame(cascades)
+            df = df.drop(columns=["children"])
+            df.to_csv(filepath, index=False)
         print(f"Seeding cascade {cr} done")
