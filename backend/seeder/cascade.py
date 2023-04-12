@@ -28,7 +28,10 @@ if not TESTING:
     print(action)
 
 
-def seed_cascade(source: str, ids: List[int], level: Optional[int] = 0):
+def seed_cascade(
+    source: str, question: int,
+    ids: List[int], level: Optional[int] = 0
+):
     if not ids:
         return None
     for id in ids:
@@ -39,7 +42,6 @@ def seed_cascade(source: str, ids: List[int], level: Optional[int] = 0):
             sleep(2)
             print("Continue...")
             res = flow_auth.get_cascade(source=source, id=id)
-            # seed_cascade(source=source, ids=ids, level=level)
         cids = []
         if res:
             for r in res:
@@ -47,13 +49,15 @@ def seed_cascade(source: str, ids: List[int], level: Optional[int] = 0):
                     id=r.get('id'),
                     parent=r.get('parent') or None,
                     name=r.get('name'),
-                    level=level)
+                    level=level,
+                    question=question)
                 saved = crud_cascade.add_cascade(
                     session=session, data=cascade)
                 cids.append(saved.id)
         if not cids:
             return None
-        seed_cascade(source=source, ids=cids, level=level + 1)
+        seed_cascade(
+            source=source, question=question, ids=cids, level=level + 1)
 
 
 for form in forms:
@@ -61,7 +65,9 @@ for form in forms:
         continue
     for cr in form.get("cascade_resources"):
         print("Seeding...")
-        filepath = f"{source_path}/{cr}.csv"
+        sqlite_filename = cr.get("source")
+        qid = cr.get("question")
+        filepath = f"{source_path}/cascades/{sqlite_filename}.csv"
         cascade_file = os.path.exists(filepath)
         if cascade_file:
             print("Seeding from file...")
@@ -72,16 +78,17 @@ for form in forms:
                     id=row["id"],
                     parent=row["parent"] if row["parent"] else None,
                     name=row["name"],
-                    level=row["level"])
+                    level=row["level"],
+                    question=qid)
                 crud_cascade.add_cascade(
                     session=session, data=cascade)
         else:
             print("Seeding from source...")
-            seed_cascade(source=cr, ids=[0])
+            seed_cascade(source=sqlite_filename, question=qid, ids=[0])
             # get all cascade & save to csv
             cascades = crud_cascade.get_all_cascade(session=session)
             cascades = [c.serialize for c in cascades]
             df = pd.DataFrame(cascades)
             df = df.drop(columns=["children"])
             df.to_csv(filepath, index=False)
-        print(f"Seeding cascade {cr} done")
+        print(f"Seeding cascade {sqlite_filename} done")
