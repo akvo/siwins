@@ -20,6 +20,12 @@ class CascadeDict(TypedDict):
     children: Optional[List] = []
 
 
+class CascadeSimplified(TypedDict):
+    id: int
+    parent: Optional[int] = None
+    name: str
+
+
 class Cascade(Base):
     __tablename__ = "cascade"
     id = Column(Integer, primary_key=True, index=True, nullable=True)
@@ -54,6 +60,14 @@ class Cascade(Base):
             "level": self.level,
             "question": self.question,
             "children": self.children
+        }
+
+    @property
+    def simplify(self) -> CascadeSimplified:
+        return {
+            "id": self.id,
+            "parent": self.parent,
+            "name": self.name,
         }
 
 

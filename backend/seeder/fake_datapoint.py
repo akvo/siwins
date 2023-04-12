@@ -4,9 +4,11 @@ import time
 import json
 import pandas as pd
 import random
+from typing import Optional
 from datetime import datetime
 from faker import Faker
-from db import crud_form, crud_data, crud_option
+from db import crud_form, crud_data, crud_option, \
+    crud_question, crud_cascade
 from models.question import QuestionType
 from models.answer import Answer
 from db.connection import Base, SessionLocal, engine
@@ -15,6 +17,7 @@ from seeder.fake_history import generate_fake_history
 from db.truncator import truncate_datapoint
 from utils.functions import refresh_materialized_data
 from source.main_config import CLASS_PATH, TOPO_JSON_PATH, ADMINISTRATION_PATH
+from source.custom_config import QuestionConfig
 
 start_time = time.process_time()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,116 +57,161 @@ forms = [f.id for f in forms]
 DEFAULT_NUMBER_OF_SEEDER = 10
 repeats = int(sys.argv[1]) if len(sys.argv) == 2 else DEFAULT_NUMBER_OF_SEEDER
 
+# year conducted
+year_conducted_value = None
+year_conducted_qid = QuestionConfig.year_conducted.value
+question = crud_question.get_question_by_id(
+    session=session, id=year_conducted_qid)
+if question and question.type in [
+    QuestionType.option,
+    QuestionType.multiple_option,
+]:
+    year_conducted_value = crud_option.get_option_by_question_id(
+        session=session, question=question.id)
+    year_conducted_value = [v.name for v in year_conducted_value]
+# support other type?
+
+# school information cascade
+school_information_cascade_qid = (
+    QuestionConfig.school_information_cascade.value)
+school_information_cascade_value = crud_cascade.get_cascade_by_question_id(
+    session=session, question=school_information_cascade_qid)
+
 fake = Faker()
 # truncate datapoints before running faker
 truncate_datapoint(session=session)
 
+
+def seed_fake_datapoint(
+    form: int,
+    registration: Optional[bool] = True,
+    monitoring: Optional[int] = 0
+):
+    answers = []
+    names = []
+    iloc = i % (len(sample_geo) - 1)
+    geo = sample_geo[iloc]
+
+    # get form from database
+    form = crud_form.get_form_by_id(session=session, id=form)
+    monitoring = True if form.registration_form is not None else False
+    datapoint = (
+        crud_data.get_registration_only(session=session)
+        if monitoring
+        else None
+    )
+    current_answers = {}
+    for qg in form.question_group:
+        for q in qg.question:
+            # dependency checker, ONLY support single dependency
+            if q.dependency:
+                current_dependency = q.dependency[0]
+                cd_question = int(current_dependency['question'])
+                cd_answer = current_dependency['answer-value'].lower()
+                # check answer
+                dependency_answer = current_answers.get(
+                    cd_question).lower() if current_answers.get(
+                        cd_question) else None
+                if dependency_answer != cd_answer:
+                    # don't answer the question
+                    continue
+            # EOL dependency checker
+            answer = Answer(question=q.id, created=datetime.now())
+            answer_value = None
+
+            # Year conducted question check
+            if q.id == year_conducted_qid and year_conducted_value:
+                fa = year_conducted_value[monitoring]
+                answer_value = "|".join([fa])
+                answer.options = [fa]
+                if q.meta:
+                    names.append(fa)
+                continue
+            # EOL Year conducted question check
+
+            # TODO: School information cascade check
+
+            if q.type in [
+                QuestionType.option,
+                QuestionType.multiple_option,
+            ]:
+                options = crud_option.get_option_by_question_id(
+                    session=session, question=q.id
+                )
+                fa = random.choice(options)
+                answer_value = "|".join([fa.name])
+                answer.options = [fa.name]
+                if q.meta:
+                    names.append(
+                        datapoint.name
+                        if monitoring and datapoint
+                        else fa.name
+                    )
+
+            if q.type == QuestionType.number:
+                fa = fake.random_int(min=10, max=50)
+                answer_value = fa
+                answer.value = answer_value
+
+            if q.type == QuestionType.date:
+                fa = fake.date_this_century()
+                fm = fake.random_int(min=11, max=12)
+                fd = fa.strftime("%d")
+                answer_value = f"2019-{fm}-{fd}"
+                answer.text = answer_value
+
+            if q.type == QuestionType.geo and geo:
+                answer_value = ("{}|{}").format(geo["lat"], geo["long"])
+                answer.text = answer_value
+
+            if q.type == QuestionType.photo:
+                answer_value = json.dumps({'filename': fake.image_url()})
+                answer.text = answer_value
+
+            if q.type == QuestionType.text:
+                fa = fake.company()
+                answer_value = fa
+                answer.text = answer_value
+                if q.meta:
+                    names.append(answer_value)
+
+            if q.type == QuestionType.cascade:
+                cascades = [geo.get(key) for key in levels]
+                answer_value = cascades
+                answer.options = answer_value
+                if q.meta:
+                    names += cascades
+            # update current answers to check dependency
+            current_answers.update({q.id: answer_value})
+            # update answers value to seed
+            answers.append(answer)
+
+    # preparing data value
+    displayName = " - ".join(names)
+    geoVal = [geo.get("lat"), geo.get("long")]
+    identifier = "-".join(fake.uuid4().split("-")[1:4])
+    # add new datapoint
+    data = crud_data.add_data(
+        datapoint_id=datapoint.id if datapoint else None,
+        identifier=datapoint.identifier if datapoint else identifier,
+        session=session,
+        name=displayName,
+        form=form.id,
+        registration=False if monitoring else True,
+        geo=geoVal if not monitoring else None,
+        created=datetime.now(),
+        answers=answers,
+    )
+    return data
+
+
+# registration data
 for i in range(repeats):
     for form in forms:
-        answers = []
-        names = []
-        iloc = i % (len(sample_geo) - 1)
-        geo = sample_geo[iloc]
+        seed_fake_datapoint(form=form)
 
-        # get form from database
-        form = crud_form.get_form_by_id(session=session, id=form)
-
-        monitoring = True if form.registration_form is not None else False
-
-        datapoint = (
-            crud_data.get_registration_only(session=session)
-            if monitoring
-            else None
-        )
-        current_answers = {}
-        for qg in form.question_group:
-            for q in qg.question:
-                # dependency checker, ONLY support single dependency
-                if q.dependency:
-                    current_dependency = q.dependency[0]
-                    cd_question = int(current_dependency['question'])
-                    cd_answer = current_dependency['answer-value'].lower()
-                    # check answer
-                    dependency_answer = current_answers.get(
-                        cd_question).lower() if current_answers.get(
-                            cd_question) else None
-                    if dependency_answer != cd_answer:
-                        # don't answer the question
-                        continue
-                # EOL dependency checker
-                answer = Answer(question=q.id, created=datetime.now())
-                answer_value = None
-                if q.type in [
-                    QuestionType.option,
-                    QuestionType.multiple_option,
-                ]:
-                    options = crud_option.get_option_by_question_id(
-                        session=session, question=q.id
-                    )
-                    fa = random.choice(options)
-                    answer_value = "|".join([fa.name])
-                    answer.options = [fa.name]
-                    if q.meta:
-                        names.append(
-                            datapoint.name
-                            if monitoring and datapoint
-                            else fa.name
-                        )
-
-                if q.type == QuestionType.number:
-                    fa = fake.random_int(min=10, max=50)
-                    answer_value = fa
-                    answer.value = answer_value
-
-                if q.type == QuestionType.date:
-                    fa = fake.date_this_century()
-                    fm = fake.random_int(min=11, max=12)
-                    fd = fa.strftime("%d")
-                    answer_value = f"2019-{fm}-{fd}"
-                    answer.text = answer_value
-
-                if q.type == QuestionType.geo and geo:
-                    answer_value = ("{}|{}").format(geo["lat"], geo["long"])
-                    answer.text = answer_value
-
-                if q.type == QuestionType.photo:
-                    answer_value = json.dumps({'filename': fake.image_url()})
-                    answer.text = answer_value
-
-                if q.type == QuestionType.text:
-                    fa = fake.company()
-                    answer_value = fa
-                    answer.text = answer_value
-                    if q.meta:
-                        names.append(answer_value)
-
-                if q.type == QuestionType.cascade:
-                    cascades = [geo.get(key) for key in levels]
-                    answer_value = cascades
-                    answer.options = answer_value
-                    if q.meta:
-                        names += cascades
-                current_answers.update({q.id: answer_value})
-                answers.append(answer)
-
-        displayName = " - ".join(names)
-        geoVal = [geo.get("lat"), geo.get("long")]
-        identifier = "-".join(fake.uuid4().split("-")[1:4])
-        # add new datapoint
-        data = crud_data.add_data(
-            datapoint_id=datapoint.id if datapoint else None,
-            identifier=datapoint.identifier if datapoint else identifier,
-            session=session,
-            name=displayName,
-            form=form.id,
-            registration=False if monitoring else True,
-            geo=geoVal if not monitoring else None,
-            created=datetime.now(),
-            answers=answers,
-        )
 
 # populate data monitoring history
-
 data_monitoring = crud_data.get_all_data(session=session, registration=False)
 for dm in data_monitoring:
     generate_fake_history(session=session, datapoint=dm)
