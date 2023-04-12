@@ -21,6 +21,9 @@ export const generateAdvanceFilterURL = (advanceSearchValue, url) => {
       .map((x) => encodeURIComponent(x))
       .join("&q=");
     url += `${queryUrlPrefix}q=${advanceFilter?.toLowerCase()}`;
+    if (advanceSearchValue[0]?.filter === "indicator") {
+      url = `${url}&indicator=${advanceSearchValue[0]?.qid}`;
+    }
   }
   return url;
 };

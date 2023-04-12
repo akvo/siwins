@@ -73,6 +73,7 @@ function AdvanceFilter({ customStyle = {} }) {
         question: selectedQuestion?.name,
         option: value,
         type: type,
+        filter: showIndicatorFilter ? "indicator" : "advance_filter",
       },
     ];
     if (Array.isArray(value)) {
