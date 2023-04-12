@@ -51,11 +51,12 @@ Before you seed the baseline data, please make sure that you have all the requir
 
 Folder Path: **/backend/source/**
 
-```
-/backend/source.
-└── forms.json
-├── charts.js
-├── config.min.js
+```bash
+backend/source/
+├── administration
+│   └── fake-geolocations.csv
+├── forms
+│   └── forms.json
 └── solomon-island-topojson.json
 ```
 
