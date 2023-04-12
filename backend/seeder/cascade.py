@@ -9,6 +9,7 @@ from db.connection import Base, SessionLocal, engine
 from db.truncator import truncate
 from db import crud_cascade
 from models.cascade import Cascade
+from source.main_config import FORM_CONFIG_PATH, CASCADE_PATH
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TESTING = os.environ.get("TESTING")
@@ -17,9 +18,7 @@ session = SessionLocal()
 
 
 forms = []
-source_path = "./source"
-forms_config = f"{source_path}/forms.json"
-with open(forms_config) as json_file:
+with open(FORM_CONFIG_PATH) as json_file:
     forms = json.load(json_file)
 
 if not TESTING:
@@ -67,7 +66,7 @@ for form in forms:
         print("Seeding...")
         sqlite_filename = cr.get("source")
         qid = cr.get("question")
-        filepath = f"{source_path}/cascades/{sqlite_filename}.csv"
+        filepath = f"{CASCADE_PATH}/{sqlite_filename}.csv"
         cascade_file = os.path.exists(filepath)
         if cascade_file:
             print("Seeding from file...")

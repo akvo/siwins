@@ -6,13 +6,10 @@ from db.crud_administration import add_administration
 from models.administration import Administration
 from db.connection import SessionLocal
 from source.geoconfig import GeoLevels
-from core.config import CONFIG_NAME
+from source.main_config import CLASS_PATH, TOPO_JSON_PATH, SOURCE_PATH
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 session = SessionLocal()
-class_path = CONFIG_NAME
-filepath = CONFIG_NAME.replace('_', '-')
-source_file = f"./source/{filepath}-topojson.json"
 action = truncate(session=session, table="administration")
 print(action)
 
@@ -26,11 +23,11 @@ def get_parent_id(df, x):
     return pid["id"]
 
 
-with open(source_file, 'r') as geo:
+with open(TOPO_JSON_PATH, 'r') as geo:
     geo = json.load(geo)
     ob = geo["objects"]
     ob_name = list(ob)[0]
-    config = GeoLevels[class_path].value
+    config = GeoLevels[CLASS_PATH].value
     levels = [c["name"] for c in config]
     properties = [
         d for d in [p["properties"] for p in ob[ob_name]["geometries"]]
@@ -63,5 +60,5 @@ with open(source_file, 'r') as geo:
         parent = adm["parent"] if adm["parent"] == adm["parent"] else None
         add_administration(session=session, data=Administration(
             id=int(adm["id"]), parent=parent, name=adm["name"]))
-    res.to_csv("./source/administration.csv", index=False)
+    res.to_csv(f"{SOURCE_PATH}/administration.csv", index=False)
 print("Seed Administration Done")

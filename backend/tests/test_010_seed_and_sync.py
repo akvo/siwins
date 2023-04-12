@@ -12,6 +12,7 @@ from db import crud_sync
 from db import crud_form
 from db import crud_data
 from tests.conftest import test_refresh_materialized_data
+from source.main_config import FORM_CONFIG_PATH, DATAPOINT_PATH
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
@@ -201,8 +202,7 @@ res_data = [{
 }]
 
 forms = []
-forms_config = "./source/forms.json"
-with open(forms_config) as json_file:
+with open(FORM_CONFIG_PATH) as json_file:
     forms = json.load(json_file)
 
 
@@ -250,7 +250,7 @@ class TestSeedAndSync:
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         token = {"token": None, "time": 0}
-        sync_data_file = "./source/static/sync_data.json"
+        sync_data_file = f"{DATAPOINT_PATH}/sync_data.json"
         sync_data = {}
         with open(sync_data_file) as json_file:
             sync_data = json.load(json_file)

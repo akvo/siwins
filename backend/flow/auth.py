@@ -2,6 +2,7 @@ import requests as r
 from os import environ
 from time import time
 from typing import Optional
+from source.main_config import FLOW_INSTANCE
 
 auth_data = {
     "client_id": environ["AUTH0_CLIENT"],
@@ -11,7 +12,7 @@ auth_data = {
     "scope": "openid email",
 }
 
-instance = "sig"
+instance = FLOW_INSTANCE
 
 auth_url = "https://akvofoundation.eu.auth0.com/oauth/token"
 flow_api_url = f"https://api-auth0.akvo.org/flow/orgs/{instance}"

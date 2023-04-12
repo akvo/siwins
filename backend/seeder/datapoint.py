@@ -13,9 +13,9 @@ from models.answer import Answer
 from models.history import History
 from models.form import Form
 import flow.auth as flow_auth
+from source.main_config import DATAPOINT_PATH
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-test_source = "./source/static"
 
 
 def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
@@ -133,7 +133,7 @@ def datapoint_seeder(session: Session, token: dict, forms: List[dict]):
         if not check_form:
             continue
         if TESTING:
-            data_file = f"{test_source}/{form_id}_data.json"
+            data_file = f"{DATAPOINT_PATH}/{form_id}_data.json"
             data = {}
             with open(data_file) as json_file:
                 data = json.load(json_file)

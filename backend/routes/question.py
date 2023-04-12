@@ -11,9 +11,9 @@ from models.question import QuestionFormattedWithAttributes
 from models.question import QuestionAttributes, QuestionType
 from models.answer import Answer
 from models.history import History
+from source.main_config import FORM_PATH
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-source = "./source/static"
 
 security = HTTPBearer()
 question_route = APIRouter()
@@ -40,7 +40,7 @@ def get(
         # TODO: add attributes column into question table ?
         forms = crud_form.get_form(session=session)
         for f in forms:
-            form_file = f"{source}/{f.id}_form.json"
+            form_file = f"{FORM_PATH}/{f.id}.json"
             json_form = {}
             with open(form_file) as json_file:
                 json_form = json.load(json_file)

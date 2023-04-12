@@ -9,13 +9,11 @@ from pydantic import BaseSettings
 from routes.data import data_route
 from routes.question import question_route
 from source.geoconfig import GeoLevels, GeoCenter
+from source.main_config import CLASS_PATH, SOURCE_PATH, TOPO_JSON_PATH
 
-CONFIG_NAME = "solomon_island"
-SOURCE_PATH = "./source"
-TOPO_JSON = f"{SOURCE_PATH}/solomon-island-topojson.json"
-TOPO_JSON = open(TOPO_JSON).read()
-GEO_CONFIG = GeoLevels[CONFIG_NAME].value
-MAP_CENTER = GeoCenter[CONFIG_NAME].value
+TOPO_JSON = open(TOPO_JSON_PATH).read()
+GEO_CONFIG = GeoLevels[CLASS_PATH].value
+MAP_CENTER = GeoCenter[CLASS_PATH].value
 CHART_CONFIG = f"{SOURCE_PATH}/charts.js"
 CHART_CONFIG = jsmin(open(CHART_CONFIG).read())
 

@@ -14,18 +14,18 @@ from source.geoconfig import GeoLevels
 from seeder.fake_history import generate_fake_history
 from db.truncator import truncate_datapoint
 from utils.functions import refresh_materialized_data
-from core.config import CONFIG_NAME
+from source.main_config import CLASS_PATH, TOPO_JSON_PATH, SOURCE_PATH
 
 start_time = time.process_time()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 Base.metadata.create_all(bind=engine)
 session = SessionLocal()
 
-config = GeoLevels[CONFIG_NAME].value
+config = GeoLevels[CLASS_PATH].value
 levels = [c["name"] for c in config]
 
-source_geo = "./source/solomon-island-topojson.json"
-fake_geolocations_file = "./source/fake-geolocations.csv"
+source_geo = TOPO_JSON_PATH
+fake_geolocations_file = f"{SOURCE_PATH}/fake-geolocations.csv"
 fake_geolocations = os.path.exists(fake_geolocations_file)
 
 sample_geo = False
@@ -108,7 +108,6 @@ for i in range(repeats):
                     answer.text = ("{}|{}").format(geo["lat"], geo["long"])
 
                 if q.type == QuestionType.photo:
-                    # TODO:: change this into flow photo answer format
                     answer.text = json.dumps({'filename': fake.image_url()})
 
                 if q.type == QuestionType.text:

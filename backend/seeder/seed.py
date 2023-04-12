@@ -7,6 +7,7 @@ from db.connection import Base, SessionLocal, engine
 from db import crud_sync
 from db.truncator import truncate, truncate_datapoint
 from utils.functions import refresh_materialized_data
+from source.main_config import FORM_CONFIG_PATH
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TESTING = os.environ.get("TESTING")
@@ -15,8 +16,7 @@ session = SessionLocal()
 
 
 forms = []
-forms_config = "./source/forms.json"
-with open(forms_config) as json_file:
+with open(FORM_CONFIG_PATH) as json_file:
     forms = json.load(json_file)
 
 if not TESTING:

@@ -9,9 +9,9 @@ from db import crud_question_group
 from db import crud_question
 from models.question import QuestionType
 import flow.auth as flow_auth
+from source.main_config import FORM_PATH
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-test_source = "./source/static"
 
 
 def form_seeder(session: Session, forms: List[dict]):
@@ -22,7 +22,7 @@ def form_seeder(session: Session, forms: List[dict]):
         # fetch form
         form_id = form.get("id")
         if TESTING:
-            form_file = f"{test_source}/{form_id}_form.json"
+            form_file = f"{FORM_PATH}/{form_id}.json"
             json_form = {}
             with open(form_file) as json_file:
                 json_form = json.load(json_file)
