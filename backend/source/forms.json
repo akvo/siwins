@@ -3,6 +3,7 @@
     "id": 647170919,
     "name": "WASH in School",
     "registration_form": null,
-    "survey_id": 632440925
+    "survey_id": 632440925,
+    "cascade_resources": ["cascade-654850917-v1.sqlite"]
   }
 ]

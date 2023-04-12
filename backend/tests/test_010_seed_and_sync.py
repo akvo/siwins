@@ -218,7 +218,7 @@ class TestSeedAndSync:
         last_sync = crud_sync.get_last_sync(session=session)
         assert last_sync.url == sync_res.url
 
-        form_seeder(session=session, token=token, forms=forms)
+        form_seeder(session=session, forms=forms)
         # enable datapoint seeder test
         datapoint_seeder(session=session, token=token, forms=forms)
         test_refresh_materialized_data()
