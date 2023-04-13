@@ -88,12 +88,10 @@ truncate_datapoint(session=session)
 
 def seed_fake_datapoint(
     form: int,
-    monitoring: Optional[bool] = False,
-    datapoint: Optional[Data] = None,
     registration: Optional[bool] = True,
+    school_information: Optional[List[str]] = None,
     # default use first index of year conducted options value
-    year_conducted: Optional[int] = None,
-    school_information: Optional[List[str]] = None
+    year_conducted: Optional[int] = None
 ):
     answers = []
     names = []
@@ -104,6 +102,8 @@ def seed_fake_datapoint(
     form = crud_form.get_form_by_id(session=session, id=form)
 
     # if monitoring survey available
+    monitoring = None
+    datapoint = None
     if MONITORING_FORM:
         monitoring = True if form.registration_form is not None else False
         datapoint = (
@@ -247,7 +247,7 @@ def seed_fake_datapoint(
             answers.append(answer)
 
     # preparing data value
-    displayName = " - ".join(names)
+    displayName = " - ".join(names) or "Untitled"
     geoVal = [geo.get("lat"), geo.get("long")]
     identifier = "-".join(fake.uuid4().split("-")[1:4])
     # add new datapoint
@@ -284,8 +284,6 @@ if not MONITORING_FORM and year_conducted_qid and year_conducted_value:
         for d in datapoints:
             seed_fake_datapoint(
                 form=d.form,
-                monitoring=True,
-                datapoint=d,
                 year_conducted=year,
                 school_information=d.school_information
             )

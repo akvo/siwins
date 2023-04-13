@@ -17,6 +17,7 @@ def generate_fake_history(session: Session, datapoint: DataDict):
             for q in qg.question:
                 answer = Answer(question=q.id, created=datetime.now())
                 aval = None
+                # TODO :: Need to update answer, generate for all question type
                 if q.type in [
                     QuestionType.option,
                     QuestionType.multiple_option,
