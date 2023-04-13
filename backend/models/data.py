@@ -6,7 +6,7 @@ from typing_extensions import TypedDict
 from typing import Optional, List, Union
 from pydantic import BaseModel
 from pydantic import confloat
-from sqlalchemy import Column, Float, String, Boolean
+from sqlalchemy import Column, Float, String, Boolean, Integer
 from sqlalchemy import ForeignKey, DateTime, BigInteger
 import sqlalchemy.dialects.postgresql as pg
 from sqlalchemy.orm import relationship
@@ -30,6 +30,8 @@ class DataDict(TypedDict):
     datapoint_id: Optional[int] = None
     identifier: Optional[str] = None
     geo: Optional[GeoData] = None
+    year_conducted: Optional[int] = None
+    school_information: Optional[str] = None
     created: Optional[str] = None
     updated: Optional[str] = None
     answer: List[AnswerDict]
@@ -78,6 +80,8 @@ class Data(Base):
     form = Column(BigInteger, ForeignKey(Form.id))
     registration = Column(Boolean, default=True)
     geo = Column(pg.ARRAY(Float), nullable=True)
+    year_conducted = Column(Integer, nullable=True)
+    school_information = Column(pg.ARRAY(String), nullable=True)
     created = Column(DateTime, nullable=True)
     updated = Column(DateTime, nullable=True)
     answer = relationship(
@@ -107,6 +111,8 @@ class Data(Base):
         id: Optional[int] = None,
         identifier: Optional[str] = None,
         datapoint_id: Optional[int] = None,
+        year_conducted: Optional[int] = None,
+        school_information: Optional[List[str]] = None,
     ):
         self.id = id
         self.datapoint_id = datapoint_id
@@ -115,6 +121,8 @@ class Data(Base):
         self.form = form
         self.registration = registration
         self.geo = geo
+        self.year_conducted = year_conducted
+        self.school_information = school_information
         self.updated = updated
         self.created = created
 
@@ -133,6 +141,8 @@ class Data(Base):
             "geo": {
                 "lat": self.geo[0], "long": self.geo[1]
             } if self.geo else None,
+            "year_conducted": self.year_conducted,
+            "school_information": self.school_information,
             "created": self.created.strftime("%B %d, %Y"),
             "updated": self.updated.strftime(
                 "%B %d, %Y"
@@ -195,6 +205,8 @@ class DataBase(BaseModel):
     datapoint_id: Optional[int] = None
     identifier: Optional[str] = None
     geo: Optional[GeoData] = None
+    year_conducted: Optional[int] = None
+    school_information: Optional[str] = None
     created: Optional[str] = None
     updated: Optional[str] = None
     answer: List[AnswerBase]

@@ -30,6 +30,8 @@ def add_data(
     updated: Optional[datetime] = None,
     identifier: Optional[str] = None,
     datapoint_id: Optional[int] = None,
+    year_conducted: Optional[int] = None,
+    school_information: Optional[List[str]] = None,
 ) -> DataDict:
     data = Data(
         id=id,
@@ -41,6 +43,8 @@ def add_data(
         identifier=identifier,
         datapoint_id=datapoint_id,
         registration=registration,
+        year_conducted=year_conducted,
+        school_information=school_information
     )
     for answer in answers:
         data.answer.append(answer)
@@ -188,3 +192,8 @@ def get_last_history(
         .first()
     )
     return [h.serialize for h in data.history] if data else []
+
+
+def get_data_by_year_conducted(session: Session, year_conducted: int):
+    return session.query(Data).filter(
+        Data.year_conducted == year_conducted).all()
