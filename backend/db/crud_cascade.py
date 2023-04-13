@@ -1,3 +1,4 @@
+from typing import Optional
 from sqlalchemy.orm import Session
 from models.cascade import Cascade, CascadeDict, CascadeSimplified
 
@@ -14,11 +15,21 @@ def get_all_cascade(session: Session) -> CascadeDict:
     return session.query(Cascade).order_by(Cascade.level).all()
 
 
-def get_cascade_by_question_id(session: Session, question: int) -> CascadeDict:
-    return session.query(Cascade).filter(
-        Cascade.question == question).order_by(Cascade.level).all()
+def get_cascade_by_question_id(
+    session: Session, question: int, level: Optional[int] = None
+) -> CascadeDict:
+    cascade = session.query(Cascade).filter(
+        Cascade.question == question)
+    if level is not None:
+        cascade = cascade.filter(Cascade.level == level)
+    return cascade.order_by(Cascade.level).all()
 
 
-def get_cascade_by_parent(session: Session, parent: int) -> CascadeSimplified:
-    return session.query(Cascade).filter(
-        Cascade.parent == parent).order_by(Cascade.level).all()
+def get_cascade_by_parent(
+    session: Session, parent: int, level: Optional[int] = None
+) -> CascadeSimplified:
+    cascade = session.query(Cascade).filter(
+        Cascade.parent == parent)
+    if level is not None:
+        cascade = cascade.filter(Cascade.level == level)
+    return cascade.order_by(Cascade.level).all()

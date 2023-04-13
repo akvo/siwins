@@ -17,7 +17,7 @@ from seeder.fake_history import generate_fake_history
 from db.truncator import truncate_datapoint
 from utils.functions import refresh_materialized_data
 from source.main_config import CLASS_PATH, TOPO_JSON_PATH, ADMINISTRATION_PATH
-from source.custom_config import QuestionConfig
+from source.custom_config import QuestionConfig, CascadeLevels
 
 start_time = time.process_time()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -75,7 +75,7 @@ if question and question.type in [
 school_information_cascade_qid = (
     QuestionConfig.school_information_cascade.value)
 school_information_cascade_value = crud_cascade.get_cascade_by_question_id(
-    session=session, question=school_information_cascade_qid)
+    session=session, question=school_information_cascade_qid, level=0)
 
 fake = Faker()
 # truncate datapoints before running faker
@@ -85,7 +85,7 @@ truncate_datapoint(session=session)
 def seed_fake_datapoint(
     form: int,
     registration: Optional[bool] = True,
-    monitoring: Optional[int] = 0
+    year_conducted_index: Optional[int] = 0
 ):
     answers = []
     names = []
@@ -117,19 +117,49 @@ def seed_fake_datapoint(
                     continue
             # EOL dependency checker
             answer = Answer(question=q.id, created=datetime.now())
-            answer_value = None
+            current_answer_value = None
 
             # Year conducted question check
             if q.id == year_conducted_qid and year_conducted_value:
-                fa = year_conducted_value[monitoring]
-                answer_value = "|".join([fa])
+                fa = year_conducted_value[year_conducted_index]
+                current_answer_value = "|".join([fa])
                 answer.options = [fa]
                 if q.meta:
                     names.append(fa)
+                # update current answers to check dependency
+                current_answers.update({q.id: current_answer_value})
+                # update answers value to seed
+                answers.append(answer)
                 continue
             # EOL Year conducted question check
 
-            # TODO: School information cascade check
+            # School information cascade check
+            if q.id == school_information_cascade_qid and \
+                    school_information_cascade_value:
+                cascade_answers = []
+                cascade_levels = CascadeLevels.school_information.value
+                prev_choice = None
+                for name, level in cascade_levels.items():
+                    if level == 0:
+                        prev_choice = random.choice(
+                            school_information_cascade_value)
+                        cascade_answers.append(prev_choice)
+                        continue
+                    child = crud_cascade.get_cascade_by_parent(
+                        session=session, parent=prev_choice.id, level=level)
+                    prev_choice = random.choice(child)
+                    cascade_answers.append(prev_choice)
+                cascade_answers = [c.name for c in cascade_answers]
+                current_answer_value = cascade_answers
+                answer.options = cascade_answers
+                if q.meta:
+                    names += cascade_answers
+                # update current answers to check dependency
+                current_answers.update({q.id: current_answer_value})
+                # update answers value to seed
+                answers.append(answer)
+                continue
+            # EOL School information cascade check
 
             if q.type in [
                 QuestionType.option,
@@ -139,7 +169,7 @@ def seed_fake_datapoint(
                     session=session, question=q.id
                 )
                 fa = random.choice(options)
-                answer_value = "|".join([fa.name])
+                current_answer_value = "|".join([fa.name])
                 answer.options = [fa.name]
                 if q.meta:
                     names.append(
@@ -150,39 +180,41 @@ def seed_fake_datapoint(
 
             if q.type == QuestionType.number:
                 fa = fake.random_int(min=10, max=50)
-                answer_value = fa
-                answer.value = answer_value
+                current_answer_value = fa
+                answer.value = current_answer_value
 
             if q.type == QuestionType.date:
                 fa = fake.date_this_century()
                 fm = fake.random_int(min=11, max=12)
                 fd = fa.strftime("%d")
-                answer_value = f"2019-{fm}-{fd}"
-                answer.text = answer_value
+                current_answer_value = f"2019-{fm}-{fd}"
+                answer.text = current_answer_value
 
             if q.type == QuestionType.geo and geo:
-                answer_value = ("{}|{}").format(geo["lat"], geo["long"])
-                answer.text = answer_value
+                current_answer_value = ("{}|{}").format(
+                    geo["lat"], geo["long"])
+                answer.text = current_answer_value
 
             if q.type == QuestionType.photo:
-                answer_value = json.dumps({'filename': fake.image_url()})
-                answer.text = answer_value
+                current_answer_value = json.dumps({
+                    'filename': fake.image_url()})
+                answer.text = current_answer_value
 
             if q.type == QuestionType.text:
                 fa = fake.company()
-                answer_value = fa
-                answer.text = answer_value
+                current_answer_value = fa
+                answer.text = current_answer_value
                 if q.meta:
-                    names.append(answer_value)
+                    names.append(current_answer_value)
 
             if q.type == QuestionType.cascade:
                 cascades = [geo.get(key) for key in levels]
-                answer_value = cascades
-                answer.options = answer_value
+                current_answer_value = cascades
+                answer.options = current_answer_value
                 if q.meta:
                     names += cascades
             # update current answers to check dependency
-            current_answers.update({q.id: answer_value})
+            current_answers.update({q.id: current_answer_value})
             # update answers value to seed
             answers.append(answer)
 
