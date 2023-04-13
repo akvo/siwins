@@ -12,11 +12,14 @@ import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
 import { geojson, tileOSM } from "../../util/geo-util";
 import { api } from "../../lib";
-import { Modal, Spin, Image, Select, Row, Col } from "antd";
+import { Modal, Spin, Image, Select, Row, Col, Space, Button } from "antd";
+import { CheckOutlined } from "@ant-design/icons";
 import { Chart } from "../supports";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
+import isEmpty from "lodash/isEmpty";
+import sortBy from "lodash/sortBy";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -70,6 +73,7 @@ const Map = () => {
   const [chartData, setChartData] = useState(null);
   const [activePanel, setActivePanel] = useState(1);
   const [indicatorQuestion, setIndicatorQuestion] = useState([]);
+  const [selectedQuestion, setSelectedQuestion] = useState([]);
 
   const getIndicatorData = useCallback(() => {
     const url = `/question?attribute=indicator`;
@@ -140,11 +144,26 @@ const Map = () => {
       .catch((e) => console.error(e));
   };
 
+  // Indicator filter functions
+  const handleOnChangeQuestionDropdown = (id) => {
+    const filterQuestion = indicatorQuestion.find((q) => q.id === id);
+    setSelectedQuestion(filterQuestion);
+  };
+
+  const handleOnChangeQuestionOption = (value, type) => {
+    console.info(value, type);
+  };
+
   return (
     <>
       <div id="map-view">
         <div className="map-container">
-          <IndicatorDropDown indicatorQuestion={indicatorQuestion} />
+          <IndicatorDropDown
+            indicatorQuestion={indicatorQuestion}
+            handleOnChangeQuestionDropdown={handleOnChangeQuestionDropdown}
+            selectedQuestion={selectedQuestion}
+            handleOnChangeQuestionOption={handleOnChangeQuestionOption}
+          />
           <MapContainer
             ref={map}
             center={defCenter}
@@ -224,7 +243,12 @@ const Map = () => {
   );
 };
 
-const IndicatorDropDown = ({ indicatorQuestion }) => {
+const IndicatorDropDown = ({
+  indicatorQuestion,
+  handleOnChangeQuestionDropdown,
+  selectedQuestion,
+  handleOnChangeQuestionOption,
+}) => {
   return (
     <div className="indicator-dropdown-container">
       <Row>
@@ -242,12 +266,51 @@ const IndicatorDropDown = ({ indicatorQuestion }) => {
               label: q.name,
               value: q.id,
             }))}
-            // onChange={(val) => handleOnChangeQuestionDropdown(val, "indicator")}
+            onChange={(val) => handleOnChangeQuestionDropdown(val)}
           />
+          {!isEmpty(selectedQuestion) && (
+            <div className="options-container">
+              <RenderQuestionOption
+                selectedQuestion={selectedQuestion}
+                handleOnChangeQuestionOption={handleOnChangeQuestionOption}
+              />
+            </div>
+          )}
         </Col>
       </Row>
     </div>
   );
+};
+
+const RenderQuestionOption = ({
+  selectedQuestion,
+  handleOnChangeQuestionOption,
+}) => {
+  const MultipleOptionToRender = ({ option }) => {
+    return sortBy(option, "order").map((opt) => (
+      <Button
+        key={`${opt.id}-${opt.name}`}
+        type="primary"
+        icon={<CheckOutlined />}
+        onClick={(e) => handleOnChangeQuestionOption(e, selectedQuestion?.type)}
+      >
+        {opt.name}
+      </Button>
+    ));
+  };
+
+  if (selectedQuestion?.type === "option") {
+    return (
+      <Space direction="vertical">
+        <MultipleOptionToRender
+          option={selectedQuestion.option}
+          questionId={selectedQuestion.id}
+        />
+      </Space>
+    );
+  }
+
+  return <div>tes</div>;
 };
 
 const RegistrationDetail = ({ data }) => {

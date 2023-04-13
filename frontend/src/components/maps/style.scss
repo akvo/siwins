@@ -17,6 +17,24 @@
       .ant-select {
         width: 100%;
       }
+      .options-container {
+        padding: 20px 0px 0px;
+        .ant-space {
+          width: 100%;
+          .ant-space-item {
+            display: inline-flex;
+            gap: 8px;
+            flex-direction: column;
+            button {
+              width: 100%;
+              text-align: left;
+              span {
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
