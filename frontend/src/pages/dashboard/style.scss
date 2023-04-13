@@ -53,12 +53,35 @@
           margin: 20px 40px;
         }
       }
+      &.ant-layout-sider-collapsed {
+        .ant-layout-sider-children {
+          .logo-container {
+            margin: 0px;
+            padding: 10px;
+          }
+          .ant-menu {
+            .ant-menu-item {
+              height: auto;
+              padding: 20px 20px 20px 20px;
+            }
+          }
+        }
+        .ant-menu-title-content {
+          width: auto;
+          span {
+            display: none;
+            opacity: 0;
+          }
+        }
+      }
     }
     .site-layout {
       background-color: $white;
       .ant-layout-header {
         background-color: $bg-grey-dashboard;
-        padding: 20px 40px;
+        padding: 20px 30px;
+        height: auto;
+        line-height: 10px;
       }
       .dashboard-content {
         padding: 20px 30px;
@@ -179,8 +202,9 @@
           .search-question-option-wrapper {
             margin-top: 20px;
             .input-group {
-              .ant-space-item {
-                display: flex;
+              display: flex;
+              .ant-form-item {
+                margin-right: 10px;
               }
             }
           }

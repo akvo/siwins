@@ -129,7 +129,7 @@ function AdvanceFilter({ customStyle = {} }) {
               <Select
                 style={{ width: "100%" }}
                 showSearch
-                placeholder="Advance Filter"
+                placeholder="Select Question"
                 className="search-question-select"
                 options={question.map((q) => ({
                   label: q.name,
