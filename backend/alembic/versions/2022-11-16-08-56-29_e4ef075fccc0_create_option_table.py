@@ -23,7 +23,7 @@ def upgrade() -> None:
         sa.Column("order", sa.Integer(), default=None),
         sa.Column("code", sa.String(), nullable=True),
         sa.Column("name", sa.String()),
-        sa.Column("question", sa.Integer(), sa.ForeignKey("question.id")),
+        sa.Column("question", sa.BigInteger(), sa.ForeignKey("question.id")),
         sa.PrimaryKeyConstraint("id"),
         sa.ForeignKeyConstraint(
             ["question"],

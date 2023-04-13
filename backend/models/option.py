@@ -5,7 +5,7 @@ from typing import Optional
 from typing_extensions import TypedDict
 from pydantic import BaseModel
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String, BigInteger
 from db.connection import Base
 
 
@@ -19,7 +19,7 @@ class OptionDict(TypedDict):
 class Option(Base):
     __tablename__ = "option"
     id = Column(Integer, primary_key=True, index=True, nullable=True)
-    question = Column(Integer, ForeignKey("question.id"))
+    question = Column(BigInteger, ForeignKey("question.id"))
     name = Column(String)
     order = Column(Integer, nullable=True)
     code = Column(String, nullable=True)

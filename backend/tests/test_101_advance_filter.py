@@ -77,4 +77,6 @@ class TestQuestionRoutes:
             if r['type'] != 'number' or not r['number']:
                 continue
             assert r['type'] == 'number'
-            assert len(r['number']) == 2
+            for x in r['number']:
+                assert 'value' in x
+                assert 'count' in x
