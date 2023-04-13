@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import "./style.scss";
 import "leaflet/dist/leaflet.css";
 import {
   MapContainer,
@@ -9,13 +10,13 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
-import { geojson, tileOSM } from "../util/geo-util";
-import { api } from "../lib";
-import { Modal, Spin, Image } from "antd";
-import { Chart } from "./supports";
+import { geojson, tileOSM } from "../../util/geo-util";
+import { api } from "../../lib";
+import { Modal, Spin, Image, Select, Row, Col } from "antd";
+import { Chart } from "../supports";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { generateAdvanceFilterURL } from "../util/utils";
-import { UIState } from "../state/ui";
+import { generateAdvanceFilterURL } from "../../util/utils";
+import { UIState } from "../../state/ui";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -52,7 +53,7 @@ const Markers = ({ zoom, data, getChartData }) => {
 };
 
 const customIcon = new L.Icon({
-  iconUrl: require("../location.svg").default,
+  iconUrl: require("../../location.svg").default,
   iconSize: new L.Point(40, 47),
 });
 
@@ -68,6 +69,17 @@ const Map = () => {
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [chartData, setChartData] = useState(null);
   const [activePanel, setActivePanel] = useState(1);
+  const [indicatorQuestion, setIndicatorQuestion] = useState([]);
+
+  const getIndicatorData = useCallback(() => {
+    const url = `/question?attribute=indicator`;
+    api
+      .get(url)
+      .then((res) => {
+        setIndicatorQuestion(res?.data);
+      })
+      .catch((e) => console.error(e));
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -77,10 +89,11 @@ const Map = () => {
       .get(url)
       .then((res) => {
         setData(res.data);
+        getIndicatorData();
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
-  }, [advanceSearchValue]);
+  }, [advanceSearchValue, getIndicatorData]);
 
   const getChartData = (id) => {
     setSelectedPoint(data.find((d) => d.id === id));
@@ -131,6 +144,7 @@ const Map = () => {
     <>
       <div id="map-view">
         <div className="map-container">
+          <IndicatorDropDown indicatorQuestion={indicatorQuestion} />
           <MapContainer
             ref={map}
             center={defCenter}
@@ -207,6 +221,32 @@ const Map = () => {
         </Modal>
       </div>
     </>
+  );
+};
+
+const IndicatorDropDown = ({ indicatorQuestion }) => {
+  return (
+    <div className="indicator-dropdown-container">
+      <Row>
+        <Col span={24}>
+          <Select
+            dropdownMatchSelectWidth={false}
+            placement={"bottomLeft"}
+            showSearch
+            placeholder="Select indicator"
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+            options={indicatorQuestion.map((q) => ({
+              label: q.name,
+              value: q.id,
+            }))}
+            // onChange={(val) => handleOnChangeQuestionDropdown(val, "indicator")}
+          />
+        </Col>
+      </Row>
+    </div>
   );
 };
 
