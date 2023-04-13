@@ -87,17 +87,23 @@
         padding: 20px 30px;
         #map,
         #dashboard {
-          h2 {
-            font-weight: 600;
-            line-height: 52px;
-            color: #4d4d4d;
-          }
-          p {
-            font-weight: 400;
-            line-height: 23px;
-            color: #4d4d4d;
-            span {
-              color: #0093d5;
+          .title-wrapper {
+            display: flex;
+            align-items: center;
+
+            h2 {
+              font-weight: 600;
+              line-height: 52px;
+              color: #4d4d4d;
+              margin-right: 20px;
+            }
+            p {
+              font-weight: 400;
+              line-height: 23px;
+              color: #4d4d4d;
+              span {
+                color: #0093d5;
+              }
             }
           }
 

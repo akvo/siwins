@@ -8,7 +8,7 @@ function Maps() {
     <div id="map">
       <Row>
         <Col span={24}>
-          <div>
+          <div className="title-wrapper">
             <h2>National Map</h2>
             <p>
               Last Updated : <span>22 / 03 / 2023 </span>
