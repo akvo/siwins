@@ -195,6 +195,12 @@ res_data = [{
         'lat': -47.72084919070232,
         'long': 71.64445931032847
     },
+    "year_conducted": 2018,
+    "school_information": [
+        'Guadalcanal',
+        'Community High School',
+        'AO CHS',
+        '21710'],
     "created": "April 07, 2023",
     "updated": "April 07, 2023",
     "answer": res_answers,

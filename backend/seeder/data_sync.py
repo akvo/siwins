@@ -12,8 +12,13 @@ from models.answer import Answer
 from models.history import History, HistoryDict
 from models.data import Data
 from typing import List
+from source.main_config import MONITORING_FORM
+from source.main_config import QuestionConfig
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+year_conducted_qid = QuestionConfig.year_conducted.value
+school_information_qid = QuestionConfig.school_information.value
 
 
 def delete_current_data_monitoring(
@@ -100,14 +105,19 @@ def data_sync(token: dict, session: Session, sync_data: dict):
         form = crud_form.get_form_by_id(session=session, id=fi.get("formId"))
         if not form:
             continue
+
         datapoint_id = fi.get("dataPointId")
         data_id = fi.get("id")
         answers = []
         geoVal = None
-        monitoring = True if form.registration_form else False
+        year_conducted = None
+        school_information = None
+
         # check if monitoring datapoint exist
+        # form.registration form None by default
+        monitoring = True if form.registration_form else False
         datapoint_exist = False
-        if monitoring:
+        if monitoring and MONITORING_FORM:
             datapoint_exist = crud_data.get_data_by_identifier(
                 session=session, identifier=fi.get("identifier"), form=form.id
             )
@@ -116,6 +126,9 @@ def data_sync(token: dict, session: Session, sync_data: dict):
         for key, value in fi.get("responses").items():
             for val in value:
                 for kval, aval in val.items():
+                    # info: kval = question id
+                    # info: aval = answer
+                    qid = int(kval)
                     question = crud_question.get_question_by_id(
                         session=session, id=kval
                     )
@@ -124,6 +137,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                         continue
                     if question.type == QuestionType.geo:
                         geoVal = [aval.get("lat"), aval.get("long")]
+                    # create answer
                     answer = Answer(
                         question=question.id,
                         created=fi.get("createdAt"),
@@ -237,12 +251,30 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                             type=question.type,
                             value=aval,
                         )
+
+                        # custom
+                        if year_conducted_qid and year_conducted_qid == qid:
+                            year_conducted = answer.options[0]
+                        if school_information_qid and \
+                                school_information_qid == qid:
+                            school_information = answer.options
+                        # EOL custom
+
                     # new datapoint and answers
                     if not datapoint_exist and not updated_data:
                         answer = crud_answer.append_value(
                             answer=answer, value=aval, type=question.type
                         )
                         answers.append(answer)
+
+                        # custom
+                        if year_conducted_qid and year_conducted_qid == qid:
+                            year_conducted = answer.options[0]
+                        if school_information_qid and \
+                                school_information_qid == qid:
+                            school_information = answer.options
+                        # EOL custom
+
         if not updated_data and not datapoint_exist or answers:
             # add new datapoint
             data = crud_data.add_data(
@@ -256,6 +288,8 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                 geo=geoVal,
                 created=fi.get("createdAt"),
                 answers=answers,
+                year_conducted=year_conducted,
+                school_information=school_information
             )
             print(f"Sync | New Datapoint: {data.id}")
             continue
@@ -266,6 +300,12 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             update_data.form = form.id
             update_data.geo = geoVal
             update_data.updated = fi.get("modifiedAt")
+            # custom
+            if year_conducted:
+                update_data.year_conducted = year_conducted
+            if school_information:
+                update_data.school_information = school_information
+            # EOL custom
             updated = crud_data.update_data(session=session, data=update_data)
             print(f"Sync | Update Datapoint: {updated.id}")
             continue

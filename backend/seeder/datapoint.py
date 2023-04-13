@@ -13,14 +13,20 @@ from models.answer import Answer
 from models.history import History
 from models.form import Form
 import flow.auth as flow_auth
-from source.main_config import DATAPOINT_PATH
+from source.main_config import DATAPOINT_PATH, MONITORING_FORM
+from source.main_config import QuestionConfig
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+year_conducted_qid = QuestionConfig.year_conducted.value
+school_information_qid = QuestionConfig.school_information.value
 
 
 def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
     TESTING = os.environ.get("TESTING")
     form_id = form.id
+    # form.registration form None by default
     monitoring = True if form.registration_form else False
     nextPageUrl = data.get("nextPageUrl")
     formInstances = data.get("formInstances")
@@ -30,9 +36,11 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
         data_id = fi.get("id")
         answers = []
         geoVal = None
+        year_conducted = None
+        school_information = None
         # check if first monitoring datapoint exist
         datapoint_exist = False
-        if monitoring:
+        if monitoring and MONITORING_FORM:
             datapoint_exist = crud_data.get_data_by_identifier(
                 session=session, identifier=fi.get("identifier"), form=form_id
             )
@@ -40,6 +48,9 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
         for key, value in fi.get("responses").items():
             for val in value:
                 for kval, aval in val.items():
+                    # info: kval = question id
+                    # info: aval = answer
+                    qid = int(kval)
                     question = crud_question.get_question_by_id(
                         session=session, id=kval
                     )
@@ -95,6 +106,15 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                             answer=answer, value=aval, type=question.type
                         )
                         answers.append(answer)
+
+                    # custom
+                    if year_conducted_qid and year_conducted_qid == qid:
+                        year_conducted = answer.options[0]
+                    if school_information_qid and \
+                            school_information_qid == qid:
+                        school_information = answer.options
+                    # EOL custom
+
         # add new datapoint
         if answers:
             data = crud_data.add_data(
@@ -109,6 +129,8 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                 created=fi.get("createdAt"),
                 updated=fi.get("modifiedAt"),
                 answers=answers,
+                year_conducted=year_conducted,
+                school_information=school_information
             )
         # print(f"New Datapoint: {data.id}")
     # print("------------------------------------------")
