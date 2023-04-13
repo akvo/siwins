@@ -11,7 +11,6 @@ from db import crud_form, crud_data, crud_option, \
     crud_question, crud_cascade
 from models.question import QuestionType
 from models.answer import Answer
-from models.data import Data
 from db.connection import Base, SessionLocal, engine
 from source.geoconfig import GeoLevels
 from seeder.fake_history import generate_fake_history
