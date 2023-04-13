@@ -74,10 +74,14 @@ if question and question.type in [
 # support other type?
 
 # school information cascade
-school_information_cascade_qid = (
-    QuestionConfig.school_information_cascade.value)
-school_information_cascade_value = crud_cascade.get_cascade_by_question_id(
-    session=session, question=school_information_cascade_qid, level=0)
+school_information_value = []
+school_information_qid = QuestionConfig.school_information.value
+question = crud_question.get_question_by_id(
+    session=session, id=school_information_qid)
+if question.type == QuestionType.cascade:
+    school_information_value = crud_cascade.get_cascade_by_question_id(
+        session=session, question=school_information_qid, level=0)
+# support other type?
 
 # setup FAKER
 fake = Faker()
@@ -154,8 +158,8 @@ def seed_fake_datapoint(
             # EOL Year conducted question check
 
             # School information cascade check
-            if not MONITORING_FORM and q.id == school_information_cascade_qid \
-                    and school_information_cascade_value:
+            if not MONITORING_FORM and q.id == school_information_qid \
+                    and school_information_value:
                 cascade_answers = [] if not school_information \
                     else school_information
                 # random choice of school information cascade
@@ -165,7 +169,7 @@ def seed_fake_datapoint(
                     for name, level in cascade_levels.items():
                         if level == 0:
                             prev_choice = random.choice(
-                                school_information_cascade_value)
+                                school_information_value)
                             cascade_answers.append(prev_choice)
                             continue
                         child = crud_cascade.get_cascade_by_parent(

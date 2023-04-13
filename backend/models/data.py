@@ -31,7 +31,7 @@ class DataDict(TypedDict):
     identifier: Optional[str] = None
     geo: Optional[GeoData] = None
     year_conducted: Optional[int] = None
-    school_information: Optional[str] = None
+    school_information: Optional[List[str]] = None
     created: Optional[str] = None
     updated: Optional[str] = None
     answer: List[AnswerDict]
@@ -206,7 +206,7 @@ class DataBase(BaseModel):
     identifier: Optional[str] = None
     geo: Optional[GeoData] = None
     year_conducted: Optional[int] = None
-    school_information: Optional[str] = None
+    school_information: Optional[List[str]] = None
     created: Optional[str] = None
     updated: Optional[str] = None
     answer: List[AnswerBase]

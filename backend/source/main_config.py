@@ -23,7 +23,7 @@ MONITORING_FORM = False
 
 class QuestionConfig(enum.Enum):
     year_conducted = 654960929
-    school_information_cascade = 638730933
+    school_information = 638730933
 
 
 class CascadeLevels(enum.Enum):
