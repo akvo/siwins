@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
 from db.connection import get_session
-from models.cascade import CascadeSimplified
+from models.cascade import CascadeNameAndLevel
 from db import crud_cascade
 from source.main_config import QuestionConfig, \
     SchoolInformationEnum, CascadeLevels
@@ -18,7 +18,7 @@ school_information_levels = CascadeLevels.school_information.value
 
 @cascade_route.get(
     "/cascade/school_information",
-    response_model=List[CascadeSimplified],
+    response_model=List[CascadeNameAndLevel],
     name="cascade:get_school_information",
     summary="get school information cascade of filter",
     tags=["Cascade"]
@@ -33,5 +33,13 @@ def get_cascade(
         session=session,
         question=school_information_qid,
         level=level_numb)
-    cascade = [c.simplify for c in cascade]
-    return cascade
+    cascade = [c.to_name_level for c in cascade]
+    # unique
+    temp = []
+    for c in cascade:
+        temp.append(c.get('name'))
+    temp = list(set(temp))
+    temp = [{"name": c, "level": level_numb} for c in temp]
+    temp.sort(key=lambda x: x.get('name'))
+    # EOL unique
+    return temp
