@@ -26,6 +26,13 @@ class QuestionConfig(enum.Enum):
     school_information = 638730933
 
 
+class SchoolInformationEnum(enum.Enum):
+    province = "province"
+    school_type = "school_type"
+    school_name = "school_name"
+    school_code = "school_code"
+
+
 class CascadeLevels(enum.Enum):
     school_information = {
         "province": 0,
