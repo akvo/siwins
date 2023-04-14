@@ -5,7 +5,7 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
-from seeder.cascade import seed_cascade
+from seeder.cascade_util import seed_cascade
 from source.main_config import QuestionConfig, CascadeLevels, \
     SchoolInformationEnum
 from source.main_config import FORM_CONFIG_PATH
