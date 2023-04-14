@@ -75,8 +75,13 @@ def get_maps(
         None, description="format: question_id|option value \
             (indicator option & advance filter)"),
     number: Optional[List[int]] = Query(
-        None, description="format: [int, int]"
-    )
+        None, description="format: [int, int]"),
+    prov: Optional[List[str]] = Query(
+        None, description="format: province name \
+            (filter by province name)"),
+    sctype: Optional[List[str]] = Query(
+        None, description="format: school_type name \
+            (filter by shcool type)")
     # credentials: credentials = Depends(security)
 ):
     # 1. indicator filter by option,
@@ -118,9 +123,10 @@ def get_maps(
     # get the data
     data = crud_data.get_all_data(
         session=session,
-        registration=True,
         options=options,
-        data_ids=answer_data_ids
+        data_ids=answer_data_ids,
+        prov=prov,
+        sctype=sctype
     )
     # map answer by identifier for each datapoint
     data = [d.to_maps for d in data]

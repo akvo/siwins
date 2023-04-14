@@ -65,9 +65,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(data_route)
-app.include_router(question_route)
 app.include_router(cascade_route)
+app.include_router(question_route)
+app.include_router(data_route)
 
 
 @lru_cache()
