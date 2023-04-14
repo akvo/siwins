@@ -9,6 +9,13 @@ sys.path.append("..")
 pytestmark = pytest.mark.asyncio
 
 
+# TODO:: Need to split to different test file
+# eg: maps, charts, etc
+# add more sample data
+# maps endpoint:
+#   - filter by query more than 1 value (eg: prov: [Central, Guadalcanal])
+
+
 class TestDataRoutes:
     @pytest.mark.asyncio
     async def test_get_paginated_data(
