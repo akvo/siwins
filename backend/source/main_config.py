@@ -15,6 +15,9 @@ DATAPOINT_PATH = f"{SOURCE_PATH}/datapoints"
 CASCADE_PATH = f"{SOURCE_PATH}/cascades"
 ADMINISTRATION_PATH = f"{SOURCE_PATH}/administration"
 
+# only for testing
+TESTING_CASCADE_FILE = "cascade-654850917-v1.sqlite"
+
 # to identify if monitoring form available on questionnaire
 # if we add monitoting form on forms.json, we need to change
 # MONITORING_FORM value to True
