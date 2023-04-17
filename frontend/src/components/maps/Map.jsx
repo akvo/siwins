@@ -187,20 +187,16 @@ const Map = () => {
     filterIndicatorOption(newArray);
   };
 
-  const filterIndicatorOption = (array) => {
+  const updateGlobalState = (value, type) => {
     const filterAdvanceSearchValue = advanceSearchValue.filter(
       (x) => x.qid !== selectedQuestion?.id
     );
-    const value = selectedQuestion?.option
-      .filter((item) => !array?.includes(item.name))
-      .map((filterValue) => `${selectedQuestion.id}|${filterValue.name}`);
-
     let updatedValue = [
       {
         qid: selectedQuestion?.id,
         question: selectedQuestion?.name,
-        option: value,
-        type: "option",
+        ...(type === "number" ? { number: value } : { option: value }),
+        type: type,
         filter: "indicator",
       },
     ];
@@ -212,29 +208,19 @@ const Map = () => {
     });
   };
 
+  const filterIndicatorOption = (array) => {
+    const value = selectedQuestion?.option
+      .filter((item) => !array?.includes(item.name))
+      .map((filterValue) => `${selectedQuestion.id}|${filterValue.name}`);
+    updateGlobalState(value, "option");
+  };
+
   const setValuesOfNumber = (val) => {
     const value = [
       selectedQuestion.number[val.startValue]?.value,
       selectedQuestion.number[val.endValue]?.value,
     ];
-    const filterAdvanceSearchValue = advanceSearchValue.filter(
-      (x) => x.qid !== selectedQuestion?.id
-    );
-    let updatedValue = [
-      {
-        qid: selectedQuestion?.id,
-        question: selectedQuestion?.name,
-        number: value,
-        type: "number",
-        filter: "indicator",
-      },
-    ];
-    if (Array.isArray(value)) {
-      updatedValue = value.length ? updatedValue : [];
-    }
-    UIState.update((s) => {
-      s.advanceSearchValue = [...filterAdvanceSearchValue, ...updatedValue];
-    });
+    updateGlobalState(value, "number");
   };
 
   return (
