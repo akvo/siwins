@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlalchemy.orm import Session
 from models.question_group import QuestionGroup, QuestionGroupDict
-from sqlalchemy import and_
+# from sqlalchemy import and_
 
 
 def get_last_question_group(session: Session, form: int):
@@ -43,31 +43,31 @@ def add_question_group(
     return question_group
 
 
-def update_question_group(
-    session: Session,
-    form: int,
-    name: str,
-    id: int,
-    order: Optional[int] = None,
-    description: Optional[str] = None,
-    repeatable: Optional[bool] = False,
-) -> QuestionGroupDict:
-    last_question_group = get_last_question_group(session=session, form=form)
-    question_group = (
-        session.query(QuestionGroup)
-        .filter(and_(QuestionGroup.form == form, QuestionGroup.id == id))
-        .first()
-    )
-    question_group.name = (name,)
-    question_group.order = order if order else last_question_group
-    question_group.description = description
-    question_group.repeatable = repeatable
-    session.commit()
-    session.flush()
-    session.refresh(question_group)
-    return question_group
+# def update_question_group(
+#     session: Session,
+#     form: int,
+#     name: str,
+#     id: int,
+#     order: Optional[int] = None,
+#     description: Optional[str] = None,
+#     repeatable: Optional[bool] = False,
+# ) -> QuestionGroupDict:
+#     last_question_group = get_last_question_group(session=session, form=form)
+#     question_group = (
+#         session.query(QuestionGroup)
+#         .filter(and_(QuestionGroup.form == form, QuestionGroup.id == id))
+#         .first()
+#     )
+#     question_group.name = (name,)
+#     question_group.order = order if order else last_question_group
+#     question_group.description = description
+#     question_group.repeatable = repeatable
+#     session.commit()
+#     session.flush()
+#     session.refresh(question_group)
+#     return question_group
 
 
-def delete_by_form(session: Session, form: int) -> None:
-    session.query(QuestionGroup).filter(QuestionGroup.form == form).delete()
-    session.commit()
+# def delete_by_form(session: Session, form: int) -> None:
+#     session.query(QuestionGroup).filter(QuestionGroup.form == form).delete()
+#     session.commit()

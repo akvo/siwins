@@ -182,13 +182,13 @@ def get_registration_only(session: Session):
 
 
 # not used
-def get_monitoring_by_id(session: Session, datapoint: Data) -> DataDict:
-    nodealias = aliased(Data)
-    return session.scalars(
-        select(Data)
-        .where(Data.datapoint_id == datapoint.id)
-        .join(Data.monitoring.of_type(nodealias))
-    ).first()
+# def get_monitoring_by_id(session: Session, datapoint: Data) -> DataDict:
+#     nodealias = aliased(Data)
+#     return session.scalars(
+#         select(Data)
+#         .where(Data.datapoint_id == datapoint.id)
+#         .join(Data.monitoring.of_type(nodealias))
+#     ).first()
 
 
 # used on data_sync
