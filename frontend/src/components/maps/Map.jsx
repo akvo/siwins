@@ -8,6 +8,7 @@ import {
   Tooltip,
   Marker,
 } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
 import { geojson, tileOSM } from "../../util/geo-util";
@@ -59,6 +60,14 @@ const customIcon = new L.Icon({
   iconUrl: require("../../location.svg").default,
   iconSize: new L.Point(40, 47),
 });
+
+const createClusterCustomIcon = function (cluster) {
+  return L.divIcon({
+    html: `<span>${cluster.getChildCount()}</span>`,
+    className: "custom-marker-cluster",
+    iconSize: L.point(50, 50, true),
+  });
+};
 
 const Map = () => {
   // use tile layer from config
@@ -190,9 +199,15 @@ const Map = () => {
               }}
               data={geojson}
             />
-            {!loading && (
-              <Markers zoom={defZoom} data={data} getChartData={getChartData} />
-            )}
+            <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon}>
+              {!loading && (
+                <Markers
+                  zoom={defZoom}
+                  data={data}
+                  getChartData={getChartData}
+                />
+              )}
+            </MarkerClusterGroup>
           </MapContainer>
         </div>
 

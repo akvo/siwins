@@ -28,6 +28,7 @@
             button {
               width: 100%;
               text-align: left;
+              height: auto;
               span {
                 color: #fff;
               }
@@ -35,6 +36,17 @@
           }
         }
       }
+    }
+
+    .custom-marker-cluster {
+      background: #ffffff;
+      border: 10px solid #f00800;
+      border-radius: 50%;
+      color: #000000;
+      height: 33px;
+      line-height: 30px;
+      text-align: center;
+      width: 33px;
     }
   }
 }

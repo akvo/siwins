@@ -9,12 +9,14 @@ import {
   Popover,
   Row,
   Col,
+  Card,
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { UIState } from "../../state/ui";
 import isEmpty from "lodash/isEmpty";
 import sortBy from "lodash/sortBy";
 import { api } from "../../lib";
+import { Chart } from "../index";
 
 function AdvanceFilter({ customStyle = {} }) {
   const { advanceSearchValue } = UIState.useState((s) => s);
@@ -22,20 +24,11 @@ function AdvanceFilter({ customStyle = {} }) {
   const [showIndicatorFilter, setShowIndicatorFilter] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState([]);
   const [question, setQuestion] = useState([]);
-  const [indicatorQuestion, setIndicatorQuestion] = useState([]);
   const [advancedFilterFeature] = useState({ isMultiSelect: true });
 
-  const handleOnChangeQuestionDropdown = (id, type) => {
+  const handleOnChangeQuestionDropdown = (id) => {
     const filterQuestion = question.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
-    if (type === "indicator") {
-      setShowIndicatorFilter(true);
-      setShowAdvanceFilter(true);
-      if (!id) {
-        setShowIndicatorFilter(false);
-        setShowAdvanceFilter(false);
-      }
-    }
   };
 
   const getFilterData = useCallback(() => {
@@ -48,20 +41,9 @@ function AdvanceFilter({ customStyle = {} }) {
       .catch((e) => console.error(e));
   }, []);
 
-  const getIndicatorData = useCallback(() => {
-    const url = `/question?attribute=indicator`;
-    api
-      .get(url)
-      .then((res) => {
-        setIndicatorQuestion(res?.data);
-      })
-      .catch((e) => console.error(e));
-  }, []);
-
   useEffect(() => {
     getFilterData();
-    getIndicatorData();
-  }, [getFilterData, getIndicatorData]);
+  }, [getFilterData]);
 
   const handleOnChangeQuestionOption = (value, type) => {
     const filterAdvanceSearchValue = advanceSearchValue.filter(
@@ -87,23 +69,6 @@ function AdvanceFilter({ customStyle = {} }) {
   return (
     <div>
       <Row className="advance-search-container">
-        <Col span={18}>
-          <Select
-            style={{ width: "98%" }}
-            showSearch
-            allowClear
-            placeholder="Select question"
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-            options={indicatorQuestion.map((q) => ({
-              label: q.name,
-              value: q.id,
-            }))}
-            onChange={(val) => handleOnChangeQuestionDropdown(val, "indicator")}
-          />
-        </Col>
         <Col span={6}>
           <Button
             disabled={showIndicatorFilter}
@@ -192,6 +157,54 @@ const RenderQuestionOption = ({
       </Checkbox>
     ));
   };
+
+  const NumberOptionToRender = ({ option }) => {
+    return (
+      <Row>
+        <Col className="chart-card" span={24}>
+          <Card>
+            <Chart
+              height={350}
+              excelFile={"title"}
+              type={"BAR"}
+              data={option.map((v) => ({
+                name: v.value,
+                value: v.count,
+                count: v.count,
+                color: "#70CFAD",
+              }))}
+              wrapper={false}
+              horizontal={false}
+              loading={false}
+              dataZoom={[
+                {
+                  type: "inside",
+                },
+                {
+                  type: "slider",
+                },
+              ]}
+              grid={{
+                top: 80,
+                bottom: 80,
+                left: 40,
+                right: 20,
+                show: true,
+                containLabel: true,
+                label: {
+                  color: "#222",
+                },
+              }}
+            />
+          </Card>
+        </Col>
+      </Row>
+    );
+  };
+
+  if (selectedQuestion.type === "number") {
+    return <NumberOptionToRender option={selectedQuestion.number} />;
+  }
 
   if (
     advancedFilterFeature?.isMultiSelect ||
