@@ -32,14 +32,8 @@ def get_cascade(
     cascade = crud_cascade.get_cascade_by_question_id(
         session=session,
         question=school_information_qid,
-        level=level_numb)
+        level=level_numb,
+        distinct=True)
     cascade = [c.to_name_level for c in cascade]
-    # unique
-    temp = []
-    for c in cascade:
-        temp.append(c.get('name'))
-    temp = list(set(temp))
-    temp = [{"name": c, "level": level_numb} for c in temp]
-    temp.sort(key=lambda x: x.get('name'))
-    # EOL unique
-    return temp
+    cascade.sort(key=lambda x: x.get('name'))
+    return cascade

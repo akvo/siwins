@@ -16,12 +16,17 @@ def get_all_cascade(session: Session) -> CascadeDict:
 
 
 def get_cascade_by_question_id(
-    session: Session, question: int, level: Optional[int] = None
+    session: Session,
+    question: int,
+    level: Optional[int] = None,
+    distinct: Optional[bool] = False
 ) -> CascadeDict:
     cascade = session.query(Cascade).filter(
         Cascade.question == question)
     if level is not None:
         cascade = cascade.filter(Cascade.level == level)
+    if distinct:
+        cascade = cascade.distinct(Cascade.name, Cascade.level)
     return cascade.order_by(Cascade.level).all()
 
 
