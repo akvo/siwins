@@ -20,8 +20,10 @@ const Bar = (
   chartTitle,
   excelFile,
   extra = {},
+  legend = {},
   horizontal = false,
-  grid = {}
+  grid = {},
+  dataZoom
 ) => {
   if (isEmpty(data) || !data) {
     return NoData;
@@ -120,16 +122,17 @@ const Bar = (
         alignWithLabel: true,
       },
     },
+    dataZoom: dataZoom,
     series: [
       {
         data: data.map((v, vi) => ({
           name: v.name,
-          value: v.percentage?.toFixed(2),
-          count: v.value,
+          value: v.value,
+          count: v.count,
           itemStyle: { color: v.color || Color.color[vi] },
         })),
         type: "bar",
-        barMaxWidth: 50,
+        barMaxWidth: 20,
         label: {
           colorBy: "data",
           position: horizontal ? "insideLeft" : "top",
@@ -138,9 +141,6 @@ const Bar = (
           backgroundColor: "rgba(0,0,0,.3)",
           ...TextStyle,
           color: "#fff",
-          formatter: (s) => {
-            return `${s.value} %`;
-          },
         },
       },
     ],
@@ -148,6 +148,7 @@ const Bar = (
     ...backgroundColor,
     ...Easing,
     ...extra,
+    ...legend,
   };
   return option;
 };

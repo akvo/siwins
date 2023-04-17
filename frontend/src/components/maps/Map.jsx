@@ -13,14 +13,23 @@ import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
 import { geojson, tileOSM } from "../../util/geo-util";
 import { api } from "../../lib";
-import { Modal, Spin, Image, Select, Row, Col, Space, Button } from "antd";
-import { CheckOutlined } from "@ant-design/icons";
-import { Chart } from "../supports";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import {
+  Modal,
+  Spin,
+  Image,
+  Select,
+  Row,
+  Col,
+  Space,
+  Button,
+  Card,
+} from "antd";
+import { CloseCircleOutlined, CheckOutlined } from "@ant-design/icons";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import isEmpty from "lodash/isEmpty";
 import sortBy from "lodash/sortBy";
+import { Chart } from "../";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -62,6 +71,7 @@ const customIcon = new L.Icon({
 });
 
 const createClusterCustomIcon = function (cluster) {
+  // console.log(cluster.getAllChildMarkers());
   return L.divIcon({
     html: `<span>${cluster.getChildCount()}</span>`,
     className: "custom-marker-cluster",
@@ -80,9 +90,10 @@ const Map = () => {
   const [data, setData] = useState([]);
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [chartData, setChartData] = useState(null);
-  const [activePanel, setActivePanel] = useState(1);
+  // const [activePanel, setActivePanel] = useState(1);
   const [indicatorQuestion, setIndicatorQuestion] = useState([]);
-  const [selectedQuestion, setSelectedQuestion] = useState([]);
+  const [selectedQuestion, setSelectedQuestion] = useState({});
+  const [selectedOption, setSelectedOption] = useState([]);
 
   const getIndicatorData = useCallback(() => {
     const url = `/question?attribute=indicator`;
@@ -95,6 +106,10 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
+    getIndicatorData();
+  }, [getIndicatorData]);
+
+  useEffect(() => {
     setLoading(true);
     let url = `data/maps`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
@@ -102,11 +117,10 @@ const Map = () => {
       .get(url)
       .then((res) => {
         setData(res.data);
-        getIndicatorData();
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
-  }, [advanceSearchValue, getIndicatorData]);
+  }, [advanceSearchValue]);
 
   const getChartData = (id) => {
     setSelectedPoint(data.find((d) => d.id === id));
@@ -132,26 +146,26 @@ const Map = () => {
       .catch((e) => console.error(e));
   };
 
-  const getChartDataWithHistory = (id, question_id) => {
-    const url = `/data/chart/${id}?history=true&question_ids=${question_id}`;
-    api
-      .get(url)
-      .then((res) => {
-        const currentData = chartData;
-        const currentMonitoring = currentData.monitoring.filter(
-          (m) => m.question_id !== question_id
-        );
-        const newMonitoring = res.data.monitoring.map((m) => ({
-          show_history: true,
-          ...m,
-        }));
-        setChartData({
-          ...currentData,
-          monitoring: [...currentMonitoring, ...newMonitoring],
-        });
-      })
-      .catch((e) => console.error(e));
-  };
+  // const getChartDataWithHistory = (id, question_id) => {
+  //   const url = `/data/chart/${id}?history=true&question_ids=${question_id}`;
+  //   api
+  //     .get(url)
+  //     .then((res) => {
+  //       const currentData = chartData;
+  //       const currentMonitoring = currentData.monitoring.filter(
+  //         (m) => m.question_id !== question_id
+  //       );
+  //       const newMonitoring = res.data.monitoring.map((m) => ({
+  //         show_history: true,
+  //         ...m,
+  //       }));
+  //       setChartData({
+  //         ...currentData,
+  //         monitoring: [...currentMonitoring, ...newMonitoring],
+  //       });
+  //     })
+  //     .catch((e) => console.error(e));
+  // };
 
   // Indicator filter functions
   const handleOnChangeQuestionDropdown = (id) => {
@@ -159,8 +173,41 @@ const Map = () => {
     setSelectedQuestion(filterQuestion);
   };
 
-  const handleOnChangeQuestionOption = (value, type) => {
-    console.info(value, type);
+  const handleOnChangeQuestionOption = (value) => {
+    let newArray = [];
+    if (selectedOption.includes(value)) {
+      newArray = selectedOption.filter((e) => e !== value);
+      setSelectedOption(newArray);
+    } else {
+      newArray = [...selectedOption, value];
+      setSelectedOption(newArray);
+    }
+    filterIndicatorOption(newArray);
+  };
+
+  const filterIndicatorOption = (array) => {
+    const filterAdvanceSearchValue = advanceSearchValue.filter(
+      (x) => x.qid !== selectedQuestion?.id
+    );
+    const value = selectedQuestion?.option
+      .filter((item) => !array?.includes(item.name))
+      .map((filterValue) => `${selectedQuestion.id}|${filterValue.name}`);
+
+    let updatedValue = [
+      {
+        qid: selectedQuestion?.id,
+        question: selectedQuestion?.name,
+        option: value,
+        type: "option",
+        filter: "indicator",
+      },
+    ];
+    if (Array.isArray(value)) {
+      updatedValue = value.length ? updatedValue : [];
+    }
+    UIState.update((s) => {
+      s.advanceSearchValue = [...filterAdvanceSearchValue, ...updatedValue];
+    });
   };
 
   return (
@@ -172,6 +219,7 @@ const Map = () => {
             handleOnChangeQuestionDropdown={handleOnChangeQuestionDropdown}
             selectedQuestion={selectedQuestion}
             handleOnChangeQuestionOption={handleOnChangeQuestionOption}
+            selectedOption={selectedOption}
           />
           <MapContainer
             ref={map}
@@ -220,7 +268,7 @@ const Map = () => {
                 <CloseCircleOutlined
                   onClick={() => {
                     setSelectedPoint(null);
-                    setActivePanel(1);
+                    // setActivePanel(1);
                   }}
                 />
               </div>
@@ -229,7 +277,7 @@ const Map = () => {
           open={selectedPoint}
           onCancel={() => {
             setSelectedPoint(null);
-            setActivePanel(1);
+            // setActivePanel(1);
           }}
           closable={false}
           footer={null}
@@ -244,12 +292,6 @@ const Map = () => {
           ) : (
             <>
               <RegistrationDetail data={chartData} />
-              <Chart
-                activePanel={activePanel}
-                setActivePanel={setActivePanel}
-                chartData={chartData}
-                getChartDataWithHistory={getChartDataWithHistory}
-              />
             </>
           )}
         </Modal>
@@ -263,6 +305,7 @@ const IndicatorDropDown = ({
   handleOnChangeQuestionDropdown,
   selectedQuestion,
   handleOnChangeQuestionOption,
+  selectedOption,
 }) => {
   return (
     <div className="indicator-dropdown-container">
@@ -288,6 +331,7 @@ const IndicatorDropDown = ({
               <RenderQuestionOption
                 selectedQuestion={selectedQuestion}
                 handleOnChangeQuestionOption={handleOnChangeQuestionOption}
+                selectedOption={selectedOption}
               />
             </div>
           )}
@@ -300,19 +344,81 @@ const IndicatorDropDown = ({
 const RenderQuestionOption = ({
   selectedQuestion,
   handleOnChangeQuestionOption,
+  selectedOption,
 }) => {
   const MultipleOptionToRender = ({ option }) => {
     return sortBy(option, "order").map((opt) => (
       <Button
+        style={{
+          backgroundColor: selectedOption.includes(opt.name)
+            ? "#222"
+            : "#1677ff",
+        }}
         key={`${opt.id}-${opt.name}`}
         type="primary"
-        icon={<CheckOutlined />}
-        onClick={(e) => handleOnChangeQuestionOption(e, selectedQuestion?.type)}
+        icon={
+          selectedOption.includes(opt.name) ? (
+            <CloseCircleOutlined />
+          ) : (
+            <CheckOutlined />
+          )
+        }
+        onClick={() =>
+          handleOnChangeQuestionOption(opt.name, selectedQuestion?.type)
+        }
       >
         {opt.name}
       </Button>
     ));
   };
+
+  const NumberOptionToRender = ({ option }) => {
+    return (
+      <Row>
+        <Col className="chart-card" span={24}>
+          <Card>
+            <Chart
+              height={350}
+              excelFile={"title"}
+              type={"BAR"}
+              data={option.map((v) => ({
+                name: v.value,
+                value: v.count,
+                count: v.count,
+                color: "#70CFAD",
+              }))}
+              wrapper={false}
+              horizontal={false}
+              loading={false}
+              dataZoom={[
+                {
+                  type: "inside",
+                },
+                {
+                  type: "slider",
+                },
+              ]}
+              grid={{
+                top: 80,
+                bottom: 80,
+                left: 40,
+                right: 20,
+                show: true,
+                containLabel: true,
+                label: {
+                  color: "#222",
+                },
+              }}
+            />
+          </Card>
+        </Col>
+      </Row>
+    );
+  };
+
+  if (selectedQuestion.type === "number") {
+    return <NumberOptionToRender option={selectedQuestion.number} />;
+  }
 
   if (selectedQuestion?.type === "option") {
     return (

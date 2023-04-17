@@ -7,9 +7,12 @@ export const generateOptions = (
   { type, data, chartTitle, excelFile },
   extra,
   series,
+  legend,
   horizontal,
   highlighted,
-  grid
+  axis,
+  grid,
+  dataZoom
 ) => {
   switch (type) {
     case "BARSTACK":
@@ -24,7 +27,17 @@ export const generateOptions = (
     case "PIE":
       return Pie(data, chartTitle, extra, series);
     default:
-      return Bar(data, chartTitle, excelFile, extra, horizontal, grid);
+      return Bar(
+        data,
+        chartTitle,
+        excelFile,
+        extra,
+        legend,
+        horizontal,
+        grid,
+        dataZoom,
+        axis
+      );
   }
 };
 
@@ -66,6 +79,7 @@ const Chart = ({
   grid = {},
   cumulative = false,
   colorConfig = {},
+  dataZoom = {},
 }) => {
   if (transform) {
     data = data.map((x) => ({
@@ -90,7 +104,8 @@ const Chart = ({
     horizontal,
     highlighted,
     axis,
-    grid
+    grid,
+    dataZoom
   );
   const onEvents = {
     click: (e) => {
