@@ -30,6 +30,8 @@ def add_data(
     updated: Optional[datetime] = None,
     identifier: Optional[str] = None,
     datapoint_id: Optional[int] = None,
+    year_conducted: Optional[int] = None,
+    school_information: Optional[List[str]] = None,
 ) -> DataDict:
     data = Data(
         id=id,
@@ -41,6 +43,8 @@ def add_data(
         identifier=identifier,
         datapoint_id=datapoint_id,
         registration=registration,
+        year_conducted=year_conducted,
+        school_information=school_information
     )
     for answer in answers:
         data.answer.append(answer)
@@ -100,9 +104,11 @@ def get_data(
 
 def get_all_data(
     session: Session,
-    registration: bool,
+    registration: Optional[bool] = True,
     options: Optional[List[str]] = None,
     data_ids: Optional[List[int]] = None,
+    prov: Optional[List[str]] = None,
+    sctype: Optional[List[str]] = None
 ) -> DataDict:
     data = session.query(Data).filter(Data.registration == registration)
     if options:
@@ -117,6 +123,14 @@ def get_all_data(
             [d.identifier for d in data_id]))
     if data_ids is not None:
         data = data.filter(Data.id.in_(data_ids))
+    if prov:
+        or_query = or_(
+            Data.school_information.contains([v]) for v in prov)
+        data = data.filter(or_query)
+    if sctype:
+        or_query = or_(
+            Data.school_information.contains([v]) for v in sctype)
+        data = data.filter(or_query)
     data = data.all()
     return data
 
@@ -168,13 +182,13 @@ def get_registration_only(session: Session):
 
 
 # not used
-def get_monitoring_by_id(session: Session, datapoint: Data) -> DataDict:
-    nodealias = aliased(Data)
-    return session.scalars(
-        select(Data)
-        .where(Data.datapoint_id == datapoint.id)
-        .join(Data.monitoring.of_type(nodealias))
-    ).first()
+# def get_monitoring_by_id(session: Session, datapoint: Data) -> DataDict:
+#     nodealias = aliased(Data)
+#     return session.scalars(
+#         select(Data)
+#         .where(Data.datapoint_id == datapoint.id)
+#         .join(Data.monitoring.of_type(nodealias))
+#     ).first()
 
 
 # used on data_sync
@@ -188,3 +202,8 @@ def get_last_history(
         .first()
     )
     return [h.serialize for h in data.history] if data else []
+
+
+def get_data_by_year_conducted(session: Session, year_conducted: int):
+    return session.query(Data).filter(
+        Data.year_conducted == year_conducted).all()

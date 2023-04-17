@@ -53,7 +53,7 @@ def form_seeder(session: Session, forms: List[dict]):
                 description=qg.get("description"),
                 repeatable=True if qg.get("repeatable") else False,
             )
-            print(f"Question Group: {question_group.name}")
+            # print(f"Question Group: {question_group.name}")
 
             questions = qg.get("question")
             if isinstance(questions, dict):
@@ -78,7 +78,8 @@ def form_seeder(session: Session, forms: List[dict]):
                     options = [
                         {"name": a["text"]} for a in q["options"]["option"]
                     ]
-                question = crud_question.add_question(
+                # question
+                crud_question.add_question(
                     session=session,
                     name=q.get("text"),
                     id=q.get("id") if "id" in q else None,
@@ -89,10 +90,11 @@ def form_seeder(session: Session, forms: List[dict]):
                     meta_geo=meta_geo if meta_geo else False,
                     order=q.get("order"),
                     required=q.get("mandatory"),
-                    dependency=q["dependency"] if "dependency" in q else None,
+                    dependency=[q["dependency"]]
+                    if "dependency" in q else None,
                     option=options,
                 )
-                print(f"{i}.{question.name}")
+                # print(f"{i}.{question.name}")
         print("------------------------------------------")
 
     elapsed_time = time.process_time() - start_time
