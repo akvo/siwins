@@ -71,7 +71,6 @@ const customIcon = new L.Icon({
 });
 
 const createClusterCustomIcon = function (cluster) {
-  // console.log(cluster.getAllChildMarkers());
   return L.divIcon({
     html: `<span>${cluster.getChildCount()}</span>`,
     className: "custom-marker-cluster",
@@ -210,6 +209,10 @@ const Map = () => {
     });
   };
 
+  const setValuesOfNumber = (val) => {
+    console.info(val);
+  };
+
   return (
     <>
       <div id="map-view">
@@ -220,6 +223,7 @@ const Map = () => {
             selectedQuestion={selectedQuestion}
             handleOnChangeQuestionOption={handleOnChangeQuestionOption}
             selectedOption={selectedOption}
+            setValues={setValuesOfNumber}
           />
           <MapContainer
             ref={map}
@@ -306,6 +310,7 @@ const IndicatorDropDown = ({
   selectedQuestion,
   handleOnChangeQuestionOption,
   selectedOption,
+  setValues,
 }) => {
   return (
     <div className="indicator-dropdown-container">
@@ -332,6 +337,7 @@ const IndicatorDropDown = ({
                 selectedQuestion={selectedQuestion}
                 handleOnChangeQuestionOption={handleOnChangeQuestionOption}
                 selectedOption={selectedOption}
+                setValues={setValues}
               />
             </div>
           )}
@@ -345,6 +351,7 @@ const RenderQuestionOption = ({
   selectedQuestion,
   handleOnChangeQuestionOption,
   selectedOption,
+  setValues,
 }) => {
   const MultipleOptionToRender = ({ option }) => {
     return sortBy(option, "order").map((opt) => (
@@ -393,9 +400,11 @@ const RenderQuestionOption = ({
               dataZoom={[
                 {
                   type: "inside",
+                  realtime: false,
                 },
                 {
                   type: "slider",
+                  realtime: false,
                 },
               ]}
               grid={{
@@ -409,6 +418,7 @@ const RenderQuestionOption = ({
                   color: "#222",
                 },
               }}
+              setValues={setValues}
             />
           </Card>
         </Col>

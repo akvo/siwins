@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Col, Card } from "antd";
 import ReactECharts from "echarts-for-react";
 import { Bar, BarStack, Pie } from "./options";
@@ -80,7 +80,10 @@ const Chart = ({
   cumulative = false,
   colorConfig = {},
   dataZoom = {},
+  setValues,
 }) => {
+  const [echartsReactRef, setEchartsReactRef] = useState();
+
   if (transform) {
     data = data.map((x) => ({
       ...x,
@@ -114,6 +117,24 @@ const Chart = ({
       }
     },
   };
+
+  const dataZoomFunc = useCallback(() => {
+    const echartsInstance = echartsReactRef.getEchartsInstance();
+    const startValue = echartsInstance.getOption().dataZoom[0].startValue;
+    const endValue = echartsInstance.getOption().dataZoom[0].endValue;
+    setValues({
+      startValue: startValue,
+      endValue: endValue,
+    });
+  }, [echartsReactRef, setValues]);
+
+  useEffect(() => {
+    if (echartsReactRef) {
+      const echartsInstance = echartsReactRef.getEchartsInstance();
+      echartsInstance.on("dataZoom", dataZoomFunc);
+    }
+  }, [echartsReactRef, option, dataZoomFunc]);
+
   if (wrapper) {
     return (
       <Col
@@ -130,6 +151,7 @@ const Chart = ({
             onEvents={onEvents}
             showLoading={loading}
             loadingOption={loadingOption}
+            ref={(e) => setEchartsReactRef(e)}
           />
         </Card>
       </Col>
@@ -143,6 +165,7 @@ const Chart = ({
       onEvents={onEvents}
       showLoading={loading}
       loadingOption={loadingOption}
+      ref={(e) => setEchartsReactRef(e)}
     />
   );
 };
