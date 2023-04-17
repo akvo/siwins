@@ -26,6 +26,11 @@ class CascadeSimplified(TypedDict):
     name: str
 
 
+class CascadeNameAndLevel(TypedDict):
+    name: str
+    level: int
+
+
 class Cascade(Base):
     __tablename__ = "cascade"
     id = Column(Integer, primary_key=True, index=True, nullable=True)
@@ -68,6 +73,13 @@ class Cascade(Base):
             "id": self.id,
             "parent": self.parent,
             "name": self.name,
+        }
+
+    @property
+    def to_name_level(self) -> CascadeNameAndLevel:
+        return {
+            "name": self.name,
+            "level": self.level,
         }
 
 

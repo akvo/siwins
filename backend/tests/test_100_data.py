@@ -9,6 +9,13 @@ sys.path.append("..")
 pytestmark = pytest.mark.asyncio
 
 
+# TODO:: Need to split to different test file
+# eg: maps, charts, etc
+# add more sample data
+# maps endpoint:
+#   - filter by query more than 1 value (eg: prov: [Central, Guadalcanal])
+
+
 class TestDataRoutes:
     @pytest.mark.asyncio
     async def test_get_paginated_data(
@@ -126,6 +133,88 @@ class TestDataRoutes:
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": 630020919, "number": [1, 20]})
+        assert res.status_code == 200
+        res = res.json()
+        assert res[0] == {
+            'id': 632510922,
+            'identifier': 'd5bi-mkoi-qrej',
+            'geo': [-47.72084919070232, 71.64445931032847],
+            'name': 'Untitled',
+            'answer': {
+                'question': 630020919,
+                'value': 12
+            }
+        }
+        # filter by province
+        res = await client.get(
+            app.url_path_for("data:get_maps_data"),
+            params={"indicator": 630020919, "prov": ["Central"]})
+        assert res.status_code == 200
+        res = res.json()
+        assert res == []
+        # filter by province
+        res = await client.get(
+            app.url_path_for("data:get_maps_data"),
+            params={"indicator": 630020919, "prov": ["Guadalcanal"]})
+        assert res.status_code == 200
+        res = res.json()
+        assert res[0] == {
+            'id': 632510922,
+            'identifier': 'd5bi-mkoi-qrej',
+            'geo': [-47.72084919070232, 71.64445931032847],
+            'name': 'Untitled',
+            'answer': {
+                'question': 630020919,
+                'value': 12
+            }
+        }
+        # filter by school type
+        res = await client.get(
+            app.url_path_for("data:get_maps_data"),
+            params={
+                "indicator": 630020919,
+                "sctype": ["Primary School"]
+            })
+        assert res.status_code == 200
+        res = res.json()
+        assert res == []
+        # filter by school type
+        res = await client.get(
+            app.url_path_for("data:get_maps_data"),
+            params={
+                "indicator": 630020919,
+                "sctype": ["Community High School"]
+            })
+        assert res.status_code == 200
+        res = res.json()
+        assert res[0] == {
+            'id': 632510922,
+            'identifier': 'd5bi-mkoi-qrej',
+            'geo': [-47.72084919070232, 71.64445931032847],
+            'name': 'Untitled',
+            'answer': {
+                'question': 630020919,
+                'value': 12
+            }
+        }
+        # filter by school type and province
+        res = await client.get(
+            app.url_path_for("data:get_maps_data"),
+            params={
+                "indicator": 630020919,
+                "prov": ["Central"],
+                "sctype": ["Community High School"]
+            })
+        assert res.status_code == 200
+        res = res.json()
+        assert res == []
+        res = await client.get(
+            app.url_path_for("data:get_maps_data"),
+            params={
+                "indicator": 630020919,
+                "prov": ["Guadalcanal"],
+                "sctype": ["Community High School"]
+            })
         assert res.status_code == 200
         res = res.json()
         assert res[0] == {
