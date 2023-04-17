@@ -17,10 +17,16 @@ export const generateAdvanceFilterURL = (advanceSearchValue, url) => {
       return x;
     });
     const advanceFilter = advanceSearchValue
-      .flatMap((x) => x.option)
+      .flatMap((x) =>
+        advanceSearchValue[0]?.type === "number" ? x.number : x.option
+      )
       .map((x) => encodeURIComponent(x))
-      .join("&q=");
-    url += `${queryUrlPrefix}q=${advanceFilter?.toLowerCase()}`;
+      .join(advanceSearchValue[0]?.type === "number" ? "&number=" : "&q=");
+    if (advanceSearchValue[0]?.type === "number") {
+      url += `${queryUrlPrefix}number=${advanceFilter?.toLowerCase()}`;
+    } else {
+      url += `${queryUrlPrefix}q=${advanceFilter?.toLowerCase()}`;
+    }
     if (advanceSearchValue[0]?.filter === "indicator") {
       url = `${url}&indicator=${advanceSearchValue[0]?.qid}`;
     }

@@ -170,6 +170,9 @@ const Map = () => {
   const handleOnChangeQuestionDropdown = (id) => {
     const filterQuestion = indicatorQuestion.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
+    UIState.update((s) => {
+      s.advanceSearchValue = [];
+    });
   };
 
   const handleOnChangeQuestionOption = (value) => {
@@ -210,7 +213,28 @@ const Map = () => {
   };
 
   const setValuesOfNumber = (val) => {
-    console.info(val);
+    const value = [
+      selectedQuestion.number[val.startValue]?.value,
+      selectedQuestion.number[val.endValue]?.value,
+    ];
+    const filterAdvanceSearchValue = advanceSearchValue.filter(
+      (x) => x.qid !== selectedQuestion?.id
+    );
+    let updatedValue = [
+      {
+        qid: selectedQuestion?.id,
+        question: selectedQuestion?.name,
+        number: value,
+        type: "number",
+        filter: "indicator",
+      },
+    ];
+    if (Array.isArray(value)) {
+      updatedValue = value.length ? updatedValue : [];
+    }
+    UIState.update((s) => {
+      s.advanceSearchValue = [...filterAdvanceSearchValue, ...updatedValue];
+    });
   };
 
   return (
