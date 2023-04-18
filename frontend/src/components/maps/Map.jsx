@@ -311,6 +311,14 @@ const Map = () => {
   };
 
   const handleProvinceFilter = (value) => {
+    if (value === "disable") {
+      setSelectedProvince(provinceValues.map((item) => item.name));
+      return;
+    }
+    if (value === "all") {
+      setSelectedProvince([]);
+      return;
+    }
     if (selectedProvince.includes(value)) {
       setSelectedProvince(selectedProvince.filter((e) => e !== value));
     } else {
@@ -319,6 +327,14 @@ const Map = () => {
   };
 
   const handleSchoolTypeFilter = (value) => {
+    if (value === "disable") {
+      setSelectedSchoolType(schoolTypeValues.map((item) => item.name));
+      return;
+    }
+    if (value === "all") {
+      setSelectedSchoolType([]);
+      return;
+    }
     if (selectedSchoolType.includes(value)) {
       setSelectedSchoolType(selectedSchoolType.filter((e) => e !== value));
     } else {
@@ -434,6 +450,9 @@ const BottomFilter = ({
   selectedProvince,
   selectedSchoolType,
 }) => {
+  const enableProvinanceButton = selectedProvince.length === 0;
+  const enableSchoolTypeButton = selectedSchoolType.length === 0;
+
   return (
     <div className="bottom-filter-container">
       <Collapse accordion>
@@ -460,10 +479,17 @@ const BottomFilter = ({
             ))}
             <Button
               type="primary"
-              onClick={() => handleProvinceFilter("all")}
+              onClick={() =>
+                enableSchoolTypeButton
+                  ? handleSchoolTypeFilter("disable")
+                  : handleSchoolTypeFilter("all")
+              }
               className="enable-button"
+              style={{
+                backgroundColor: enableSchoolTypeButton ? "#dc3545" : "#007bff",
+              }}
             >
-              Enable All
+              {enableSchoolTypeButton ? "Disable All" : "Enable All"}
             </Button>
           </Space>
         </Panel>
@@ -491,9 +517,16 @@ const BottomFilter = ({
             <Button
               type="primary"
               className="enable-button"
-              onClick={() => handleProvinceFilter("all")}
+              onClick={() =>
+                enableProvinanceButton
+                  ? handleProvinceFilter("disable")
+                  : handleProvinceFilter("all")
+              }
+              style={{
+                backgroundColor: enableProvinanceButton ? "#dc3545" : "#007bff",
+              }}
             >
-              Enable All
+              {enableProvinanceButton ? "Disable All" : "Enable All"}
             </Button>
           </Space>
         </Panel>
