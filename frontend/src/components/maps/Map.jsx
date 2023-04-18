@@ -121,7 +121,8 @@ const Map = () => {
   // use tile layer from config
   const charts = window.charts;
   const showHistory = window.chart_features.show_history;
-  const { advanceSearchValue } = UIState.useState((s) => s);
+  const { advanceSearchValue, provinceValues, schoolTypeValues } =
+    UIState.useState((s) => s);
   const baseMap = tileOSM;
   const map = useRef();
   const [loading, setLoading] = useState(false);
@@ -148,8 +149,23 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
-    getIndicatorData();
-  }, [getIndicatorData]);
+    if (indicatorQuestion.length === 0) {
+      getIndicatorData();
+    }
+  }, [getIndicatorData, indicatorQuestion]);
+
+  useEffect(() => {
+    Promise.all([
+      api.get("/cascade/school_information?level=province"),
+      api.get("/cascade/school_information?level=school_type"),
+    ]).then((res) => {
+      const [province, school_type] = res;
+      UIState.update((s) => {
+        s.provinceValues = province?.data;
+        s.schoolTypeValues = school_type?.data;
+      });
+    });
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -321,7 +337,10 @@ const Map = () => {
               )}
             </MarkerClusterGroup>
           </MapContainer>
-          <BottomFilter />
+          <BottomFilter
+            provinceValues={provinceValues}
+            schoolTypeValues={schoolTypeValues}
+          />
         </div>
 
         {/* Chart Modal */}
@@ -365,15 +384,35 @@ const Map = () => {
   );
 };
 
-const BottomFilter = () => {
+const BottomFilter = ({ provinceValues, schoolTypeValues }) => {
   return (
     <div className="bottom-filter-container">
       <Collapse>
-        <Panel header="This is panel header 1" key="1">
-          <p>{"text"}</p>
+        <Panel header="SCHOOL TYPE" key="1">
+          <Space direction="vertical" size="small" style={{ display: "flex" }}>
+            {provinceValues?.map((item) => (
+              <Button
+                key={`${item.name}`}
+                type="link"
+                icon={<CheckCircleFilled />}
+              >
+                {item.name}
+              </Button>
+            ))}
+          </Space>
         </Panel>
-        <Panel header="This is panel header 2" key="2">
-          <p>{"text"}</p>
+        <Panel header="PROVINCE" key="2">
+          <Space direction="vertical" size="small" style={{ display: "flex" }}>
+            {schoolTypeValues?.map((item) => (
+              <Button
+                key={`${item.name}`}
+                type="link"
+                icon={<CheckCircleFilled />}
+              >
+                {item.name}
+              </Button>
+            ))}
+          </Space>
         </Panel>
       </Collapse>
     </div>
