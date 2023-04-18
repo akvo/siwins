@@ -170,8 +170,6 @@ const Map = () => {
     });
   }, []);
 
-  console.log(provinceValues);
-
   useEffect(() => {
     setLoading(true);
     let url = `data/maps`;
@@ -207,8 +205,6 @@ const Map = () => {
     selectedProvince,
     selectedSchoolType,
   ]);
-
-  console.log(selectedProvince);
 
   const getChartData = (id) => {
     setSelectedPoint(data.find((d) => d.id === id));
@@ -440,7 +436,7 @@ const BottomFilter = ({
 }) => {
   return (
     <div className="bottom-filter-container">
-      <Collapse>
+      <Collapse accordion>
         <Panel header="SCHOOL TYPE" key="1">
           <Space direction="vertical" size="small" style={{ display: "flex" }}>
             {schoolTypeValues?.map((item) => (
@@ -464,7 +460,7 @@ const BottomFilter = ({
             ))}
             <Button
               type="primary"
-              onClick={() => console.info("item.name")}
+              onClick={() => handleProvinceFilter("all")}
               className="enable-button"
             >
               Enable All
@@ -494,8 +490,8 @@ const BottomFilter = ({
             ))}
             <Button
               type="primary"
-              onClick={() => console.info("item.name")}
               className="enable-button"
+              onClick={() => handleProvinceFilter("all")}
             >
               Enable All
             </Button>
