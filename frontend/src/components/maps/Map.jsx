@@ -23,6 +23,7 @@ import {
   Space,
   Button,
   Card,
+  Collapse,
 } from "antd";
 import { CloseCircleFilled, CheckCircleFilled } from "@ant-design/icons";
 import { generateAdvanceFilterURL } from "../../util/utils";
@@ -30,6 +31,8 @@ import { UIState } from "../../state/ui";
 import isEmpty from "lodash/isEmpty";
 import sortBy from "lodash/sortBy";
 import { Chart } from "../";
+
+const { Panel } = Collapse;
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -108,7 +111,7 @@ const createClusterCustomIcon = (cluster) => {
       })
       .join(
         ""
-      )}   <text x="45" y="50" fill="black" font-size="14">${cluster.getChildCount()}</text></svg>`,
+      )}   <text x="50" y="50" fill="black" font-size="14">${cluster.getChildCount()}</text></svg>`,
     className: `custom-marker-cluster`,
     iconSize: L.point(60, 60, true),
   });
@@ -318,6 +321,7 @@ const Map = () => {
               )}
             </MarkerClusterGroup>
           </MapContainer>
+          <BottomFilter />
         </div>
 
         {/* Chart Modal */}
@@ -358,6 +362,21 @@ const Map = () => {
         </Modal>
       </div>
     </>
+  );
+};
+
+const BottomFilter = () => {
+  return (
+    <div className="bottom-filter-container">
+      <Collapse>
+        <Panel header="This is panel header 1" key="1">
+          <p>{"text"}</p>
+        </Panel>
+        <Panel header="This is panel header 2" key="2">
+          <p>{"text"}</p>
+        </Panel>
+      </Collapse>
+    </div>
   );
 };
 
