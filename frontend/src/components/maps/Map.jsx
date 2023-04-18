@@ -438,6 +438,13 @@ const BottomFilter = ({
                 {item.name}
               </Button>
             ))}
+            <Button
+              type="primary"
+              onClick={() => console.info("item.name")}
+              className="enable-button"
+            >
+              Enable All
+            </Button>
           </Space>
         </Panel>
         <Panel header="PROVINCE" key="2">
@@ -461,6 +468,13 @@ const BottomFilter = ({
                 {item.name}
               </Button>
             ))}
+            <Button
+              type="primary"
+              onClick={() => console.info("item.name")}
+              className="enable-button"
+            >
+              Enable All
+            </Button>
           </Space>
         </Panel>
       </Collapse>
