@@ -81,6 +81,8 @@ class Question(Base):
     type = Column(Enum(QuestionType), default=QuestionType.text)
     required = Column(Boolean, nullable=True)
     dependency = Column(pg.ARRAY(pg.JSONB), nullable=True)
+    attributes = Column(pg.ARRAY(String), nullable=True)
+    display_name = Column(String, nullable=True)
 
     option = relationship(
         "Option",
@@ -101,6 +103,8 @@ class Question(Base):
         type: QuestionType,
         required: Optional[bool],
         dependency: Optional[List[dict]],
+        attributes: Optional[List[str]] = None,
+        display_name: Optional[str] = None
     ):
         self.id = id
         self.form = form
@@ -112,6 +116,8 @@ class Question(Base):
         self.type = type
         self.required = required
         self.dependency = dependency
+        self.attributes = attributes
+        self.display_name = display_name
 
     def __repr__(self) -> int:
         return f"<Question {self.id}>"
@@ -163,6 +169,8 @@ class QuestionBase(BaseModel):
     required: bool
     option: List[OptionBase]
     dependency: Optional[List[dict]]
+    attributes: Optional[List[str]]
+    display_name: Optional[str]
 
     class Config:
         orm_mode = True

@@ -570,12 +570,23 @@
             "allowMultiple": false,
             "allowOther": false,
             "option": [
-              { "code": "W4a", "text": "Yes", "value": "Yes" },
-              { "code": "W4b", "text": "No", "value": "No" },
+              {
+                "code": "W4a",
+                "text": "Yes",
+                "value": "Yes",
+                "color": "#2EA745"
+              },
+              {
+                "code": "W4b",
+                "text": "No",
+                "value": "No",
+                "color": "#DC3545"
+              },
               {
                 "code": "W4c",
                 "text": "Don't know/can't say",
-                "value": "Don't know/can't say"
+                "value": "Don't know/can't say",
+                "color": "#666666"
               }
             ],
             "renderType": "radio"
