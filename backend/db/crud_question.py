@@ -38,6 +38,10 @@ def generateOptionObj(obj: dict):
         opt.order = obj["order"]
     if "code" in obj:
         opt.code = obj["code"]
+    if "color" in obj:
+        opt.color = obj["color"]
+    if "description" in obj:
+        opt.description = obj["description"]
     return opt
 
 
@@ -54,6 +58,8 @@ def add_question(
     option: Optional[List[OptionDict]] = None,
     required: Optional[bool] = True,
     dependency: Optional[List[dict]] = None,
+    attributes: Optional[List[str]] = None,
+    display_name: Optional[str] = None
 ) -> QuestionBase:
     last_question = get_last_question(
         session=session, form=form, question_group=question_group
@@ -69,6 +75,8 @@ def add_question(
         type=type,
         required=required,
         dependency=dependency,
+        attributes=attributes,
+        display_name=display_name
     )
     if option:
         for o in option:
