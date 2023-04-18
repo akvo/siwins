@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import "./style.scss";
 import "leaflet/dist/leaflet.css";
@@ -169,6 +170,8 @@ const Map = () => {
     });
   }, []);
 
+  console.log(provinceValues);
+
   useEffect(() => {
     setLoading(true);
     let url = `data/maps`;
@@ -177,6 +180,20 @@ const Map = () => {
     if (selectedQuestion?.id && !urlParams.get("indicator")) {
       url = `${url}?indicator=${selectedQuestion?.id}`;
     }
+    if (selectedProvince && selectedProvince.length > 0) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
+      url = `${url}${queryUrlPrefix}prov=${provinceValues
+        .filter((item) => !selectedProvince?.includes(item.name))
+        .map((x) => x.name)
+        .join("&prov=")}`;
+    }
+    if (selectedSchoolType && selectedSchoolType.length > 0) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
+      url = `${url}${queryUrlPrefix}sctype=${schoolTypeValues
+        .filter((item) => !selectedSchoolType?.includes(item.name))
+        .map((x) => x.name)
+        .join("&sctype=")}`;
+    }
     api
       .get(url)
       .then((res) => {
@@ -184,7 +201,14 @@ const Map = () => {
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
-  }, [advanceSearchValue, selectedQuestion]);
+  }, [
+    advanceSearchValue,
+    selectedQuestion,
+    selectedProvince,
+    selectedSchoolType,
+  ]);
+
+  console.log(selectedProvince);
 
   const getChartData = (id) => {
     setSelectedPoint(data.find((d) => d.id === id));
@@ -419,21 +443,21 @@ const BottomFilter = ({
       <Collapse>
         <Panel header="SCHOOL TYPE" key="1">
           <Space direction="vertical" size="small" style={{ display: "flex" }}>
-            {provinceValues?.map((item) => (
+            {schoolTypeValues?.map((item) => (
               <Button
                 key={`${item.name}`}
                 type="link"
                 icon={
-                  selectedProvince.includes(item.name) ? (
+                  selectedSchoolType.includes(item.name) ? (
                     <CloseCircleFilled />
                   ) : (
                     <CheckCircleFilled />
                   )
                 }
                 className={`${
-                  selectedProvince.includes(item.name) ? "selected" : ""
+                  selectedSchoolType.includes(item.name) ? "selected" : ""
                 }`}
-                onClick={() => handleProvinceFilter(item.name)}
+                onClick={() => handleSchoolTypeFilter(item.name)}
               >
                 {item.name}
               </Button>
@@ -449,20 +473,20 @@ const BottomFilter = ({
         </Panel>
         <Panel header="PROVINCE" key="2">
           <Space direction="vertical" size="small" style={{ display: "flex" }}>
-            {schoolTypeValues?.map((item) => (
+            {provinceValues?.map((item) => (
               <Button
                 key={`${item.name}`}
                 type="link"
-                onClick={() => handleSchoolTypeFilter(item.name)}
+                onClick={() => handleProvinceFilter(item.name)}
                 icon={
-                  selectedSchoolType.includes(item.name) ? (
+                  selectedProvince.includes(item.name) ? (
                     <CloseCircleFilled />
                   ) : (
                     <CheckCircleFilled />
                   )
                 }
                 className={`${
-                  selectedSchoolType.includes(item.name) ? "selected" : ""
+                  selectedProvince.includes(item.name) ? "selected" : ""
                 }`}
               >
                 {item.name}
