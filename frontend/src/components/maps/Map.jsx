@@ -404,7 +404,6 @@ const RenderQuestionOption = ({
   };
 
   const NumberOptionToRender = ({ option }) => {
-    console.log(option);
     return (
       <Row>
         <Col className="chart-card" span={24}>
