@@ -64,6 +64,12 @@
           width: 100%;
           text-align: left;
           height: auto;
+          &.selected {
+            background: #dc3545;
+            span {
+              color: #fff;
+            }
+          }
           &:hover {
             background: #007bff !important;
             span {

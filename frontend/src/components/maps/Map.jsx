@@ -133,6 +133,8 @@ const Map = () => {
   const [indicatorQuestion, setIndicatorQuestion] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState([]);
+  const [selectedSchoolType, setSelectedSchoolType] = useState([]);
   const [barChartValues, setBarChartValues] = useState({
     startValue: 0,
     endValue: 100,
@@ -288,6 +290,22 @@ const Map = () => {
     updateGlobalState(value, "number");
   };
 
+  const handleProvinceFilter = (value) => {
+    if (selectedProvince.includes(value)) {
+      setSelectedProvince(selectedProvince.filter((e) => e !== value));
+    } else {
+      setSelectedProvince([...selectedProvince, value]);
+    }
+  };
+
+  const handleSchoolTypeFilter = (value) => {
+    if (selectedSchoolType.includes(value)) {
+      setSelectedSchoolType(selectedSchoolType.filter((e) => e !== value));
+    } else {
+      setSelectedSchoolType([...selectedSchoolType, value]);
+    }
+  };
+
   return (
     <>
       <div id="map-view">
@@ -340,6 +358,10 @@ const Map = () => {
           <BottomFilter
             provinceValues={provinceValues}
             schoolTypeValues={schoolTypeValues}
+            handleSchoolTypeFilter={handleSchoolTypeFilter}
+            handleProvinceFilter={handleProvinceFilter}
+            selectedProvince={selectedProvince}
+            selectedSchoolType={selectedSchoolType}
           />
         </div>
 
@@ -384,7 +406,14 @@ const Map = () => {
   );
 };
 
-const BottomFilter = ({ provinceValues, schoolTypeValues }) => {
+const BottomFilter = ({
+  provinceValues,
+  schoolTypeValues,
+  handleProvinceFilter,
+  handleSchoolTypeFilter,
+  selectedProvince,
+  selectedSchoolType,
+}) => {
   return (
     <div className="bottom-filter-container">
       <Collapse>
@@ -394,7 +423,17 @@ const BottomFilter = ({ provinceValues, schoolTypeValues }) => {
               <Button
                 key={`${item.name}`}
                 type="link"
-                icon={<CheckCircleFilled />}
+                icon={
+                  selectedProvince.includes(item.name) ? (
+                    <CloseCircleFilled />
+                  ) : (
+                    <CheckCircleFilled />
+                  )
+                }
+                className={`${
+                  selectedProvince.includes(item.name) ? "selected" : ""
+                }`}
+                onClick={() => handleProvinceFilter(item.name)}
               >
                 {item.name}
               </Button>
@@ -407,7 +446,17 @@ const BottomFilter = ({ provinceValues, schoolTypeValues }) => {
               <Button
                 key={`${item.name}`}
                 type="link"
-                icon={<CheckCircleFilled />}
+                onClick={() => handleSchoolTypeFilter(item.name)}
+                icon={
+                  selectedSchoolType.includes(item.name) ? (
+                    <CloseCircleFilled />
+                  ) : (
+                    <CheckCircleFilled />
+                  )
+                }
+                className={`${
+                  selectedSchoolType.includes(item.name) ? "selected" : ""
+                }`}
               >
                 {item.name}
               </Button>
