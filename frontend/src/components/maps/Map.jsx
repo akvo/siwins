@@ -93,6 +93,10 @@ const Map = () => {
   const [indicatorQuestion, setIndicatorQuestion] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
+  const [barChartValues, setBarChartValues] = useState({
+    startValue: 0,
+    endValue: 100,
+  });
 
   const getIndicatorData = useCallback(() => {
     const url = `/question?attribute=indicator`;
@@ -112,6 +116,10 @@ const Map = () => {
     setLoading(true);
     let url = `data/maps`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
+    const urlParams = new URLSearchParams(url);
+    if (selectedQuestion?.id && !urlParams.get("indicator")) {
+      url = `${url}?indicator=${selectedQuestion?.id}`;
+    }
     api
       .get(url)
       .then((res) => {
@@ -119,7 +127,7 @@ const Map = () => {
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
-  }, [advanceSearchValue]);
+  }, [advanceSearchValue, selectedQuestion]);
 
   const getChartData = (id) => {
     setSelectedPoint(data.find((d) => d.id === id));
@@ -170,9 +178,7 @@ const Map = () => {
   const handleOnChangeQuestionDropdown = (id) => {
     const filterQuestion = indicatorQuestion.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
-    UIState.update((s) => {
-      s.advanceSearchValue = [];
-    });
+    updateGlobalState([], "option");
   };
 
   const handleOnChangeQuestionOption = (value) => {
@@ -220,6 +226,10 @@ const Map = () => {
       selectedQuestion.number[val.startValue]?.value,
       selectedQuestion.number[val.endValue]?.value,
     ];
+    setBarChartValues({
+      startValue: val.start,
+      endValue: val.end,
+    });
     updateGlobalState(value, "number");
   };
 
@@ -234,6 +244,7 @@ const Map = () => {
             handleOnChangeQuestionOption={handleOnChangeQuestionOption}
             selectedOption={selectedOption}
             setValues={setValuesOfNumber}
+            barChartValues={barChartValues}
           />
           <MapContainer
             ref={map}
@@ -321,6 +332,7 @@ const IndicatorDropDown = ({
   handleOnChangeQuestionOption,
   selectedOption,
   setValues,
+  barChartValues,
 }) => {
   return (
     <div className="indicator-dropdown-container">
@@ -348,6 +360,7 @@ const IndicatorDropDown = ({
                 handleOnChangeQuestionOption={handleOnChangeQuestionOption}
                 selectedOption={selectedOption}
                 setValues={setValues}
+                barChartValues={barChartValues}
               />
             </div>
           )}
@@ -362,6 +375,7 @@ const RenderQuestionOption = ({
   handleOnChangeQuestionOption,
   selectedOption,
   setValues,
+  barChartValues,
 }) => {
   const MultipleOptionToRender = ({ option }) => {
     return sortBy(option, "order").map((opt) => (
@@ -390,6 +404,7 @@ const RenderQuestionOption = ({
   };
 
   const NumberOptionToRender = ({ option }) => {
+    console.log(option);
     return (
       <Row>
         <Col className="chart-card" span={24}>
@@ -411,10 +426,14 @@ const RenderQuestionOption = ({
                 {
                   type: "inside",
                   realtime: false,
+                  start: barChartValues.startValue,
+                  end: barChartValues.endValue,
                 },
                 {
                   type: "slider",
                   realtime: false,
+                  start: barChartValues.startValue,
+                  end: barChartValues.endValue,
                 },
               ]}
               grid={{

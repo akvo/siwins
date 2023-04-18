@@ -121,10 +121,14 @@ const Chart = ({
   const dataZoomFunc = useCallback(() => {
     const echartsInstance = echartsReactRef.getEchartsInstance();
     const startValue = echartsInstance.getOption().dataZoom[0].startValue;
+    const start = echartsInstance.getOption().dataZoom[0].start;
+    const end = echartsInstance.getOption().dataZoom[0].end;
     const endValue = echartsInstance.getOption().dataZoom[0].endValue;
     setValues({
       startValue: startValue,
       endValue: endValue,
+      start: start,
+      end: end,
     });
   }, [echartsReactRef, setValues]);
 
