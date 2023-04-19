@@ -63,6 +63,8 @@ const RenderQuestionOption = ({
         style={{
           backgroundColor: selectedOption.includes(opt.name)
             ? "#222"
+            : opt.color
+            ? opt.color
             : "#1677ff",
         }}
         key={`${opt.id}-${opt.name}`}

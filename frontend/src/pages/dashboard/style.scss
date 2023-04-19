@@ -49,8 +49,14 @@
       .ant-layout-sider-children {
         text-align: right;
         .logo-container {
-          height: 100px;
-          margin: 20px 40px;
+          .anticon {
+            display: block;
+            text-align: right;
+            padding: 10px 10px;
+          }
+          .ant-image {
+            margin: 5px 40px 10px 40px;
+          }
         }
       }
       &.ant-layout-sider-collapsed {
@@ -58,6 +64,12 @@
           .logo-container {
             margin: 0px;
             padding: 10px;
+            .ant-image {
+              margin: 5px 0 0;
+            }
+            .anticon {
+              text-align: center;
+            }
           }
           .ant-menu {
             .ant-menu-item {

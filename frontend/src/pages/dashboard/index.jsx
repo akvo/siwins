@@ -53,6 +53,13 @@ const DashboardView = () => {
     <Layout className="dashboard-layout">
       <Sider width={300} trigger={null} collapsible collapsed={collapsed}>
         <div className="logo-container">
+          {React.createElement(
+            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+            {
+              className: "trigger",
+              onClick: () => setCollapsed(!collapsed),
+            }
+          )}
           <Image src="/images/dashboard-logo.png" preview={false} />
         </div>
         <Menu
@@ -72,15 +79,6 @@ const DashboardView = () => {
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Header>
-          {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            {
-              className: "trigger",
-              onClick: () => setCollapsed(!collapsed),
-            }
-          )}
-        </Header>
         <Content className="dashboard-content">
           <Routes>
             <Route exact path="/" element={<Dashboard />} />
