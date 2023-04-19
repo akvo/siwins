@@ -1,10 +1,11 @@
 ---
-version: '3.9'
+version: "3.9"
 services:
   backend:
     command: ["sh", "run.sh"]
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - DATABASE_URL=postgresql://siwins:password@db:5432/siwins
       - AUTH0_CLIENT=$AUTH0_CLIENT
@@ -29,9 +30,15 @@ services:
       - ./ci/test:/test:ro
     working_dir: /test
   db:
-    command: postgres -c 'shared_buffers=128MB' -c 'fsync=off' -c 'synchronous_commit=off'
+    command:
+      postgres -c 'shared_buffers=128MB' -c 'fsync=off' -c 'synchronous_commit=off'
       -c 'full_page_writes=off' -c 'max_connections=100' -c 'bgwriter_lru_maxpages=0'
       -c 'client_min_messages=warning'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
     restart: always
     volumes:
       - ./db/docker-entrypoint-initdb.d.ci:/docker-entrypoint-initdb.d

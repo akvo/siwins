@@ -8,4 +8,12 @@ pip check
 
 alembic upgrade head
 
+CATEGORIES="./source/category.json"
+
+if [ -f "${CATEGORIES}" ]; then
+  echo "${CATEGORIES} exists"
+  akvo-responsegrouper --config ./source/category.json
+	echo "done"
+fi
+
 uvicorn main:app --reload --port 5000

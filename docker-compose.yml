@@ -14,6 +14,11 @@ services:
       - POSTGRES_PASSWORD=password
     ports:
       - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
   backend:
     image: python:3.8.5
     working_dir: /app
@@ -23,7 +28,8 @@ services:
     environment:
       - DATABASE_URL=postgresql://siwins:password@db:5432/siwins
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     network_mode: service:mainnetwork
   frontend:
     image: akvo/akvo-node-18-alpine:20220923.084347.0558ee6
