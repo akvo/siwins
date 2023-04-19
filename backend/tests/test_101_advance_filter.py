@@ -21,7 +21,7 @@ class TestQuestionRoutes:
         assert res[0] == {
             "id": 654960929,
             "name": "Which year was the survey conducted?",
-            "display_name": None,
+            "display_name": "Year of survey",
             "type": "option",
             "option": [{
                 'name': '2018',
@@ -46,10 +46,12 @@ class TestQuestionRoutes:
         res = res.json()
         name = 'In the previous two weeks, was drinking water from the main '
         name += 'source available at the school throughout each school day?'
+        display_name = 'Water availability at primary source '
+        display_name += 'in previous two weeks'
         assert res[0] == {
             'id': 624660930,
             'name': name,
-            "display_name": None,
+            "display_name": display_name,
             "type": "option",
             'attributes': ['indicator', 'advance_filter'],
             'option': [{
@@ -72,10 +74,12 @@ class TestQuestionRoutes:
         }
         name = 'Is drinking water from the main source '
         name += 'typically available throughout the school year?'
+        display_name = 'Water availability at primary source '
+        display_name += 'throughout school year'
         assert res[1] == {
             'id': 624660927,
             'name': name,
-            "display_name": None,
+            "display_name": display_name,
             "type": "option",
             'attributes': ['indicator', 'advance_filter'],
             'option': [{

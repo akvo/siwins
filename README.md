@@ -8,7 +8,7 @@
 
 ##### Seed & Sync Auth
 
-This app requires [Akvo Flow API Authentication](https://github.com/akvo/akvo-flow-api/wiki/Authentication) to provides correct credentials when seed or sync form and data points from Akvo FLOW.
+This app requires [Akvo Flow API Authentication](https://github.com/akvo/akvo-flow-api/wiki/Akvo-SSO-login) to provides correct credentials when seed or sync form and data points from Akvo FLOW.
 
 Environment Setup:
 
@@ -21,6 +21,10 @@ export AUTH0_PWD="string"
 #### 2. Start the App
 
 Now you have all the required environment ready, then run the App using:
+
+```bash
+docker volume create --name=siwins-docker-sync
+```
 
 ```bash
 ./dc.sh up -d
@@ -64,13 +68,21 @@ backend/source/
 
 Assuming that you have **forms.json** inside `./backend/source/` folder and have correct [Environment setup](#1-environment-setup) you will be able to run.
 
+- Run form and fake data seeder
+
+```
+docker-compose exec backend ./fake_seed.sh
+```
+
+- Run seeder with flow data (require [Environment setup](#1-environment-setup))
+
 ```
 docker-compose exec backend ./seed.sh
 ```
 
 ##### Sync Data Points
 
-To get updated data points from akvo-flow instance, you need to run:
+To get updated data points from akvo-flow instance, you need to run (require [Environment setup](#1-environment-setup)):
 
 ```
 docker-compose exec backend ./sync.sh
