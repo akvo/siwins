@@ -23,17 +23,28 @@
           width: 100%;
           .ant-space-item {
             display: inline-flex;
-            gap: 8px;
+            gap: 0px;
             flex-direction: column;
             button {
               width: 100%;
               text-align: left;
               height: auto;
+              border-radius: 0px;
               span {
                 color: #fff;
               }
             }
           }
+        }
+      }
+      .option-info-container {
+        .ant-alert {
+          background-color: #fff;
+          border: none;
+          padding: 8px 0px;
+          margin-top: 20px;
+          border-top: 1px solid #e4e4e4;
+          border-radius: 0px;
         }
       }
     }
