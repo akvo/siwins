@@ -48,6 +48,8 @@ class MapsData(BaseModel):
     id: int
     identifier: str
     name: str
+    school_information: List[str]
+    year_conducted: int
     geo: List[float]
     answer: Union[AnswerDict, dict]
 
@@ -157,6 +159,8 @@ class Data(Base):
             "id": self.id,
             "identifier": self.identifier,
             "name": self.name,
+            "school_information": self.school_information,
+            "year_conducted": self.year_conducted,
             "geo": self.geo,
             "answer": {}
         }

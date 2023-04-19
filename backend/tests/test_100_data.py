@@ -57,7 +57,10 @@ class TestDataRoutes:
             'id': 632510922,
             'identifier': 'd5bi-mkoi-qrej',
             'geo': [-47.72084919070232, 71.64445931032847],
+            'school_information': [
+                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
+            'year_conducted': 2018,
             'answer': {}
         }
         # with indicator
@@ -70,7 +73,10 @@ class TestDataRoutes:
             'id': 632510922,
             'identifier': 'd5bi-mkoi-qrej',
             'geo': [-47.72084919070232, 71.64445931032847],
+            'school_information': [
+                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
+            'year_conducted': 2018,
             'answer': {
                 'question': 624660930,
                 'value': 'No'
@@ -92,7 +98,10 @@ class TestDataRoutes:
             'id': 632510922,
             'identifier': 'd5bi-mkoi-qrej',
             'geo': [-47.72084919070232, 71.64445931032847],
+            'school_information': [
+                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
+            'year_conducted': 2018,
             'answer': {
                 'question': 624660930,
                 'value': 'No'
@@ -114,7 +123,10 @@ class TestDataRoutes:
             'id': 632510922,
             'identifier': 'd5bi-mkoi-qrej',
             'geo': [-47.72084919070232, 71.64445931032847],
+            'school_information': [
+                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
+            'year_conducted': 2018,
             'answer': {
                 'question': 630020919,
                 'value': 12
@@ -139,7 +151,10 @@ class TestDataRoutes:
             'id': 632510922,
             'identifier': 'd5bi-mkoi-qrej',
             'geo': [-47.72084919070232, 71.64445931032847],
+            'school_information': [
+                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
+            'year_conducted': 2018,
             'answer': {
                 'question': 630020919,
                 'value': 12
@@ -162,7 +177,10 @@ class TestDataRoutes:
             'id': 632510922,
             'identifier': 'd5bi-mkoi-qrej',
             'geo': [-47.72084919070232, 71.64445931032847],
+            'school_information': [
+                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
+            'year_conducted': 2018,
             'answer': {
                 'question': 630020919,
                 'value': 12
@@ -191,7 +209,10 @@ class TestDataRoutes:
             'id': 632510922,
             'identifier': 'd5bi-mkoi-qrej',
             'geo': [-47.72084919070232, 71.64445931032847],
+            'school_information': [
+                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
+            'year_conducted': 2018,
             'answer': {
                 'question': 630020919,
                 'value': 12
@@ -221,7 +242,10 @@ class TestDataRoutes:
             'id': 632510922,
             'identifier': 'd5bi-mkoi-qrej',
             'geo': [-47.72084919070232, 71.64445931032847],
+            'school_information': [
+                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
+            'year_conducted': 2018,
             'answer': {
                 'question': 630020919,
                 'value': 12
