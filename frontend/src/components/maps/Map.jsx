@@ -189,7 +189,7 @@ const Map = () => {
             center={defCenter}
             zoom={defZoom}
             zoomControl={false}
-            scrollWheelZoom={true}
+            scrollWheelZoom={false}
             style={{
               height: "100%",
               width: "100%",
