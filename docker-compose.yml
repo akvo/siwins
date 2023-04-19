@@ -23,7 +23,8 @@ services:
     environment:
       - DATABASE_URL=postgresql://siwins:password@db:5432/siwins
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     network_mode: service:mainnetwork
   frontend:
     image: akvo/akvo-node-18-alpine:20220923.084347.0558ee6
