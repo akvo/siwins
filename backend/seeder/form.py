@@ -83,8 +83,8 @@ def form_seeder(session: Session, forms: List[dict]):
                 if "attributes" in q:
                     attributes = q["attributes"]
                 display_name = None
-                if "display_name" in q:
-                    display_name = q["display_name"]
+                if "displayName" in q:
+                    display_name = q["displayName"]
                 options = []
                 if "options" in q:
                     options = q["options"].get("option") or []
