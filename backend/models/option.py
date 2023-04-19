@@ -14,6 +14,15 @@ class OptionDict(TypedDict):
     name: str
     order: Optional[int] = None
     code: Optional[str] = None
+    color: Optional[str] = None
+    description: Optional[str] = None
+
+
+class OptionSimplified(TypedDict):
+    name: str
+    order: Optional[int] = None
+    color: Optional[str] = None
+    description: Optional[str] = None
 
 
 class Option(Base):
@@ -52,6 +61,17 @@ class Option(Base):
             "name": self.name,
             "order": self.order,
             "code": self.code,
+            "color": self.color,
+            "description": self.description
+        }
+
+    @property
+    def simplify(self) -> OptionSimplified:
+        return {
+            "name": self.name,
+            "order": self.order,
+            "color": self.color,
+            "description": self.description
         }
 
 

@@ -10,7 +10,7 @@ pytestmark = pytest.mark.asyncio
 
 class TestQuestionRoutes:
     @pytest.mark.asyncio
-    async def test_get_question_data(
+    async def test_get_question(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         res = await client.get(
@@ -21,17 +21,18 @@ class TestQuestionRoutes:
         assert res[0] == {
             "id": 654960929,
             "name": "Which year was the survey conducted?",
+            "display_name": None,
             "type": "option",
             "option": [{
-                'code': None,
-                'id': 1,
                 'name': '2018',
-                'order': 1
+                'order': 1,
+                'color': None,
+                'description': None,
             }, {
-                'code': None,
-                'id': 2,
                 'name': '2023',
-                'order': 2
+                'order': 2,
+                'color': None,
+                'description': None,
             }],
             "attributes": [],
             "number": []
@@ -48,28 +49,29 @@ class TestQuestionRoutes:
         assert res[1] == {
             'id': 624660927,
             'name': name,
+            "display_name": None,
             "type": "option",
             'attributes': ['indicator', 'advance_filter'],
             'option': [{
-                'id': 47,
                 'name': 'Yes (always available)',
                 'order': 1,
-                'code': 'W5a'
+                'color': None,
+                'description': None,
             }, {
-                'id': 48,
                 'name': 'Mostly (unavailable ≤ 30 days total)',
                 'order': 2,
-                'code': 'W5b'
+                'color': None,
+                'description': None,
             }, {
-                'id': 49,
                 'name': 'No (unavailable > 30 days total)',
                 'order': 3,
-                'code': 'W5c'
+                'color': None,
+                'description': None,
             }, {
-                'id': 50,
                 'name': "Don't know/can't say",
                 'order': 4,
-                'code': 'W5d'
+                'color': None,
+                'description': None,
             }],
             'number': []
         }

@@ -10,7 +10,7 @@ from sqlalchemy import Boolean, Integer, String, Enum
 from sqlalchemy.orm import relationship
 import sqlalchemy.dialects.postgresql as pg
 from db.connection import Base
-from models.option import OptionDict, OptionBase
+from models.option import OptionDict, OptionBase, OptionSimplified
 
 
 class AnswerNumberCount(TypedDict):
@@ -50,8 +50,9 @@ class QuestionFormattedWithAttributes(TypedDict):
     id: int
     name: str
     type: QuestionType
-    attributes: Optional[List[str]] = []
-    option: Optional[List[OptionDict]] = []
+    display_name: Optional[str] = None
+    attributes: Optional[List[QuestionAttributes]] = []
+    option: Optional[List[OptionSimplified]] = []
     number: Optional[List[AnswerNumberCount]] = []
 
 
@@ -147,13 +148,15 @@ class Question(Base):
         }
 
     @property
-    def formatted_with_attributes(self) -> QuestionFormatted:
+    def formatted_with_attributes(self) -> QuestionFormattedWithAttributes:
         return {
             "id": self.id,
             "name": self.name,
+            "display_name": self.display_name,
             "type": self.type.value,
-            "attributes": [],
-            "option": [o.serialize for o in self.option] or [],
+            "attributes": self.attributes or [],
+            "option": [o.simplify for o in self.option] or [],
+            "number": []
         }
 
 

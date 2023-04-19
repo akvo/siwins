@@ -167,10 +167,17 @@ def get_question_by_id(session: Session, id: int) -> QuestionDict:
     return session.query(Question).filter(Question.id == id).first()
 
 
-def get_question_by_ids(
-    session: Session, ids: List[int]
+def get_question_by_attributes(
+    session: Session, attribute: str
 ) -> List[QuestionDict]:
-    return session.query(Question).filter(Question.id.in_(ids)).all()
+    return session.query(Question).filter(
+        Question.attributes.contains([attribute])).all()
+
+
+# def get_question_by_ids(
+#     session: Session, ids: List[int]
+# ) -> List[QuestionDict]:
+#     return session.query(Question).filter(Question.id.in_(ids)).all()
 
 
 # def validate_dependency(session: Session, dependency: List[dict]):
