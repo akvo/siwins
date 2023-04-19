@@ -115,9 +115,9 @@ const RenderQuestionOption = ({
   advancedFilterFeature,
 }) => {
   const { advanceSearchValue } = UIState.useState((s) => s);
-  const selectedRadioValue = advanceSearchValue.find(
-    (x) => x.qid === selectedQuestion?.id
-  );
+  const selectedRadioValue = advanceSearchValue
+    .filter((item) => item.filter === "advance_filter")
+    .find((x) => x.qid === selectedQuestion?.id);
 
   const OptionToRender = ({ questionId, option }) => {
     return sortBy(option, "order").map((opt) => (
@@ -185,6 +185,7 @@ const RenderFilterTag = () => {
     let deleteFilter = [];
     if (type === "multiselect") {
       deleteFilter = advanceSearchValue
+        .filter((item) => item.filter === "advance_filter")
         .map((x) => {
           if (x.option.includes(option)) {
             const filterOpt = x.option.filter((opt) => opt !== option);
@@ -198,7 +199,9 @@ const RenderFilterTag = () => {
         })
         .filter((x) => x.option);
     } else {
-      deleteFilter = advanceSearchValue.filter((x) => x.option !== option);
+      deleteFilter = advanceSearchValue.filter(
+        (x) => x.option !== option && x.filter === "advance_filter"
+      );
     }
     UIState.update((s) => {
       s.advanceSearchValue = deleteFilter;
@@ -206,39 +209,41 @@ const RenderFilterTag = () => {
   };
 
   const TagToRender = () => {
-    return advanceSearchValue.map((val) => {
-      // support multiple select on advanced filter option
-      if (Array.isArray(val.option)) {
-        return val.option.map((opt) => (
+    return advanceSearchValue
+      .filter((item) => item.filter === "advance_filter")
+      .map((val) => {
+        // support multiple select on advanced filter option
+        if (Array.isArray(val.option)) {
+          return val.option.map((opt) => (
+            <Tag
+              key={`tag-${opt}`}
+              icon={
+                <Popover title={val.question} placement="topRight">
+                  <InfoCircleOutlined />
+                </Popover>
+              }
+              closable
+              onClose={() => handleOnCloseTag("multiselect", opt)}
+            >
+              {opt.split("|")[1]}
+            </Tag>
+          ));
+        }
+        return (
           <Tag
-            key={`tag-${opt}`}
+            key={`tag-${val.option}`}
             icon={
               <Popover title={val.question} placement="topRight">
                 <InfoCircleOutlined />
               </Popover>
             }
             closable
-            onClose={() => handleOnCloseTag("multiselect", opt)}
+            onClose={() => handleOnCloseTag("radio", val.option)}
           >
-            {opt.split("|")[1]}
+            {val.option.split("|")[1]}
           </Tag>
-        ));
-      }
-      return (
-        <Tag
-          key={`tag-${val.option}`}
-          icon={
-            <Popover title={val.question} placement="topRight">
-              <InfoCircleOutlined />
-            </Popover>
-          }
-          closable
-          onClose={() => handleOnCloseTag("radio", val.option)}
-        >
-          {val.option.split("|")[1]}
-        </Tag>
-      );
-    });
+        );
+      });
   };
 
   return (
