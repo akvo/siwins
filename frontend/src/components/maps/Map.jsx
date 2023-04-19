@@ -14,8 +14,6 @@ import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
 import { geojson, tileOSM } from "../../util/geo-util";
 import { api } from "../../lib";
-import { Modal, Spin, Image } from "antd";
-import { CloseCircleFilled } from "@ant-design/icons";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
@@ -24,90 +22,8 @@ import ProvinceFilter from "./ProvinceFilter";
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
 
-const Markers = ({ zoom, data, getChartData }) => {
-  const [hovered, setHovered] = useState(null);
-  const [currentZoom, setCurrentZoom] = useState(zoom);
-
-  const map = useMapEvents({
-    zoomend: () => setCurrentZoom(map?._zoom || currentZoom),
-  });
-
-  data = data.filter((d) => d.geo);
-  return data.map(({ id, geo, name, answer }) => {
-    const isHovered = id === hovered;
-    console.info(isHovered);
-    return (
-      <Marker
-        key={id}
-        position={geo}
-        answerValue={answer}
-        icon={customIcon}
-        eventHandlers={{
-          click: () => {
-            getChartData(id);
-          },
-          mouseover: () => setHovered(id),
-          mouseout: () => setHovered(null),
-        }}
-      >
-        <Tooltip direction="top">{name}</Tooltip>
-      </Marker>
-    );
-  });
-};
-
-const customIcon = new L.Icon({
-  iconUrl: require("../../location.svg").default,
-  iconSize: new L.Point(40, 47),
-});
-
-const createClusterCustomIcon = (cluster) => {
-  const color = ["#4475B4", "#73ADD1", "#AAD9E8", "#70CFAD"];
-
-  const tempResult = {};
-
-  cluster
-    .getAllChildMarkers()
-    .map((item) => item?.options?.answerValue)
-    .map((element, index) => {
-      tempResult[element.value] = {
-        value: element.value,
-        question: element.question,
-        color: color[index],
-        count: tempResult[element.value]
-          ? tempResult[element.value].count + 1
-          : 1,
-      };
-    });
-  const result = Object.values(tempResult);
-
-  const totalValue = result.reduce((s, { count }) => s + count, 0);
-  const radius = 40;
-  const circleLength = Math.PI * (radius * 2);
-  let spaceLeft = circleLength;
-
-  return L.divIcon({
-    html: `<svg width="100%" height="100%" viewBox="0 0 100 100">
-    <circle cx="50" cy="50" r="40" fill="#ffffffad"/>
-    ${result
-      .map((item, index) => {
-        const v = index === 0 ? circleLength : spaceLeft;
-        spaceLeft -= (item.count / totalValue) * circleLength;
-        return `
-          <circle cx="50" cy="50" r="40" fill="transparent" stroke-width="15" stroke="${color[index]}" stroke-dasharray="${v} ${circleLength}" />`;
-      })
-      .join(
-        ""
-      )}   <text x="50" y="50" fill="black" font-size="14">${cluster.getChildCount()}</text></svg>`,
-    className: `custom-marker-cluster`,
-    iconSize: L.point(60, 60, true),
-  });
-};
-
 const Map = () => {
   // use tile layer from config
-  const charts = window.charts;
-  const showHistory = window.chart_features.show_history;
   const {
     advanceSearchValue,
     provinceValues,
@@ -118,8 +34,6 @@ const Map = () => {
   const map = useRef();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [selectedPoint, setSelectedPoint] = useState(null);
-  const [chartData, setChartData] = useState(null);
   // const [activePanel, setActivePanel] = useState(1);
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
@@ -165,51 +79,6 @@ const Map = () => {
     selectedProvince,
     selectedSchoolType,
   ]);
-
-  const getChartData = (id) => {
-    setSelectedPoint(data.find((d) => d.id === id));
-    const qids = charts.map((c) => c.question_id);
-    let url = `/data/chart/${id}?history=false`;
-    if (showHistory) {
-      url = `${url}?history=true`;
-    }
-    if (qids.length) {
-      const queries = qids.map((qid) => `question_ids=${qid}`).join("&");
-      url = `${url}&${queries}`;
-    }
-    api
-      .get(url)
-      .then((res) => {
-        const data = res.data;
-        const monitoring = data.monitoring.map((m) => ({
-          show_history: showHistory,
-          ...m,
-        }));
-        setChartData({ ...data, monitoring: monitoring });
-      })
-      .catch((e) => console.error(e));
-  };
-
-  // const getChartDataWithHistory = (id, question_id) => {
-  //   const url = `/data/chart/${id}?history=true&question_ids=${question_id}`;
-  //   api
-  //     .get(url)
-  //     .then((res) => {
-  //       const currentData = chartData;
-  //       const currentMonitoring = currentData.monitoring.filter(
-  //         (m) => m.question_id !== question_id
-  //       );
-  //       const newMonitoring = res.data.monitoring.map((m) => ({
-  //         show_history: true,
-  //         ...m,
-  //       }));
-  //       setChartData({
-  //         ...currentData,
-  //         monitoring: [...currentMonitoring, ...newMonitoring],
-  //       });
-  //     })
-  //     .catch((e) => console.error(e));
-  // };
 
   // Indicator filter functions
   const handleOnChangeQuestionDropdown = (id) => {
@@ -342,13 +211,7 @@ const Map = () => {
               data={geojson}
             />
             <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon}>
-              {!loading && (
-                <Markers
-                  zoom={defZoom}
-                  data={data}
-                  getChartData={getChartData}
-                />
-              )}
+              {!loading && <Markers zoom={defZoom} data={data} />}
             </MarkerClusterGroup>
           </MapContainer>
           <ProvinceFilter
@@ -360,75 +223,86 @@ const Map = () => {
             selectedSchoolType={selectedSchoolType}
           />
         </div>
-
-        {/* Chart Modal */}
-        <Modal
-          title={
-            <>
-              <div className="title-holder">
-                <p>{selectedPoint?.name}</p>
-                <CloseCircleFilled
-                  onClick={() => {
-                    setSelectedPoint(null);
-                    // setActivePanel(1);
-                  }}
-                />
-              </div>
-            </>
-          }
-          open={selectedPoint}
-          onCancel={() => {
-            setSelectedPoint(null);
-            // setActivePanel(1);
-          }}
-          closable={false}
-          footer={null}
-          width={650}
-          maskClosable={false}
-          className="detail-modal"
-        >
-          {!chartData ? (
-            <div className="loading-wrapper">
-              <Spin />
-            </div>
-          ) : (
-            <>
-              <RegistrationDetail data={chartData} />
-            </>
-          )}
-        </Modal>
       </div>
     </>
   );
 };
 
-const RegistrationDetail = ({ data }) => {
-  const { registration } = data;
-  if (!registration && !registration?.length) {
-    return "";
-  }
-  return (
-    <div className="registration-table">
-      {registration?.map((detail) => {
-        let answerValue = (
-          <div className="registration-answer">{detail.value}</div>
-        );
-        if (detail.type === "photo") {
-          answerValue = (
-            <div className="registration-answer">
-              <Image src={detail.value} />
-            </div>
-          );
-        }
-        return (
-          <div className="registration-row" key={detail.question_id}>
-            <div className="registration-question">{detail.question}:</div>
-            {answerValue}
-          </div>
-        );
-      })}
-    </div>
-  );
+const Markers = ({ zoom, data }) => {
+  const [hovered, setHovered] = useState(null);
+  const [currentZoom, setCurrentZoom] = useState(zoom);
+
+  const map = useMapEvents({
+    zoomend: () => setCurrentZoom(map?._zoom || currentZoom),
+  });
+
+  data = data.filter((d) => d.geo);
+  return data.map(({ id, geo, name, answer }) => {
+    const isHovered = id === hovered;
+    console.info(isHovered);
+    return (
+      <Marker
+        key={id}
+        position={geo}
+        answerValue={answer}
+        icon={customIcon}
+        eventHandlers={{
+          mouseover: () => setHovered(id),
+          mouseout: () => setHovered(null),
+        }}
+      >
+        <Tooltip direction="top">{name}</Tooltip>
+      </Marker>
+    );
+  });
+};
+
+const customIcon = new L.Icon({
+  iconUrl: require("../../location.svg").default,
+  iconSize: new L.Point(40, 47),
+});
+
+const createClusterCustomIcon = (cluster) => {
+  const color = ["#4475B4", "#73ADD1", "#AAD9E8", "#70CFAD"];
+
+  const tempResult = {};
+
+  cluster
+    .getAllChildMarkers()
+    .map((item) => item?.options?.answerValue)
+    .map((element, index) => {
+      tempResult[element.value] = {
+        value: element.value,
+        question: element.question,
+        color: color[index],
+        count: tempResult[element.value]
+          ? tempResult[element.value].count + 1
+          : 1,
+      };
+    });
+  const result = Object.values(tempResult);
+
+  const totalValue = result.reduce((s, { count }) => s + count, 0);
+  const radius = 40;
+  const circleLength = Math.PI * (radius * 2);
+  let spaceLeft = circleLength;
+
+  return L.divIcon({
+    html: `<svg width="100%" height="100%" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="40" fill="#ffffffad"/>
+    ${result
+      .map((item, index) => {
+        const v = index === 0 ? circleLength : spaceLeft;
+        spaceLeft -= (item.count / totalValue) * circleLength;
+        return `
+          <circle cx="50" cy="50" r="40" fill="transparent" stroke-width="15" stroke="${color[index]}" stroke-dasharray="${v} ${circleLength}" />`;
+      })
+      .join(
+        ""
+      )}   <text x="50" y="50" fill="black" font-size="14">${cluster.getChildCount()}</text></svg>`,
+    className: `custom-marker-cluster`,
+    iconSize: L.point(60, 60, true),
+  });
 };
 
 export default Map;
