@@ -20,7 +20,6 @@ function AdvanceFilter({ customStyle = {} }) {
     (s) => s
   );
   const [showAdvanceFilter, setShowAdvanceFilter] = useState(false);
-  const [showIndicatorFilter, setShowIndicatorFilter] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState([]);
   const [advancedFilterFeature] = useState({ isMultiSelect: true });
 
@@ -39,7 +38,7 @@ function AdvanceFilter({ customStyle = {} }) {
         question: selectedQuestion?.name,
         option: value,
         type: type,
-        filter: showIndicatorFilter ? "indicator" : "advance_filter",
+        filter: "advance_filter",
       },
     ];
     if (Array.isArray(value)) {
@@ -55,11 +54,10 @@ function AdvanceFilter({ customStyle = {} }) {
       <Row className="advance-search-container">
         <Col span={6}>
           <Button
-            disabled={showIndicatorFilter}
             onClick={() => {
-              setShowIndicatorFilter(false);
               setShowAdvanceFilter(!showAdvanceFilter);
             }}
+            className={`${showAdvanceFilter ? "selected" : ""}`}
           >
             Advanced Filter
           </Button>
@@ -74,24 +72,22 @@ function AdvanceFilter({ customStyle = {} }) {
             size="middle"
             style={{ width: "100%" }}
           >
-            {!showIndicatorFilter && (
-              <Select
-                style={{ width: "100%" }}
-                showSearch
-                placeholder="Select Question"
-                className="search-question-select"
-                options={advanceFilterQuestions?.map((q) => ({
-                  label: q.name,
-                  value: q.id,
-                }))}
-                optionFilterProp="label"
-                filterOption={(input, option) =>
-                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                value={!isEmpty(selectedQuestion) ? [selectedQuestion?.id] : []}
-                onChange={handleOnChangeQuestionDropdown}
-              />
-            )}
+            <Select
+              style={{ width: "100%" }}
+              showSearch
+              placeholder="Select Question"
+              className="search-question-select"
+              options={advanceFilterQuestions?.map((q) => ({
+                label: q.name,
+                value: q.id,
+              }))}
+              optionFilterProp="label"
+              filterOption={(input, option) =>
+                option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              value={!isEmpty(selectedQuestion) ? [selectedQuestion?.id] : []}
+              onChange={handleOnChangeQuestionDropdown}
+            />
             {!isEmpty(selectedQuestion) && (
               <>
                 <RenderQuestionOption
