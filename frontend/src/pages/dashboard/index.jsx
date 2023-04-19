@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Image, Layout, Menu } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 import "./style.scss";
 import { ReactComponent as MapsIcon } from "../../images/icons/maps.svg";
 import { ReactComponent as DashboardIcon } from "../../images/icons/dashboard.svg";
