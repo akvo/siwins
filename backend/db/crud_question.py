@@ -30,14 +30,19 @@ def get_last_question(session: Session, form: int, question_group: int):
     return last_question
 
 
-def generateOptionObj(obj: dict):
-    opt = Option(name=obj["name"])
+def generateOptionObj(obj: dict, order: Optional[int] = None):
+    name = obj.get("name") or obj.get("text") or obj.get("value")
+    opt = Option(name=name, order=order)
     if "id" in obj:
         opt.id = obj["id"]
     if "order" in obj:
         opt.order = obj["order"]
     if "code" in obj:
         opt.code = obj["code"]
+    if "color" in obj:
+        opt.color = obj["color"]
+    if "description" in obj:
+        opt.description = obj["description"]
     return opt
 
 
@@ -54,6 +59,8 @@ def add_question(
     option: Optional[List[OptionDict]] = None,
     required: Optional[bool] = True,
     dependency: Optional[List[dict]] = None,
+    attributes: Optional[List[str]] = None,
+    display_name: Optional[str] = None
 ) -> QuestionBase:
     last_question = get_last_question(
         session=session, form=form, question_group=question_group
@@ -69,10 +76,12 @@ def add_question(
         type=type,
         required=required,
         dependency=dependency,
+        attributes=attributes,
+        display_name=display_name
     )
     if option:
-        for o in option:
-            opt = generateOptionObj(obj=o)
+        for oi, o in enumerate(option):
+            opt = generateOptionObj(obj=o, order=oi + 1)
             question.option.append(opt)
     session.add(question)
     session.commit()
@@ -158,10 +167,17 @@ def get_question_by_id(session: Session, id: int) -> QuestionDict:
     return session.query(Question).filter(Question.id == id).first()
 
 
-def get_question_by_ids(
-    session: Session, ids: List[int]
+def get_question_by_attributes(
+    session: Session, attribute: str
 ) -> List[QuestionDict]:
-    return session.query(Question).filter(Question.id.in_(ids)).all()
+    return session.query(Question).filter(
+        Question.attributes.contains([attribute])).all()
+
+
+# def get_question_by_ids(
+#     session: Session, ids: List[int]
+# ) -> List[QuestionDict]:
+#     return session.query(Question).filter(Question.id.in_(ids)).all()
 
 
 # def validate_dependency(session: Session, dependency: List[dict]):

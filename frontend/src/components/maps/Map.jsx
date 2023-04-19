@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import "./style.scss";
 import "leaflet/dist/leaflet.css";
@@ -23,13 +24,16 @@ import {
   Space,
   Button,
   Card,
+  Collapse,
 } from "antd";
-import { CloseCircleOutlined, CheckOutlined } from "@ant-design/icons";
+import { CloseCircleFilled, CheckCircleFilled } from "@ant-design/icons";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import isEmpty from "lodash/isEmpty";
 import sortBy from "lodash/sortBy";
 import { Chart } from "../";
+
+const { Panel } = Collapse;
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -43,13 +47,14 @@ const Markers = ({ zoom, data, getChartData }) => {
   });
 
   data = data.filter((d) => d.geo);
-  return data.map(({ id, geo, name }) => {
+  return data.map(({ id, geo, name, answer }) => {
     const isHovered = id === hovered;
     console.info(isHovered);
     return (
       <Marker
         key={id}
         position={geo}
+        answerValue={answer}
         icon={customIcon}
         eventHandlers={{
           click: () => {
@@ -70,11 +75,46 @@ const customIcon = new L.Icon({
   iconSize: new L.Point(40, 47),
 });
 
-const createClusterCustomIcon = function (cluster) {
+const createClusterCustomIcon = (cluster) => {
+  const color = ["#4475B4", "#73ADD1", "#AAD9E8", "#70CFAD"];
+
+  const tempResult = {};
+
+  cluster
+    .getAllChildMarkers()
+    .map((item) => item?.options?.answerValue)
+    .map((element, index) => {
+      tempResult[element.value] = {
+        value: element.value,
+        question: element.question,
+        color: color[index],
+        count: tempResult[element.value]
+          ? tempResult[element.value].count + 1
+          : 1,
+      };
+    });
+  const result = Object.values(tempResult);
+
+  const totalValue = result.reduce((s, { count }) => s + count, 0);
+  const radius = 40;
+  const circleLength = Math.PI * (radius * 2);
+  let spaceLeft = circleLength;
+
   return L.divIcon({
-    html: `<span>${cluster.getChildCount()}</span>`,
-    className: "custom-marker-cluster",
-    iconSize: L.point(50, 50, true),
+    html: `<svg width="100%" height="100%" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="40" fill="#ffffffad"/>
+    ${result
+      .map((item, index) => {
+        const v = index === 0 ? circleLength : spaceLeft;
+        spaceLeft -= (item.count / totalValue) * circleLength;
+        return `
+          <circle cx="50" cy="50" r="40" fill="transparent" stroke-width="15" stroke="${color[index]}" stroke-dasharray="${v} ${circleLength}" />`;
+      })
+      .join(
+        ""
+      )}   <text x="50" y="50" fill="black" font-size="14">${cluster.getChildCount()}</text></svg>`,
+    className: `custom-marker-cluster`,
+    iconSize: L.point(60, 60, true),
   });
 };
 
@@ -82,7 +122,8 @@ const Map = () => {
   // use tile layer from config
   const charts = window.charts;
   const showHistory = window.chart_features.show_history;
-  const { advanceSearchValue } = UIState.useState((s) => s);
+  const { advanceSearchValue, provinceValues, schoolTypeValues } =
+    UIState.useState((s) => s);
   const baseMap = tileOSM;
   const map = useRef();
   const [loading, setLoading] = useState(false);
@@ -93,6 +134,8 @@ const Map = () => {
   const [indicatorQuestion, setIndicatorQuestion] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState([]);
+  const [selectedSchoolType, setSelectedSchoolType] = useState([]);
   const [barChartValues, setBarChartValues] = useState({
     startValue: 0,
     endValue: 100,
@@ -109,8 +152,23 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
-    getIndicatorData();
-  }, [getIndicatorData]);
+    if (indicatorQuestion.length === 0) {
+      getIndicatorData();
+    }
+  }, [getIndicatorData, indicatorQuestion]);
+
+  useEffect(() => {
+    Promise.all([
+      api.get("/cascade/school_information?level=province"),
+      api.get("/cascade/school_information?level=school_type"),
+    ]).then((res) => {
+      const [province, school_type] = res;
+      UIState.update((s) => {
+        s.provinceValues = province?.data;
+        s.schoolTypeValues = school_type?.data;
+      });
+    });
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -120,6 +178,20 @@ const Map = () => {
     if (selectedQuestion?.id && !urlParams.get("indicator")) {
       url = `${url}?indicator=${selectedQuestion?.id}`;
     }
+    if (selectedProvince && selectedProvince.length > 0) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
+      url = `${url}${queryUrlPrefix}prov=${provinceValues
+        .filter((item) => !selectedProvince?.includes(item.name))
+        .map((x) => x.name)
+        .join("&prov=")}`;
+    }
+    if (selectedSchoolType && selectedSchoolType.length > 0) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
+      url = `${url}${queryUrlPrefix}sctype=${schoolTypeValues
+        .filter((item) => !selectedSchoolType?.includes(item.name))
+        .map((x) => x.name)
+        .join("&sctype=")}`;
+    }
     api
       .get(url)
       .then((res) => {
@@ -127,7 +199,12 @@ const Map = () => {
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
-  }, [advanceSearchValue, selectedQuestion]);
+  }, [
+    advanceSearchValue,
+    selectedQuestion,
+    selectedProvince,
+    selectedSchoolType,
+  ]);
 
   const getChartData = (id) => {
     setSelectedPoint(data.find((d) => d.id === id));
@@ -233,6 +310,38 @@ const Map = () => {
     updateGlobalState(value, "number");
   };
 
+  const handleProvinceFilter = (value) => {
+    if (value === "disable") {
+      setSelectedProvince(provinceValues.map((item) => item.name));
+      return;
+    }
+    if (value === "all") {
+      setSelectedProvince([]);
+      return;
+    }
+    if (selectedProvince.includes(value)) {
+      setSelectedProvince(selectedProvince.filter((e) => e !== value));
+    } else {
+      setSelectedProvince([...selectedProvince, value]);
+    }
+  };
+
+  const handleSchoolTypeFilter = (value) => {
+    if (value === "disable") {
+      setSelectedSchoolType(schoolTypeValues.map((item) => item.name));
+      return;
+    }
+    if (value === "all") {
+      setSelectedSchoolType([]);
+      return;
+    }
+    if (selectedSchoolType.includes(value)) {
+      setSelectedSchoolType(selectedSchoolType.filter((e) => e !== value));
+    } else {
+      setSelectedSchoolType([...selectedSchoolType, value]);
+    }
+  };
+
   return (
     <>
       <div id="map-view">
@@ -282,6 +391,14 @@ const Map = () => {
               )}
             </MarkerClusterGroup>
           </MapContainer>
+          <BottomFilter
+            provinceValues={provinceValues}
+            schoolTypeValues={schoolTypeValues}
+            handleSchoolTypeFilter={handleSchoolTypeFilter}
+            handleProvinceFilter={handleProvinceFilter}
+            selectedProvince={selectedProvince}
+            selectedSchoolType={selectedSchoolType}
+          />
         </div>
 
         {/* Chart Modal */}
@@ -290,7 +407,7 @@ const Map = () => {
             <>
               <div className="title-holder">
                 <p>{selectedPoint?.name}</p>
-                <CloseCircleOutlined
+                <CloseCircleFilled
                   onClick={() => {
                     setSelectedPoint(null);
                     // setActivePanel(1);
@@ -322,6 +439,99 @@ const Map = () => {
         </Modal>
       </div>
     </>
+  );
+};
+
+const BottomFilter = ({
+  provinceValues,
+  schoolTypeValues,
+  handleProvinceFilter,
+  handleSchoolTypeFilter,
+  selectedProvince,
+  selectedSchoolType,
+}) => {
+  const enableProvinanceButton = selectedProvince.length === 0;
+  const enableSchoolTypeButton = selectedSchoolType.length === 0;
+
+  return (
+    <div className="bottom-filter-container">
+      <Collapse accordion>
+        <Panel header="SCHOOL TYPE" key="1">
+          <Space direction="vertical" size="small" style={{ display: "flex" }}>
+            {schoolTypeValues?.map((item) => (
+              <Button
+                key={`${item.name}`}
+                type="link"
+                icon={
+                  selectedSchoolType.includes(item.name) ? (
+                    <CloseCircleFilled />
+                  ) : (
+                    <CheckCircleFilled />
+                  )
+                }
+                className={`${
+                  selectedSchoolType.includes(item.name) ? "selected" : ""
+                }`}
+                onClick={() => handleSchoolTypeFilter(item.name)}
+              >
+                {item.name}
+              </Button>
+            ))}
+            <Button
+              type="primary"
+              onClick={() =>
+                enableSchoolTypeButton
+                  ? handleSchoolTypeFilter("disable")
+                  : handleSchoolTypeFilter("all")
+              }
+              className="enable-button"
+              style={{
+                backgroundColor: enableSchoolTypeButton ? "#dc3545" : "#007bff",
+              }}
+            >
+              {enableSchoolTypeButton ? "Disable All" : "Enable All"}
+            </Button>
+          </Space>
+        </Panel>
+        <Panel header="PROVINCE" key="2">
+          <Space direction="vertical" size="small" style={{ display: "flex" }}>
+            {provinceValues?.map((item) => (
+              <Button
+                key={`${item.name}`}
+                type="link"
+                onClick={() => handleProvinceFilter(item.name)}
+                icon={
+                  selectedProvince.includes(item.name) ? (
+                    <CloseCircleFilled />
+                  ) : (
+                    <CheckCircleFilled />
+                  )
+                }
+                className={`${
+                  selectedProvince.includes(item.name) ? "selected" : ""
+                }`}
+              >
+                {item.name}
+              </Button>
+            ))}
+            <Button
+              type="primary"
+              className="enable-button"
+              onClick={() =>
+                enableProvinanceButton
+                  ? handleProvinceFilter("disable")
+                  : handleProvinceFilter("all")
+              }
+              style={{
+                backgroundColor: enableProvinanceButton ? "#dc3545" : "#007bff",
+              }}
+            >
+              {enableProvinanceButton ? "Disable All" : "Enable All"}
+            </Button>
+          </Space>
+        </Panel>
+      </Collapse>
+    </div>
   );
 };
 
@@ -389,9 +599,9 @@ const RenderQuestionOption = ({
         type="primary"
         icon={
           selectedOption.includes(opt.name) ? (
-            <CloseCircleOutlined />
+            <CloseCircleFilled />
           ) : (
-            <CheckOutlined />
+            <CheckCircleFilled />
           )
         }
         onClick={() =>

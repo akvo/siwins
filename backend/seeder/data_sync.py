@@ -1,3 +1,6 @@
+# README
+# data sync only support for datapoint change/delete
+
 import os
 import flow.auth as flow_auth
 from sqlalchemy.orm import Session
