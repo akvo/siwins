@@ -30,8 +30,9 @@ def get_last_question(session: Session, form: int, question_group: int):
     return last_question
 
 
-def generateOptionObj(obj: dict):
-    opt = Option(name=obj["name"])
+def generateOptionObj(obj: dict, order: Optional[int] = None):
+    name = obj.get("name") or obj.get("text") or obj.get("value")
+    opt = Option(name=name, order=order)
     if "id" in obj:
         opt.id = obj["id"]
     if "order" in obj:
@@ -79,8 +80,8 @@ def add_question(
         display_name=display_name
     )
     if option:
-        for o in option:
-            opt = generateOptionObj(obj=o)
+        for oi, o in enumerate(option):
+            opt = generateOptionObj(obj=o, order=oi + 1)
             question.option.append(opt)
     session.add(question)
     session.commit()

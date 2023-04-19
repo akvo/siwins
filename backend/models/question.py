@@ -103,7 +103,7 @@ class Question(Base):
         type: QuestionType,
         required: Optional[bool],
         dependency: Optional[List[dict]],
-        attributes: Optional[List[str]] = None,
+        attributes: Optional[List[QuestionAttributes]] = None,
         display_name: Optional[str] = None
     ):
         self.id = id
@@ -169,7 +169,7 @@ class QuestionBase(BaseModel):
     required: bool
     option: List[OptionBase]
     dependency: Optional[List[dict]]
-    attributes: Optional[List[str]]
+    attributes: Optional[List[QuestionAttributes]]
     display_name: Optional[str]
 
     class Config:

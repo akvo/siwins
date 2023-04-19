@@ -26,12 +26,12 @@ class TestQuestionRoutes:
                 'code': None,
                 'id': 1,
                 'name': '2018',
-                'order': None
+                'order': 1
             }, {
                 'code': None,
                 'id': 2,
                 'name': '2023',
-                'order': None
+                'order': 2
             }],
             "attributes": [],
             "number": []
@@ -53,23 +53,23 @@ class TestQuestionRoutes:
             'option': [{
                 'id': 47,
                 'name': 'Yes (always available)',
-                'order': None,
-                'code': None
+                'order': 1,
+                'code': 'W5a'
             }, {
                 'id': 48,
                 'name': 'Mostly (unavailable ≤ 30 days total)',
-                'order': None,
-                'code': None
+                'order': 2,
+                'code': 'W5b'
             }, {
                 'id': 49,
                 'name': 'No (unavailable > 30 days total)',
-                'order': None,
-                'code': None
+                'order': 3,
+                'code': 'W5c'
             }, {
                 'id': 50,
                 'name': "Don't know/can't say",
-                'order': None,
-                'code': None
+                'order': 4,
+                'code': 'W5d'
             }],
             'number': []
         }

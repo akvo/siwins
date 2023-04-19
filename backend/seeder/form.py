@@ -1,5 +1,3 @@
-# TODO: use form json for seeder instead of using api call to flow API
-
 import os
 import json
 import time
@@ -10,7 +8,6 @@ from db import crud_form
 from db import crud_question_group
 from db import crud_question
 from models.question import QuestionType
-import flow.auth as flow_auth
 from source.main_config import FORM_PATH
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,11 +22,13 @@ def form_seeder(session: Session, forms: List[dict]):
         form_id = form.get("id")
         if TESTING:
             form_file = f"{FORM_PATH}/{form_id}.json"
-            json_form = {}
-            with open(form_file) as json_file:
-                json_form = json.load(json_file)
+
         if not TESTING:
-            json_form = flow_auth.get_form(form_id=form_id)
+            form_file = f"{FORM_PATH}/{form_id}.json"
+
+        json_form = {}
+        with open(form_file) as json_file:
+            json_form = json.load(json_file)
 
         form_name = form.get("name")
         name = json_form.get("name") if "name" in json_form else form_name
@@ -61,10 +60,10 @@ def form_seeder(session: Session, forms: List[dict]):
             if isinstance(questions, dict):
                 questions = [questions]
             for i, q in enumerate(questions):
+                meta_geo = q.get("localeLocationFlag")
                 # handle question type
                 type = q.get("type")
                 validationType = None
-                allowMultiple = q.get("allowMultiple")
                 if "validationRule" in q:
                     vr = q.get("validationRule")
                     validationType = vr.get("validationType")
@@ -72,14 +71,23 @@ def form_seeder(session: Session, forms: List[dict]):
                     type = QuestionType.text.value
                 if type == "free" and validationType == "numeric":
                     type = QuestionType.number.value
-                if type == "option" and allowMultiple:
-                    type == QuestionType.multiple_option.value
-                meta_geo = q.get("localeLocationFlag")
+                if type == "option" and "option" in q:
+                    allowMultiple = q["options"].get("allowMultiple")
+                    type == QuestionType.multiple_option.value \
+                        if allowMultiple else type
+                # EOL handle question type
+                dependency = None
+                if "dependency" in q:
+                    dependency = [q["dependency"]]
+                attributes = None
+                if "attributes" in q:
+                    attributes = q["attributes"]
+                display_name = None
+                if "display_name" in q:
+                    display_name = q["display_name"]
                 options = []
                 if "options" in q:
-                    options = [
-                        {"name": a["text"]} for a in q["options"]["option"]
-                    ]
+                    options = q["options"].get("option") or []
                 # question
                 crud_question.add_question(
                     session=session,
@@ -92,9 +100,10 @@ def form_seeder(session: Session, forms: List[dict]):
                     meta_geo=meta_geo if meta_geo else False,
                     order=q.get("order"),
                     required=q.get("mandatory"),
-                    dependency=[q["dependency"]]
-                    if "dependency" in q else None,
+                    dependency=dependency,
                     option=options,
+                    attributes=attributes,
+                    display_name=display_name
                 )
                 # print(f"{i}.{question.name}")
         print("------------------------------------------")
