@@ -78,7 +78,7 @@ function AdvanceFilter({ customStyle = {} }) {
               placeholder="Select Question"
               className="search-question-select"
               options={advanceFilterQuestions?.map((q) => ({
-                label: q.name,
+                label: q?.display_name ? q?.display_name : q.name,
                 value: q.id,
               }))}
               optionFilterProp="label"

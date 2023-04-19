@@ -28,7 +28,7 @@ const IndicatorDropdown = ({
               (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
             }
             options={indicatorQuestion?.map((q) => ({
-              label: q.name,
+              label: q?.display_name ? q?.display_name : q.name,
               value: q.id,
             }))}
             onChange={(val) => handleOnChangeQuestionDropdown(val)}
