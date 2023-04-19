@@ -44,6 +44,32 @@ class TestQuestionRoutes:
         )
         assert res.status_code == 200
         res = res.json()
+        name = 'In the previous two weeks, was drinking water from the main '
+        name += 'source available at the school throughout each school day?'
+        assert res[0] == {
+            'id': 624660930,
+            'name': name,
+            "display_name": None,
+            "type": "option",
+            'attributes': ['indicator', 'advance_filter'],
+            'option': [{
+                "name": "Yes",
+                "order": 1,
+                "color": "#2EA745",
+                "description": "Example of Yes info text"
+            }, {
+                "name": "No",
+                "order": 2,
+                "color": "#DC3545",
+                "description": "Example No of info text"
+            }, {
+                "name": "Don't know/can't say",
+                "order": 3,
+                "color": "#666666",
+                "description": "Example of Don't know/can't say info text"
+            }],
+            'number': []
+        }
         name = 'Is drinking water from the main source '
         name += 'typically available throughout the school year?'
         assert res[1] == {
