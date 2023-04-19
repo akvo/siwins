@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./style.scss";
 import "leaflet/dist/leaflet.css";
 import {
@@ -14,26 +14,12 @@ import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
 import { geojson, tileOSM } from "../../util/geo-util";
 import { api } from "../../lib";
-import {
-  Modal,
-  Spin,
-  Image,
-  Select,
-  Row,
-  Col,
-  Space,
-  Button,
-  Card,
-  Collapse,
-} from "antd";
-import { CloseCircleFilled, CheckCircleFilled } from "@ant-design/icons";
+import { Modal, Spin, Image } from "antd";
+import { CloseCircleFilled } from "@ant-design/icons";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
-import isEmpty from "lodash/isEmpty";
-import sortBy from "lodash/sortBy";
-import { Chart } from "../";
-
-const { Panel } = Collapse;
+import IndicatorDropdown from "./IndicatorDropdown";
+import ProvinceFilter from "./ProvinceFilter";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -122,8 +108,12 @@ const Map = () => {
   // use tile layer from config
   const charts = window.charts;
   const showHistory = window.chart_features.show_history;
-  const { advanceSearchValue, provinceValues, schoolTypeValues } =
-    UIState.useState((s) => s);
+  const {
+    advanceSearchValue,
+    provinceValues,
+    schoolTypeValues,
+    indicatorQuestions,
+  } = UIState.useState((s) => s);
   const baseMap = tileOSM;
   const map = useRef();
   const [loading, setLoading] = useState(false);
@@ -131,7 +121,6 @@ const Map = () => {
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [chartData, setChartData] = useState(null);
   // const [activePanel, setActivePanel] = useState(1);
-  const [indicatorQuestion, setIndicatorQuestion] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState([]);
@@ -140,35 +129,6 @@ const Map = () => {
     startValue: 0,
     endValue: 100,
   });
-
-  const getIndicatorData = useCallback(() => {
-    const url = `/question?attribute=indicator`;
-    api
-      .get(url)
-      .then((res) => {
-        setIndicatorQuestion(res?.data);
-      })
-      .catch((e) => console.error(e));
-  }, []);
-
-  useEffect(() => {
-    if (indicatorQuestion.length === 0) {
-      getIndicatorData();
-    }
-  }, [getIndicatorData, indicatorQuestion]);
-
-  useEffect(() => {
-    Promise.all([
-      api.get("/cascade/school_information?level=province"),
-      api.get("/cascade/school_information?level=school_type"),
-    ]).then((res) => {
-      const [province, school_type] = res;
-      UIState.update((s) => {
-        s.provinceValues = province?.data;
-        s.schoolTypeValues = school_type?.data;
-      });
-    });
-  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -253,7 +213,7 @@ const Map = () => {
 
   // Indicator filter functions
   const handleOnChangeQuestionDropdown = (id) => {
-    const filterQuestion = indicatorQuestion.find((q) => q.id === id);
+    const filterQuestion = indicatorQuestions.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
     updateGlobalState([], "option");
   };
@@ -346,8 +306,8 @@ const Map = () => {
     <>
       <div id="map-view">
         <div className="map-container">
-          <IndicatorDropDown
-            indicatorQuestion={indicatorQuestion}
+          <IndicatorDropdown
+            indicatorQuestion={indicatorQuestions}
             handleOnChangeQuestionDropdown={handleOnChangeQuestionDropdown}
             selectedQuestion={selectedQuestion}
             handleOnChangeQuestionOption={handleOnChangeQuestionOption}
@@ -391,7 +351,7 @@ const Map = () => {
               )}
             </MarkerClusterGroup>
           </MapContainer>
-          <BottomFilter
+          <ProvinceFilter
             provinceValues={provinceValues}
             schoolTypeValues={schoolTypeValues}
             handleSchoolTypeFilter={handleSchoolTypeFilter}
@@ -440,246 +400,6 @@ const Map = () => {
       </div>
     </>
   );
-};
-
-const BottomFilter = ({
-  provinceValues,
-  schoolTypeValues,
-  handleProvinceFilter,
-  handleSchoolTypeFilter,
-  selectedProvince,
-  selectedSchoolType,
-}) => {
-  const enableProvinanceButton = selectedProvince.length === 0;
-  const enableSchoolTypeButton = selectedSchoolType.length === 0;
-
-  return (
-    <div className="bottom-filter-container">
-      <Collapse accordion>
-        <Panel header="SCHOOL TYPE" key="1">
-          <Space direction="vertical" size="small" style={{ display: "flex" }}>
-            {schoolTypeValues?.map((item) => (
-              <Button
-                key={`${item.name}`}
-                type="link"
-                icon={
-                  selectedSchoolType.includes(item.name) ? (
-                    <CloseCircleFilled />
-                  ) : (
-                    <CheckCircleFilled />
-                  )
-                }
-                className={`${
-                  selectedSchoolType.includes(item.name) ? "selected" : ""
-                }`}
-                onClick={() => handleSchoolTypeFilter(item.name)}
-              >
-                {item.name}
-              </Button>
-            ))}
-            <Button
-              type="primary"
-              onClick={() =>
-                enableSchoolTypeButton
-                  ? handleSchoolTypeFilter("disable")
-                  : handleSchoolTypeFilter("all")
-              }
-              className="enable-button"
-              style={{
-                backgroundColor: enableSchoolTypeButton ? "#dc3545" : "#007bff",
-              }}
-            >
-              {enableSchoolTypeButton ? "Disable All" : "Enable All"}
-            </Button>
-          </Space>
-        </Panel>
-        <Panel header="PROVINCE" key="2">
-          <Space direction="vertical" size="small" style={{ display: "flex" }}>
-            {provinceValues?.map((item) => (
-              <Button
-                key={`${item.name}`}
-                type="link"
-                onClick={() => handleProvinceFilter(item.name)}
-                icon={
-                  selectedProvince.includes(item.name) ? (
-                    <CloseCircleFilled />
-                  ) : (
-                    <CheckCircleFilled />
-                  )
-                }
-                className={`${
-                  selectedProvince.includes(item.name) ? "selected" : ""
-                }`}
-              >
-                {item.name}
-              </Button>
-            ))}
-            <Button
-              type="primary"
-              className="enable-button"
-              onClick={() =>
-                enableProvinanceButton
-                  ? handleProvinceFilter("disable")
-                  : handleProvinceFilter("all")
-              }
-              style={{
-                backgroundColor: enableProvinanceButton ? "#dc3545" : "#007bff",
-              }}
-            >
-              {enableProvinanceButton ? "Disable All" : "Enable All"}
-            </Button>
-          </Space>
-        </Panel>
-      </Collapse>
-    </div>
-  );
-};
-
-const IndicatorDropDown = ({
-  indicatorQuestion,
-  handleOnChangeQuestionDropdown,
-  selectedQuestion,
-  handleOnChangeQuestionOption,
-  selectedOption,
-  setValues,
-  barChartValues,
-}) => {
-  return (
-    <div className="indicator-dropdown-container">
-      <Row>
-        <Col span={24}>
-          <Select
-            dropdownMatchSelectWidth={false}
-            placement={"bottomLeft"}
-            showSearch
-            placeholder="Select indicator"
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-            options={indicatorQuestion.map((q) => ({
-              label: q.name,
-              value: q.id,
-            }))}
-            onChange={(val) => handleOnChangeQuestionDropdown(val)}
-          />
-          {!isEmpty(selectedQuestion) && (
-            <div className="options-container">
-              <RenderQuestionOption
-                selectedQuestion={selectedQuestion}
-                handleOnChangeQuestionOption={handleOnChangeQuestionOption}
-                selectedOption={selectedOption}
-                setValues={setValues}
-                barChartValues={barChartValues}
-              />
-            </div>
-          )}
-        </Col>
-      </Row>
-    </div>
-  );
-};
-
-const RenderQuestionOption = ({
-  selectedQuestion,
-  handleOnChangeQuestionOption,
-  selectedOption,
-  setValues,
-  barChartValues,
-}) => {
-  const MultipleOptionToRender = ({ option }) => {
-    return sortBy(option, "order").map((opt) => (
-      <Button
-        style={{
-          backgroundColor: selectedOption.includes(opt.name)
-            ? "#222"
-            : "#1677ff",
-        }}
-        key={`${opt.id}-${opt.name}`}
-        type="primary"
-        icon={
-          selectedOption.includes(opt.name) ? (
-            <CloseCircleFilled />
-          ) : (
-            <CheckCircleFilled />
-          )
-        }
-        onClick={() =>
-          handleOnChangeQuestionOption(opt.name, selectedQuestion?.type)
-        }
-      >
-        {opt.name}
-      </Button>
-    ));
-  };
-
-  const NumberOptionToRender = ({ option }) => {
-    return (
-      <Row>
-        <Col className="chart-card" span={24}>
-          <Card>
-            <Chart
-              height={350}
-              excelFile={"title"}
-              type={"BAR"}
-              data={option.map((v) => ({
-                name: v.value,
-                value: v.count,
-                count: v.count,
-                color: "#70CFAD",
-              }))}
-              wrapper={false}
-              horizontal={false}
-              loading={false}
-              dataZoom={[
-                {
-                  type: "inside",
-                  realtime: false,
-                  start: barChartValues.startValue,
-                  end: barChartValues.endValue,
-                },
-                {
-                  type: "slider",
-                  realtime: false,
-                  start: barChartValues.startValue,
-                  end: barChartValues.endValue,
-                },
-              ]}
-              grid={{
-                top: 80,
-                bottom: 80,
-                left: 40,
-                right: 20,
-                show: true,
-                containLabel: true,
-                label: {
-                  color: "#222",
-                },
-              }}
-              setValues={setValues}
-            />
-          </Card>
-        </Col>
-      </Row>
-    );
-  };
-
-  if (selectedQuestion.type === "number") {
-    return <NumberOptionToRender option={selectedQuestion.number} />;
-  }
-
-  if (selectedQuestion?.type === "option") {
-    return (
-      <Space direction="vertical">
-        <MultipleOptionToRender
-          option={selectedQuestion.option}
-          questionId={selectedQuestion.id}
-        />
-      </Space>
-    );
-  }
-
-  return <div>tes</div>;
 };
 
 const RegistrationDetail = ({ data }) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Space,
@@ -14,34 +14,20 @@ import { InfoCircleOutlined } from "@ant-design/icons";
 import { UIState } from "../../state/ui";
 import isEmpty from "lodash/isEmpty";
 import sortBy from "lodash/sortBy";
-import { api } from "../../lib";
 
 function AdvanceFilter({ customStyle = {} }) {
-  const { advanceSearchValue } = UIState.useState((s) => s);
+  const { advanceSearchValue, advanceFilterQuestions } = UIState.useState(
+    (s) => s
+  );
   const [showAdvanceFilter, setShowAdvanceFilter] = useState(false);
   const [showIndicatorFilter, setShowIndicatorFilter] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState([]);
-  const [question, setQuestion] = useState([]);
   const [advancedFilterFeature] = useState({ isMultiSelect: true });
 
   const handleOnChangeQuestionDropdown = (id) => {
-    const filterQuestion = question.find((q) => q.id === id);
+    const filterQuestion = advanceFilterQuestions.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
   };
-
-  const getFilterData = useCallback(() => {
-    const url = `/question?attribute=advance_filter`;
-    api
-      .get(url)
-      .then((res) => {
-        setQuestion(res?.data);
-      })
-      .catch((e) => console.error(e));
-  }, []);
-
-  useEffect(() => {
-    getFilterData();
-  }, [getFilterData]);
 
   const handleOnChangeQuestionOption = (value, type) => {
     const filterAdvanceSearchValue = advanceSearchValue.filter(
@@ -94,7 +80,7 @@ function AdvanceFilter({ customStyle = {} }) {
                 showSearch
                 placeholder="Select Question"
                 className="search-question-select"
-                options={question.map((q) => ({
+                options={advanceFilterQuestions?.map((q) => ({
                   label: q.name,
                   value: q.id,
                 }))}
