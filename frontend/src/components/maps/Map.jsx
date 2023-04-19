@@ -188,7 +188,6 @@ const Map = () => {
             ref={map}
             center={defCenter}
             zoom={defZoom}
-            zoomControl={false}
             scrollWheelZoom={false}
             style={{
               height: "100%",
