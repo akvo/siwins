@@ -24,7 +24,7 @@ import {
   Button,
   Card,
 } from "antd";
-import { CloseCircleOutlined, CheckOutlined } from "@ant-design/icons";
+import { CloseCircleFilled, CheckCircleFilled } from "@ant-design/icons";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import isEmpty from "lodash/isEmpty";
@@ -43,13 +43,14 @@ const Markers = ({ zoom, data, getChartData }) => {
   });
 
   data = data.filter((d) => d.geo);
-  return data.map(({ id, geo, name }) => {
+  return data.map(({ id, geo, name, answer }) => {
     const isHovered = id === hovered;
     console.info(isHovered);
     return (
       <Marker
         key={id}
         position={geo}
+        answerValue={answer}
         icon={customIcon}
         eventHandlers={{
           click: () => {
@@ -70,11 +71,46 @@ const customIcon = new L.Icon({
   iconSize: new L.Point(40, 47),
 });
 
-const createClusterCustomIcon = function (cluster) {
+const createClusterCustomIcon = (cluster) => {
+  const color = ["#4475B4", "#73ADD1", "#AAD9E8", "#70CFAD"];
+
+  const tempResult = {};
+
+  cluster
+    .getAllChildMarkers()
+    .map((item) => item?.options?.answerValue)
+    .map((element, index) => {
+      tempResult[element.value] = {
+        value: element.value,
+        question: element.question,
+        color: color[index],
+        count: tempResult[element.value]
+          ? tempResult[element.value].count + 1
+          : 1,
+      };
+    });
+  const result = Object.values(tempResult);
+
+  const totalValue = result.reduce((s, { count }) => s + count, 0);
+  const radius = 40;
+  const circleLength = Math.PI * (radius * 2);
+  let spaceLeft = circleLength;
+
   return L.divIcon({
-    html: `<span>${cluster.getChildCount()}</span>`,
-    className: "custom-marker-cluster",
-    iconSize: L.point(50, 50, true),
+    html: `<svg width="100%" height="100%" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="40" fill="#ffffffad"/>
+    ${result
+      .map((item, index) => {
+        const v = index === 0 ? circleLength : spaceLeft;
+        spaceLeft -= (item.count / totalValue) * circleLength;
+        return `
+          <circle cx="50" cy="50" r="40" fill="transparent" stroke-width="15" stroke="${color[index]}" stroke-dasharray="${v} ${circleLength}" />`;
+      })
+      .join(
+        ""
+      )}   <text x="45" y="50" fill="black" font-size="14">${cluster.getChildCount()}</text></svg>`,
+    className: `custom-marker-cluster`,
+    iconSize: L.point(60, 60, true),
   });
 };
 
@@ -290,7 +326,7 @@ const Map = () => {
             <>
               <div className="title-holder">
                 <p>{selectedPoint?.name}</p>
-                <CloseCircleOutlined
+                <CloseCircleFilled
                   onClick={() => {
                     setSelectedPoint(null);
                     // setActivePanel(1);
@@ -389,9 +425,9 @@ const RenderQuestionOption = ({
         type="primary"
         icon={
           selectedOption.includes(opt.name) ? (
-            <CloseCircleOutlined />
+            <CloseCircleFilled />
           ) : (
-            <CheckOutlined />
+            <CheckCircleFilled />
           )
         }
         onClick={() =>
