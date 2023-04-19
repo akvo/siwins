@@ -1,25 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import { BrowserRouter as Router } from "react-router-dom";
+import { createBrowserHistory } from "history";
+import "antd/dist/reset.css";
+import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ConfigProvider } from "antd";
-import "antd/dist/reset.css";
 
+const history = createBrowserHistory();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: "#00b96b",
-          borderRadius: 0,
-        },
-      }}
-    >
-      <App />
-    </ConfigProvider>
-  </React.StrictMode>
+  <Router history={history}>
+    <App />
+  </Router>
 );
 
 // If you want to start measuring performance in your app, pass a function

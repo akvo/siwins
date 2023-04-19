@@ -1,0 +1,15 @@
+@import "variables";
+
+html,
+body,
+#root {
+  min-width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.11px;
+}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
-  Collapse,
   Button,
   Space,
   Select,
@@ -8,18 +7,19 @@ import {
   Checkbox,
   Tag,
   Popover,
+  Row,
+  Col,
 } from "antd";
-import { FilterOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import { UIState } from "../../state/ui";
 import isEmpty from "lodash/isEmpty";
 import sortBy from "lodash/sortBy";
 import { api } from "../../lib";
 
-const { Panel } = Collapse;
-
 function AdvanceFilter({ customStyle = {} }) {
   const { advanceSearchValue } = UIState.useState((s) => s);
-  const [selectedPanel, setSelectedPanel] = useState([]);
+  const [showAdvanceFilter, setShowAdvanceFilter] = useState(false);
+  const [showIndicatorFilter, setShowIndicatorFilter] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState([]);
   const [question, setQuestion] = useState([]);
   const [advancedFilterFeature] = useState({ isMultiSelect: true });
@@ -53,6 +53,7 @@ function AdvanceFilter({ customStyle = {} }) {
         question: selectedQuestion?.name,
         option: value,
         type: type,
+        filter: showIndicatorFilter ? "indicator" : "advance_filter",
       },
     ];
     if (Array.isArray(value)) {
@@ -65,31 +66,33 @@ function AdvanceFilter({ customStyle = {} }) {
 
   return (
     <div>
-      <div className="advance-search-container" style={customStyle}>
-        {/* Question filter */}
-        <Collapse
-          ghost
-          collapsible="header"
-          className="advance-search-collapse"
-          activeKey={selectedPanel}
-          onChange={(e) => setSelectedPanel(e)}
-        >
-          <Panel
-            className="advance-search-panel"
-            header={<Button icon={<FilterOutlined />}>Advance Filter</Button>}
-            showArrow={false}
-            key="advance-search"
+      <Row className="advance-search-container">
+        <Col span={6}>
+          <Button
+            disabled={showIndicatorFilter}
+            onClick={() => {
+              setShowIndicatorFilter(false);
+              setShowAdvanceFilter(!showAdvanceFilter);
+            }}
           >
-            <Space
-              direction="vertical"
-              className="search-question-option-wrapper"
-              size="middle"
-              style={{ width: "100%" }}
-            >
+            Advanced Filter
+          </Button>
+        </Col>
+      </Row>
+      {showAdvanceFilter && (
+        <div style={customStyle}>
+          {/* Question filter */}
+          <Space
+            direction="vertical"
+            className="search-question-option-wrapper"
+            size="middle"
+            style={{ width: "100%" }}
+          >
+            {!showIndicatorFilter && (
               <Select
                 style={{ width: "100%" }}
                 showSearch
-                placeholder="Advance Filter"
+                placeholder="Select Question"
                 className="search-question-select"
                 options={question.map((q) => ({
                   label: q.name,
@@ -102,24 +105,24 @@ function AdvanceFilter({ customStyle = {} }) {
                 value={!isEmpty(selectedQuestion) ? [selectedQuestion?.id] : []}
                 onChange={handleOnChangeQuestionDropdown}
               />
-              {!isEmpty(selectedQuestion) && (
-                <>
-                  <RenderQuestionOption
-                    selectedQuestion={selectedQuestion}
-                    handleOnChangeQuestionOption={handleOnChangeQuestionOption}
-                    advancedFilterFeature={advancedFilterFeature}
-                  />
-                  <Button block={true} onClick={() => setSelectedPanel([])}>
-                    Close
-                  </Button>
-                </>
-              )}
-            </Space>
-          </Panel>
-        </Collapse>
-        {/* Tags of selected filter */}
-        {!isEmpty(advanceSearchValue) && <RenderFilterTag />}
-      </div>
+            )}
+            {!isEmpty(selectedQuestion) && (
+              <>
+                <RenderQuestionOption
+                  selectedQuestion={selectedQuestion}
+                  handleOnChangeQuestionOption={handleOnChangeQuestionOption}
+                  advancedFilterFeature={advancedFilterFeature}
+                />
+                <Button block={true} onClick={() => setSelectedQuestion([])}>
+                  Close
+                </Button>
+              </>
+            )}
+          </Space>
+          {/* Tags of selected filter */}
+          {!isEmpty(advanceSearchValue) && <RenderFilterTag />}
+        </div>
+      )}
     </div>
   );
 }
