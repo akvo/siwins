@@ -1,24 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Row, Col } from "antd";
 import { Map } from "../../components";
 import AdvanceFilter from "../../components/filter";
-import { UIState } from "../../state/ui";
-import { api } from "../../lib";
 
 function Maps() {
-  useEffect(() => {
-    Promise.all([
-      api.get("/cascade/school_information?level=province"),
-      api.get("/cascade/school_information?level=school_type"),
-    ]).then((res) => {
-      const [province, school_type] = res;
-      UIState.update((s) => {
-        s.provinceValues = province?.data;
-        s.schoolTypeValues = school_type?.data;
-      });
-    });
-  }, []);
-
   return (
     <div id="map">
       <Row>

@@ -31,11 +31,20 @@ const DashboardView = () => {
     Promise.all([
       api.get("/question?attribute=indicator"),
       api.get("/question?attribute=advance_filter"),
+      api.get("/cascade/school_information?level=province"),
+      api.get("/cascade/school_information?level=school_type"),
     ]).then((res) => {
-      const [indicatorQuestions, advanceFilterQuestions] = res;
+      const [
+        indicatorQuestions,
+        advanceFilterQuestions,
+        province,
+        school_type,
+      ] = res;
       UIState.update((s) => {
         s.indicatorQuestions = indicatorQuestions?.data;
         s.advanceFilterQuestions = advanceFilterQuestions?.data;
+        s.provinceValues = province?.data;
+        s.schoolTypeValues = school_type?.data;
       });
     });
   }, []);

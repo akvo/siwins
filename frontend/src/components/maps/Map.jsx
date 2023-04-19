@@ -288,18 +288,17 @@ const createClusterCustomIcon = (cluster) => {
   let spaceLeft = circleLength;
 
   return L.divIcon({
-    html: `<svg width="100%" height="100%" viewBox="0 0 100 100">
-    <circle cx="50" cy="50" r="40" fill="#ffffffad"/>
-    ${result
-      .map((item, index) => {
-        const v = index === 0 ? circleLength : spaceLeft;
-        spaceLeft -= (item.count / totalValue) * circleLength;
-        return `
-          <circle cx="50" cy="50" r="40" fill="transparent" stroke-width="15" stroke="${color[index]}" stroke-dasharray="${v} ${circleLength}" />`;
-      })
-      .join(
-        ""
-      )}   <text x="50" y="50" fill="black" font-size="14">${cluster.getChildCount()}</text></svg>`,
+    html: `<svg width="100%" height="100%" viewBox="0 0 100 100"> <circle cx="50" cy="50" r="40" fill="#ffffffad"/>
+          ${result
+            .map((item, index) => {
+              const v = index === 0 ? circleLength : spaceLeft;
+              spaceLeft -= (item.count / totalValue) * circleLength;
+              return `
+                <circle cx="50" cy="50" r="40" fill="transparent" stroke-width="15" stroke="${color[index]}" stroke-dasharray="${v} ${circleLength}" />`;
+            })
+            .join(
+              ""
+            )} <text x="50" y="50" fill="black" font-size="14">${cluster.getChildCount()}</text></svg>`,
     className: `custom-marker-cluster`,
     iconSize: L.point(60, 60, true),
   });
