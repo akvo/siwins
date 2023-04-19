@@ -96,7 +96,16 @@
         }
       }
     }
-
+    .leaflet-container {
+      .custom-marker {
+        span {
+          width: 1.5rem;
+          height: 1.5rem;
+          border-radius: 50%;
+          display: block;
+        }
+      }
+    }
     .custom-marker-cluster {
       border-radius: 50%;
       color: #000000;

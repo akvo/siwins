@@ -210,7 +210,13 @@ const Map = () => {
               data={geojson}
             />
             <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon}>
-              {!loading && <Markers zoom={defZoom} data={data} />}
+              {!loading && (
+                <Markers
+                  zoom={defZoom}
+                  data={data}
+                  selectedQuestion={selectedQuestion}
+                />
+              )}
             </MarkerClusterGroup>
           </MapContainer>
           <ProvinceFilter
@@ -227,7 +233,7 @@ const Map = () => {
   );
 };
 
-const Markers = ({ zoom, data }) => {
+const Markers = ({ zoom, data, selectedQuestion }) => {
   const [hovered, setHovered] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(zoom);
 
@@ -244,7 +250,17 @@ const Markers = ({ zoom, data }) => {
         key={id}
         position={geo}
         answerValue={answer}
-        icon={customIcon}
+        selectedQuestion={selectedQuestion}
+        icon={
+          new L.divIcon({
+            className: "custom-marker",
+            iconSize: [32, 32],
+            html: `<span style="background-color:${
+              selectedQuestion?.option?.find((f) => f.name === answer?.value)
+                ?.color || "#2EA745"
+            }"/>`,
+          })
+        }
         eventHandlers={{
           mouseover: () => setHovered(id),
           mouseout: () => setHovered(null),
@@ -256,11 +272,6 @@ const Markers = ({ zoom, data }) => {
   });
 };
 
-const customIcon = new L.Icon({
-  iconUrl: require("../../location.svg").default,
-  iconSize: new L.Point(40, 47),
-});
-
 const createClusterCustomIcon = (cluster) => {
   const color = ["#4475B4", "#73ADD1", "#AAD9E8", "#70CFAD"];
 
@@ -268,12 +279,19 @@ const createClusterCustomIcon = (cluster) => {
 
   cluster
     .getAllChildMarkers()
-    .map((item) => item?.options?.answerValue)
+    .map((item) => {
+      return {
+        ...item?.options?.answerValue,
+        color: item?.options?.selectedQuestion?.option?.find(
+          (f) => f.name === item?.options?.answerValue?.value
+        )?.color,
+      };
+    })
     .map((element, index) => {
       tempResult[element.value] = {
         value: element.value,
         question: element.question,
-        color: color[index],
+        color: element?.color || color[index],
         count: tempResult[element.value]
           ? tempResult[element.value].count + 1
           : 1,
@@ -293,7 +311,9 @@ const createClusterCustomIcon = (cluster) => {
               const v = index === 0 ? circleLength : spaceLeft;
               spaceLeft -= (item.count / totalValue) * circleLength;
               return `
-                <circle cx="50" cy="50" r="40" fill="transparent" stroke-width="15" stroke="${color[index]}" stroke-dasharray="${v} ${circleLength}" />`;
+                <circle cx="50" cy="50" r="40" fill="transparent" stroke-width="15" stroke="${
+                  item.color ? item.color : color[index]
+                }" stroke-dasharray="${v} ${circleLength}" />`;
             })
             .join(
               ""
