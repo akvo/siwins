@@ -124,6 +124,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             datapoint_exist = crud_data.get_data_by_identifier(
                 session=session, identifier=fi.get("identifier"), form=form.id
             )
+        # updated data to check if current datapoint exist
         updated_data = crud_data.get_data_by_id(session=session, id=data_id)
         # fetching answers value into answer model
         for key, value in fi.get("responses").items():

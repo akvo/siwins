@@ -209,3 +209,17 @@ def get_last_history(
 def get_data_by_year_conducted(session: Session, year_conducted: int):
     return session.query(Data).filter(
         Data.year_conducted == year_conducted).all()
+
+
+def get_data_by_school(
+    session: Session,
+    schools: List[str],
+    year_conducted: Optional[int] = None
+):
+    data = session.query(Data)
+    and_query = and_(
+        Data.school_information.contains([v]) for v in schools)
+    data = data.filter(and_query)
+    if (year_conducted):
+        data = data.filter(year_conducted == year_conducted)
+    return data.first()
