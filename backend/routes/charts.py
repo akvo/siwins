@@ -25,14 +25,13 @@ charts_route = APIRouter()
 )
 def get_bar_charts(
     req: Request,
-    form: int,
     name: Optional[str] = Query(default=None),
     session: Session = Depends(get_session),
 ):
     all = get_all_data(session=session, current=True)
     lst = [a.serialize for a in all]
     ids = [i["id"] for i in lst]
-    filters = [Category.form == form, Category.data.in_(ids)]
+    filters = [Category.data.in_(ids)]
     if name:
         filters.append(Category.name == name)
     categories = session.query(Category).filter(*filters).all()
