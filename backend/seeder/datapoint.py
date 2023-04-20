@@ -115,6 +115,17 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                         school_information = answer.options
                     # EOL custom
 
+        # check for current datapoint
+        current_datapoint = True
+        check_datapoint = crud_data.get_data_by_school(
+            session=session, schools=school_information)
+        # update prev datapoint with same school to current False
+        if check_datapoint:
+            check_datapoint.current = False
+            crud_data.update_data(
+                session=session, data=check_datapoint)
+        # EOL check for current datapoint
+
         # add new datapoint
         if answers:
             data = crud_data.add_data(
@@ -130,7 +141,8 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                 updated=fi.get("modifiedAt"),
                 answers=answers,
                 year_conducted=year_conducted,
-                school_information=school_information
+                school_information=school_information,
+                current=current_datapoint
             )
         # print(f"New Datapoint: {data.id}")
     # print("------------------------------------------")
