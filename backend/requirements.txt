@@ -67,4 +67,4 @@ websockets==10.4
 zipp==3.10.0
 zope.event==4.5.0
 zope.interface==5.5.2
-AkvoResponseGrouper==1.2.7a0
+AkvoResponseGrouper==1.2.9a0
