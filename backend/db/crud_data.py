@@ -24,6 +24,7 @@ def add_data(
     form: int,
     registration: bool,
     answers: List[AnswerBase],
+    current: Optional[bool] = False,
     geo: Optional[List[float]] = None,
     id: Optional[int] = None,
     created: Optional[datetime] = None,
@@ -44,7 +45,8 @@ def add_data(
         datapoint_id=datapoint_id,
         registration=registration,
         year_conducted=year_conducted,
-        school_information=school_information
+        school_information=school_information,
+        current=current
     )
     for answer in answers:
         data.answer.append(answer)

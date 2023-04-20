@@ -86,6 +86,7 @@ class Data(Base):
     school_information = Column(pg.ARRAY(String), nullable=True)
     created = Column(DateTime, nullable=True)
     updated = Column(DateTime, nullable=True)
+    current = Column(Boolean, default=False)
     answer = relationship(
         Answer,
         cascade="all, delete",
@@ -110,6 +111,7 @@ class Data(Base):
         updated: datetime,
         created: datetime,
         registration: bool,
+        current: Optional[bool] = False,
         id: Optional[int] = None,
         identifier: Optional[str] = None,
         datapoint_id: Optional[int] = None,
@@ -122,6 +124,7 @@ class Data(Base):
         self.name = name
         self.form = form
         self.registration = registration
+        self.current = current
         self.geo = geo
         self.year_conducted = year_conducted
         self.school_information = school_information
@@ -206,6 +209,7 @@ class DataBase(BaseModel):
     name: str
     form: int
     registration: bool
+    current: Optional[bool] = False
     datapoint_id: Optional[int] = None
     identifier: Optional[str] = None
     geo: Optional[GeoData] = None
