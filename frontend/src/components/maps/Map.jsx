@@ -18,6 +18,9 @@ import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
 import ProvinceFilter from "./ProvinceFilter";
+import { Chart } from "../";
+import { Card } from "antd";
+import Draggable from "react-draggable";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -39,6 +42,7 @@ const Map = () => {
   const [selectedOption, setSelectedOption] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedSchoolType, setSelectedSchoolType] = useState([]);
+  const [roseChartValues, setRoseChartValues] = useState([]);
   const [barChartValues, setBarChartValues] = useState({
     startValue: 0,
     endValue: 100,
@@ -79,6 +83,25 @@ const Map = () => {
     selectedProvince,
     selectedSchoolType,
   ]);
+
+  useEffect(() => {
+    if (data.length > 0 && selectedQuestion.type === "option") {
+      const results = Object.values(
+        data.reduce((obj, item) => {
+          obj[item.answer.value] = obj[item.answer.value] || {
+            name: item.answer.value,
+            color: selectedQuestion?.option?.find(
+              (f) => f.name === item.answer.value
+            )?.color,
+            count: 0,
+          };
+          obj[item.answer.value].count++;
+          return obj;
+        }, {})
+      );
+      setRoseChartValues(results);
+    }
+  }, [data]);
 
   // Indicator filter functions
   const handleOnChangeQuestionDropdown = (id) => {
@@ -184,6 +207,27 @@ const Map = () => {
             setValues={setValuesOfNumber}
             barChartValues={barChartValues}
           />
+          {selectedQuestion.type === "option" && (
+            <Draggable>
+              <div className="map-chart-container">
+                <Card>
+                  <Chart
+                    height={350}
+                    excelFile={"title"}
+                    type={"PIE"}
+                    data={roseChartValues.map((v) => ({
+                      name: v.name,
+                      value: v.count,
+                      count: v.count,
+                      color: v.color,
+                    }))}
+                    wrapper={false}
+                    horizontal={false}
+                  />
+                </Card>
+              </div>
+            </Draggable>
+          )}
           <MapContainer
             ref={map}
             center={defCenter}
