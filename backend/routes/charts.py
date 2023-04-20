@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter
 from fastapi import Depends, Request
 
 from typing import List
@@ -11,8 +11,7 @@ from AkvoResponseGrouper.utils import (
     get_counted_category,
     group_by_category_output,
 )
-
-# from db import crud_data
+from db.crud_data import get_all_data
 
 
 charts_route = APIRouter()
@@ -30,12 +29,10 @@ def get_bar_charts(
     form: int,
     name: str,
     session: Session = Depends(get_session),
-    by_region: bool = Query(
-        None, description="filter flag to get data by region"
-    ),
 ):
-    # TODO data filtering
-    ids = [10, 25, 1, 51]
+    all = get_all_data(session=session, current=True)
+    lst = [a.serialize for a in all]
+    ids = [i["id"] for i in lst]
     categories = (
         session.query(Category)
         .filter(
