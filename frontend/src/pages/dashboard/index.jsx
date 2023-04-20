@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Layout, Menu } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 const { Header, Content, Sider } = Layout;
@@ -9,6 +9,8 @@ import { ReactComponent as DocIcon } from "../../images/icons/doc.svg";
 import { Routes, Route, useLocation, Link } from "react-router-dom";
 import Maps from "./Maps";
 import Dashboard from "./Dashboard";
+import { UIState } from "../../state/ui";
+import { api } from "../../lib";
 
 const items = [
   { label: "Maps", link: "/dashboard/maps", icon: <MapsIcon />, key: "1" },
@@ -24,6 +26,28 @@ const items = [
 const DashboardView = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    Promise.all([
+      api.get("/question?attribute=indicator"),
+      api.get("/question?attribute=advance_filter"),
+      api.get("/cascade/school_information?level=province"),
+      api.get("/cascade/school_information?level=school_type"),
+    ]).then((res) => {
+      const [
+        indicatorQuestions,
+        advanceFilterQuestions,
+        province,
+        school_type,
+      ] = res;
+      UIState.update((s) => {
+        s.indicatorQuestions = indicatorQuestions?.data;
+        s.advanceFilterQuestions = advanceFilterQuestions?.data;
+        s.provinceValues = province?.data;
+        s.schoolTypeValues = school_type?.data;
+      });
+    });
+  }, []);
 
   return (
     <Layout className="dashboard-layout">

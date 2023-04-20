@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Space,
@@ -14,34 +14,19 @@ import { InfoCircleOutlined } from "@ant-design/icons";
 import { UIState } from "../../state/ui";
 import isEmpty from "lodash/isEmpty";
 import sortBy from "lodash/sortBy";
-import { api } from "../../lib";
 
 function AdvanceFilter({ customStyle = {} }) {
-  const { advanceSearchValue } = UIState.useState((s) => s);
+  const { advanceSearchValue, advanceFilterQuestions } = UIState.useState(
+    (s) => s
+  );
   const [showAdvanceFilter, setShowAdvanceFilter] = useState(false);
-  const [showIndicatorFilter, setShowIndicatorFilter] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState([]);
-  const [question, setQuestion] = useState([]);
   const [advancedFilterFeature] = useState({ isMultiSelect: true });
 
   const handleOnChangeQuestionDropdown = (id) => {
-    const filterQuestion = question.find((q) => q.id === id);
+    const filterQuestion = advanceFilterQuestions.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
   };
-
-  const getFilterData = useCallback(() => {
-    const url = `/question?attribute=advance_filter`;
-    api
-      .get(url)
-      .then((res) => {
-        setQuestion(res?.data);
-      })
-      .catch((e) => console.error(e));
-  }, []);
-
-  useEffect(() => {
-    getFilterData();
-  }, [getFilterData]);
 
   const handleOnChangeQuestionOption = (value, type) => {
     const filterAdvanceSearchValue = advanceSearchValue.filter(
@@ -53,7 +38,7 @@ function AdvanceFilter({ customStyle = {} }) {
         question: selectedQuestion?.name,
         option: value,
         type: type,
-        filter: showIndicatorFilter ? "indicator" : "advance_filter",
+        filter: "advance_filter",
       },
     ];
     if (Array.isArray(value)) {
@@ -69,11 +54,10 @@ function AdvanceFilter({ customStyle = {} }) {
       <Row className="advance-search-container">
         <Col span={6}>
           <Button
-            disabled={showIndicatorFilter}
             onClick={() => {
-              setShowIndicatorFilter(false);
               setShowAdvanceFilter(!showAdvanceFilter);
             }}
+            className={`${showAdvanceFilter ? "selected" : ""}`}
           >
             Advanced Filter
           </Button>
@@ -88,24 +72,22 @@ function AdvanceFilter({ customStyle = {} }) {
             size="middle"
             style={{ width: "100%" }}
           >
-            {!showIndicatorFilter && (
-              <Select
-                style={{ width: "100%" }}
-                showSearch
-                placeholder="Select Question"
-                className="search-question-select"
-                options={question.map((q) => ({
-                  label: q.name,
-                  value: q.id,
-                }))}
-                optionFilterProp="label"
-                filterOption={(input, option) =>
-                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                value={!isEmpty(selectedQuestion) ? [selectedQuestion?.id] : []}
-                onChange={handleOnChangeQuestionDropdown}
-              />
-            )}
+            <Select
+              style={{ width: "100%" }}
+              showSearch
+              placeholder="Select Question"
+              className="search-question-select"
+              options={advanceFilterQuestions?.map((q) => ({
+                label: q.name,
+                value: q.id,
+              }))}
+              optionFilterProp="label"
+              filterOption={(input, option) =>
+                option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              value={!isEmpty(selectedQuestion) ? [selectedQuestion?.id] : []}
+              onChange={handleOnChangeQuestionDropdown}
+            />
             {!isEmpty(selectedQuestion) && (
               <>
                 <RenderQuestionOption
@@ -133,9 +115,9 @@ const RenderQuestionOption = ({
   advancedFilterFeature,
 }) => {
   const { advanceSearchValue } = UIState.useState((s) => s);
-  const selectedRadioValue = advanceSearchValue.find(
-    (x) => x.qid === selectedQuestion?.id
-  );
+  const selectedRadioValue = advanceSearchValue
+    .filter((item) => item.filter === "advance_filter")
+    .find((x) => x.qid === selectedQuestion?.id);
 
   const OptionToRender = ({ questionId, option }) => {
     return sortBy(option, "order").map((opt) => (
@@ -203,6 +185,7 @@ const RenderFilterTag = () => {
     let deleteFilter = [];
     if (type === "multiselect") {
       deleteFilter = advanceSearchValue
+        .filter((item) => item.filter === "advance_filter")
         .map((x) => {
           if (x.option.includes(option)) {
             const filterOpt = x.option.filter((opt) => opt !== option);
@@ -216,7 +199,9 @@ const RenderFilterTag = () => {
         })
         .filter((x) => x.option);
     } else {
-      deleteFilter = advanceSearchValue.filter((x) => x.option !== option);
+      deleteFilter = advanceSearchValue.filter(
+        (x) => x.option !== option && x.filter === "advance_filter"
+      );
     }
     UIState.update((s) => {
       s.advanceSearchValue = deleteFilter;
@@ -224,39 +209,41 @@ const RenderFilterTag = () => {
   };
 
   const TagToRender = () => {
-    return advanceSearchValue.map((val) => {
-      // support multiple select on advanced filter option
-      if (Array.isArray(val.option)) {
-        return val.option.map((opt) => (
+    return advanceSearchValue
+      .filter((item) => item.filter === "advance_filter")
+      .map((val) => {
+        // support multiple select on advanced filter option
+        if (Array.isArray(val.option)) {
+          return val.option.map((opt) => (
+            <Tag
+              key={`tag-${opt}`}
+              icon={
+                <Popover title={val.question} placement="topRight">
+                  <InfoCircleOutlined />
+                </Popover>
+              }
+              closable
+              onClose={() => handleOnCloseTag("multiselect", opt)}
+            >
+              {opt.split("|")[1]}
+            </Tag>
+          ));
+        }
+        return (
           <Tag
-            key={`tag-${opt}`}
+            key={`tag-${val.option}`}
             icon={
               <Popover title={val.question} placement="topRight">
                 <InfoCircleOutlined />
               </Popover>
             }
             closable
-            onClose={() => handleOnCloseTag("multiselect", opt)}
+            onClose={() => handleOnCloseTag("radio", val.option)}
           >
-            {opt.split("|")[1]}
+            {val.option.split("|")[1]}
           </Tag>
-        ));
-      }
-      return (
-        <Tag
-          key={`tag-${val.option}`}
-          icon={
-            <Popover title={val.question} placement="topRight">
-              <InfoCircleOutlined />
-            </Popover>
-          }
-          closable
-          onClose={() => handleOnCloseTag("radio", val.option)}
-        >
-          {val.option.split("|")[1]}
-        </Tag>
-      );
-    });
+        );
+      });
   };
 
   return (
