@@ -322,7 +322,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                 update_data.year_conducted = year_conducted
             if school_information:
                 update_data.school_information = school_information
-            if current_datapoint:
+            if check_datapoint:
                 update_data.current = current_datapoint
             # EOL custom
             updated = crud_data.update_data(session=session, data=update_data)
