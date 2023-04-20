@@ -11,6 +11,7 @@ from db import crud_form, crud_data, crud_option, \
     crud_question, crud_cascade
 from models.question import QuestionType
 from models.answer import Answer
+from models.data import Data
 from db.connection import Base, SessionLocal, engine
 from source.geoconfig import GeoLevels
 from seeder.fake_history import generate_fake_history
@@ -89,12 +90,41 @@ fake = Faker()
 truncate_datapoint(session=session)
 
 
+def generate_school_information():
+    cascade_answers = []
+    cascade_levels = CascadeLevels.school_information.value
+    prev_choice = None
+    for name, level in cascade_levels.items():
+        if level == 0:
+            prev_choice = random.choice(
+                school_information_value)
+            cascade_answers.append(prev_choice)
+            continue
+        child = crud_cascade.get_cascade_by_parent(
+            session=session,
+            parent=prev_choice.id,
+            level=level)
+        prev_choice = random.choice(child)
+        cascade_answers.append(prev_choice)
+    cascade_answers = [c.name for c in cascade_answers]
+    # check if that school exist in same year
+    check = crud_data.get_data_by_school(
+        session=session,
+        schools=cascade_answers)
+    if check:
+        return generate_school_information()
+    # EOL check if that school exist in same year
+    return cascade_answers
+
+
 def seed_fake_datapoint(
     form: int,
     registration: Optional[bool] = True,
     school_information: Optional[List[str]] = None,
     # default use first index of year conducted options value
-    year_conducted: Optional[int] = None
+    year_conducted: Optional[int] = None,
+    # current data
+    prev_data: Optional[Data] = None
 ):
     answers = []
     names = []
@@ -164,21 +194,7 @@ def seed_fake_datapoint(
                     else school_information
                 # random choice of school information cascade
                 if not cascade_answers:
-                    cascade_levels = CascadeLevels.school_information.value
-                    prev_choice = None
-                    for name, level in cascade_levels.items():
-                        if level == 0:
-                            prev_choice = random.choice(
-                                school_information_value)
-                            cascade_answers.append(prev_choice)
-                            continue
-                        child = crud_cascade.get_cascade_by_parent(
-                            session=session,
-                            parent=prev_choice.id,
-                            level=level)
-                        prev_choice = random.choice(child)
-                        cascade_answers.append(prev_choice)
-                    cascade_answers = [c.name for c in cascade_answers]
+                    cascade_answers = generate_school_information()
                 # EOL random choice of school information cascade
                 current_answer_value = "|".join(cascade_answers)
                 answer.options = cascade_answers
@@ -249,6 +265,20 @@ def seed_fake_datapoint(
             # update answers value to seed
             answers.append(answer)
 
+    # check current data
+    current_datapoint = True
+    if prev_data:
+        check_datapoint = crud_data.get_data_by_school(
+            session=session,
+            schools=prev_data.school_information,
+            year_conducted=prev_data.year_conducted)
+        # update prev datapoint with same school to current False
+        if check_datapoint:
+            check_datapoint.current = False
+            crud_data.update_data(
+                session=session, data=check_datapoint)
+    # EOL current_datapoint
+
     # preparing data value
     displayName = " - ".join(names) or "Untitled"
     geoVal = [geo.get("lat"), geo.get("long")]
@@ -265,7 +295,8 @@ def seed_fake_datapoint(
         created=datetime.now(),
         answers=answers,
         year_conducted=data_year_conducted,
-        school_information=data_school_information
+        school_information=data_school_information,
+        current=current_datapoint
     )
     return data
 
@@ -288,7 +319,8 @@ if not MONITORING_FORM and year_conducted_qid and year_conducted_value:
             seed_fake_datapoint(
                 form=d.form,
                 year_conducted=year,
-                school_information=d.school_information
+                school_information=d.school_information,
+                prev_data=d
             )
 
 # populate data monitoring history if monitoring survey available
