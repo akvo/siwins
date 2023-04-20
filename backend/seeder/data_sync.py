@@ -285,7 +285,6 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             session=session, schools=school_information)
         # update prev datapoint with same school to current False
         if check_datapoint:
-            current_datapoint = False
             check_datapoint.current = False
             crud_data.update_data(
                 session=session, data=check_datapoint)
@@ -323,7 +322,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             if school_information:
                 update_data.school_information = school_information
             if check_datapoint:
-                update_data.current = current_datapoint
+                update_data.current = False
             # EOL custom
             updated = crud_data.update_data(session=session, data=update_data)
             print(f"Sync | Update Datapoint: {updated.id}")

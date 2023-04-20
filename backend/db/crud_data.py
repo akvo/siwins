@@ -106,13 +106,19 @@ def get_data(
 
 def get_all_data(
     session: Session,
-    registration: Optional[bool] = True,
+    registration: Optional[bool] = None,
+    current: Optional[bool] = None,
     options: Optional[List[str]] = None,
     data_ids: Optional[List[int]] = None,
     prov: Optional[List[str]] = None,
     sctype: Optional[List[str]] = None
 ) -> DataDict:
-    data = session.query(Data).filter(Data.registration == registration)
+    data = session.query(Data)
+    if registration is not None:
+        data = data.filter(
+            Data.registration == registration)
+    if current is not None:
+        data = data.filter(Data.current == current)
     if options:
         # support multiple select options filter
         # change query to filter data by or_ condition
