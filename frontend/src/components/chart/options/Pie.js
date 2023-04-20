@@ -10,9 +10,7 @@ import { isEmpty, sumBy } from "lodash";
 
 const Pie = (data, chartTitle, extra = {}, series = {}) => {
   data = !data ? [] : data;
-  let labels = [];
   if (data.length > 0) {
-    labels = data.map((x) => x.name);
     data = data.filter((x) => x.value >= 0);
     const total = sumBy(data, "value");
     data = data.map((x) => ({
@@ -46,7 +44,7 @@ const Pie = (data, chartTitle, extra = {}, series = {}) => {
       showTitle: true,
       orient: "horizontal",
       right: 30,
-      top: 20,
+      top: 10,
       feature: {
         saveAsImage: {
           type: "jpg",
@@ -60,25 +58,17 @@ const Pie = (data, chartTitle, extra = {}, series = {}) => {
       {
         name: "main",
         type: "pie",
-        left: "center",
-        radius: ["0%", "90%"],
+        roseType: "area",
+        avoidLabelOverlap: true,
         label: {
-          formatter: function (params) {
-            if (params.value > 0) {
-              return `${params.data.percentage} %`;
-            }
-            return "";
-          },
           show: true,
-          position: "inner",
-          padding: 5,
-          backgroundColor: "rgba(0,0,0,.5)",
-          ...TextStyle,
-          color: "#fff",
+          formatter: "{d}%",
+          fontSize: 12,
+          fontWeight: "bold",
         },
-        labelLine: {
-          show: true,
-        },
+        startAngle: 0,
+        radius: ["15%", "50%"],
+        center: ["50%", "57%"],
         data: data.map((v, vi) => ({
           ...v,
           itemStyle: { color: v.color || Color.color[vi] },
@@ -87,17 +77,7 @@ const Pie = (data, chartTitle, extra = {}, series = {}) => {
         ...rose,
       },
     ],
-    legend: {
-      data: labels,
-      orient: "vertical",
-      top: 30,
-      left: 30,
-      icon: "circle",
-      textStyle: {
-        fontWeight: "normal",
-        fontSize: 12,
-      },
-    },
+    legend: { show: false },
     ...Color,
     ...backgroundColor,
     ...Easing,

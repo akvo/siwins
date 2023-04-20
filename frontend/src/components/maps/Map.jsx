@@ -18,6 +18,8 @@ import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
 import ProvinceFilter from "./ProvinceFilter";
+import { Chart } from "../";
+import { Card } from "antd";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -184,6 +186,27 @@ const Map = () => {
             setValues={setValuesOfNumber}
             barChartValues={barChartValues}
           />
+          <div className="map-chart-container">
+            <Card>
+              <Chart
+                height={350}
+                excelFile={"title"}
+                type={"PIE"}
+                data={[
+                  { name: "Yes", value: 55 },
+                  { name: "No", value: 22 },
+                  { name: "Don't know", value: 25 },
+                ].map((v) => ({
+                  name: v.name,
+                  value: v.value,
+                  count: v.value,
+                  color: "#70CFAD",
+                }))}
+                wrapper={false}
+                horizontal={false}
+              />
+            </Card>
+          </div>
           <MapContainer
             ref={map}
             center={defCenter}
