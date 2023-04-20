@@ -1,9 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from fastapi import Depends, Request
 
-from typing import List
+from typing import List, Optional
 from sqlalchemy.orm import Session
-from sqlalchemy import and_
 from db.connection import get_session
 from AkvoResponseGrouper.models import Category, GroupedCategory
 from AkvoResponseGrouper.utils import (
@@ -27,23 +26,16 @@ charts_route = APIRouter()
 def get_bar_charts(
     req: Request,
     form: int,
-    name: str,
+    name: Optional[str] = Query(default=None),
     session: Session = Depends(get_session),
 ):
     all = get_all_data(session=session, current=True)
     lst = [a.serialize for a in all]
     ids = [i["id"] for i in lst]
-    categories = (
-        session.query(Category)
-        .filter(
-            and_(
-                Category.form == form,
-                Category.name == name,
-                Category.data.in_(ids),
-            )
-        )
-        .all()
-    )
+    filters = [Category.form == form, Category.data.in_(ids)]
+    if name:
+        filters.append(Category.name == name)
+    categories = session.query(Category).filter(*filters).all()
     categories = [c.serialize for c in categories]
     df = transform_categories_to_df(categories=categories)
     dt = get_counted_category(df=df)
