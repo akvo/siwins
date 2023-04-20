@@ -279,6 +279,18 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                             school_information = answer.options
                         # EOL custom
 
+        # check for current datapoint
+        current_datapoint = True
+        check_datapoint = crud_data.get_data_by_school(
+            session=session, schools=school_information)
+        # update prev datapoint with same school to current False
+        if check_datapoint:
+            current_datapoint = False
+            check_datapoint.current = False
+            crud_data.update_data(
+                session=session, data=check_datapoint)
+        # EOL check for current datapoint
+
         if not updated_data and not datapoint_exist or answers:
             # add new datapoint
             data = crud_data.add_data(
@@ -293,7 +305,8 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                 created=fi.get("createdAt"),
                 answers=answers,
                 year_conducted=year_conducted,
-                school_information=school_information
+                school_information=school_information,
+                current=current_datapoint
             )
             print(f"Sync | New Datapoint: {data.id}")
             continue
@@ -309,6 +322,8 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                 update_data.year_conducted = year_conducted
             if school_information:
                 update_data.school_information = school_information
+            if current_datapoint:
+                update_data.current = current_datapoint
             # EOL custom
             updated = crud_data.update_data(session=session, data=update_data)
             print(f"Sync | Update Datapoint: {updated.id}")
