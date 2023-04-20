@@ -1,5 +1,5 @@
-import React from "react";
-import { Select, Row, Col, Space, Button, Card } from "antd";
+import React, { useState } from "react";
+import { Select, Row, Col, Space, Button, Card, Alert } from "antd";
 import { CloseCircleFilled, CheckCircleFilled } from "@ant-design/icons";
 import isEmpty from "lodash/isEmpty";
 import sortBy from "lodash/sortBy";
@@ -28,7 +28,7 @@ const IndicatorDropdown = ({
               (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
             }
             options={indicatorQuestion?.map((q) => ({
-              label: q.name,
+              label: q?.display_name ? q?.display_name : q.name,
               value: q.id,
             }))}
             onChange={(val) => handleOnChangeQuestionDropdown(val)}
@@ -57,15 +57,20 @@ const RenderQuestionOption = ({
   setValues,
   barChartValues,
 }) => {
+  const [showInfo, setShowInfo] = useState(false);
+  const [currentId, setCurrentId] = useState({});
+
   const MultipleOptionToRender = ({ option }) => {
     return sortBy(option, "order").map((opt) => (
       <Button
+        key={`${opt.id}-${opt.name}`}
         style={{
           backgroundColor: selectedOption.includes(opt.name)
             ? "#222"
+            : opt.color
+            ? opt.color
             : "#1677ff",
         }}
-        key={`${opt.id}-${opt.name}`}
         type="primary"
         icon={
           selectedOption.includes(opt.name) ? (
@@ -77,6 +82,14 @@ const RenderQuestionOption = ({
         onClick={() =>
           handleOnChangeQuestionOption(opt.name, selectedQuestion?.type)
         }
+        onMouseEnter={() => {
+          setCurrentId(opt);
+          setShowInfo(true);
+        }}
+        onMouseLeave={() => {
+          setCurrentId({});
+          setShowInfo(false);
+        }}
       >
         {opt.name}
       </Button>
@@ -145,6 +158,11 @@ const RenderQuestionOption = ({
           option={selectedQuestion.option}
           questionId={selectedQuestion.id}
         />
+        {showInfo && (
+          <div className="option-info-container">
+            <Alert message={currentId?.description} type="info" showIcon />
+          </div>
+        )}
       </Space>
     );
   }

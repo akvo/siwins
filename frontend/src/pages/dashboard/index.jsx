@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Image, Layout, Menu } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 import "./style.scss";
 import { ReactComponent as MapsIcon } from "../../images/icons/maps.svg";
 import { ReactComponent as DashboardIcon } from "../../images/icons/dashboard.svg";
@@ -53,6 +53,13 @@ const DashboardView = () => {
     <Layout className="dashboard-layout">
       <Sider width={300} trigger={null} collapsible collapsed={collapsed}>
         <div className="logo-container">
+          {React.createElement(
+            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+            {
+              className: "trigger",
+              onClick: () => setCollapsed(!collapsed),
+            }
+          )}
           <Image src="/images/dashboard-logo.png" preview={false} />
         </div>
         <Menu
@@ -72,15 +79,6 @@ const DashboardView = () => {
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Header>
-          {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            {
-              className: "trigger",
-              onClick: () => setCollapsed(!collapsed),
-            }
-          )}
-        </Header>
         <Content className="dashboard-content">
           <Routes>
             <Route exact path="/" element={<Dashboard />} />
