@@ -27,6 +27,7 @@ class DataDict(TypedDict):
     name: Optional[str] = None
     form: int
     registration: bool
+    current: bool
     datapoint_id: Optional[int] = None
     identifier: Optional[str] = None
     geo: Optional[GeoData] = None
@@ -143,6 +144,7 @@ class Data(Base):
             "name": self.name,
             "form": self.form,
             "registration": self.registration,
+            "current": self.current,
             "geo": {
                 "lat": self.geo[0], "long": self.geo[1]
             } if self.geo else None,

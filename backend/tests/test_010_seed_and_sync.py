@@ -191,6 +191,7 @@ res_data = [{
     "name": "Untitled",
     "form": 647170919,
     "registration": True,
+    "current": True,
     "geo": {
         'lat': -47.72084919070232,
         'long': 71.64445931032847
