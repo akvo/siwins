@@ -123,6 +123,7 @@ def get_maps(
     # get the data
     data = crud_data.get_all_data(
         session=session,
+        current=True,
         options=options,
         data_ids=answer_data_ids,
         prov=prov,

@@ -267,6 +267,7 @@ def seed_fake_datapoint(
 
     # check current data
     current_datapoint = True
+    check_datapoint = None
     if prev_data:
         check_datapoint = crud_data.get_data_by_school(
             session=session,
@@ -281,7 +282,8 @@ def seed_fake_datapoint(
 
     # preparing data value
     displayName = " - ".join(names) or "Untitled"
-    geoVal = [geo.get("lat"), geo.get("long")]
+    geoVal = [geo.get("lat"), geo.get("long")] \
+        if not check_datapoint else prev_data.geo
     identifier = "-".join(fake.uuid4().split("-")[1:4])
     # add new datapoint
     data = crud_data.add_data(

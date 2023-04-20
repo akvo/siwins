@@ -5,7 +5,7 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
-from seeder.data_sync import data_sync, deleted_data_sync
+from seeder.data_sync import data_sync
 from db import crud_data
 from source.main_config import DATAPOINT_PATH
 from .test_dummy import res_sync_data, res_answers
@@ -56,14 +56,3 @@ class TestDataSync:
                 "history": [],
             }
         ]
-
-    # @pytest.mark.asyncio
-    async def test_sync_deleted_data_monitoring_history(
-        self, app: FastAPI, session: Session, client: AsyncClient
-    ) -> None:
-        changes = {"formInstanceDeleted": [649130936]}
-        data = changes.get("formInstanceDeleted")
-        deleted_data_sync(session=session, data=data)
-        data = crud_data.get_all_data(session=session)
-        rd = [m.serialize for m in data]
-        assert data[0] not in [r["id"] for r in rd]
