@@ -54,13 +54,13 @@ class TestDataRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res[0] == {
-            'id': 632510922,
-            'identifier': 'd5bi-mkoi-qrej',
-            'geo': [-47.72084919070232, 71.64445931032847],
+            'id': 649130936,
+            'identifier': 'eptc-hraw-kkps',
+            'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': [
                 'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
-            'year_conducted': 2018,
+            'year_conducted': 2023,
             'answer': {}
         }
         # with indicator
@@ -70,13 +70,13 @@ class TestDataRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res[0] == {
-            'id': 632510922,
-            'identifier': 'd5bi-mkoi-qrej',
-            'geo': [-47.72084919070232, 71.64445931032847],
+            'id': 649130936,
+            'identifier': 'eptc-hraw-kkps',
+            'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': [
                 'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
-            'year_conducted': 2018,
+            'year_conducted': 2023,
             'answer': {
                 'question': 624660930,
                 'value': 'No'
@@ -94,19 +94,7 @@ class TestDataRoutes:
             params={"indicator": 624660930, "q": "624660930|no"})
         assert res.status_code == 200
         res = res.json()
-        assert res[0] == {
-            'id': 632510922,
-            'identifier': 'd5bi-mkoi-qrej',
-            'geo': [-47.72084919070232, 71.64445931032847],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
-            'name': 'Untitled',
-            'year_conducted': 2018,
-            'answer': {
-                'question': 624660930,
-                'value': 'No'
-            }
-        }
+        assert res == []
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": 624660930, "q": "624660930|yes"})
@@ -120,13 +108,13 @@ class TestDataRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res[0] == {
-            'id': 632510922,
-            'identifier': 'd5bi-mkoi-qrej',
-            'geo': [-47.72084919070232, 71.64445931032847],
+            'id': 649130936,
+            'identifier': 'eptc-hraw-kkps',
+            'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': [
                 'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
-            'year_conducted': 2018,
+            'year_conducted': 2023,
             'answer': {
                 'question': 630020919,
                 'value': 12
@@ -148,13 +136,13 @@ class TestDataRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res[0] == {
-            'id': 632510922,
-            'identifier': 'd5bi-mkoi-qrej',
-            'geo': [-47.72084919070232, 71.64445931032847],
+            'id': 649130936,
+            'identifier': 'eptc-hraw-kkps',
+            'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': [
                 'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
-            'year_conducted': 2018,
+            'year_conducted': 2023,
             'answer': {
                 'question': 630020919,
                 'value': 12
@@ -174,13 +162,13 @@ class TestDataRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res[0] == {
-            'id': 632510922,
-            'identifier': 'd5bi-mkoi-qrej',
-            'geo': [-47.72084919070232, 71.64445931032847],
+            'id': 649130936,
+            'identifier': 'eptc-hraw-kkps',
+            'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': [
                 'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
-            'year_conducted': 2018,
+            'year_conducted': 2023,
             'answer': {
                 'question': 630020919,
                 'value': 12
@@ -206,13 +194,13 @@ class TestDataRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res[0] == {
-            'id': 632510922,
-            'identifier': 'd5bi-mkoi-qrej',
-            'geo': [-47.72084919070232, 71.64445931032847],
+            'id': 649130936,
+            'identifier': 'eptc-hraw-kkps',
+            'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': [
                 'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
-            'year_conducted': 2018,
+            'year_conducted': 2023,
             'answer': {
                 'question': 630020919,
                 'value': 12
@@ -239,13 +227,13 @@ class TestDataRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res[0] == {
-            'id': 632510922,
-            'identifier': 'd5bi-mkoi-qrej',
-            'geo': [-47.72084919070232, 71.64445931032847],
+            'id': 649130936,
+            'identifier': 'eptc-hraw-kkps',
+            'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': [
                 'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
             'name': 'Untitled',
-            'year_conducted': 2018,
+            'year_conducted': 2023,
             'answer': {
                 'question': 630020919,
                 'value': 12
