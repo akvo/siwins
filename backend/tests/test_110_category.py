@@ -58,7 +58,7 @@ class TestMigrationCategory:
                 "category": "Water",
                 "form": 647170919,
                 "options": [
-                    {"name": "Safely Managed", "count": 1},
+                    {"name": "Limited", "count": 1},
                 ],
             },
         ]
@@ -77,7 +77,7 @@ class TestMigrationCategory:
                 "category": "Water",
                 "form": 647170919,
                 "options": [
-                    {"name": "Safely Managed", "count": 1},
+                    {"name": "Limited", "count": 1},
                 ],
             },
         ]
