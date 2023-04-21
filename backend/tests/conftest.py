@@ -9,8 +9,9 @@ from fastapi import FastAPI
 from httpx import AsyncClient
 from alembic import command
 from alembic.config import Config
-from sqlalchemy import create_engine, text, exc
+from sqlalchemy import create_engine, exc
 from sqlalchemy.orm import Session, sessionmaker
+from utils.functions import refresh_materialized_view_query
 
 from db.connection import Base, get_session, get_db_url
 
@@ -75,9 +76,8 @@ def test_refresh_materialized_data():
     engine = create_engine(get_db_url())
     Base.metadata.create_all(bind=engine)
     try:
-        engine.execute(text("""
-            REFRESH MATERIALIZED VIEW advance_filter;
-        """))
+        query = refresh_materialized_view_query()
+        engine.execute(query)
     except exc.SQLAlchemyError:
         print("Error refresh materialzed view")
         pass
