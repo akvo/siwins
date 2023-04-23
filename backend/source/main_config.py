@@ -7,6 +7,7 @@ CLASS_PATH = "solomon_island"
 
 SOURCE_PATH = "./source"
 TOPO_JSON_PATH = f"{SOURCE_PATH}/solomon-island-topojson.json"
+HINT_JSON_PATH = f"{SOURCE_PATH}/indicator-hint.json"
 FRONTEND_CONFIG_PATH = f"{SOURCE_PATH}/config"
 
 FORM_PATH = f"{SOURCE_PATH}/forms"

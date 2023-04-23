@@ -5,6 +5,8 @@ import isEmpty from "lodash/isEmpty";
 import sortBy from "lodash/sortBy";
 import { Chart } from "../";
 
+const hints = window.hintjson;
+
 const IndicatorDropdown = ({
   indicatorQuestion,
   handleOnChangeQuestionDropdown,
@@ -151,6 +153,8 @@ const RenderQuestionOption = ({
     return <NumberOptionToRender option={selectedQuestion.number} />;
   }
 
+  const hint = hints.find((f) => f.question_id === selectedQuestion.id)?.hint;
+
   if (selectedQuestion?.type === "option") {
     return (
       <Space direction="vertical">
@@ -158,9 +162,9 @@ const RenderQuestionOption = ({
           option={selectedQuestion.option}
           questionId={selectedQuestion.id}
         />
-        {showInfo && (
+        {showInfo && hint && (
           <div className="option-info-container">
-            <Alert message={currentId?.description} type="info" showIcon />
+            <Alert message={hint} type="info" showIcon />
           </div>
         )}
       </Space>
