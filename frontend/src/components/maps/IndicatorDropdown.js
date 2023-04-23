@@ -60,7 +60,6 @@ const RenderQuestionOption = ({
   barChartValues,
 }) => {
   const [showInfo, setShowInfo] = useState(false);
-  const [currentId, setCurrentId] = useState({});
 
   const MultipleOptionToRender = ({ option }) => {
     return sortBy(option, "order").map((opt) => (
@@ -85,11 +84,9 @@ const RenderQuestionOption = ({
           handleOnChangeQuestionOption(opt.name, selectedQuestion?.type)
         }
         onMouseEnter={() => {
-          setCurrentId(opt);
           setShowInfo(true);
         }}
         onMouseLeave={() => {
-          setCurrentId({});
           setShowInfo(false);
         }}
       >
