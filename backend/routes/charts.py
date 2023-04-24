@@ -14,48 +14,51 @@ from AkvoResponseGrouper.utils import (
 from db.crud_data import get_all_data
 from db.crud_jmp import (
     get_jmp_overview,
-    get_jmp_config_by_form,
+    get_jmp_config,
     get_jmp_labels
 )
+from db.crud_cascade import get_province_of_school_information
 
 
 charts_route = APIRouter()
 
 
-def group_children(data, labels):
+def group_children(p, data_source, labels):
+    data = list(
+        filter(lambda d: (d["administration"] in p["children"]), data_source)
+    )
+    data = [{
+        "category": d["category"] if "category" in d else None,
+        "data": d["data"]
+    }for d in data]
+    # if no labels defined in category.json
+    if not labels:
+        labels = list(set([x['category'] for x in data]))
+        labels.sort()
+        labels = [{'name': x, 'color': None} for x in labels]
     total = len(data)
     childs = []
-    if not labels:
-        categories = []
-        category = groupby(data, key=lambda d: d["category"])
-        for k, values in category:
-            if k in categories:
-                continue
-            categories.append(k)
-        labels = [{"name": c} for c in categories]
-    groups = groupby(data, key=lambda d: d["administration"])
+    groups = groupby(data, key=lambda d: d["category"])
     counter = defaultdict()
     for k, values in groups:
-        print(k)
         for v in list(values):
             if v["category"] in list(counter):
                 counter[v["category"]] += 1
             else:
                 counter[v["category"]] = 1
     for lb in labels:
-        label = lb.get("name")
+        label = lb["name"]
         count = counter[label] if label in counter else 0
-        percent = count / total * 100 if count > 0 else 0
+        percent = round(count / total * 100, 2) if count > 0 else 0
         childs.append(
             {
                 "option": label,
                 "count": count,
                 "percent": percent,
-                "color": lb.get("color"),
+                "color": lb["color"],
             }
         )
-    print(childs)
-    return {"administration": 'a', "score": 0, "child": childs}
+    return {"administration": p["name"], "score": 0, "child": childs}
 
 
 @charts_route.get(
@@ -96,8 +99,18 @@ def get_aggregated_jmp_chart_data(
     session: Session = Depends(get_session),
 ):
     # options = check_query(q) if q else None
+    parent_administration = get_province_of_school_information(
+        session=session)
+    parent_administration = [p.simplify for p in parent_administration]
+    for p in parent_administration:
+        p['children'] = [p['name']]
     data = get_jmp_overview(session=session, name=type)
-    configs = get_jmp_config_by_form()
+    configs = get_jmp_config()
     labels = get_jmp_labels(configs=configs, name=type)
-    group = group_children(data, labels)
-    # return {"form": form_id, "question": type, "data": group}
+    group = list(
+        map(
+            lambda p: group_children(p, data, labels),
+            parent_administration,
+        )
+    )
+    return {"question": type, "data": group}

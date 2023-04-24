@@ -54,7 +54,7 @@ def get_jmp_overview(session: Session, name: str):
         return data
 
 
-def get_jmp_config_by_form() -> list:
+def get_jmp_config() -> list:
     try:
         with open("./.category.json", "r") as categories:
             json_config = json.load(categories)
