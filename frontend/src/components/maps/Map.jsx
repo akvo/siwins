@@ -8,6 +8,7 @@ import {
   TileLayer,
   Tooltip,
   Marker,
+  useMap,
 } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
@@ -24,13 +25,14 @@ import Draggable from "react-draggable";
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
 
-const Map = ({ selectedProvince, selectedSchoolType }) => {
+const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   // use tile layer from config
   const {
     advanceSearchValue,
     provinceValues,
     schoolTypeValues,
     indicatorQuestions,
+    mapData,
   } = UIState.useState((s) => s);
   const baseMap = tileOSM;
   const map = useRef();
@@ -227,6 +229,8 @@ const Map = ({ selectedProvince, selectedSchoolType }) => {
                   zoom={defZoom}
                   data={data}
                   selectedQuestion={selectedQuestion}
+                  searchValue={searchValue}
+                  mapData={mapData}
                 />
               )}
             </MarkerClusterGroup>
@@ -237,13 +241,24 @@ const Map = ({ selectedProvince, selectedSchoolType }) => {
   );
 };
 
-const Markers = ({ zoom, data, selectedQuestion }) => {
+const Markers = ({ zoom, data, selectedQuestion, searchValue, mapData }) => {
   const [hovered, setHovered] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(zoom);
 
   const map = useMapEvents({
     zoomend: () => setCurrentZoom(map?._zoom || currentZoom),
   });
+
+  const mapHook = useMap();
+
+  useEffect(() => {
+    const findCordinates = mapData.find((item) =>
+      item.school_information.includes(searchValue)
+    );
+    if (findCordinates?.geo) {
+      mapHook.setView(findCordinates?.geo, 14);
+    }
+  }, [searchValue]);
 
   data = data.filter((d) => d.geo);
   return data.map(({ id, geo, name, answer }) => {
@@ -268,6 +283,9 @@ const Markers = ({ zoom, data, selectedQuestion }) => {
         eventHandlers={{
           mouseover: () => setHovered(id),
           mouseout: () => setHovered(null),
+          click: () => {
+            mapHook.setView(geo, 14);
+          },
         }}
       >
         <Tooltip direction="top">{name}</Tooltip>
