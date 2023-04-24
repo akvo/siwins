@@ -1,4 +1,5 @@
 import json
+from typing import List, Optional
 from sqlalchemy.orm import Session
 from AkvoResponseGrouper.views import get_categories
 from db.crud_data import get_all_data
@@ -36,8 +37,21 @@ def get_jmp_table_view(session: Session, data: list, configs: list):
     return data
 
 
-def get_jmp_overview(session: Session, name: str):
-    data = get_all_data(session=session, current=True)
+def get_jmp_overview(
+    session: Session,
+    name: str,
+    options: Optional[List[str]] = None,
+    data_ids: Optional[List[int]] = None,
+    prov: Optional[List[str]] = None,
+    sctype: Optional[List[str]] = None
+):
+    data = get_all_data(
+        session=session,
+        current=True,
+        options=options,
+        data_ids=data_ids,
+        prov=prov,
+        sctype=sctype)
     data = [{
         "data": d.id,
         "administration": d.school_information[0],
