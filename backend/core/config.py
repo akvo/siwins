@@ -12,15 +12,16 @@ from routes.cascade import cascade_route
 from AkvoResponseGrouper.routes import collection_route
 from routes.charts import charts_route
 from source.geoconfig import GeoLevels, GeoCenter
-from source.main_config import CLASS_PATH, TOPO_JSON_PATH, HINT_JSON_PATH, \
+from source.main_config import CLASS_PATH, TOPO_JSON_PATH, \
     FRONTEND_CONFIG_PATH
 
 TOPO_JSON = open(TOPO_JSON_PATH).read()
-HINT_JSON = open(HINT_JSON_PATH).read()
 GEO_CONFIG = GeoLevels[CLASS_PATH].value
 MAP_CENTER = GeoCenter[CLASS_PATH].value
 CHART_CONFIG = f"{FRONTEND_CONFIG_PATH}/charts.js"
 CHART_CONFIG = jsmin(open(CHART_CONFIG).read())
+HINT_CONFIG = f"{FRONTEND_CONFIG_PATH}/indicator-hint.json"
+HINT_JSON = open(HINT_CONFIG).read()
 
 MINJS = jsmin(
     "".join([
