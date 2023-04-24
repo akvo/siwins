@@ -54,8 +54,7 @@ function Maps() {
           )
         )
         ?.map((f) => f.school_information);
-      console.info(find);
-      // setData(find);
+      setData(find);
     }
   };
   const handleChange = (newValue) => {
@@ -86,9 +85,21 @@ function Maps() {
               onChange={handleChange}
               notFoundContent={null}
               options={(data || []).map((d) => ({
-                value: d.value,
-                label: d.text,
+                value: d[2],
+                label: d[2],
               }))}
+              dropdownMatchSelectWidth={false}
+              popupClassName="search-popup"
+              dropdownRender={() => (
+                <>
+                  {data.map((item, index) => (
+                    <div key={index} className="search-popup-wrapper">
+                      <h3>{item[2]}</h3>
+                      <p>{item[1]}</p>
+                    </div>
+                  ))}
+                </>
+              )}
             />
           </AdvanceFilter>
         </Col>

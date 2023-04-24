@@ -121,3 +121,32 @@
     }
   }
 }
+.search-popup {
+  overflow: auto !important;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.17);
+  border-radius: 5px;
+  height: 300px;
+  width: 300px;
+  .search-popup-wrapper {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: #3490dc;
+      h3 {
+        color: #fff;
+      }
+    }
+    h3 {
+      font-size: 12px;
+      width: auto;
+    }
+    p {
+      color: #fff;
+      background-color: #3490dc;
+      display: inline-block;
+      margin-bottom: 0px;
+      padding: 2px 5px;
+    }
+  }
+}
