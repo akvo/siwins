@@ -6,6 +6,7 @@ import { UIState } from "../../state/ui";
 
 function Maps() {
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
   const [value, setValue] = useState();
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedSchoolType, setSelectedSchoolType] = useState([]);
@@ -47,6 +48,7 @@ function Maps() {
 
   const handleSearch = (val) => {
     if (val && val.length > 3) {
+      setOpen(true);
       const find = mapData
         .filter((item) =>
           item.school_information.find((a) =>
@@ -58,6 +60,7 @@ function Maps() {
     }
   };
   const handleChange = (newValue) => {
+    setOpen(false);
     setValue(newValue);
   };
 
@@ -74,15 +77,16 @@ function Maps() {
             selectedSchoolType={selectedSchoolType}
           >
             <Select
+              open={open}
               style={{ width: 200 }}
               showSearch
-              value={value}
+              allowClear
+              value={value ? value : null}
               placeholder="Search School"
               defaultActiveFirstOption={false}
               showArrow={false}
               filterOption={false}
               onSearch={handleSearch}
-              onChange={handleChange}
               notFoundContent={null}
               options={(data || []).map((d) => ({
                 value: d[2],
@@ -90,10 +94,15 @@ function Maps() {
               }))}
               dropdownMatchSelectWidth={false}
               popupClassName="search-popup"
+              onClear={() => setValue("")}
               dropdownRender={() => (
                 <>
                   {data.map((item, index) => (
-                    <div key={index} className="search-popup-wrapper">
+                    <div
+                      key={index}
+                      className="search-popup-wrapper"
+                      onClick={() => handleChange(item[2])}
+                    >
                       <h3>{item[2]}</h3>
                       <p>{item[1]}</p>
                     </div>
