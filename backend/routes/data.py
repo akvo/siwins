@@ -7,14 +7,13 @@ from fastapi.security import HTTPBearer
 # from fastapi.security import HTTPBasicCredentials as credentials
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from db import crud_data, crud_answer, crud_question
 from db.connection import get_session
+from db import crud_data
 from models.data import MapsData, ChartDataDetail
 from models.data import DataDetail, DataResponse
 from models.answer import Answer
 from models.history import History
-from models.question import QuestionType
-from middleware import check_query
+from middleware import check_query, check_indicator_query
 
 security = HTTPBearer()
 data_route = APIRouter()
@@ -84,40 +83,9 @@ def get_maps(
             (filter by shcool type)")
     # credentials: credentials = Depends(security)
 ):
-    # 1. indicator filter by option,
-    #  - use same format as advanced filter: q param = qid|option
-    # 2. indicator filter by number,
-    #  - check if indicator qtype is number
-    #  - filter answers by number param
-    question = crud_question.get_question_by_id(
-        session=session, id=indicator)
-    is_number = question.type == QuestionType.number \
-        if question else False
-    if number and not is_number:
-        raise HTTPException(
-            status_code=400,
-            detail="Bad Request, indicator is not number type")
-    if number and len(number) != 2:
-        raise HTTPException(
-            status_code=400,
-            detail="Bad Request, number param length must equal to 2")
-    # get all answers by indicator
-    answer_data_ids = None
-    answer_temp = {}
-    if indicator:
-        answers = crud_answer.get_answer_by_question(
-            session=session,
-            question=indicator,
-            number=number)
-        answer_data_ids = [a.data for a in answers]
-        answers = [
-            a.formatted_with_data for a in answers
-        ] if answers else []
-        for a in answers:
-            key = a.get('identifier')
-            del a['data']
-            del a['identifier']
-            answer_temp.update({key: a})
+    # check indicator query
+    answer_data_ids, answer_temp = check_indicator_query(
+        session=session, indicator=indicator, number=number)
     # for advance filter and indicator option filter
     options = check_query(q) if q else None
     # get the data

@@ -1,6 +1,14 @@
 from typing import Optional
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from models.cascade import Cascade, CascadeDict, CascadeSimplified
+from source.main_config import (
+    QuestionConfig, SchoolInformationEnum, CascadeLevels
+)
+
+school_information_qid = QuestionConfig.school_information.value
+province_enum = SchoolInformationEnum.province.value
+province_level = CascadeLevels.school_information.value[province_enum]
 
 
 def add_cascade(session: Session, data: Cascade) -> CascadeDict:
@@ -38,3 +46,10 @@ def get_cascade_by_parent(
     if level is not None:
         cascade = cascade.filter(Cascade.level == level)
     return cascade.order_by(Cascade.level).all()
+
+
+def get_province_of_school_information(session: Session):
+    return session.query(Cascade).filter(and_(
+        Cascade.question == school_information_qid,
+        Cascade.level == province_level
+    )).all()
