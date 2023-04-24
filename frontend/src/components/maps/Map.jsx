@@ -71,6 +71,9 @@ const Map = ({ selectedProvince, selectedSchoolType }) => {
       .get(url)
       .then((res) => {
         setData(res.data);
+        UIState.update((s) => {
+          s.mapData = res.data;
+        });
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));

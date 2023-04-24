@@ -9,7 +9,9 @@ function Maps() {
   const [value, setValue] = useState();
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedSchoolType, setSelectedSchoolType] = useState([]);
-  const { provinceValues, schoolTypeValues } = UIState.useState((s) => s);
+  const { provinceValues, schoolTypeValues, mapData } = UIState.useState(
+    (s) => s
+  );
 
   const handleProvinceFilter = (value) => {
     if (value === "disable") {
@@ -44,8 +46,17 @@ function Maps() {
   };
 
   const handleSearch = (val) => {
-    console.info(val);
-    setData([]);
+    if (val && val.length > 3) {
+      const find = mapData
+        .filter((item) =>
+          item.school_information.find((a) =>
+            a.toLowerCase().includes(val.toLowerCase())
+          )
+        )
+        ?.map((f) => f.school_information);
+      console.info(find);
+      // setData(find);
+    }
   };
   const handleChange = (newValue) => {
     setValue(newValue);
@@ -88,6 +99,7 @@ function Maps() {
             <Map
               selectedProvince={selectedProvince}
               selectedSchoolType={selectedSchoolType}
+              searchValue={value}
             />
           </div>
         </Col>
