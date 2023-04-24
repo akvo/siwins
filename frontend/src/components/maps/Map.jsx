@@ -24,9 +24,14 @@ import Draggable from "react-draggable";
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
 
-const Map = () => {
+const Map = ({ selectedProvince, selectedSchoolType }) => {
   // use tile layer from config
-  const { advanceSearchValue, indicatorQuestions } = UIState.useState((s) => s);
+  const {
+    advanceSearchValue,
+    provinceValues,
+    schoolTypeValues,
+    indicatorQuestions,
+  } = UIState.useState((s) => s);
   const baseMap = tileOSM;
   const map = useRef();
   const [loading, setLoading] = useState(false);
@@ -48,20 +53,20 @@ const Map = () => {
     if (selectedQuestion?.id && !urlParams.get("indicator")) {
       url = `${url}?indicator=${selectedQuestion?.id}`;
     }
-    // if (selectedProvince && selectedProvince.length > 0) {
-    //   const queryUrlPrefix = url.includes("?") ? "&" : "?";
-    //   url = `${url}${queryUrlPrefix}prov=${provinceValues
-    //     .filter((item) => !selectedProvince?.includes(item.name))
-    //     .map((x) => x.name)
-    //     .join("&prov=")}`;
-    // }
-    // if (selectedSchoolType && selectedSchoolType.length > 0) {
-    //   const queryUrlPrefix = url.includes("?") ? "&" : "?";
-    //   url = `${url}${queryUrlPrefix}sctype=${schoolTypeValues
-    //     .filter((item) => !selectedSchoolType?.includes(item.name))
-    //     .map((x) => x.name)
-    //     .join("&sctype=")}`;
-    // }
+    if (selectedProvince && selectedProvince.length > 0) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
+      url = `${url}${queryUrlPrefix}prov=${provinceValues
+        .filter((item) => !selectedProvince?.includes(item.name))
+        .map((x) => x.name)
+        .join("&prov=")}`;
+    }
+    if (selectedSchoolType && selectedSchoolType.length > 0) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
+      url = `${url}${queryUrlPrefix}sctype=${schoolTypeValues
+        .filter((item) => !selectedSchoolType?.includes(item.name))
+        .map((x) => x.name)
+        .join("&sctype=")}`;
+    }
     api
       .get(url)
       .then((res) => {
@@ -69,7 +74,12 @@ const Map = () => {
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
-  }, [advanceSearchValue, selectedQuestion]);
+  }, [
+    advanceSearchValue,
+    selectedQuestion,
+    selectedProvince,
+    selectedSchoolType,
+  ]);
 
   useEffect(() => {
     if (data.length > 0 && selectedQuestion.type === "option") {

@@ -61,7 +61,7 @@ function AdvanceFilter({
   return (
     <div>
       <Row className="advance-search-container">
-        <Col span={6}>
+        <Col span={24}>
           <Space
             direction="horizontal"
             size="small"

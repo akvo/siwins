@@ -5,8 +5,8 @@ import AdvanceFilter from "../../components/filter";
 import { UIState } from "../../state/ui";
 
 function Maps() {
-  const [selectedProvince, setSelectedProvince] = useState(["All"]);
-  const [selectedSchoolType, setSelectedSchoolType] = useState(["All"]);
+  const [selectedProvince, setSelectedProvince] = useState([]);
+  const [selectedSchoolType, setSelectedSchoolType] = useState([]);
   const { provinceValues, schoolTypeValues } = UIState.useState((s) => s);
 
   const handleProvinceFilter = (value) => {
@@ -58,7 +58,10 @@ function Maps() {
       <Row>
         <Col span={24}>
           <div className="map-wrapper">
-            <Map />
+            <Map
+              selectedProvince={selectedProvince}
+              selectedSchoolType={selectedSchoolType}
+            />
           </div>
         </Col>
       </Row>
