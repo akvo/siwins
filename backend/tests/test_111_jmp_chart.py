@@ -3,80 +3,10 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
+from tests.test_jmp_dummy import res_jmp_no_fiter, res_jmp_filtered
 
 pytestmark = pytest.mark.asyncio
 sys.path.append("..")
-
-
-res_jmp_no_fiter = {
-    "question": "Sanitation",
-    "data": [
-        {
-            "administration": "Malaita",
-            "score": 0,
-            "child": []},
-        {
-            "administration": "Rennell and Bellona",
-            "score": 0,
-            "child": []},
-        {
-            "administration": "Temotu",
-            "score": 0,
-            "child": []},
-        {
-            "administration": "Western",
-            "score": 0,
-            "child": []},
-        {
-            "administration": "Choiseul",
-            "score": 0,
-            "child": []},
-        {
-            "administration": "Guadalcanal",
-            "score": 0,
-            "child": [
-                {
-                    "option": "No Service",
-                    "count": 1,
-                    "percent": 100.0,
-                    "color": None
-                }
-            ],
-        },
-        {
-            "administration": "Honiara",
-            "score": 0,
-            "child": []},
-        {
-            "administration": "Isabel",
-            "score": 0,
-            "child": []},
-        {
-            "administration": "Makira and Ulawa",
-            "score": 0,
-            "child": []},
-        {
-            "administration": "Central",
-            "score": 0,
-            "child": []},
-    ],
-}
-
-res_jmp_filtered = {
-    "question": "Sanitation",
-    "data": [
-        {"administration": "Malaita", "score": 0, "child": []},
-        {"administration": "Rennell and Bellona", "score": 0, "child": []},
-        {"administration": "Temotu", "score": 0, "child": []},
-        {"administration": "Western", "score": 0, "child": []},
-        {"administration": "Choiseul", "score": 0, "child": []},
-        {"administration": "Guadalcanal", "score": 0, "child": []},
-        {"administration": "Honiara", "score": 0, "child": []},
-        {"administration": "Isabel", "score": 0, "child": []},
-        {"administration": "Makira and Ulawa", "score": 0, "child": []},
-        {"administration": "Central", "score": 0, "child": []},
-    ],
-}
 
 
 class TestJMPChartEndpoint:
