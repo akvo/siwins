@@ -17,7 +17,6 @@ import { api } from "../../lib";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
-import ProvinceFilter from "./ProvinceFilter";
 import { Chart } from "../";
 import { Card } from "antd";
 import Draggable from "react-draggable";
@@ -27,12 +26,7 @@ const defCenter = window.mapConfig.center;
 
 const Map = () => {
   // use tile layer from config
-  const {
-    advanceSearchValue,
-    provinceValues,
-    schoolTypeValues,
-    indicatorQuestions,
-  } = UIState.useState((s) => s);
+  const { advanceSearchValue, indicatorQuestions } = UIState.useState((s) => s);
   const baseMap = tileOSM;
   const map = useRef();
   const [loading, setLoading] = useState(false);
@@ -40,8 +34,6 @@ const Map = () => {
   // const [activePanel, setActivePanel] = useState(1);
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState([]);
-  const [selectedSchoolType, setSelectedSchoolType] = useState([]);
   const [roseChartValues, setRoseChartValues] = useState([]);
   const [barChartValues, setBarChartValues] = useState({
     startValue: 0,
@@ -56,20 +48,20 @@ const Map = () => {
     if (selectedQuestion?.id && !urlParams.get("indicator")) {
       url = `${url}?indicator=${selectedQuestion?.id}`;
     }
-    if (selectedProvince && selectedProvince.length > 0) {
-      const queryUrlPrefix = url.includes("?") ? "&" : "?";
-      url = `${url}${queryUrlPrefix}prov=${provinceValues
-        .filter((item) => !selectedProvince?.includes(item.name))
-        .map((x) => x.name)
-        .join("&prov=")}`;
-    }
-    if (selectedSchoolType && selectedSchoolType.length > 0) {
-      const queryUrlPrefix = url.includes("?") ? "&" : "?";
-      url = `${url}${queryUrlPrefix}sctype=${schoolTypeValues
-        .filter((item) => !selectedSchoolType?.includes(item.name))
-        .map((x) => x.name)
-        .join("&sctype=")}`;
-    }
+    // if (selectedProvince && selectedProvince.length > 0) {
+    //   const queryUrlPrefix = url.includes("?") ? "&" : "?";
+    //   url = `${url}${queryUrlPrefix}prov=${provinceValues
+    //     .filter((item) => !selectedProvince?.includes(item.name))
+    //     .map((x) => x.name)
+    //     .join("&prov=")}`;
+    // }
+    // if (selectedSchoolType && selectedSchoolType.length > 0) {
+    //   const queryUrlPrefix = url.includes("?") ? "&" : "?";
+    //   url = `${url}${queryUrlPrefix}sctype=${schoolTypeValues
+    //     .filter((item) => !selectedSchoolType?.includes(item.name))
+    //     .map((x) => x.name)
+    //     .join("&sctype=")}`;
+    // }
     api
       .get(url)
       .then((res) => {
@@ -77,12 +69,7 @@ const Map = () => {
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
-  }, [
-    advanceSearchValue,
-    selectedQuestion,
-    selectedProvince,
-    selectedSchoolType,
-  ]);
+  }, [advanceSearchValue, selectedQuestion]);
 
   useEffect(() => {
     if (data.length > 0 && selectedQuestion.type === "option") {
@@ -162,38 +149,6 @@ const Map = () => {
     updateGlobalState(value, "number");
   };
 
-  const handleProvinceFilter = (value) => {
-    if (value === "disable") {
-      setSelectedProvince(provinceValues.map((item) => item.name));
-      return;
-    }
-    if (value === "all") {
-      setSelectedProvince([]);
-      return;
-    }
-    if (selectedProvince.includes(value)) {
-      setSelectedProvince(selectedProvince.filter((e) => e !== value));
-    } else {
-      setSelectedProvince([...selectedProvince, value]);
-    }
-  };
-
-  const handleSchoolTypeFilter = (value) => {
-    if (value === "disable") {
-      setSelectedSchoolType(schoolTypeValues.map((item) => item.name));
-      return;
-    }
-    if (value === "all") {
-      setSelectedSchoolType([]);
-      return;
-    }
-    if (selectedSchoolType.includes(value)) {
-      setSelectedSchoolType(selectedSchoolType.filter((e) => e !== value));
-    } else {
-      setSelectedSchoolType([...selectedSchoolType, value]);
-    }
-  };
-
   return (
     <>
       <div id="map-view">
@@ -263,14 +218,6 @@ const Map = () => {
               )}
             </MarkerClusterGroup>
           </MapContainer>
-          <ProvinceFilter
-            provinceValues={provinceValues}
-            schoolTypeValues={schoolTypeValues}
-            handleSchoolTypeFilter={handleSchoolTypeFilter}
-            handleProvinceFilter={handleProvinceFilter}
-            selectedProvince={selectedProvince}
-            selectedSchoolType={selectedSchoolType}
-          />
         </div>
       </div>
     </>
