@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Select } from "antd";
 import { Map } from "../../components";
 import AdvanceFilter from "../../components/filter";
 import { UIState } from "../../state/ui";
 
 function Maps() {
+  const [data, setData] = useState([]);
+  const [value, setValue] = useState();
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedSchoolType, setSelectedSchoolType] = useState([]);
   const { provinceValues, schoolTypeValues } = UIState.useState((s) => s);
@@ -41,6 +43,14 @@ function Maps() {
     }
   };
 
+  const handleSearch = (val) => {
+    console.info(val);
+    setData([]);
+  };
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <div id="map">
       <Row>
@@ -52,7 +62,24 @@ function Maps() {
             handleProvinceFilter={handleProvinceFilter}
             selectedProvince={selectedProvince}
             selectedSchoolType={selectedSchoolType}
-          />
+          >
+            <Select
+              style={{ width: 200 }}
+              showSearch
+              value={value}
+              placeholder="Search School"
+              defaultActiveFirstOption={false}
+              showArrow={false}
+              filterOption={false}
+              onSearch={handleSearch}
+              onChange={handleChange}
+              notFoundContent={null}
+              options={(data || []).map((d) => ({
+                value: d.value,
+                label: d.text,
+              }))}
+            />
+          </AdvanceFilter>
         </Col>
       </Row>
       <Row>

@@ -24,6 +24,7 @@ function AdvanceFilter({
   handleSchoolTypeFilter,
   selectedProvince,
   selectedSchoolType,
+  children,
 }) {
   const { advanceSearchValue, advanceFilterQuestions } = UIState.useState(
     (s) => s
@@ -67,6 +68,7 @@ function AdvanceFilter({
             size="small"
             style={{ display: "flex" }}
           >
+            {children}
             <ProvinceFilter
               provinceValues={provinceValues}
               schoolTypeValues={schoolTypeValues}
