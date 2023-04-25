@@ -1,6 +1,6 @@
 from collections import defaultdict
 from fastapi import APIRouter, Query
-from fastapi import Depends, Request
+from fastapi import Depends, Request, HTTPException
 from itertools import groupby
 from typing import List, Optional
 from sqlalchemy.orm import Session
@@ -18,6 +18,7 @@ from db.crud_jmp import (
     get_jmp_labels
 )
 from db.crud_cascade import get_province_of_school_information
+from db.crud_chart import get_generic_chart_data
 from middleware import check_query, check_indicator_query
 
 
@@ -85,6 +86,32 @@ def get_bar_charts(
     df = transform_categories_to_df(categories=categories)
     dt = get_counted_category(df=df)
     return group_by_category_output(data=dt)
+
+
+@charts_route.get(
+    "/chart/generic-bar/{question:path}",
+    name="charts:get_aggregated_chart_data",
+    summary="get generic bar chart aggregate data",
+    tags=["Charts"]
+)
+def get_aggregated_chart_data(
+    req: Request,
+    question: int,
+    stack: Optional[int] = Query(None),
+    prov: Optional[List[str]] = Query(None),
+    q: Optional[List[str]] = Query(None),
+    session: Session = Depends(get_session)
+):
+    options = check_query(q) if q else None
+    if question == stack:
+        raise HTTPException(status_code=406, detail="Not Acceptable")
+    value = get_generic_chart_data(
+        session=session,
+        question=question,
+        stack=stack,
+        prov=prov,
+        options=options)
+    return value
 
 
 @charts_route.get(
