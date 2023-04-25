@@ -27,13 +27,9 @@ const defCenter = window.mapConfig.center;
 
 const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   // use tile layer from config
-  const {
-    advanceSearchValue,
-    provinceValues,
-    schoolTypeValues,
-    indicatorQuestions,
-    mapData,
-  } = UIState.useState((s) => s);
+  const { advanceSearchValue, indicatorQuestions, mapData } = UIState.useState(
+    (s) => s
+  );
   const baseMap = tileOSM;
   const map = useRef();
   const [loading, setLoading] = useState(false);
