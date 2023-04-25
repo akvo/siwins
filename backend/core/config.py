@@ -20,6 +20,8 @@ GEO_CONFIG = GeoLevels[CLASS_PATH].value
 MAP_CENTER = GeoCenter[CLASS_PATH].value
 CHART_CONFIG = f"{FRONTEND_CONFIG_PATH}/charts.js"
 CHART_CONFIG = jsmin(open(CHART_CONFIG).read())
+HINT_CONFIG = f"{FRONTEND_CONFIG_PATH}/indicator-hint.json"
+HINT_JSON = open(HINT_CONFIG).read()
 
 MINJS = jsmin(
     "".join([
@@ -29,6 +31,7 @@ MINJS = jsmin(
         json.dumps([g["name"] for g in GEO_CONFIG]),
         ", center:", json.dumps(MAP_CENTER), "};",
         "var topojson=", TOPO_JSON, ";",
+        "var hintjson=", HINT_JSON, ";",
         CHART_CONFIG,
     ])
 )

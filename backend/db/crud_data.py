@@ -84,6 +84,7 @@ def delete_bulk(session: Session, ids: List[int]) -> None:
     session.commit()
 
 
+# for paginated data purpose
 def get_data(
     session: Session,
     skip: int,
@@ -104,6 +105,7 @@ def get_data(
     return PaginatedData(data=data, count=count)
 
 
+# get all data with filtered value
 def get_all_data(
     session: Session,
     registration: Optional[bool] = None,
