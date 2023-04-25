@@ -9,6 +9,76 @@ pytestmark = pytest.mark.asyncio
 sys.path.append("..")
 
 
+res_bar_stack = {
+    "type": "BARSTACK",
+    "data": [
+        {
+            "group": "yes",
+            "child": [
+                {
+                    "name": "yes (always available)",
+                    "value": 0
+                },
+                {
+                    "name": "mostly (unavailable ≤ 30 days total)",
+                    "value": 0
+                },
+                {
+                    "name": "no (unavailable > 30 days total)",
+                    "value": 0
+                },
+                {
+                    "name": "don't know/can't say",
+                    "value": 0
+                },
+            ],
+        },
+        {
+            "group": "no",
+            "child": [
+                {
+                    "name": "yes (always available)",
+                    "value": 0
+                },
+                {
+                    "name": "mostly (unavailable ≤ 30 days total)",
+                    "value": 1
+                },
+                {
+                    "name": "no (unavailable > 30 days total)",
+                    "value": 0
+                },
+                {
+                    "name": "don't know/can't say",
+                    "value": 0
+                },
+            ],
+        },
+        {
+            "group": "don't know/can't say",
+            "child": [
+                {
+                    "name": "yes (always available)",
+                    "value": 0
+                },
+                {
+                    "name": "mostly (unavailable ≤ 30 days total)",
+                    "value": 0
+                },
+                {
+                    "name": "no (unavailable > 30 days total)",
+                    "value": 0
+                },
+                {
+                    "name": "don't know/can't say",
+                    "value": 0
+                },
+            ],
+        },
+    ],
+}
+
+
 class TestGenericBarChartRoutes:
     @pytest.mark.asyncio
     async def test_get_generic_bar_chart_question(
@@ -62,8 +132,12 @@ class TestGenericBarChartRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res == {
-            'type': 'BAR',
-            'data': [{'name': 'no', 'value': 1}]
+            "type": "BAR",
+            "data": [
+                {"name": "yes", "value": 0},
+                {"name": "no", "value": 1},
+                {"name": "don't know/can't say", "value": 0},
+            ],
         }
         # with stack = question
         res = await client.get(
@@ -80,20 +154,7 @@ class TestGenericBarChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == {
-            'type': 'BARSTACK',
-            'data': [
-                {
-                    'group': 'no',
-                    'child': [
-                        {
-                            'name': 'mostly (unavailable ≤ 30 days total)',
-                            'value': 1
-                        }
-                    ]
-                }
-            ]
-        }
+        assert res == res_bar_stack
         # with indicator
         res = await client.get(
             app.url_path_for(
@@ -117,7 +178,14 @@ class TestGenericBarChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == {'type': 'BAR', 'data': []}
+        assert res == {
+            "type": "BAR",
+            "data": [
+                {"name": "yes", "value": 0},
+                {"name": "no", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
+            ],
+        }
         # number indicator with number filter
         res = await client.get(
             app.url_path_for(
@@ -133,8 +201,12 @@ class TestGenericBarChartRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res == {
-            'type': 'BAR',
-            'data': [{'name': 'no', 'value': 1}]
+            "type": "BAR",
+            "data": [
+                {"name": "yes", "value": 0},
+                {"name": "no", "value": 1},
+                {"name": "don't know/can't say", "value": 0},
+            ],
         }
         # filter by school type and province
         res = await client.get(
@@ -148,8 +220,12 @@ class TestGenericBarChartRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res == {
-            'type': 'BAR',
-            'data': [{'name': 'no', 'value': 1}]
+            "type": "BAR",
+            "data": [
+                {"name": "yes", "value": 0},
+                {"name": "no", "value": 1},
+                {"name": "don't know/can't say", "value": 0},
+            ],
         }
         # with stack != question and filter
         res = await client.get(
@@ -163,17 +239,4 @@ class TestGenericBarChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == {
-            'type': 'BARSTACK',
-            'data': [
-                {
-                    'group': 'no',
-                    'child': [
-                        {
-                            'name': 'mostly (unavailable ≤ 30 days total)',
-                            'value': 1
-                        }
-                    ]
-                }
-            ]
-        }
+        assert res == res_bar_stack

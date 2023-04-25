@@ -20,6 +20,7 @@ from db.crud_jmp import (
     get_jmp_labels
 )
 from db.crud_cascade import get_province_of_school_information
+from db.crud_option import get_option_by_question_id
 from middleware import check_query, check_indicator_query
 from models.answer import Answer
 
@@ -132,9 +133,13 @@ def get_aggregated_chart_data(
         sctype=sctype
     )
     data = [d.id for d in data]
+    question_options = get_option_by_question_id(
+        session=session, question=question)
     # chart query
     type = "BAR"
     if stack:
+        stack_options = get_option_by_question_id(
+            session=session, question=stack)
         type = "BARSTACK"
         answerStack = aliased(Answer)
         answer = session.query(
@@ -163,7 +168,28 @@ def get_aggregated_chart_data(
                 "value": val
             } for key, val in dict(counter).items()]
             temp.append({"group": k, "child": child})
-        answer = temp
+        # remap result to options
+        remap = []
+        for qo in question_options:
+            group = qo.name.lower()
+            find_group = next(
+                (x for x in temp if x["group"] == group),
+                None
+            )
+            fg_child = find_group["child"] if find_group else []
+            child = []
+            for so in stack_options:
+                name = so.name.lower()
+                find_child = next(
+                    (x for x in fg_child if x["name"] == name),
+                    None
+                )
+                child.append({
+                    "name": name,
+                    "value": find_child["value"] if find_child else 0
+                })
+            remap.append({"group": group, "child": child})
+        answer = remap
     else:
         answer = session.query(Answer.options, func.count(Answer.id))
         # filter
@@ -175,7 +201,20 @@ def get_aggregated_chart_data(
         counter = collections.Counter()
         for d in answer:
             counter.update(d)
-        answer = [{"name": k, "value": v} for k, v in dict(counter).items()]
+        temp = [{"name": k, "value": v} for k, v in dict(counter).items()]
+        # remap result to options
+        remap = []
+        for qo in question_options:
+            name = qo.name.lower()
+            find_temp = next(
+                (x for x in temp if x["name"] == name),
+                None
+            )
+            remap.append({
+                "name": name,
+                "value": find_temp["value"] if find_temp else 0
+            })
+        answer = remap
     return {"type": type, "data": answer}
 
 
