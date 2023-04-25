@@ -53,7 +53,7 @@ class TestQuestionRoutes:
             'name': name,
             "display_name": display_name,
             "type": "option",
-            'attributes': ['indicator', 'advance_filter'],
+            'attributes': ['indicator', 'advance_filter', 'generic_bar_chart'],
             'option': [{
                 "name": "Yes",
                 "order": 1,
@@ -81,7 +81,7 @@ class TestQuestionRoutes:
             'name': name,
             "display_name": display_name,
             "type": "option",
-            'attributes': ['indicator', 'advance_filter'],
+            'attributes': ['indicator', 'advance_filter', 'generic_bar_chart'],
             'option': [{
                 'name': 'Yes (always available)',
                 'order': 1,
