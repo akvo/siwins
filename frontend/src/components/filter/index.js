@@ -14,8 +14,18 @@ import { InfoCircleOutlined } from "@ant-design/icons";
 import { UIState } from "../../state/ui";
 import isEmpty from "lodash/isEmpty";
 import sortBy from "lodash/sortBy";
+import ProvinceFilter from "../maps/ProvinceFilter";
 
-function AdvanceFilter({ customStyle = {} }) {
+function AdvanceFilter({
+  customStyle = {},
+  provinceValues,
+  schoolTypeValues,
+  handleProvinceFilter,
+  handleSchoolTypeFilter,
+  selectedProvince,
+  selectedSchoolType,
+  children,
+}) {
   const { advanceSearchValue, advanceFilterQuestions } = UIState.useState(
     (s) => s
   );
@@ -52,15 +62,30 @@ function AdvanceFilter({ customStyle = {} }) {
   return (
     <div>
       <Row className="advance-search-container">
-        <Col span={6}>
-          <Button
-            onClick={() => {
-              setShowAdvanceFilter(!showAdvanceFilter);
-            }}
-            className={`${showAdvanceFilter ? "selected" : ""}`}
+        <Col span={24}>
+          <Space
+            direction="horizontal"
+            size="small"
+            style={{ display: "flex" }}
           >
-            Advanced Filter
-          </Button>
+            {children}
+            <ProvinceFilter
+              provinceValues={provinceValues}
+              schoolTypeValues={schoolTypeValues}
+              handleSchoolTypeFilter={handleSchoolTypeFilter}
+              handleProvinceFilter={handleProvinceFilter}
+              selectedProvince={selectedProvince}
+              selectedSchoolType={selectedSchoolType}
+            />
+            <Button
+              onClick={() => {
+                setShowAdvanceFilter(!showAdvanceFilter);
+              }}
+              className={`${showAdvanceFilter ? "selected" : ""}`}
+            >
+              Advanced Filter
+            </Button>
+          </Space>
         </Col>
       </Row>
       {showAdvanceFilter && (

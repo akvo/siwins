@@ -6,6 +6,7 @@ const defaultUIState = {
   schoolTypeValues: [],
   indicatorQuestions: [],
   advanceFilterQuestions: [],
+  mapData: [],
 };
 
 export const UIState = new Store(defaultUIState);
