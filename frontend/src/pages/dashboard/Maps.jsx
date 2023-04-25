@@ -15,35 +15,11 @@ function Maps() {
   );
 
   const handleProvinceFilter = (value) => {
-    if (value === "disable") {
-      setSelectedProvince(provinceValues.map((item) => item.name));
-      return;
-    }
-    if (value === "all") {
-      setSelectedProvince([]);
-      return;
-    }
-    if (selectedProvince.includes(value)) {
-      setSelectedProvince(selectedProvince.filter((e) => e !== value));
-    } else {
-      setSelectedProvince([...selectedProvince, value]);
-    }
+    setSelectedProvince(value);
   };
 
   const handleSchoolTypeFilter = (value) => {
-    if (value === "disable") {
-      setSelectedSchoolType(schoolTypeValues.map((item) => item.name));
-      return;
-    }
-    if (value === "all") {
-      setSelectedSchoolType([]);
-      return;
-    }
-    if (selectedSchoolType.includes(value)) {
-      setSelectedSchoolType(selectedSchoolType.filter((e) => e !== value));
-    } else {
-      setSelectedSchoolType([...selectedSchoolType, value]);
-    }
+    setSelectedSchoolType(value);
   };
 
   const handleSearch = (val) => {

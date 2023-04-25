@@ -57,17 +57,11 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
     }
     if (selectedProvince && selectedProvince.length > 0) {
       const queryUrlPrefix = url.includes("?") ? "&" : "?";
-      url = `${url}${queryUrlPrefix}prov=${provinceValues
-        .filter((item) => !selectedProvince?.includes(item.name))
-        .map((x) => x.name)
-        .join("&prov=")}`;
+      url = `${url}${queryUrlPrefix}prov=${selectedProvince}`;
     }
     if (selectedSchoolType && selectedSchoolType.length > 0) {
       const queryUrlPrefix = url.includes("?") ? "&" : "?";
-      url = `${url}${queryUrlPrefix}sctype=${schoolTypeValues
-        .filter((item) => !selectedSchoolType?.includes(item.name))
-        .map((x) => x.name)
-        .join("&sctype=")}`;
+      url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
     }
     api
       .get(url)
