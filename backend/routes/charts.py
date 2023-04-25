@@ -1,9 +1,11 @@
+import collections
 from collections import defaultdict
 from fastapi import APIRouter, Query
 from fastapi import Depends, Request, HTTPException
 from itertools import groupby
 from typing import List, Optional
-from sqlalchemy.orm import Session
+from sqlalchemy import and_, func
+from sqlalchemy.orm import Session, aliased
 from db.connection import get_session
 from AkvoResponseGrouper.models import Category, GroupedCategory
 from AkvoResponseGrouper.utils import (
@@ -18,8 +20,8 @@ from db.crud_jmp import (
     get_jmp_labels
 )
 from db.crud_cascade import get_province_of_school_information
-from db.crud_chart import get_generic_chart_data
 from middleware import check_query, check_indicator_query
+from models.answer import Answer
 
 
 charts_route = APIRouter()
@@ -90,28 +92,91 @@ def get_bar_charts(
 
 @charts_route.get(
     "/chart/generic-bar/{question:path}",
-    name="charts:get_aggregated_chart_data",
+    name="charts:get_generic_chart_data",
     summary="get generic bar chart aggregate data",
     tags=["Charts"]
 )
 def get_aggregated_chart_data(
     req: Request,
     question: int,
-    stack: Optional[int] = Query(None),
-    prov: Optional[List[str]] = Query(None),
-    q: Optional[List[str]] = Query(None),
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
+    stack: Optional[int] = Query(
+        None, description="question id to create stack BAR"),
+    indicator: int = Query(
+        None, description="indicator is a question id"),
+    q: Optional[List[str]] = Query(
+        None, description="format: question_id|option value \
+            (indicator option & advance filter)"),
+    number: Optional[List[int]] = Query(
+        None, description="format: [int, int]"),
+    prov: Optional[List[str]] = Query(
+        None, description="format: province name \
+            (filter by province name)"),
+    sctype: Optional[List[str]] = Query(
+        None, description="format: school_type name \
+            (filter by shcool type)")
 ):
+    # check indicator query
+    answer_data_ids, answer_temp = check_indicator_query(
+        session=session, indicator=indicator, number=number)
+    # for advance filter and indicator option filter
     options = check_query(q) if q else None
     if question == stack:
         raise HTTPException(status_code=406, detail="Not Acceptable")
-    value = get_generic_chart_data(
+    data = get_all_data(
         session=session,
-        question=question,
-        stack=stack,
+        current=True,
+        options=options,
+        data_ids=answer_data_ids,
         prov=prov,
-        options=options)
-    return value
+        sctype=sctype
+    )
+    data = [d.id for d in data]
+    # chart query
+    type = "BAR"
+    if stack:
+        type = "BARSTACK"
+        answerStack = aliased(Answer)
+        answer = session.query(
+            Answer.options, answerStack.options, func.count())
+        # filter
+        answer = answer.filter(Answer.data.in_(data))
+        answer = answer.join((answerStack, Answer.data == answerStack.data))
+        answer = answer.filter(
+            and_(Answer.question == question, answerStack.question == stack))
+        answer = answer.group_by(Answer.options, answerStack.options)
+        answer = answer.all()
+        answer = [{
+            "axis": a[0][0].lower(),
+            "stack": a[1][0].lower(),
+            "value": a[2]
+        } for a in answer]
+        temp = []
+        answer.sort(key=lambda x: x["axis"])
+        for k, v in groupby(answer, key=lambda x: x["axis"]):
+            child = [{x["stack"]: x["value"]} for x in list(v)]
+            counter = collections.Counter()
+            for d in child:
+                counter.update(d)
+            child = [{
+                "name": key,
+                "value": val
+            } for key, val in dict(counter).items()]
+            temp.append({"group": k, "child": child})
+        answer = temp
+    else:
+        answer = session.query(Answer.options, func.count(Answer.id))
+        # filter
+        answer = answer.filter(Answer.data.in_(data))
+        answer = answer.filter(Answer.question == question)
+        answer = answer.group_by(Answer.options)
+        answer = answer.all()
+        answer = [{a[0][0].lower(): a[1]} for a in answer]
+        counter = collections.Counter()
+        for d in answer:
+            counter.update(d)
+        answer = [{"name": k, "value": v} for k, v in dict(counter).items()]
+    return {"type": type, "data": answer}
 
 
 @charts_route.get(
