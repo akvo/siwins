@@ -1,8 +1,62 @@
 import json
+from collections import defaultdict
+from itertools import groupby
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from AkvoResponseGrouper.views import get_categories
 from db.crud_data import get_all_data
+
+
+def group_children(p, data_source, labels, year_conducted):
+    # filter by administration and year
+    year = year_conducted.get("year")
+    data = list(filter(
+        lambda d: (
+            d["administration"] in p["children"] and d["year"] == year
+        ),
+        data_source
+    ))
+    current = year_conducted.get('current') or False
+    data = [{
+        "category": d["category"] if "category" in d else None,
+        "data": d["data"],
+    } for d in data]
+    # counter
+    total = len(data)
+    childs = []
+    groups = groupby(data, key=lambda d: d["category"])
+    counter = defaultdict()
+    for k, values in groups:
+        for v in list(values):
+            if v["category"] in list(counter):
+                counter[v["category"]] += 1
+            else:
+                counter[v["category"]] = 1
+    # if no labels defined in category.json
+    if not labels:
+        labels = list(set([x['category'] for x in data]))
+        labels.sort()
+        labels = [{'name': x, 'color': None} for x in labels]
+    # end of labels
+    for lb in labels:
+        label = lb["name"]
+        count = counter[label] if label in counter else 0
+        percent = round(count / total * 100, 2) if count > 0 else 0
+        childs.append(
+            {
+                "option": label,
+                "count": count,
+                "percent": percent,
+                "color": lb["color"],
+            }
+        )
+    return {
+        "year": year,
+        "history": not current,
+        "administration": p["name"],
+        "score": 0,
+        "child": childs
+    }
 
 
 def get_jmp_table_view(session: Session, data: list, configs: list):
@@ -47,7 +101,7 @@ def get_jmp_overview(
 ):
     data = get_all_data(
         session=session,
-        current=True,
+        # current=True,
         options=options,
         data_ids=data_ids,
         prov=prov,
@@ -55,7 +109,8 @@ def get_jmp_overview(
     data = [{
         "data": d.id,
         "administration": d.school_information[0],
-        "geo": d.geo
+        "year": d.year_conducted,
+        "current": d.current,
     } for d in data]
     try:
         gc = get_categories(session=session, name=name)
