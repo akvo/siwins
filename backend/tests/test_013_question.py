@@ -3,6 +3,7 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
+from models.question import QuestionAttributes
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
@@ -40,7 +41,7 @@ class TestQuestionRoutes:
         # filter by question attribute
         res = await client.get(
             app.url_path_for("question:get_all_question"),
-            params={"attribute": "indicator"}
+            params={"attribute": QuestionAttributes.indicator.value}
         )
         assert res.status_code == 200
         res = res.json()
@@ -53,7 +54,7 @@ class TestQuestionRoutes:
             'name': name,
             "display_name": display_name,
             "type": "option",
-            'attributes': ['indicator', 'advance_filter'],
+            'attributes': ['indicator', 'advance_filter', 'generic_bar_chart'],
             'option': [{
                 "name": "Yes",
                 "order": 1,
@@ -81,7 +82,7 @@ class TestQuestionRoutes:
             'name': name,
             "display_name": display_name,
             "type": "option",
-            'attributes': ['indicator', 'advance_filter'],
+            'attributes': ['indicator', 'advance_filter', 'generic_bar_chart'],
             'option': [{
                 'name': 'Yes (always available)',
                 'order': 1,

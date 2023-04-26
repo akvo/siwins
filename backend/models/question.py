@@ -21,6 +21,7 @@ class AnswerNumberCount(TypedDict):
 class QuestionAttributes(enum.Enum):
     indicator = "indicator"
     advance_filter = "advance_filter"
+    generic_bar_chart = "generic_bar_chart"
 
 
 class QuestionType(enum.Enum):
