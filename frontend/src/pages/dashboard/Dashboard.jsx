@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, Card } from "antd";
+import React, { useEffect, useState, useMemo } from "react";
+import { Row, Col, Card, Switch, Space } from "antd";
 import { api } from "../../lib";
 import { UIState } from "../../state/ui";
 import { Chart } from "../../components";
@@ -8,9 +8,10 @@ const chartConfig = window.dashboardjson?.tabs;
 
 const Dashboard = () => {
   const { provinceValues } = UIState.useState((s) => s);
-  const [chartData, setChartData] = useState([]);
   const [chartList, setChartList] = useState([]);
+  const [data, setData] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
+  const [isStack, setIsStack] = useState(false);
 
   useEffect(() => {
     const chartList = chartConfig
@@ -24,47 +25,59 @@ const Dashboard = () => {
       const url = `chart/jmp-data/${chart?.path}`;
       return api.get(url);
     });
-    Promise.all(apiCall)
-      .then((res) => {
-        const allData = res?.map((r) => {
-          const chartSetting = chartList?.find(
-            (c) => c.path === r?.data?.question
-          );
-          const data = provinceValues.map((adm) => {
-            const findData = r?.data?.data?.find(
-              (d) => d.administration === adm.name
-            );
-            const stack = findData?.child?.map((c, cx) => {
-              return {
-                id: cx,
-                name: c.option,
-                color: c.color,
-                order: cx + 1,
-                score: 0,
-                code: null,
-                translations: null,
-                value: c.percent,
-              };
-            });
-            return {
-              ...adm,
-              score: findData?.score,
-              stack: stack,
-            };
-          });
+    Promise.all(apiCall).then((res) => {
+      setData(res);
+      setPageLoading(false);
+    });
+  }, [provinceValues]);
+
+  const chartData = useMemo(() => {
+    const allData = data?.map((r) => {
+      const chartSetting = chartList?.find((c) => c.path === r?.data?.question);
+      const data = provinceValues.map((adm) => {
+        const findData = r?.data?.data?.find(
+          (d) => d.administration === adm.name
+        );
+        const stack = findData?.child?.map((c, cx) => {
           return {
-            name: r?.data?.question,
-            type: chartSetting?.type,
-            data: data,
+            id: cx,
+            name: c.option,
+            color: c.color,
+            order: cx + 1,
+            score: 0,
+            code: null,
+            translations: null,
+            value: c.percent,
           };
         });
-        return allData;
-      })
-      .then((res) => {
-        setChartData(res);
-        setPageLoading(false);
+        return {
+          ...adm,
+          score: findData?.score,
+          stack: stack,
+        };
       });
-  }, [provinceValues]);
+      return {
+        name: r?.data?.question,
+        type: chartSetting?.type,
+        data: data,
+      };
+    });
+
+    // const transform = data
+    //   .map((d) => {
+    //     const obj = get(d, "data.data");
+    //     return obj.map((f) => ({
+    //       name: d?.data.question,
+    //       value: f.child.map((d) => ({
+    //         name: d.option,
+    //         count: d.percent,
+    //       })),
+    //     }));
+    //   })
+    //   .filter((x) => x)
+    //   .flatMap((x) => x);
+    return allData;
+  }, [data, chartList, provinceValues]);
 
   return (
     <div id="dashboard">
@@ -81,17 +94,38 @@ const Dashboard = () => {
       {!pageLoading &&
         chartList &&
         chartList?.map((item, index) => (
-          <Row key={index}>
+          <Row
+            key={index}
+            className="chart-header"
+            justify="space-between"
+            align="middle"
+            gutter={[10, 10]}
+          >
             {item?.map((col) => (
               <Col key={col?.title} span={col.span}>
                 <Card>
+                  <Row justify="space-between" align="middle">
+                    <h3>{col?.title}</h3>
+                    <Space align="center">
+                      <span>Show By County</span>
+                      <Switch
+                        size="small"
+                        checked={isStack}
+                        onChange={setIsStack}
+                      />
+                    </Space>
+                  </Row>
                   <Chart
-                    height={50 * chartData.length + 188}
+                    height={
+                      50 *
+                        chartData.find((f) => f.name === col.path)?.data
+                          .length +
+                      188
+                    }
                     type="BARSTACK"
                     data={chartData.find((f) => f.name === col.path)?.data}
                     wrapper={false}
                     horizontal={true}
-                    series={{ left: "10%" }}
                     loading={pageLoading}
                   />
                 </Card>

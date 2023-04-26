@@ -49,18 +49,18 @@ const BarStack = (
   horizontal = false,
   highlighted = null
 ) => {
+  // console.log(data);
   if (isEmpty(data) || !data) {
     return NoData;
   }
   // Custom Axis Title
   const { xAxisTitle, yAxisTitle } = axisTitle(extra);
 
-  const stacked = uniqBy(flatten(data.map((d) => d.stack)), "title") || [];
-
+  const stacked = uniqBy(flatten(data.map((d) => d.stack)), "name") || [];
   const xAxis = uniq(data.map((x) => x.title || x.name));
   const series = stacked.map((s, si) => {
     const temp = data.map((d) => {
-      const vals = d.stack?.filter((c) => c.title === s.title);
+      const vals = d.stack?.filter((c) => c.name === s.name);
       const stackSum = sumBy(d.stack, "value");
       const resValue =
         vals?.length && stackSum !== 0
