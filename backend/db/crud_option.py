@@ -1,11 +1,14 @@
 from typing import List
 from sqlalchemy.orm import Session
 from models.option import Option, OptionDict
+from source.main_config import QuestionConfig
 # from models.question import Question
 
 
-def get_option(session: Session) -> List[OptionDict]:
-    return session.query(Option).all()
+year_conducted_qid = QuestionConfig.year_conducted.value
+
+# def get_option(session: Session) -> List[OptionDict]:
+#     return session.query(Option).all()
 
 
 def get_option_by_question_id(
@@ -13,6 +16,11 @@ def get_option_by_question_id(
     question=int,
 ) -> List[OptionDict]:
     return session.query(Option).filter(Option.question == question).all()
+
+
+def get_option_year_conducted(session: Session) -> List[OptionDict]:
+    return session.query(Option).filter(
+        Option.question == year_conducted_qid).all()
 
 
 # def add_option(
