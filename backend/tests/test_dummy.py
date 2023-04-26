@@ -89,7 +89,7 @@ res_data = [
 
 res_sync_answers = [
     {"question": 592240932, "value": "River"},
-    {"question": 649140920, "value": "No"},
+    {"question": 649140920, "value": "Yes"},
     {"question": 634450930, "value": "No"},
     {"question": 638730950, "value": "No"},
     {"question": 634450928, "value": "No"},
