@@ -619,7 +619,7 @@
           "order": "2",
           "text": "In the previous two weeks, was drinking water from the main source available at the school throughout each school day?",
           "type": "option",
-          "attributes": ["indicator", "advance_filter"],
+          "attributes": ["indicator", "advance_filter", "generic_bar_chart"],
           "displayName": "Water availability at primary source in previous two weeks"
         },
         {
@@ -665,7 +665,7 @@
           "order": "4",
           "text": "Is drinking water from the main source typically available throughout the school year?",
           "type": "option",
-          "attributes": ["indicator", "advance_filter"],
+          "attributes": ["indicator", "advance_filter", "generic_bar_chart"],
           "displayName": "Water availability at primary source throughout school year"
         }
       ],
@@ -973,7 +973,7 @@
           "order": "8",
           "text": "If treated, what sort of treatment is conducted?",
           "type": "option",
-          "attributes": ["indicator"],
+          "attributes": ["indicator", "generic_bar_chart"],
           "displayName": "Type of water treatment at school"
         },
         {

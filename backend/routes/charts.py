@@ -1,9 +1,11 @@
+import collections
 from collections import defaultdict
 from fastapi import APIRouter, Query
-from fastapi import Depends, Request
+from fastapi import Depends, Request, HTTPException
 from itertools import groupby
 from typing import List, Optional
-from sqlalchemy.orm import Session
+from sqlalchemy import and_, func
+from sqlalchemy.orm import Session, aliased
 from db.connection import get_session
 from AkvoResponseGrouper.models import Category, GroupedCategory
 from AkvoResponseGrouper.utils import (
@@ -18,7 +20,9 @@ from db.crud_jmp import (
     get_jmp_labels
 )
 from db.crud_cascade import get_province_of_school_information
+from db.crud_option import get_option_by_question_id
 from middleware import check_query, check_indicator_query
+from models.answer import Answer
 
 
 charts_route = APIRouter()
@@ -85,6 +89,133 @@ def get_bar_charts(
     df = transform_categories_to_df(categories=categories)
     dt = get_counted_category(df=df)
     return group_by_category_output(data=dt)
+
+
+@charts_route.get(
+    "/chart/generic-bar/{question:path}",
+    name="charts:get_generic_chart_data",
+    summary="get generic bar chart aggregate data",
+    tags=["Charts"]
+)
+def get_aggregated_chart_data(
+    req: Request,
+    question: int,
+    session: Session = Depends(get_session),
+    stack: Optional[int] = Query(
+        None, description="question id to create stack BAR"),
+    indicator: int = Query(
+        None, description="indicator is a question id"),
+    q: Optional[List[str]] = Query(
+        None, description="format: question_id|option value \
+            (indicator option & advance filter)"),
+    number: Optional[List[int]] = Query(
+        None, description="format: [int, int]"),
+    prov: Optional[List[str]] = Query(
+        None, description="format: province name \
+            (filter by province name)"),
+    sctype: Optional[List[str]] = Query(
+        None, description="format: school_type name \
+            (filter by shcool type)")
+):
+    # check indicator query
+    answer_data_ids, answer_temp = check_indicator_query(
+        session=session, indicator=indicator, number=number)
+    # for advance filter and indicator option filter
+    options = check_query(q) if q else None
+    if question == stack:
+        raise HTTPException(status_code=406, detail="Not Acceptable")
+    data = get_all_data(
+        session=session,
+        current=True,
+        options=options,
+        data_ids=answer_data_ids,
+        prov=prov,
+        sctype=sctype
+    )
+    data = [d.id for d in data]
+    question_options = get_option_by_question_id(
+        session=session, question=question)
+    # chart query
+    type = "BAR"
+    if stack:
+        stack_options = get_option_by_question_id(
+            session=session, question=stack)
+        type = "BARSTACK"
+        answerStack = aliased(Answer)
+        answer = session.query(
+            Answer.options, answerStack.options, func.count())
+        # filter
+        answer = answer.filter(Answer.data.in_(data))
+        answer = answer.join((answerStack, Answer.data == answerStack.data))
+        answer = answer.filter(
+            and_(Answer.question == question, answerStack.question == stack))
+        answer = answer.group_by(Answer.options, answerStack.options)
+        answer = answer.all()
+        answer = [{
+            "axis": a[0][0].lower(),
+            "stack": a[1][0].lower(),
+            "value": a[2]
+        } for a in answer]
+        temp = []
+        answer.sort(key=lambda x: x["axis"])
+        for k, v in groupby(answer, key=lambda x: x["axis"]):
+            child = [{x["stack"]: x["value"]} for x in list(v)]
+            counter = collections.Counter()
+            for d in child:
+                counter.update(d)
+            child = [{
+                "name": key,
+                "value": val
+            } for key, val in dict(counter).items()]
+            temp.append({"group": k, "child": child})
+        # remap result to options
+        remap = []
+        for qo in question_options:
+            group = qo.name.lower()
+            find_group = next(
+                (x for x in temp if x["group"] == group),
+                None
+            )
+            fg_child = find_group["child"] if find_group else []
+            child = []
+            for so in stack_options:
+                name = so.name.lower()
+                find_child = next(
+                    (x for x in fg_child if x["name"] == name),
+                    None
+                )
+                child.append({
+                    "name": name,
+                    "value": find_child["value"] if find_child else 0
+                })
+            remap.append({"group": group, "child": child})
+        answer = remap
+    else:
+        answer = session.query(Answer.options, func.count(Answer.id))
+        # filter
+        answer = answer.filter(Answer.data.in_(data))
+        answer = answer.filter(Answer.question == question)
+        answer = answer.group_by(Answer.options)
+        answer = answer.all()
+        answer = [{a[0][0].lower(): a[1]} for a in answer]
+        counter = collections.Counter()
+        for d in answer:
+            counter.update(d)
+        temp = [{"name": k, "value": v} for k, v in dict(counter).items()]
+        # remap result to options
+        remap = []
+        for qo in question_options:
+            name = qo.name.lower()
+            find_temp = next(
+                (x for x in temp if x["name"] == name),
+                None
+            )
+            remap.append({
+                "name": name,
+                "value": find_temp["value"] if find_temp else 0
+            })
+        answer = remap
+    return {"type": type, "data": answer}
 
 
 @charts_route.get(

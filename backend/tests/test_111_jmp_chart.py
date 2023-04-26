@@ -9,7 +9,7 @@ pytestmark = pytest.mark.asyncio
 sys.path.append("..")
 
 
-class TestJMPChartEndpoint:
+class TestJMPChartRoutes:
     @pytest.mark.asyncio
     async def test_get_bar_charts_route(
         self, app: FastAPI, session: Session, client: AsyncClient
