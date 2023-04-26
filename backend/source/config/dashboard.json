@@ -32,7 +32,7 @@
       ]
     },
     {
-      "component": "BAR-CHART-GROUP",
+      "component": "GENERIC-CHART-GROUP",
       "selected": true,
       "chartList": [
         [

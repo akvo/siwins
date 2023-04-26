@@ -83,7 +83,6 @@ const Chart = ({
   setValues,
 }) => {
   const [echartsReactRef, setEchartsReactRef] = useState();
-
   if (transform) {
     data = data.map((x) => ({
       ...x,
