@@ -113,7 +113,7 @@ def get_all_data(
     options: Optional[List[str]] = None,
     data_ids: Optional[List[int]] = None,
     prov: Optional[List[str]] = None,
-    sctype: Optional[List[str]] = None
+    sctype: Optional[List[str]] = None,
 ) -> DataDict:
     data = session.query(Data)
     if registration is not None:

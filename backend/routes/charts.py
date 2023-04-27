@@ -89,98 +89,134 @@ def get_aggregated_chart_data(
     options = check_query(q) if q else None
     if question == stack:
         raise HTTPException(status_code=406, detail="Not Acceptable")
-    data = get_all_data(
+    # options values
+    question_options = get_option_by_question_id(
+        session=session, question=question)
+    stack_options = []
+    if stack:
+        stack_options = get_option_by_question_id(
+            session=session, question=stack)
+    # year conducted
+    years = get_year_conducted_from_datapoint(session=session)
+    years = [{
+        "year": y.year_conducted,
+        "current": y.current
+    } for y in years]
+    res = []
+    # fetch data
+    data_source = get_all_data(
         session=session,
-        current=True,
+        # current=current,
         options=options,
         data_ids=answer_data_ids,
         prov=prov,
         sctype=sctype
     )
-    data = [d.id for d in data]
-    question_options = get_option_by_question_id(
-        session=session, question=question)
-    # chart query
-    type = "BAR"
-    if stack:
-        stack_options = get_option_by_question_id(
-            session=session, question=stack)
-        type = "BARSTACK"
-        answerStack = aliased(Answer)
-        answer = session.query(
-            Answer.options, answerStack.options, func.count())
-        # filter
-        answer = answer.filter(Answer.data.in_(data))
-        answer = answer.join((answerStack, Answer.data == answerStack.data))
-        answer = answer.filter(
-            and_(Answer.question == question, answerStack.question == stack))
-        answer = answer.group_by(Answer.options, answerStack.options)
-        answer = answer.all()
-        answer = [{
-            "axis": a[0][0].lower(),
-            "stack": a[1][0].lower(),
-            "value": a[2]
-        } for a in answer]
-        temp = []
-        answer.sort(key=lambda x: x["axis"])
-        for k, v in groupby(answer, key=lambda x: x["axis"]):
-            child = [{x["stack"]: x["value"]} for x in list(v)]
-            counter = collections.Counter()
-            for d in child:
-                counter.update(d)
-            child = [{
-                "name": key,
-                "value": val
-            } for key, val in dict(counter).items()]
-            temp.append({"group": k, "child": child})
-        # remap result to options
-        remap = []
-        for qo in question_options:
-            group = qo.name.lower()
-            find_group = next(
-                (x for x in temp if x["group"] == group),
-                None
+    data_source = [{
+        "id": d.id,
+        "current": d.current,
+        "year": d.year_conducted
+    } for d in data_source]
+    # iterate over years conducted
+    for y in years:
+        year = y.get("year")
+        current = y.get("current")
+        data = list(filter(
+            lambda c: (c["year"] == year and c["current"] == current),
+            data_source
+        ))
+        data = [d["id"] for d in data]
+        # chart query
+        type = "BAR"
+        if stack:
+
+            type = "BARSTACK"
+            answerStack = aliased(Answer)
+            answer = session.query(
+                Answer.options, answerStack.options, func.count())
+            # filter
+            answer = answer.filter(Answer.data.in_(data))
+            answer = answer.join(
+                (answerStack, Answer.data == answerStack.data)
             )
-            fg_child = find_group["child"] if find_group else []
-            child = []
-            for so in stack_options:
-                name = so.name.lower()
-                find_child = next(
-                    (x for x in fg_child if x["name"] == name),
+            answer = answer.filter(and_(
+                Answer.question == question, answerStack.question == stack
+            ))
+            answer = answer.group_by(Answer.options, answerStack.options)
+            answer = answer.all()
+            answer = [{
+                "axis": a[0][0].lower(),
+                "stack": a[1][0].lower(),
+                "value": a[2]
+            } for a in answer]
+            temp = []
+            answer.sort(key=lambda x: x["axis"])
+            for k, v in groupby(answer, key=lambda x: x["axis"]):
+                child = [{x["stack"]: x["value"]} for x in list(v)]
+                counter = collections.Counter()
+                for d in child:
+                    counter.update(d)
+                child = [{
+                    "name": key,
+                    "value": val
+                } for key, val in dict(counter).items()]
+                temp.append({"group": k, "child": child})
+            # remap result to options
+            remap = []
+            for qo in question_options:
+                group = qo.name.lower()
+                find_group = next(
+                    (x for x in temp if x["group"] == group),
                     None
                 )
-                child.append({
-                    "name": name,
-                    "value": find_child["value"] if find_child else 0
+                fg_child = find_group["child"] if find_group else []
+                child = []
+                for so in stack_options:
+                    name = so.name.lower()
+                    find_child = next(
+                        (x for x in fg_child if x["name"] == name),
+                        None
+                    )
+                    child.append({
+                        "name": name,
+                        "value": find_child["value"] if find_child else 0
+                    })
+                remap.append({
+                    "year": year,
+                    "history": not current,
+                    "group": group,
+                    "child": child,
                 })
-            remap.append({"group": group, "child": child})
-        answer = remap
-    else:
-        answer = session.query(Answer.options, func.count(Answer.id))
-        # filter
-        answer = answer.filter(Answer.data.in_(data))
-        answer = answer.filter(Answer.question == question)
-        answer = answer.group_by(Answer.options)
-        answer = answer.all()
-        answer = [{a[0][0].lower(): a[1]} for a in answer]
-        counter = collections.Counter()
-        for d in answer:
-            counter.update(d)
-        temp = [{"name": k, "value": v} for k, v in dict(counter).items()]
-        # remap result to options
-        remap = []
-        for qo in question_options:
-            name = qo.name.lower()
-            find_temp = next(
-                (x for x in temp if x["name"] == name),
-                None
-            )
-            remap.append({
-                "name": name,
-                "value": find_temp["value"] if find_temp else 0
-            })
-        answer = remap
-    return {"type": type, "data": answer}
+            answer = remap
+        else:
+            answer = session.query(Answer.options, func.count(Answer.id))
+            # filter
+            answer = answer.filter(Answer.data.in_(data))
+            answer = answer.filter(Answer.question == question)
+            answer = answer.group_by(Answer.options)
+            answer = answer.all()
+            answer = [{a[0][0].lower(): a[1]} for a in answer]
+            counter = collections.Counter()
+            for d in answer:
+                counter.update(d)
+            temp = [{"name": k, "value": v} for k, v in dict(counter).items()]
+            # remap result to options
+            remap = []
+            for qo in question_options:
+                name = qo.name.lower()
+                find_temp = next(
+                    (x for x in temp if x["name"] == name),
+                    None
+                )
+                remap.append({
+                    "year": year,
+                    "history": not current,
+                    "name": name,
+                    "value": find_temp["value"] if find_temp else 0
+                })
+            answer = remap
+        res += answer
+    return {"type": type, "data": res}
 
 
 @charts_route.get(
@@ -219,7 +255,6 @@ def get_aggregated_jmp_chart_data(
     for p in parent_administration:
         p['children'] = [p['name']]
     # year conducted
-    # years = get_option_year_conducted(session=session)
     years = get_year_conducted_from_datapoint(session=session)
     years = [{
         "year": y.year_conducted,
