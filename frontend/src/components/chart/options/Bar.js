@@ -127,12 +127,12 @@ const Bar = (
       {
         data: data.map((v, vi) => ({
           name: v.name,
-          value: v.value,
+          value: v.percentage ? v.percentage?.toFixed(2) : v.value,
           count: v.count,
           itemStyle: { color: v.color || Color.color[vi] },
         })),
         type: "bar",
-        barMaxWidth: 20,
+        barMaxWidth: 50,
         label: {
           colorBy: "data",
           position: horizontal ? "insideLeft" : "top",
@@ -141,6 +141,9 @@ const Bar = (
           backgroundColor: "rgba(0,0,0,.3)",
           ...TextStyle,
           color: "#fff",
+          formatter: (s) => {
+            return `${s.value} %`;
+          },
         },
       },
     ],

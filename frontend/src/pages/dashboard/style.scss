@@ -228,6 +228,16 @@
               }
             }
           }
+          .row-wrapper {
+            margin-bottom: 20px;
+            .ant-card-body {
+              padding: 0;
+              .chart-header {
+                border-bottom: 1px solid #f0f0f0;
+                padding: 8px 12px;
+              }
+            }
+          }
         }
       }
     }
