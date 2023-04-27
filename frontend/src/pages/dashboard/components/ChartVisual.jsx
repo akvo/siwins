@@ -131,17 +131,6 @@ const ChartVisual = ({ chartConfig, loading }) => {
             wrapper={false}
             horizontal={true}
             loading={loading}
-            legend={{
-              top: "middle",
-              left: "65%",
-              right: "right",
-              orient: "vertical",
-              itemGap: 12,
-              textStyle: {
-                fontWeight: "normal",
-                fontSize: 12,
-              },
-            }}
             grid={{
               top: 70,
               left: 120,

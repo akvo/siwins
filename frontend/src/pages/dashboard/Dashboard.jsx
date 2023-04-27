@@ -28,7 +28,7 @@ const Dashboard = () => {
       setData(res);
       setPageLoading(false);
     });
-  }, [provinceValues]);
+  }, []);
 
   const renderColumn = (cfg, index) => {
     return (
