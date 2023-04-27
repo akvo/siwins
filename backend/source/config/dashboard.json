@@ -35,15 +35,13 @@
       "component": "GENERIC-CHART-GROUP",
       "selected": true,
       "chartList": [
-        [
-          {
-            "type": "chart",
-            "title": "Generic Bar",
-            "calc": "jmp",
-            "path": "Generic Bar",
-            "span": 24
-          }
-        ]
+        {
+          "type": "chart",
+          "title": "Generic Bar",
+          "calc": "jmp",
+          "path": "Generic Bar",
+          "span": 24
+        }
       ]
     }
   ]

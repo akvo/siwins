@@ -6,6 +6,7 @@ const defaultUIState = {
   schoolTypeValues: [],
   indicatorQuestions: [],
   advanceFilterQuestions: [],
+  barChartQuestions: [],
   mapData: [],
 };
 
