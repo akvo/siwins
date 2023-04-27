@@ -9,70 +9,159 @@ pytestmark = pytest.mark.asyncio
 sys.path.append("..")
 
 
+res_bar = {
+    'type': 'BAR',
+    'data': [
+        {
+            'year': 2023,
+            'history': False,
+            'name': 'yes',
+            'value': 0
+        },
+        {
+            'year': 2023,
+            'history': False,
+            'name': 'no',
+            'value': 1
+        },
+        {
+            'year': 2023,
+            'history': False,
+            'name': "don't know/can't say",
+            'value': 0
+        },
+        {
+            'year': 2018,
+            'history': True,
+            'name': 'yes',
+            'value': 0
+        },
+        {
+            'year': 2018,
+            'history': True,
+            'name': 'no',
+            'value': 1
+        },
+        {
+            'year': 2018,
+            'history': True,
+            'name': "don't know/can't say",
+            'value': 0
+        }
+    ]
+}
+
+
+res_bar_filtered = {
+    'type': 'BAR',
+    'data': [
+        {
+            'year': 2023,
+            'history': False,
+            'name': 'yes',
+            'value': 0
+        },
+        {
+            'year': 2023,
+            'history': False,
+            'name': 'no',
+            'value': 0
+        },
+        {
+            'year': 2023,
+            'history': False,
+            'name': "don't know/can't say",
+            'value': 0
+        },
+        {
+            'year': 2018,
+            'history': True,
+            'name': 'yes',
+            'value': 0
+        },
+        {
+            'year': 2018,
+            'history': True,
+            'name': 'no',
+            'value': 0
+        },
+        {
+            'year': 2018,
+            'history': True,
+            'name': "don't know/can't say",
+            'value': 0
+        }
+    ]
+}
+
+
 res_bar_stack = {
     "type": "BARSTACK",
     "data": [
         {
+            "year": 2023,
+            "history": False,
             "group": "yes",
             "child": [
-                {
-                    "name": "yes (always available)",
-                    "value": 0
-                },
-                {
-                    "name": "mostly (unavailable ≤ 30 days total)",
-                    "value": 0
-                },
-                {
-                    "name": "no (unavailable > 30 days total)",
-                    "value": 0
-                },
-                {
-                    "name": "don't know/can't say",
-                    "value": 0
-                },
+                {"name": "yes (always available)", "value": 0},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
             ],
         },
         {
+            "year": 2023,
+            "history": False,
             "group": "no",
             "child": [
-                {
-                    "name": "yes (always available)",
-                    "value": 0
-                },
-                {
-                    "name": "mostly (unavailable ≤ 30 days total)",
-                    "value": 1
-                },
-                {
-                    "name": "no (unavailable > 30 days total)",
-                    "value": 0
-                },
-                {
-                    "name": "don't know/can't say",
-                    "value": 0
-                },
+                {"name": "yes (always available)", "value": 0},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 1},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
             ],
         },
         {
+            "year": 2023,
+            "history": False,
             "group": "don't know/can't say",
             "child": [
-                {
-                    "name": "yes (always available)",
-                    "value": 0
-                },
-                {
-                    "name": "mostly (unavailable ≤ 30 days total)",
-                    "value": 0
-                },
-                {
-                    "name": "no (unavailable > 30 days total)",
-                    "value": 0
-                },
-                {
-                    "name": "don't know/can't say",
-                    "value": 0
-                },
+                {"name": "yes (always available)", "value": 0},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
+            ],
+        },
+        {
+            "year": 2018,
+            "history": True,
+            "group": "yes",
+            "child": [
+                {"name": "yes (always available)", "value": 0},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
+            ],
+        },
+        {
+            "year": 2018,
+            "history": True,
+            "group": "no",
+            "child": [
+                {"name": "yes (always available)", "value": 1},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
+            ],
+        },
+        {
+            "year": 2018,
+            "history": True,
+            "group": "don't know/can't say",
+            "child": [
+                {"name": "yes (always available)", "value": 0},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
             ],
         },
     ],
@@ -131,14 +220,7 @@ class TestGenericBarChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == {
-            "type": "BAR",
-            "data": [
-                {"name": "yes", "value": 0},
-                {"name": "no", "value": 1},
-                {"name": "don't know/can't say", "value": 0},
-            ],
-        }
+        assert res == res_bar
         # with stack = question
         res = await client.get(
             app.url_path_for(
@@ -178,14 +260,7 @@ class TestGenericBarChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == {
-            "type": "BAR",
-            "data": [
-                {"name": "yes", "value": 0},
-                {"name": "no", "value": 0},
-                {"name": "don't know/can't say", "value": 0},
-            ],
-        }
+        assert res == res_bar_filtered
         # number indicator with number filter
         res = await client.get(
             app.url_path_for(
@@ -200,14 +275,7 @@ class TestGenericBarChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == {
-            "type": "BAR",
-            "data": [
-                {"name": "yes", "value": 0},
-                {"name": "no", "value": 1},
-                {"name": "don't know/can't say", "value": 0},
-            ],
-        }
+        assert res == res_bar
         # filter by school type and province
         res = await client.get(
             app.url_path_for(
@@ -219,14 +287,7 @@ class TestGenericBarChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == {
-            "type": "BAR",
-            "data": [
-                {"name": "yes", "value": 0},
-                {"name": "no", "value": 1},
-                {"name": "don't know/can't say", "value": 0},
-            ],
-        }
+        assert res == res_bar
         # with stack != question and filter
         res = await client.get(
             app.url_path_for(
