@@ -4,11 +4,14 @@ import { api } from "../../lib";
 import { UIState } from "../../state/ui";
 import ChartVisual from "./components/ChartVisual";
 import { Chart } from "../../components";
+import AdvanceFilter from "../../components/filter";
+import { generateAdvanceFilterURL } from "../../util/utils";
 
 const chartConfig = window.dashboardjson?.tabs;
 
 const Dashboard = () => {
-  const { provinceValues, barChartQuestions } = UIState.useState((s) => s);
+  const { provinceValues, barChartQuestions, advanceSearchValue } =
+    UIState.useState((s) => s);
   const [chartList, setChartList] = useState([]);
   const [barChartList, setBarChartList] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
@@ -28,14 +31,15 @@ const Dashboard = () => {
     );
     setPageLoading(true);
     const apiCall = chartList?.map((chart) => {
-      const url = `chart/jmp-data/${chart?.path}`;
+      let url = `chart/jmp-data/${chart?.path}`;
+      url = generateAdvanceFilterURL(advanceSearchValue, url);
       return api.get(url);
     });
     Promise.all(apiCall).then((res) => {
       setData(res);
       setPageLoading(false);
     });
-  }, []);
+  }, [advanceSearchValue]);
 
   const renderColumn = (cfg, index) => {
     return (
@@ -69,6 +73,9 @@ const Dashboard = () => {
   return (
     <div id="dashboard">
       <Row className="main-wrapper" align="center">
+        <Col span={24} style={{ marginBottom: 20 }}>
+          <AdvanceFilter provinceValues={false} schoolTypeValues={false} />
+        </Col>
         <Col span={24} align="center">
           {!pageLoading && chartList ? (
             chartList?.map((row, index) => {

@@ -69,14 +69,16 @@ function AdvanceFilter({
             style={{ display: "flex" }}
           >
             {children}
-            <ProvinceFilter
-              provinceValues={provinceValues}
-              schoolTypeValues={schoolTypeValues}
-              handleSchoolTypeFilter={handleSchoolTypeFilter}
-              handleProvinceFilter={handleProvinceFilter}
-              selectedProvince={selectedProvince}
-              selectedSchoolType={selectedSchoolType}
-            />
+            {provinceValues && (
+              <ProvinceFilter
+                provinceValues={provinceValues}
+                schoolTypeValues={schoolTypeValues}
+                handleSchoolTypeFilter={handleSchoolTypeFilter}
+                handleProvinceFilter={handleProvinceFilter}
+                selectedProvince={selectedProvince}
+                selectedSchoolType={selectedSchoolType}
+              />
+            )}
             <Button
               onClick={() => {
                 setShowAdvanceFilter(!showAdvanceFilter);
