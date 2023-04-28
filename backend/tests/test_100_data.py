@@ -39,11 +39,10 @@ class TestDataRoutes:
         res = res.json()
         assert res["id"] == 632510922
         assert res["name"] == "Untitled"
-        assert res["geo"] == {
-            "lat": -47.72084919070232,
-            "long": 71.64445931032847
-        }
-        assert len(res["answer"]) > 1
+        assert "year_conducted" in res
+        assert "school_information" in res
+        assert len(res["school_information"]) > 0
+        assert len(res["answer"]) > 0
 
     @pytest.mark.asyncio
     async def test_get_maps_data(

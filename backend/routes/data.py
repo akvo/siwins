@@ -105,6 +105,7 @@ def get_maps(
     return data
 
 
+# current pop up detail API call
 @data_route.get(
     "/data/chart/{data_id}",
     response_model=ChartDataDetail,
@@ -169,7 +170,7 @@ def get_data_detail_for_chart(
 def get_data_detail_by_data_id(
     req: Request,
     data_id: int,
-    monitoring: Optional[bool] = Query(default=False),
+    # monitoring: Optional[bool] = Query(default=False),
     session: Session = Depends(get_session),
 ):
     # get data
@@ -178,4 +179,9 @@ def get_data_detail_by_data_id(
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND, detail="Data not found"
         )
-    return data.to_detail
+    data = data.to_detail
+    data["answer"] = sorted(
+        data["answer"],
+        key=lambda x: (x["qg_order"], x["q_order"])
+    )
+    return data

@@ -63,7 +63,9 @@ class RegistrationDict(TypedDict):
 class DataDetail(BaseModel):
     id: int
     name: str
-    geo: Optional[GeoData] = None
+    year_conducted: int
+    school_information: List[str]
+    # geo: Optional[GeoData] = None
     answer: List[AnswerDetailDict]
 
 
@@ -187,9 +189,8 @@ class Data(Base):
         return {
             "id": self.id,
             "name": self.name,
-            "geo": {
-                "lat": self.geo[0], "long": self.geo[1]
-            } if self.geo else None,
+            "year_conducted": self.year_conducted,
+            "school_information": self.school_information,
             "answer": [a.to_detail for a in self.answer]
         }
 
