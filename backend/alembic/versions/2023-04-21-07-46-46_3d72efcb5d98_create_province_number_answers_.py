@@ -20,7 +20,8 @@ province_number_answers = PGMaterializedView(
     signature="province_number_answer",
     definition="""
     SELECT
-        a.question, q.type, q.form, d.current,
+        a.question, q.type, q.form,
+        d.current, d.year_conducted,
         ARRAY_AGG(a.data) as data_ids,
         d.school_information[1] as province,
         SUM(a.value) as value,
@@ -29,7 +30,9 @@ province_number_answers = PGMaterializedView(
     LEFT JOIN data d on a.data = d.id
     LEFT JOIN question q ON a.question = q.id
     WHERE q.type =  'number'
-    GROUP BY a.question, q.type, q.form, d.current, province
+    GROUP BY
+        a.question, q.type, q.form,
+        d.current, d.year_conducted, province
     ORDER BY d.current DESC;
     """,
 )
