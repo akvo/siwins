@@ -53,7 +53,8 @@ class AnswerDictWithText(TypedDict):
 
 class AnswerDetailDict(TypedDict):
     qg_order: int
-    question_group: str
+    question_group_id: str
+    question_group_name: str
     question_id: int
     q_order: int
     question_name: str
@@ -164,7 +165,8 @@ class Answer(Base):
         qdetail = self.question_detail
         answer = {
             "qg_order": qdetail.question.order,
-            "question_group": qdetail.question.name,
+            "question_group_id": qdetail.question.id,
+            "question_group_name": qdetail.question.name,
             "question_id": self.question,
             "q_order": qdetail.order,
             "question_name": qdetail.name,

@@ -11,7 +11,7 @@ from sqlalchemy import ForeignKey, DateTime, BigInteger
 import sqlalchemy.dialects.postgresql as pg
 from sqlalchemy.orm import relationship
 from db.connection import Base
-from models.answer import Answer, AnswerDict, AnswerDetailDict
+from models.answer import Answer, AnswerDict
 from models.answer import AnswerBase, MonitoringAnswerDict, AnswerDictWithText
 from models.form import Form
 from models.history import History
@@ -65,8 +65,7 @@ class DataDetail(BaseModel):
     name: str
     year_conducted: int
     school_information: List[str]
-    # geo: Optional[GeoData] = None
-    answer: List[AnswerDetailDict]
+    answer: List[dict]
 
 
 class ChartDataDetail(TypedDict):
