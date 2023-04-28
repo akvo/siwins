@@ -8,6 +8,7 @@ from db.connection import Base
 
 class ProvinceNumberAnswer(Base):
     __tablename__ = "province_number_answer"
+    id = Column(Integer, primary_key=True)
     question = Column(BigInteger)
     type = Column(String)
     form = Column(BigInteger)

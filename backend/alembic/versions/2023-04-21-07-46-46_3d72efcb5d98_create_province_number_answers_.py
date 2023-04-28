@@ -20,20 +20,25 @@ province_number_answers = PGMaterializedView(
     signature="province_number_answer",
     definition="""
     SELECT
-        a.question, q.type, q.form,
-        d.current, d.year_conducted,
-        ARRAY_AGG(a.data) as data_ids,
-        d.school_information[1] as province,
-        SUM(a.value) as value,
-        count(a.data)
-    FROM answer a
-    LEFT JOIN data d on a.data = d.id
-    LEFT JOIN question q ON a.question = q.id
-    WHERE q.type =  'number'
-    GROUP BY
-        a.question, q.type, q.form,
-        d.current, d.year_conducted, province
-    ORDER BY d.current DESC;
+        row_number() over (order by tmp.question) as id,
+        *
+    FROM (
+        SELECT
+            a.question, q.type, q.form,
+            d.current, d.year_conducted,
+            ARRAY_AGG(a.data) as data_ids,
+            d.school_information[1] as province,
+            SUM(a.value) as value,
+            count(a.data)
+        FROM answer a
+        LEFT JOIN data d on a.data = d.id
+        LEFT JOIN question q ON a.question = q.id
+        WHERE q.type =  'number'
+        GROUP BY
+            a.question, q.type, q.form,
+            d.current, d.year_conducted, province
+        ORDER BY d.current DESC
+    ) tmp;
     """,
 )
 
