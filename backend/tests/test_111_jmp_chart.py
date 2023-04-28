@@ -3,7 +3,11 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
-from tests.test_jmp_dummy import res_jmp_no_fiter, res_jmp_filtered
+from tests.test_jmp_dummy import (
+    res_jmp_no_fiter,
+    res_jmp_filtered,
+    res_jmp_filter_by_prov_sc_type
+)
 
 pytestmark = pytest.mark.asyncio
 sys.path.append("..")
@@ -11,7 +15,7 @@ sys.path.append("..")
 
 class TestJMPChartRoutes:
     @pytest.mark.asyncio
-    async def test_get_bar_charts_route(
+    async def test_get_jmp_charts_route(
         self, app: FastAPI, session: Session, client: AsyncClient
     ):
         # no filter
@@ -71,7 +75,7 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_filtered
+        assert res == res_jmp_filter_by_prov_sc_type
         res = await client.get(
             app.url_path_for(
                 "charts:get_aggregated_jmp_chart_data", type="Sanitation"),
@@ -88,7 +92,7 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_filtered
+        assert res == res_jmp_filter_by_prov_sc_type
         res = await client.get(
             app.url_path_for(
                 "charts:get_aggregated_jmp_chart_data", type="Sanitation"),
@@ -119,4 +123,4 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_filtered
+        assert res == res_jmp_filter_by_prov_sc_type

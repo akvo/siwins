@@ -51,7 +51,7 @@ class TestMigrationCategory:
                 "category": "Sanitation",
                 "form": 647170919,
                 "options": [
-                    {"name": "No Service", "count": 1},
+                    {"name": "Limited", "count": 1},
                 ],
             },
             {

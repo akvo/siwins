@@ -113,7 +113,7 @@ def get_all_data(
     options: Optional[List[str]] = None,
     data_ids: Optional[List[int]] = None,
     prov: Optional[List[str]] = None,
-    sctype: Optional[List[str]] = None
+    sctype: Optional[List[str]] = None,
 ) -> DataDict:
     data = session.query(Data)
     if registration is not None:
@@ -231,3 +231,9 @@ def get_data_by_school(
     if (year_conducted):
         data = data.filter(year_conducted == year_conducted)
     return data.first()
+
+
+def get_year_conducted_from_datapoint(session: Session):
+    return session.query(Data.year_conducted, Data.current).distinct(
+        Data.year_conducted).order_by(
+            desc(Data.year_conducted)).all()
