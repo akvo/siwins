@@ -8,6 +8,7 @@ const config = window.dashboardjson?.tabs;
 const ChartVisual = ({ chartConfig, loading }) => {
   const { title, type, data, provinceValues, index, path, span } = chartConfig;
   const [isStack, setIsStack] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
   const chartList = config
     .find((item) => item.component === "JMP-CHARTS")
@@ -20,25 +21,31 @@ const ChartVisual = ({ chartConfig, loading }) => {
           (c) => c.path === r?.data?.question
         );
         const data = provinceValues.map((adm) => {
-          const findData = r?.data?.data?.find(
-            (d) => d.administration === adm.name
+          const findData = r?.data?.data?.filter((d) =>
+            showHistory
+              ? d.administration === adm.name
+              : d.administration === adm.name && !d.history
           );
-          const stack = findData?.child?.map((c, cx) => {
-            return {
-              id: cx,
-              name: c.option,
-              color: c.color,
-              order: cx + 1,
-              score: 0,
-              code: null,
-              translations: null,
-              value: c.percent,
-            };
+
+          const stack = findData.map((item) => {
+            return item?.child?.map((c, cx) => {
+              return {
+                id: cx,
+                name: c.option,
+                color: c.color,
+                order: cx + 1,
+                score: 0,
+                code: null,
+                translations: null,
+                value: c.percent,
+                year: item.year,
+              };
+            });
           });
           return {
             ...adm,
             score: findData?.score,
-            stack: stack,
+            stack: stack.flat(),
           };
         });
         return {
@@ -53,15 +60,20 @@ const ChartVisual = ({ chartConfig, loading }) => {
       const transform = data
         .map((d) => {
           const obj = get(d, "data.data");
-          return obj.map((f) => ({
-            name: d?.data.question,
-            value: f.child.map((d) => ({
-              name: d.option,
-              count: d.count,
-              percent: d.percent,
-              color: d.color,
-            })),
-          }));
+          return (
+            obj
+              // .filter((h) => !showHistory && !h.history)
+              .map((f) => ({
+                name: d?.data.question,
+                year: f.year,
+                value: f.child.map((d) => ({
+                  name: d.option,
+                  count: d.count,
+                  percent: d.percent,
+                  color: d.color,
+                })),
+              }))
+          );
         })
         .filter((x) => x)
         .flatMap((x) => x);
@@ -96,7 +108,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
       });
       return finalArray;
     }
-  }, [data, chartList, isStack, provinceValues]);
+  }, [data, chartList, isStack, provinceValues, showHistory]);
 
   return (
     <Col key={`col-${type}-${index}`} span={span} className="chart-card">
@@ -104,8 +116,18 @@ const ChartVisual = ({ chartConfig, loading }) => {
         <Row className="chart-header" justify="space-between" align="middle">
           <h3>{title}</h3>
           <Space align="center">
-            <span>Show By County</span>
-            <Switch size="small" checked={isStack} onChange={setIsStack} />
+            <div>
+              <span>Show By Country </span>
+              <Switch size="small" checked={isStack} onChange={setIsStack} />
+            </div>
+            <div>
+              <span>History </span>
+              <Switch
+                size="small"
+                checked={showHistory}
+                onChange={setShowHistory}
+              />
+            </div>
           </Space>
         </Row>
 
