@@ -117,7 +117,7 @@ def get_maps(
     return data
 
 
-# current pop up detail API call
+# current chart history detail (delete?)
 @data_route.get(
     "/data/chart/{data_id}",
     response_model=ChartDataDetail,
@@ -282,6 +282,4 @@ def get_data_detail_by_data_id(
             "child": child
         })
     data["answer"] = grouped_answer
-    # TODO: Create new endpoint to fetch answer history
-    # ADD cascades level to config.js
     return data
