@@ -12,7 +12,8 @@ export const generateOptions = (
   highlighted,
   axis,
   grid,
-  dataZoom
+  dataZoom,
+  history
 ) => {
   switch (type) {
     case "BARSTACK":
@@ -36,6 +37,7 @@ export const generateOptions = (
         horizontal,
         grid,
         dataZoom,
+        history,
         axis
       );
   }
@@ -80,6 +82,7 @@ const Chart = ({
   cumulative = false,
   colorConfig = {},
   dataZoom = {},
+  history,
   setValues,
 }) => {
   const [echartsReactRef, setEchartsReactRef] = useState();
@@ -107,7 +110,8 @@ const Chart = ({
     highlighted,
     axis,
     grid,
-    dataZoom
+    dataZoom,
+    history
   );
   const onEvents = {
     click: (e) => {

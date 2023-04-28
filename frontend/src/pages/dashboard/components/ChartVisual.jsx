@@ -60,20 +60,17 @@ const ChartVisual = ({ chartConfig, loading }) => {
       const transform = data
         .map((d) => {
           const obj = get(d, "data.data");
-          return (
-            obj
-              // .filter((h) => !showHistory && !h.history)
-              .map((f) => ({
-                name: d?.data.question,
-                year: f.year,
-                value: f.child.map((d) => ({
-                  name: d.option,
-                  count: d.count,
-                  percent: d.percent,
-                  color: d.color,
-                })),
-              }))
-          );
+          const array = !showHistory ? obj.filter((h) => !h.history) : obj;
+          return array.map((f) => ({
+            name: d?.data.question,
+            year: f.year,
+            value: f.child.map((d) => ({
+              name: d.option,
+              count: d.count,
+              percent: d.percent,
+              color: d.color,
+            })),
+          }));
         })
         .filter((x) => x)
         .flatMap((x) => x);
@@ -83,14 +80,19 @@ const ChartVisual = ({ chartConfig, loading }) => {
         const found = finalArray.find((ar) => ar.name === item.name);
         if (!found) {
           finalArray.push({
-            data: item.value,
+            data: item.value.map((v) => ({ ...v, year: item.year })),
             name: item.name,
+            year: item.year,
           });
         } else {
           found.data = found.data
-            .concat([...item.value])
+            .concat([...item.value.map((v) => ({ ...v, year: item.year }))])
             .reduce((acc, cur, i) => {
-              const item = i > 0 && acc.find(({ name }) => name === cur.name);
+              const item =
+                i > 0 &&
+                acc.find(
+                  ({ name, year }) => name === cur.name && year === cur.year
+                );
               if (item) {
                 item.count += cur.count;
                 item.value += cur.count;
@@ -100,6 +102,8 @@ const ChartVisual = ({ chartConfig, loading }) => {
                   name: cur.name,
                   count: cur.count,
                   value: cur.count,
+                  year: cur.year,
+                  color: cur.color,
                 });
               }
               return acc;
@@ -149,6 +153,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
             }
             type={"BAR"}
             dataZoom={false}
+            history={true}
             data={chartData.find((f) => f.name === path)?.data}
             wrapper={false}
             horizontal={true}

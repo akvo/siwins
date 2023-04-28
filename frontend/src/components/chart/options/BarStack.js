@@ -62,7 +62,7 @@ const BarStack = (
       (el) => `${el.name}${el.year ? el.year : ""}`
     ) || [];
   const xAxis = uniq(data.map((x) => x.title || x.name));
-  const series = stacked.map((s, si) => {
+  const series = stacked.map((s) => {
     const temp = data.map((d) => {
       const vals = d.stack?.filter((c) => c.name === s.name);
       return {
