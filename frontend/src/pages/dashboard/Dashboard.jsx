@@ -77,21 +77,17 @@ const Dashboard = () => {
           <AdvanceFilter provinceValues={false} schoolTypeValues={false} />
         </Col>
         <Col span={24} align="center">
-          {!pageLoading && chartList ? (
-            chartList?.map((row, index) => {
-              return (
-                <Row
-                  key={`row-${index}`}
-                  className="flexible-container row-wrapper"
-                  gutter={[10, 10]}
-                >
-                  {row.map((r, ri) => renderColumn(r, ri))}
-                </Row>
-              );
-            })
-          ) : (
-            <h4>No data</h4>
-          )}
+          {chartList?.map((row, index) => {
+            return (
+              <Row
+                key={`row-${index}`}
+                className="flexible-container row-wrapper"
+                gutter={[10, 10]}
+              >
+                {row.map((r, ri) => renderColumn(r, ri))}
+              </Row>
+            );
+          })}
         </Col>
       </Row>
       <Row className="bar-chart-wrapper" align="center">
