@@ -23,5 +23,8 @@ services:
       - AUTH0_CLIENT=$AUTH0_CLIENT
       - AUTH0_USER=$AUTH0_USER
       - AUTH0_PWD=$AUTH0_PWD
+  frontend:
+    volumes:
+      - ./docs/build/html:/app/public/documentation:delegated
 volumes:
   pg-admin-data:
