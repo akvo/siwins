@@ -330,7 +330,7 @@ const createClusterCustomIcon = (cluster) => {
             })
             .join(
               ""
-            )} <text x="50" y="50" fill="black" font-size="14">${cluster.getChildCount()}</text></svg>`,
+            )} <text x="50%" y="50%" fill="black" text-anchor="middle" dy=".3em" font-size="18px">${cluster.getChildCount()}</text></svg>`,
     className: `custom-marker-cluster`,
     iconSize: L.point(60, 60, true),
   });
