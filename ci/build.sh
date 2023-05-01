@@ -24,8 +24,8 @@ documentation_build () {
 
 		docker run -it --rm -v "$(pwd)/docs:/docs" \
 				akvo/akvo-sphinx:20220525.082728.594558b make html
-		mkdir -p frontend/build/docs/${INSTANCE}
-		cp -r ./docs/build/html ./frontend/documentation
+		mkdir -p frontend/build/docs/
+		cp -r ./docs/build/html ./frontend/build/documentation
 
 }
 
