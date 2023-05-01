@@ -48,15 +48,14 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
     let url = `data/maps`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
     const urlParams = new URLSearchParams(url);
+    const queryUrlPrefix = url.includes("?") ? "&" : "?";
     if (selectedQuestion?.id && !urlParams.get("indicator")) {
-      url = `${url}?indicator=${selectedQuestion?.id}`;
+      url = `${url}${queryUrlPrefix}indicator=${selectedQuestion?.id}`;
     }
     if (selectedProvince && selectedProvince.length > 0) {
-      const queryUrlPrefix = url.includes("?") ? "&" : "?";
       url = `${url}${queryUrlPrefix}prov=${selectedProvince}`;
     }
     if (selectedSchoolType && selectedSchoolType.length > 0) {
-      const queryUrlPrefix = url.includes("?") ? "&" : "?";
       url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
     }
     api
@@ -99,7 +98,9 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   const handleOnChangeQuestionDropdown = (id) => {
     const filterQuestion = indicatorQuestions.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
-    updateGlobalState([], "option");
+    if (!id) {
+      updateGlobalState([], "option");
+    }
   };
 
   const handleOnChangeQuestionOption = (value) => {

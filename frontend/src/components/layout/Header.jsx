@@ -17,7 +17,7 @@ const Header = ({ className = "header" }) => {
       <Col className="right">
         <Space size="large" align="center">
           <div>
-            <Link to="/survey">Maps</Link>
+            <Link to="/dashboard/maps">Maps</Link>
             <Link to="/dashboard">Dashboard</Link>
             <Link to="/documentation">Documentation</Link>
           </div>
