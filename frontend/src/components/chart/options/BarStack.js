@@ -24,12 +24,12 @@ const tableFormatter = (e) => {
   e.map((eI) => {
     table += "<tr>";
     table += '<td style="width: 18px;">' + eI.marker + "</td>";
-    table += '<td><span style="font-weight:600;">';
+    table += '<td><span style="font-weight:500;">';
     table += upperFirst(eI.seriesName);
+    table += `(${eI.data?.year})`;
     table += "</span></td>";
     table += '<td style="width: 80px; text-align: right; font-weight: 500;">';
     table += eI.value + "%";
-    table += eI.data?.original ? ` (${eI.data.original})` : "";
     table += "</td>";
     table += "</tr>";
   });
@@ -49,29 +49,27 @@ const BarStack = (
   horizontal = false,
   highlighted = null
 ) => {
+  // console.log(data);
   if (isEmpty(data) || !data) {
     return NoData;
   }
   // Custom Axis Title
   const { xAxisTitle, yAxisTitle } = axisTitle(extra);
 
-  const stacked = uniqBy(flatten(data.map((d) => d.stack)), "title") || [];
-
+  const stacked =
+    uniqBy(
+      flatten(data.map((d) => d.stack)),
+      (el) => `${el.name}${el.year ? el.year : ""}`
+    ) || [];
   const xAxis = uniq(data.map((x) => x.title || x.name));
-  const series = stacked.map((s, si) => {
+  const series = stacked.map((s) => {
     const temp = data.map((d) => {
-      const vals = d.stack?.filter((c) => c.title === s.title);
-      const stackSum = sumBy(d.stack, "value");
-      const resValue =
-        vals?.length && stackSum !== 0
-          ? +((sumBy(vals, "value") / stackSum) * 100 || 0)
-              ?.toFixed(2)
-              .toString()
-              ?.match(/^-?\d+(?:\.\d{0,1})?/)[0] || 0
-          : 0;
+      const vals = d.stack?.filter((c) => c.name === s.name);
       return {
-        name: s.title || s.name,
-        value: resValue,
+        name: d.name,
+        value: d.stack?.find((c) => c.name === s.name && c.year === s.year)
+          ?.value,
+        year: s.year ? s.year : "",
         itemStyle: {
           color: vals[0]?.color || s.color,
           opacity: highlighted ? (d.name === highlighted ? 1 : 0.4) : 1,
@@ -83,27 +81,14 @@ const BarStack = (
     return {
       name: s.title || s.name,
       type: "bar",
-      stack: "count",
+      stack: s.year ? s.year : "count",
       label: {
-        colorBy: "data",
-        position:
-          si % 2 === 0
-            ? horizontal
-              ? "insideRight"
-              : "left"
-            : horizontal
-            ? "insideRight"
-            : "right",
-        show: false,
-        padding: 5,
-        formatter: (e) => e?.data?.value + "%" || "-",
-        backgroundColor: "rgba(0,0,0,.3)",
-        ...TextStyle,
-        color: "#fff",
-      },
-      barWidth: 32,
-      emphasis: {
-        focus: "series",
+        show: true,
+        position: "insideLeft",
+        formatter: function (item) {
+          const year = item.data.year;
+          return year;
+        },
       },
       color: s.color,
       data: temp,

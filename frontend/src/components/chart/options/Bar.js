@@ -13,7 +13,7 @@ import {
   NoData,
   downloadToExcel,
 } from "./common";
-import { sortBy, isEmpty, sumBy } from "lodash";
+import { sortBy, isEmpty, sumBy, uniqBy, flatten } from "lodash";
 
 const Bar = (
   data,
@@ -23,18 +23,47 @@ const Bar = (
   legend = {},
   horizontal = false,
   grid = {},
-  dataZoom
+  dataZoom,
+  history
 ) => {
   if (isEmpty(data) || !data) {
     return NoData;
   }
-
   // Custom Axis Title
   const { xAxisTitle, yAxisTitle } = axisTitle(extra);
   const total = sumBy(data, "value");
   data = sortBy(data, "order");
   data = data.map((x) => ({ ...x, percentage: (x.value / total) * 100 }));
-  const labels = data.map((x) => x.name);
+  let result = [];
+  let labels = data.map((x) => x.name);
+  if (history) {
+    result = [
+      ...data
+        .reduce((c, { year, name, value, color }) => {
+          if (!c.has(year)) {
+            c.set(year, { year, name: year, type: "bar", data: [] });
+          }
+          c.get(year).data.push({
+            name: name,
+            value: value,
+            itemStyle: {
+              color: color,
+            },
+            label: {
+              show: true,
+              position: "insideLeft",
+              formatter: function () {
+                return year;
+              },
+            },
+          });
+          return c;
+        }, new Map())
+        .values(),
+    ];
+    labels = uniqBy(flatten(data), "name").map((x) => x.name);
+  }
+
   const option = {
     ...Color,
     title: {
@@ -123,27 +152,32 @@ const Bar = (
       },
     },
     dataZoom: dataZoom,
-    series: [
-      {
-        data: data.map((v, vi) => ({
-          name: v.name,
-          value: v.value,
-          count: v.count,
-          itemStyle: { color: v.color || Color.color[vi] },
-        })),
-        type: "bar",
-        barMaxWidth: 20,
-        label: {
-          colorBy: "data",
-          position: horizontal ? "insideLeft" : "top",
-          show: true,
-          padding: 5,
-          backgroundColor: "rgba(0,0,0,.3)",
-          ...TextStyle,
-          color: "#fff",
-        },
-      },
-    ],
+    series: history
+      ? result
+      : [
+          {
+            data: data.map((v, vi) => ({
+              name: v.name,
+              value: v.percentage ? v.percentage?.toFixed(2) : v.value,
+              count: v.count,
+              itemStyle: { color: v.color || Color.color[vi] },
+            })),
+            type: "bar",
+            barMaxWidth: 50,
+            label: {
+              colorBy: "data",
+              position: horizontal ? "insideLeft" : "top",
+              show: true,
+              padding: 5,
+              backgroundColor: "rgba(0,0,0,.3)",
+              ...TextStyle,
+              color: "#fff",
+              formatter: (s) => {
+                return `${s.value} %`;
+              },
+            },
+          },
+        ],
     ...Color,
     ...backgroundColor,
     ...Easing,

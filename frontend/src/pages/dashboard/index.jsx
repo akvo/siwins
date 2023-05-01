@@ -31,18 +31,21 @@ const DashboardView = () => {
     Promise.all([
       api.get("/question?attribute=indicator"),
       api.get("/question?attribute=advance_filter"),
+      api.get("/question?attribute=generic_bar_chart"),
       api.get("/cascade/school_information?level=province"),
       api.get("/cascade/school_information?level=school_type"),
     ]).then((res) => {
       const [
         indicatorQuestions,
         advanceFilterQuestions,
+        generic_bar_chart,
         province,
         school_type,
       ] = res;
       UIState.update((s) => {
         s.indicatorQuestions = indicatorQuestions?.data;
         s.advanceFilterQuestions = advanceFilterQuestions?.data;
+        s.barChartQuestions = generic_bar_chart?.data;
         s.provinceValues = province?.data;
         s.schoolTypeValues = school_type?.data;
       });

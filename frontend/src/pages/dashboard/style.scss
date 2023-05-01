@@ -228,6 +228,42 @@
               }
             }
           }
+          .row-wrapper {
+            margin-bottom: 20px;
+            .ant-card-body {
+              padding: 0;
+              .chart-header {
+                border-bottom: 1px solid #f0f0f0;
+                padding: 8px 12px;
+              }
+            }
+          }
+          .bar-chart-wrapper {
+            background: rgba(69, 173, 217, 0.059) 0 0 no-repeat padding-box;
+            border: 1px solid #fff;
+            .header-container {
+              background: #00989f;
+              padding: 20px 0px;
+              h3 {
+                color: #fff !important;
+                font-size: 18px;
+                font-weight: 700;
+                margin-bottom: 0;
+              }
+            }
+            .chart-wrapper {
+              padding: 20px;
+              .ant-select {
+                width: 100%;
+                .ant-select-selection-placeholder {
+                  text-align: left;
+                }
+                .ant-select-selection-item {
+                  text-align: left;
+                }
+              }
+            }
+          }
         }
       }
     }

@@ -12,8 +12,7 @@ from routes.cascade import cascade_route
 from AkvoResponseGrouper.routes import collection_route
 from routes.charts import charts_route
 from source.geoconfig import GeoLevels, GeoCenter
-from source.main_config import CLASS_PATH, TOPO_JSON_PATH, \
-    FRONTEND_CONFIG_PATH
+from source.main_config import CLASS_PATH, TOPO_JSON_PATH, FRONTEND_CONFIG_PATH
 
 TOPO_JSON = open(TOPO_JSON_PATH).read()
 GEO_CONFIG = GeoLevels[CLASS_PATH].value
@@ -21,19 +20,33 @@ MAP_CENTER = GeoCenter[CLASS_PATH].value
 CHART_CONFIG = f"{FRONTEND_CONFIG_PATH}/charts.js"
 CHART_CONFIG = jsmin(open(CHART_CONFIG).read())
 HINT_CONFIG = f"{FRONTEND_CONFIG_PATH}/indicator-hint.json"
+JMP_CONFIG = f"{FRONTEND_CONFIG_PATH}/dashboard.json"
 HINT_JSON = open(HINT_CONFIG).read()
+DASHBOARD_JSON = open(JMP_CONFIG).read()
 
 MINJS = jsmin(
-    "".join([
-        "var levels=",
-        json.dumps([g["alias"] for g in GEO_CONFIG]), ";",
-        "var mapConfig={shapeLevels:",
-        json.dumps([g["name"] for g in GEO_CONFIG]),
-        ", center:", json.dumps(MAP_CENTER), "};",
-        "var topojson=", TOPO_JSON, ";",
-        "var hintjson=", HINT_JSON, ";",
-        CHART_CONFIG,
-    ])
+    "".join(
+        [
+            "var levels=",
+            json.dumps([g["alias"] for g in GEO_CONFIG]),
+            ";",
+            "var mapConfig={shapeLevels:",
+            json.dumps([g["name"] for g in GEO_CONFIG]),
+            ", center:",
+            json.dumps(MAP_CENTER),
+            "};",
+            "var topojson=",
+            TOPO_JSON,
+            ";",
+            "var hintjson=",
+            HINT_JSON,
+            ";",
+            "var dashboardjson=",
+            DASHBOARD_JSON,
+            ";",
+            CHART_CONFIG,
+        ]
+    )
 )
 JS_FILE = f"{FRONTEND_CONFIG_PATH}/config.min.js"
 open(JS_FILE, "w").write(MINJS)
