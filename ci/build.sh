@@ -20,6 +20,15 @@ dci () {
        -f docker-compose.ci.yml "$@"
 }
 
+documentation_build () {
+
+		docker run -it --rm -v "$(pwd)/docs:/docs" \
+				akvo/akvo-sphinx:20220525.082728.594558b make html
+		mkdir -p frontend/build/docs/${INSTANCE}
+		cp -r ./docs/build/html ./frontend/documentation
+
+}
+
 frontend_build () {
 
     echo "PUBLIC_URL=/" > frontend/.env
@@ -51,6 +60,7 @@ backend_build () {
 }
 
 backend_build
+documentation_build
 frontend_build
 
 #test-connection
