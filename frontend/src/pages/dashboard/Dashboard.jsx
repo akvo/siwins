@@ -142,7 +142,7 @@ const Dashboard = () => {
                         horizontal={false}
                         grid={{
                           top: 70,
-                          left: 120,
+                          left: 20,
                         }}
                       />
                     </Col>
