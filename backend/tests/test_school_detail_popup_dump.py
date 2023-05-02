@@ -90,11 +90,11 @@ answer_temp = [{
             "count": 1
         }, {
             "level": "Guadalcanal",
-            "total": 12.0,
+            "total": 13.0,
             "count": 1
         }, {
             "level": "National",
-            "total": 12.0,
+            "total": 13.0,
             "count": 1
         }, ],
     }, {
@@ -107,11 +107,11 @@ answer_temp = [{
             "count": 1
         }, {
             "level": "Guadalcanal",
-            "total": 100.0,
+            "total": 111.0,
             "count": 1
         }, {
             "level": "National",
-            "total": 100.0,
+            "total": 111.0,
             "count": 1
         }, ],
     }, {
@@ -124,18 +124,30 @@ answer_temp = [{
             "count": 1
         }, {
             "level": "Guadalcanal",
-            "total": 111.0,
+            "total": 123.0,
             "count": 1
         }, {
             "level": "National",
-            "total": 111.0,
+            "total": 123.0,
             "count": 1
         }, ],
     }, {
         "question_id": 638730934,
         "question_name": "Female teachers",
-        "render": "value",
-        "value": "31",
+        "render": "chart",
+        "value": [{
+            "count": 1,
+            "level": "AO CHS - 21710",
+            "total": 31.0
+        }, {
+            "count": 1,
+            "level": "Guadalcanal",
+            "total": 31.0
+        }, {
+            "count": 1,
+            "level": "National",
+            "total": 31.0
+        }]
     }, {
         "question_id": 638730935,
         "question_name": "Male teachers",
@@ -146,11 +158,11 @@ answer_temp = [{
             "count": 1
         }, {
             "level": "Guadalcanal",
-            "total": 12.0,
+            "total": 22.0,
             "count": 1
         }, {
             "level": "National",
-            "total": 12.0,
+            "total": 22.0,
             "count": 1
         }, ],
     }, {
@@ -163,11 +175,11 @@ answer_temp = [{
             "count": 1
         }, {
             "level": "Guadalcanal",
-            "total": 21.0,
+            "total": 22.0,
             "count": 1
         }, {
             "level": "National",
-            "total": 21.0,
+            "total": 22.0,
             "count": 1
         }, ],
     }, {
@@ -180,11 +192,11 @@ answer_temp = [{
             "count": 1
         }, {
             "level": "Guadalcanal",
-            "total": 12.0,
+            "total": 21.0,
             "count": 1
         }, {
             "level": "National",
-            "total": 12.0,
+            "total": 21.0,
             "count": 1
         }, ],
     }, ],

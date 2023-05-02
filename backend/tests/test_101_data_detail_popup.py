@@ -59,12 +59,12 @@ class TestDataDetailRoutes:
                 'count': 1
             }, {
                 'level': 'Guadalcanal',
-                'total': 0,
-                'count': 0
+                'total': 12.0,
+                'count': 1
             }, {
                 'level': 'National',
-                'total': 0,
-                'count': 0
+                'total': 12.0,
+                'count': 1
             }],
             'render': 'chart'
         }]

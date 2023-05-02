@@ -262,6 +262,11 @@
           "order": "11",
           "text": "How many female teachers teach in the school?",
           "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          },
           "attributes": ["school_detail_popup"],
           "displayName": "Female teachers"
         },

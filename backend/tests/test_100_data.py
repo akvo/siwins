@@ -71,7 +71,19 @@ class TestDataRoutes:
             params={"indicator": 624660930, "q": "624660930|no"})
         assert res.status_code == 200
         res = res.json()
-        assert res == []
+        assert res == [{
+            'id': 649130936,
+            'identifier': 'eptc-hraw-kkps',
+            'geo': [-51.14834033402119, 41.7559732176761],
+            'school_information': [
+                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'name': 'Untitled',
+            'year_conducted': 2023,
+            'answer': {
+                'question': 624660930,
+                'value': 'No'
+            }
+        }]
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": 624660930, "q": "624660930|yes"})

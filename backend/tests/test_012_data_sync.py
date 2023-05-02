@@ -8,7 +8,8 @@ from sqlalchemy.orm import Session
 from seeder.data_sync import data_sync
 from db import crud_data
 from source.main_config import DATAPOINT_PATH
-from .test_dummy import res_sync_data, res_answers
+from tests.conftest import test_refresh_materialized_data
+from tests.test_dummy import res_sync_data, res_answers
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
@@ -26,6 +27,7 @@ class TestDataSync:
         with open(sync_data_file) as json_file:
             sync_data = json.load(json_file)
         data_sync(token=token, session=session, sync_data=sync_data)
+        test_refresh_materialized_data()
         # current data
         temp_data = crud_data.get_all_data(session=session, current=True)
         data = [d.serialize for d in temp_data]

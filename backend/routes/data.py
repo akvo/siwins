@@ -254,7 +254,11 @@ def get_data_detail_by_data_id(
             continue
         # generate national data
         find_national_answers = list(filter(
-            lambda x: (x["question"] == da["question_id"]),
+            lambda x: (
+                x["question"] == da[
+                    "question_id"] and x[
+                        "year_conducted"] == da["year"]
+            ),
             prov_numb_answers
         ))
         national_value_sum = sum(
@@ -265,7 +269,10 @@ def get_data_detail_by_data_id(
         )
         # generate province data
         find_province_answers = list(filter(
-            lambda x: (x["province"] == current_province),
+            lambda x: (
+                x["province"] == current_province and x[
+                    "year_conducted"] == da["year"]
+            ),
             find_national_answers
         ))
         prov_value_sum = sum(
