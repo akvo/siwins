@@ -157,12 +157,15 @@ const getDataColumns = (option, category) => {
     data = data?.map((x, xi) => {
       return series.reduce(
         (prev, current) => {
-          return { ...prev, [current.name]: current.data[xi].value };
+          return {
+            ...prev,
+            [`${current.name}(${current.stack})`]: current.data[xi].value,
+          };
         },
         { [category]: x }
       );
     });
-    columns = series.map((d) => d.name);
+    columns = series.map((d) => `${d.name}(${d.stack})`);
     columns = [category, ...columns];
   }
   return { columns: columns, data: data };
