@@ -19,7 +19,7 @@ import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
 import { Chart } from "../";
-import { Card } from "antd";
+import { Card, Spin } from "antd";
 import Draggable from "react-draggable";
 
 const defZoom = 7;
@@ -34,7 +34,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   const map = useRef();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  // const [activePanel, setActivePanel] = useState(1);
+  const [selectedRoseChartValue, setSelectedRoseChartValue] = useState("");
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
   const [roseChartValues, setRoseChartValues] = useState([]);
@@ -48,15 +48,14 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
     let url = `data/maps`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
     const urlParams = new URLSearchParams(url);
+    const queryUrlPrefix = url.includes("?") ? "&" : "?";
     if (selectedQuestion?.id && !urlParams.get("indicator")) {
-      url = `${url}?indicator=${selectedQuestion?.id}`;
+      url = `${url}${queryUrlPrefix}indicator=${selectedQuestion?.id}`;
     }
     if (selectedProvince && selectedProvince.length > 0) {
-      const queryUrlPrefix = url.includes("?") ? "&" : "?";
       url = `${url}${queryUrlPrefix}prov=${selectedProvince}`;
     }
     if (selectedSchoolType && selectedSchoolType.length > 0) {
-      const queryUrlPrefix = url.includes("?") ? "&" : "?";
       url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
     }
     api
@@ -86,7 +85,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
 
   useEffect(() => {
     if (data.length > 0 && selectedQuestion.type === "option") {
-      const results = Object.values(
+      let results = Object.values(
         data.reduce((obj, item) => {
           obj[item.answer.value] = obj[item.answer.value] || {
             name: item.answer.value,
@@ -99,6 +98,13 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
           return obj;
         }, {})
       );
+      results = selectedQuestion?.option?.map((item) => {
+        return {
+          name: item.name,
+          color: item.color,
+          count: results.find((v) => v.name === item.name)?.count || 0,
+        };
+      });
       setRoseChartValues(results);
     }
   }, [data]);
@@ -107,7 +113,9 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   const handleOnChangeQuestionDropdown = (id) => {
     const filterQuestion = indicatorQuestions.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
-    updateGlobalState([], "option");
+    if (!id) {
+      updateGlobalState([], "option");
+    }
   };
 
   const handleOnChangeQuestionOption = (value) => {
@@ -162,9 +170,34 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
     updateGlobalState(value, "number");
   };
 
+  const chartClick = (p) => {
+    if (selectedRoseChartValue === p) {
+      setSelectedRoseChartValue(p);
+      setSelectedOption([]);
+      filterIndicatorOption([]);
+      return;
+    }
+    setSelectedRoseChartValue(p);
+    setSelectedOption(
+      selectedQuestion?.option
+        ?.filter((e) => e.name !== p)
+        .map((item) => item.name)
+    );
+    filterIndicatorOption(
+      selectedQuestion?.option
+        ?.filter((e) => e.name !== p)
+        .map((item) => item.name)
+    );
+  };
+
   return (
     <>
       <div id="map-view">
+        {loading && (
+          <div className="map-loading">
+            <Spin />
+          </div>
+        )}
         <div className="map-container">
           <IndicatorDropdown
             indicatorQuestion={indicatorQuestions}
@@ -191,6 +224,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
                     }))}
                     wrapper={false}
                     horizontal={false}
+                    callbacks={{ onClick: chartClick }}
                   />
                 </Card>
               </div>
@@ -337,7 +371,7 @@ const createClusterCustomIcon = (cluster) => {
             })
             .join(
               ""
-            )} <text x="50" y="50" fill="black" font-size="14">${cluster.getChildCount()}</text></svg>`,
+            )} <text x="50%" y="50%" fill="black" text-anchor="middle" dy=".3em" font-size="18px">${cluster.getChildCount()}</text></svg>`,
     className: `custom-marker-cluster`,
     iconSize: L.point(60, 60, true),
   });

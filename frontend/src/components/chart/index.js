@@ -87,7 +87,7 @@ const Chart = ({
 }) => {
   const [echartsReactRef, setEchartsReactRef] = useState();
   if (transform) {
-    data = data.map((x) => ({
+    data = data?.map((x) => ({
       ...x,
       name: x.name,
       var: x.name,
@@ -116,7 +116,7 @@ const Chart = ({
   const onEvents = {
     click: (e) => {
       if (callbacks?.onClick) {
-        callbacks.onClick(e.data?.cbParam);
+        callbacks.onClick(e.data?.name ? e.data?.name : e.data?.cbParam);
       }
     },
   };
