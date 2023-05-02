@@ -157,12 +157,15 @@ const getDataColumns = (option, category) => {
     data = data?.map((x, xi) => {
       return series.reduce(
         (prev, current) => {
-          return { ...prev, [current.name]: current.data[xi].value };
+          return {
+            ...prev,
+            [`${current.name}(${current.stack})`]: current.data[xi].value,
+          };
         },
         { [category]: x }
       );
     });
-    columns = series.map((d) => d.name);
+    columns = series.map((d) => `${d.name}(${d.stack})`);
     columns = [category, ...columns];
   }
   return { columns: columns, data: data };
@@ -191,7 +194,7 @@ export const optionToContent = (
       ? getDataLineColumns(series, xAxis?.[0]?.data || [], category)
       : getDataColumns(option, category);
 
-  let table = `<div class="ant-table ant-table-small ant-table-bordered ant-table-fixed-header ant-table-fixed-column">`;
+  let table = `<div class="ant-table ant-table-small ant-table-bordered ant-table-fixed-header ant-table-fixed-column data-view">`;
   table += `<div class="ant-table-container">`;
   table += `<table style="table-layout: auto;">`;
   table += `<thead class="ant-table-thead"><tr>`;

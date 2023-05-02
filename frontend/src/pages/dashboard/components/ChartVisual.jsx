@@ -5,7 +5,7 @@ import { get } from "lodash";
 
 const config = window.dashboardjson?.tabs;
 
-const ChartVisual = ({ chartConfig, loading }) => {
+const ChartVisual = ({ chartConfig }) => {
   const { title, type, data, provinceValues, index, path, span } = chartConfig;
   const [isStack, setIsStack] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -138,18 +138,22 @@ const ChartVisual = ({ chartConfig, loading }) => {
         {isStack ? (
           <Chart
             height={
-              50 * chartData.find((f) => f.name === path)?.data.length + 188
+              chartData.length
+                ? 50 * chartData.find((f) => f.name === path)?.data.length + 188
+                : 200
             }
             type="BARSTACK"
             data={chartData.find((f) => f.name === path)?.data}
             wrapper={false}
             horizontal={true}
-            loading={loading}
+            loading={!chartData.find((f) => f.name === path)?.data.length}
           />
         ) : (
           <Chart
             height={
-              50 * chartData.find((f) => f.name === path)?.data.length + 188
+              chartData.length
+                ? 50 * chartData.find((f) => f.name === path)?.data.length + 188
+                : 300
             }
             type={"BAR"}
             dataZoom={false}
@@ -157,7 +161,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
             data={chartData.find((f) => f.name === path)?.data}
             wrapper={false}
             horizontal={true}
-            loading={loading}
+            loading={!chartData.find((f) => f.name === path)?.data.length}
             grid={{
               top: 70,
               left: 120,
