@@ -34,7 +34,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   const map = useRef();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  // const [activePanel, setActivePanel] = useState(1);
+  const [selectedRoseChartValue, setSelectedRoseChartValue] = useState("");
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
   const [roseChartValues, setRoseChartValues] = useState([]);
@@ -85,7 +85,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
 
   useEffect(() => {
     if (data.length > 0 && selectedQuestion.type === "option") {
-      const results = Object.values(
+      let results = Object.values(
         data.reduce((obj, item) => {
           obj[item.answer.value] = obj[item.answer.value] || {
             name: item.answer.value,
@@ -98,6 +98,13 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
           return obj;
         }, {})
       );
+      results = selectedQuestion?.option?.map((item) => {
+        return {
+          name: item.name,
+          color: item.color,
+          count: results.find((v) => v.name === item.name)?.count || 0,
+        };
+      });
       setRoseChartValues(results);
     }
   }, [data]);
@@ -163,6 +170,26 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
     updateGlobalState(value, "number");
   };
 
+  const chartClick = (p) => {
+    if (selectedRoseChartValue === p) {
+      setSelectedRoseChartValue(p);
+      setSelectedOption([]);
+      filterIndicatorOption([]);
+      return;
+    }
+    setSelectedRoseChartValue(p);
+    setSelectedOption(
+      selectedQuestion?.option
+        ?.filter((e) => e.name !== p)
+        .map((item) => item.name)
+    );
+    filterIndicatorOption(
+      selectedQuestion?.option
+        ?.filter((e) => e.name !== p)
+        .map((item) => item.name)
+    );
+  };
+
   return (
     <>
       <div id="map-view">
@@ -192,6 +219,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
                     }))}
                     wrapper={false}
                     horizontal={false}
+                    callbacks={{ onClick: chartClick }}
                   />
                 </Card>
               </div>
