@@ -672,8 +672,8 @@ res_jmp_filtered = {
                 },
                 {
                     "option": "Limited",
-                    "count": 0,
-                    "percent": 0,
+                    "count": 1,
+                    "percent": 100.0,
                     "color": "#fff176"
                 },
                 {

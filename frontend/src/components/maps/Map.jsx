@@ -63,7 +63,15 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
       .then((res) => {
         setData(res.data);
         UIState.update((s) => {
-          s.mapData = res.data;
+          s.mapData = res.data.map((d) => {
+            const school_information_array = Object.values(
+              d.school_information
+            );
+            return {
+              ...d,
+              school_information_array: school_information_array,
+            };
+          });
         });
       })
       .catch((e) => console.error(e))
@@ -272,7 +280,7 @@ const Markers = ({ zoom, data, selectedQuestion, searchValue, mapData }) => {
 
   useEffect(() => {
     const findCordinates = mapData.find((item) =>
-      item.school_information.includes(searchValue)
+      item.school_information_array.includes(searchValue)
     );
     if (findCordinates?.geo) {
       mapHook.setView(findCordinates?.geo, 14);

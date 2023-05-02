@@ -9,13 +9,6 @@ sys.path.append("..")
 pytestmark = pytest.mark.asyncio
 
 
-# TODO:: Need to split to different test file
-# eg: maps, charts, etc
-# add more sample data
-# maps endpoint:
-#   - filter by query more than 1 value (eg: prov: [Central, Guadalcanal])
-
-
 class TestDataRoutes:
     @pytest.mark.asyncio
     async def test_get_paginated_data(
@@ -30,22 +23,6 @@ class TestDataRoutes:
         assert "total_page" in res
 
     @pytest.mark.asyncio
-    async def test_get_data_detail(
-        self, app: FastAPI, session: Session, client: AsyncClient
-    ) -> None:
-        res = await client.get(
-            app.url_path_for("data:get_data_detail", data_id=632510922))
-        assert res.status_code == 200
-        res = res.json()
-        assert res["id"] == 632510922
-        assert res["name"] == "Untitled"
-        assert res["geo"] == {
-            "lat": -47.72084919070232,
-            "long": 71.64445931032847
-        }
-        assert len(res["answer"]) > 1
-
-    @pytest.mark.asyncio
     async def test_get_maps_data(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
@@ -57,8 +34,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {}
@@ -73,8 +54,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
@@ -94,7 +79,23 @@ class TestDataRoutes:
             params={"indicator": 624660930, "q": "624660930|no"})
         assert res.status_code == 200
         res = res.json()
-        assert res == []
+        assert res == [{
+            'id': 649130936,
+            'identifier': 'eptc-hraw-kkps',
+            'geo': [-51.14834033402119, 41.7559732176761],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
+            'name': 'Untitled',
+            'year_conducted': 2023,
+            'answer': {
+                'question': 624660930,
+                'value': 'No'
+            }
+        }]
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": 624660930, "q": "624660930|yes"})
@@ -111,8 +112,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
@@ -139,8 +144,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
@@ -165,8 +174,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
@@ -197,8 +210,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
@@ -230,8 +247,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {

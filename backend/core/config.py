@@ -9,8 +9,9 @@ from pydantic import BaseSettings
 from routes.data import data_route
 from routes.question import question_route
 from routes.cascade import cascade_route
-from AkvoResponseGrouper.routes import collection_route
 from routes.charts import charts_route
+from routes.answer import answer_route
+from AkvoResponseGrouper.routes import collection_route
 from source.geoconfig import GeoLevels, GeoCenter
 from source.main_config import CLASS_PATH, TOPO_JSON_PATH, FRONTEND_CONFIG_PATH
 
@@ -88,6 +89,7 @@ app.include_router(question_route)
 app.include_router(data_route)
 app.include_router(collection_route)
 app.include_router(charts_route)
+app.include_router(answer_route)
 
 
 @lru_cache()

@@ -54,7 +54,12 @@ class TestQuestionRoutes:
             'name': name,
             "display_name": display_name,
             "type": "option",
-            'attributes': ['indicator', 'advance_filter', 'generic_bar_chart'],
+            'attributes': [
+                'indicator',
+                'advance_filter',
+                'generic_bar_chart',
+                'school_detail_popup'
+            ],
             'option': [{
                 "name": "Yes",
                 "order": 1,
@@ -82,7 +87,12 @@ class TestQuestionRoutes:
             'name': name,
             "display_name": display_name,
             "type": "option",
-            'attributes': ['indicator', 'advance_filter', 'generic_bar_chart'],
+            'attributes': [
+                'indicator',
+                'advance_filter',
+                'generic_bar_chart',
+                'school_detail_popup'
+            ],
             'option': [{
                 'name': 'Yes (always available)',
                 'order': 1,

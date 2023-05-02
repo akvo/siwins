@@ -27,11 +27,11 @@ function Maps() {
       setOpen(true);
       const find = mapData
         .filter((item) =>
-          item.school_information.find((a) =>
+          item.school_information_array.find((a) =>
             a.toLowerCase().includes(val.toLowerCase())
           )
         )
-        ?.map((f) => f.school_information);
+        ?.map((f) => f.school_information_array);
       setData(find);
     }
   };
