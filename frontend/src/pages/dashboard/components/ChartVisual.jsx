@@ -138,7 +138,9 @@ const ChartVisual = ({ chartConfig }) => {
         {isStack ? (
           <Chart
             height={
-              50 * chartData.find((f) => f.name === path)?.data.length + 188
+              chartData.length
+                ? 50 * chartData.find((f) => f.name === path)?.data.length + 188
+                : 200
             }
             type="BARSTACK"
             data={chartData.find((f) => f.name === path)?.data}
@@ -149,7 +151,9 @@ const ChartVisual = ({ chartConfig }) => {
         ) : (
           <Chart
             height={
-              50 * chartData.find((f) => f.name === path)?.data.length + 188
+              chartData.length
+                ? 50 * chartData.find((f) => f.name === path)?.data.length + 188
+                : 300
             }
             type={"BAR"}
             dataZoom={false}
