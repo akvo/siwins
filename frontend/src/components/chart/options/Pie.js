@@ -64,19 +64,10 @@ const Pie = (data, chartTitle, extra = {}, series = {}) => {
         type: "pie",
         avoidLabelOverlap: true,
         label: {
-          formatter: function (params) {
-            if (params.value >= 0) {
-              return Math.round(params.value) + "%";
-            }
-            return "";
-          },
           show: true,
-          position: "inner",
-          padding: 5,
-          borderRadius: 100,
-          backgroundColor: "rgba(0,0,0,.3)",
-          ...textStyle,
-          color: "#fff",
+          formatter: "{d}%",
+          fontSize: 12,
+          fontWeight: "bold",
         },
         startAngle: 0,
         radius: ["15%", "50%"],
