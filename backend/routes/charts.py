@@ -6,7 +6,7 @@ from typing import List, Optional
 from sqlalchemy import and_, func
 from sqlalchemy.orm import Session, aliased
 from db.connection import get_session
-from AkvoResponseGrouper.models import Category, GroupedCategory
+from AkvoResponseGrouper.models import Category
 from AkvoResponseGrouper.utils import (
     transform_categories_to_df,
     get_counted_category,
@@ -56,7 +56,7 @@ def get_number_of_school(
 
 @charts_route.get(
     "/chart/bar",
-    response_model=List[GroupedCategory],
+    response_model=List[dict],
     name="charts:get_bar_charts",
     summary="get data to show in bar charts",
     tags=["Charts"],
@@ -66,6 +66,7 @@ def get_bar_charts(
     name: Optional[str] = Query(default=None),
     session: Session = Depends(get_session),
 ):
+    configs = get_jmp_config()
     all = get_all_data(session=session, current=True)
     lst = [a.serialize for a in all]
     ids = [i["id"] for i in lst]
@@ -76,7 +77,23 @@ def get_bar_charts(
     categories = [c.serialize for c in categories]
     df = transform_categories_to_df(categories=categories)
     dt = get_counted_category(df=df)
-    return group_by_category_output(data=dt)
+    res = group_by_category_output(data=dt)
+    for r in res:
+        labels = get_jmp_labels(configs=configs, name=r.get("category"))
+        temp = []
+        for label in labels:
+            find_count = next(
+                (
+                    x for x in r.get('options')
+                    if x["name"].lower() == label.get('name').lower()
+                ),
+                None
+            )
+            label["count"] = find_count.get("count") \
+                if find_count else 0
+            temp.append(label)
+        r["options"] = temp
+    return res
 
 
 @charts_route.get(
