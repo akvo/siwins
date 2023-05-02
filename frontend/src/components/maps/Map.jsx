@@ -19,7 +19,7 @@ import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
 import { Chart } from "../";
-import { Card, Spin, Button, Space } from "antd";
+import { Card, Spin, Button, Space, Modal } from "antd";
 import Draggable from "react-draggable";
 import capitalize from "lodash/capitalize";
 
@@ -43,6 +43,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
     startValue: 0,
     endValue: 100,
   });
+  const [selectedDatapoint, setSelectedDatapoint] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -264,17 +265,37 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
                   selectedQuestion={selectedQuestion}
                   searchValue={searchValue}
                   mapData={mapData}
+                  setSelectedDatapoint={setSelectedDatapoint}
                 />
               )}
             </MarkerClusterGroup>
           </MapContainer>
         </div>
       </div>
+      <Modal
+        title={selectedDatapoint}
+        open={selectedDatapoint}
+        centered
+        footer={null}
+        width="680px"
+        onCancel={() => setSelectedDatapoint(null)}
+      >
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
     </>
   );
 };
 
-const Markers = ({ zoom, data, selectedQuestion, searchValue, mapData }) => {
+const Markers = ({
+  zoom,
+  data,
+  selectedQuestion,
+  searchValue,
+  mapData,
+  setSelectedDatapoint,
+}) => {
   const [hovered, setHovered] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(zoom);
 
@@ -338,7 +359,13 @@ const Markers = ({ zoom, data, selectedQuestion, searchValue, mapData }) => {
                 Year Conducted: {year_conducted}
               </div>
             </div>
-            <Button type="primary" size="small" block>
+            <Button
+              type="primary"
+              size="small"
+              ghost
+              block
+              onClick={() => setSelectedDatapoint(id)}
+            >
               View Details
             </Button>
           </Space>
