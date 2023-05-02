@@ -4,20 +4,37 @@ from fastapi import APIRouter, HTTPException
 from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
 from db.connection import get_session
-from db.crud_data import (get_data_by_id)
-
+from models.question import QuestionType
+from db.crud_data import (
+    get_data_by_id, get_history_data_by_school
+)
+from db.crud_question import (
+    get_question_by_id
+)
+from db.crud_answer import (
+    get_answer_by_question
+)
+from db.crud_province_view import (
+    get_province_number_answer
+)
+from source.main_config import (
+    SchoolInformationEnum,
+    CascadeLevels
+)
 
 security = HTTPBearer()
 answer_route = APIRouter()
 
+school_information_cascade = CascadeLevels.school_information.value
 
-# TODO: Create new endpoint to fetch answer history
+
+# Endpoint to fetch answer history
 # ADD cascades level to config.js
 @answer_route.get(
     "/answer/history/{data_id:path}",
     # response_model=List[CascadeNameAndLevel],
     name="answer:get_history",
-    summary="get answet history by question & datapoint",
+    summary="get answet history by datapoint & question",
     tags=["Answer"]
 )
 def get_answer_history(
@@ -26,14 +43,100 @@ def get_answer_history(
     question_id: int,
     session: Session = Depends(get_session)
 ):
+    province_lv = school_information_cascade.get(
+        SchoolInformationEnum.province.value)
+    school_name_lv = school_information_cascade.get(
+        SchoolInformationEnum.school_name.value)
+    school_code_lv = school_information_cascade.get(
+        SchoolInformationEnum.school_code.value)
+    # fetch current data
     data = get_data_by_id(session=session, id=data_id)
     if not data:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail="Data not found"
+            status_code=HTTPStatus.NOT_FOUND,
+            detail="Data not found"
         )
-    current_school = data.school_information
-    current_year = data.year_conducted
-    # get history datapoint by
-    # current school and !current year / current = False
-
-    return []
+    # check question
+    question = get_question_by_id(session=session, id=question_id)
+    if not question:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail="Question not found"
+        )
+    if question.type != QuestionType.number:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail="Question not a number type"
+        )
+    # province, school name - code
+    school_information = data.school_information
+    current_province = school_information[province_lv]
+    current_school_name = school_information[school_name_lv]
+    current_school_code = school_information[school_code_lv]
+    # get history data
+    history_data = get_history_data_by_school(
+        session=session,
+        schools=data.school_information,
+        year_conducted=data.year_conducted)
+    # get answer histories
+    history_answers = get_answer_by_question(
+        session=session,
+        question=question.id,
+        data_ids=[h.id for h in history_data])
+    history_answers = [
+        ha.to_school_detail_popup for ha in history_answers]
+    # generate chart data for number answer
+    number_qids = [question.id]
+    prov_numb_answers = get_province_number_answer(
+        session=session,
+        question_ids=number_qids,
+        current=False)
+    prov_numb_answers = [p.serialize for p in prov_numb_answers]
+    for da in history_answers:
+        del da["question_group_id"]
+        del da["question_group_name"]
+        del da["qg_order"]
+        del da["q_order"]
+        del da["attributes"]
+        if da["type"] != "number":
+            da["render"] = "value"
+            continue
+        # generate national data
+        find_national_answers = list(filter(
+            lambda x: (x["question"] == da["question_id"]),
+            prov_numb_answers
+        ))
+        national_value_sum = sum(
+            [p["value"] for p in find_national_answers]
+        )
+        national_count_sum = sum(
+            [p["count"] for p in find_national_answers]
+        )
+        # generate province data
+        find_province_answers = list(filter(
+            lambda x: (x["province"] == current_province),
+            find_national_answers
+        ))
+        prov_value_sum = sum(
+            [p["value"] for p in find_province_answers]
+        )
+        prov_count_sum = sum(
+            [p["count"] for p in find_province_answers]
+        )
+        temp_numb = [{
+            "level": f"{current_school_name} - {current_school_code}",
+            "total": da["value"],
+            "count": 1
+        }, {
+            "level": current_province,
+            "total": prov_value_sum,
+            "count": prov_count_sum
+        }, {
+            "level": "National",
+            "total": national_value_sum,
+            "count": national_count_sum
+        }]
+        da["render"] = "chart"
+        da["value"] = temp_numb
+    # EOL generate chart data for number answer
+    return history_answers

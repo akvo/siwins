@@ -248,6 +248,7 @@ def get_data_detail_by_data_id(
     for da in data["answer"]:
         del da["qg_order"]
         del da["q_order"]
+        del da["attributes"]
         if da["type"] != "number":
             da["render"] = "value"
             continue
