@@ -6,7 +6,7 @@ import {
   MapContainer,
   GeoJSON,
   TileLayer,
-  Tooltip,
+  Popup,
   Marker,
   useMap,
 } from "react-leaflet";
@@ -19,8 +19,9 @@ import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
 import { Chart } from "../";
-import { Card, Spin } from "antd";
+import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
+import capitalize from "lodash/capitalize";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -293,7 +294,7 @@ const Markers = ({ zoom, data, selectedQuestion, searchValue, mapData }) => {
   }, [searchValue]);
 
   data = data.filter((d) => d.geo);
-  return data.map(({ id, geo, name, answer }) => {
+  return data.map(({ id, geo, answer, school_information, year_conducted }) => {
     const isHovered = id === hovered;
     console.info(isHovered);
     return (
@@ -315,12 +316,33 @@ const Markers = ({ zoom, data, selectedQuestion, searchValue, mapData }) => {
         eventHandlers={{
           mouseover: () => setHovered(id),
           mouseout: () => setHovered(null),
-          click: () => {
-            mapHook.setView(geo, 14);
-          },
+          // click: () => {
+          //   mapHook.setView(geo, 14);
+          // },
         }}
       >
-        <Tooltip direction="top">{name}</Tooltip>
+        <Popup direction="top">
+          <Space direction="vertical">
+            <div>
+              {Object.keys(school_information).map((key) => {
+                const name = key
+                  .split("_")
+                  .map((x) => capitalize(x))
+                  .join(" ");
+                const val = school_information[key];
+                return (
+                  <div key={`tooltip-${id}-${key}`}>{`${name}: ${val}`}</div>
+                );
+              })}
+              <div key={`tooltip-${id}-year_conducted`}>
+                Year Conducted: {year_conducted}
+              </div>
+            </div>
+            <Button type="primary" size="small" block>
+              View Details
+            </Button>
+          </Space>
+        </Popup>
       </Marker>
     );
   });
