@@ -161,7 +161,7 @@ class Answer(Base):
         return answer
 
     @property
-    def to_detail(self) -> AnswerDetailDict:
+    def to_school_detail_popup(self) -> AnswerDetailDict:
         qdetail = self.question_detail
         answer = {
             "qg_order": qdetail.question.order,
@@ -169,8 +169,9 @@ class Answer(Base):
             "question_group_name": qdetail.question.name,
             "question_id": self.question,
             "q_order": qdetail.order,
-            "question_name": qdetail.name,
+            "question_name": qdetail.display_name or qdetail.name,
             "type": qdetail.type.value,
+            "attributes": qdetail.attributes,
             "history": not self.answer.current,
         }
         answer = append_value(self, answer)

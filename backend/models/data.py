@@ -15,6 +15,7 @@ from models.answer import Answer, AnswerDict
 from models.answer import AnswerBase, MonitoringAnswerDict, AnswerDictWithText
 from models.form import Form
 from models.history import History
+from models.question import QuestionAttributes
 
 
 class GeoData(BaseModel):
@@ -184,13 +185,21 @@ class Data(Base):
         }
 
     @property
-    def to_detail(self) -> DataDetail:
+    def to_school_detail_popup(self) -> DataDetail:
+        answer_filter = QuestionAttributes.school_detail_popup.value
+        answers = [a.to_school_detail_popup for a in self.answer]
+        answers = list(filter(
+            lambda x: (
+                x.get("attributes") and answer_filter in x.get("attributes")
+            ),
+            answers
+        ))
         return {
             "id": self.id,
             "name": self.name,
             "year_conducted": self.year_conducted,
             "school_information": self.school_information,
-            "answer": [a.to_detail for a in self.answer]
+            "answer": answers
         }
 
     @property

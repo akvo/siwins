@@ -197,7 +197,7 @@ def get_data_detail_by_data_id(
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND, detail="Data not found"
         )
-    data = data.to_detail
+    data = data.to_school_detail_popup
     # province, school name - code
     school_information = data.get("school_information")
     current_province = school_information[province_lv]
@@ -282,4 +282,5 @@ def get_data_detail_by_data_id(
             "child": child
         })
     data["answer"] = grouped_answer
+    # TODO:: Add JMP categories per year conducted here
     return data
