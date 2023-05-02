@@ -17,15 +17,11 @@ from db.crud_answer import (
 from db.crud_province_view import (
     get_province_number_answer
 )
-from source.main_config import (
-    SchoolInformationEnum,
-    CascadeLevels
-)
+from utils.functions import extract_school_information
+
 
 security = HTTPBearer()
 answer_route = APIRouter()
-
-school_information_cascade = CascadeLevels.school_information.value
 
 
 # Endpoint to fetch answer history
@@ -43,12 +39,6 @@ def get_answer_history(
     question_id: int,
     session: Session = Depends(get_session)
 ):
-    province_lv = school_information_cascade.get(
-        SchoolInformationEnum.province.value)
-    school_name_lv = school_information_cascade.get(
-        SchoolInformationEnum.school_name.value)
-    school_code_lv = school_information_cascade.get(
-        SchoolInformationEnum.school_code.value)
     # fetch current data
     data = get_data_by_id(session=session, id=data_id)
     if not data:
@@ -69,10 +59,12 @@ def get_answer_history(
             detail="Question not a number type"
         )
     # province, school name - code
-    school_information = data.school_information
-    current_province = school_information[province_lv]
-    current_school_name = school_information[school_name_lv]
-    current_school_code = school_information[school_code_lv]
+    (
+        current_province,
+        current_school_type,
+        current_school_name,
+        current_school_code
+    ) = extract_school_information(data.school_information)
     # get history data
     history_data = get_history_data_by_school(
         session=session,

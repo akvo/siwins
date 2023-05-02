@@ -50,7 +50,7 @@ class MapsData(BaseModel):
     id: int
     identifier: str
     name: str
-    school_information: List[str]
+    school_information: dict
     year_conducted: int
     geo: List[float]
     answer: Union[AnswerDict, dict]
@@ -66,6 +66,15 @@ class DataDetail(BaseModel):
     name: str
     year_conducted: int
     school_information: List[str]
+    jmp_levels: List[dict]
+    answer: List[dict]
+
+
+class DataDetailPopup(BaseModel):
+    id: int
+    name: str
+    year_conducted: int
+    school_information: dict
     jmp_levels: List[dict]
     answer: List[dict]
 

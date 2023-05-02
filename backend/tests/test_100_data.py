@@ -34,8 +34,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {}
@@ -50,8 +54,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
@@ -75,8 +83,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
@@ -100,8 +112,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
@@ -128,8 +144,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
@@ -154,8 +174,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
@@ -186,8 +210,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
@@ -219,8 +247,12 @@ class TestDataRoutes:
             'id': 649130936,
             'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': [
-                'Guadalcanal', 'Community High School', 'AO CHS', '21710'],
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
             'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {

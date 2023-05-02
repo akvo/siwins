@@ -315,11 +315,12 @@ res_school_detail_popup = {
     "id": 649130936,
     "name": "Untitled",
     "year_conducted": 2023,
-    "school_information": [
-        "Guadalcanal",
-        "Community High School",
-        "AO CHS", "21710"
-    ],
+    "school_information": {
+        "province": "Guadalcanal",
+        "school_type": "Community High School",
+        "school_name": "AO CHS",
+        "school_code": "21710"
+    },
     "jmp_levels": [{
         "year": 2023,
         "history": False,

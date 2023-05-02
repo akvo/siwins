@@ -20,19 +20,14 @@ from db.crud_jmp import (
     get_jmp_school_detail_popup
 )
 from models.data import MapsData, ChartDataDetail
-from models.data import DataDetail, DataResponse
+from models.data import DataDetailPopup, DataResponse
 from models.answer import Answer
 from models.history import History
 from middleware import check_query, check_indicator_query
-from source.main_config import (
-    SchoolInformationEnum,
-    CascadeLevels
-)
+from utils.functions import extract_school_information
 
 security = HTTPBearer()
 data_route = APIRouter()
-
-school_information_cascade = CascadeLevels.school_information.value
 
 
 @data_route.get(
@@ -118,6 +113,8 @@ def get_maps(
     for d in data:
         data_id = str(d.get('identifier'))
         d["answer"] = answer_temp.get(data_id) or {}
+        d["school_information"] = extract_school_information(
+            school_information=d["school_information"], to_object=True)
     return data
 
 
@@ -178,7 +175,7 @@ def get_data_detail_for_chart(
 
 @data_route.get(
     "/data/{data_id}",
-    response_model=DataDetail,
+    response_model=DataDetailPopup,
     name="data:get_data_detail",
     summary="get data detail by data id",
     tags=["Data"],
@@ -186,15 +183,8 @@ def get_data_detail_for_chart(
 def get_data_detail_by_data_id(
     req: Request,
     data_id: int,
-    # monitoring: Optional[bool] = Query(default=False),
     session: Session = Depends(get_session),
 ):
-    province_lv = school_information_cascade.get(
-        SchoolInformationEnum.province.value)
-    school_name_lv = school_information_cascade.get(
-        SchoolInformationEnum.school_name.value)
-    school_code_lv = school_information_cascade.get(
-        SchoolInformationEnum.school_code.value)
     # get data
     data = get_data_by_id(session=session, id=data_id)
     if not data:
@@ -225,10 +215,12 @@ def get_data_detail_by_data_id(
     # start generate school detail popup
     data = data.to_school_detail_popup
     # province, school name - code
-    school_information = data.get("school_information")
-    current_province = school_information[province_lv]
-    current_school_name = school_information[school_name_lv]
-    current_school_code = school_information[school_code_lv]
+    (
+        current_province,
+        current_school_type,
+        current_school_name,
+        current_school_code
+    ) = extract_school_information(data.get("school_information"))
     # sort answer by group / question order
     data["answer"] = sorted(
         data["answer"],
@@ -314,6 +306,9 @@ def get_data_detail_by_data_id(
             "child": child
         })
     # Add JMP levels with history
+    data["school_information"] = extract_school_information(
+        school_information=data.get("school_information"),
+        to_object=True)
     data["jmp_levels"] = jmp_levels
     data["answer"] = grouped_answer
     return data
