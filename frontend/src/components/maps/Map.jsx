@@ -19,7 +19,7 @@ import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
 import { Chart } from "../";
-import { Card } from "antd";
+import { Card, Spin } from "antd";
 import Draggable from "react-draggable";
 
 const defZoom = 7;
@@ -193,6 +193,11 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   return (
     <>
       <div id="map-view">
+        {loading && (
+          <div className="map-loading">
+            <Spin />
+          </div>
+        )}
         <div className="map-container">
           <IndicatorDropdown
             indicatorQuestion={indicatorQuestions}
