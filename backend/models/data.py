@@ -66,6 +66,7 @@ class DataDetail(BaseModel):
     name: str
     year_conducted: int
     school_information: List[str]
+    jmp_levels: List[dict]
     answer: List[dict]
 
 
@@ -212,6 +213,14 @@ class Data(Base):
                 for a in self.answer
             ],
             "monitoring": [],
+        }
+
+    @property
+    def get_data_id_and_year_conducted(self):
+        return {
+            "id": self.id,
+            "history": not self.current,
+            "year_conducted": self.year_conducted
         }
 
 

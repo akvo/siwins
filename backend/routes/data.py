@@ -10,10 +10,14 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from db.connection import get_session
 from db.crud_data import (
-    get_data, get_all_data, get_data_by_id, get_monitoring_data
+    get_data, get_all_data, get_data_by_id,
+    get_monitoring_data, get_history_data_by_school
 )
 from db.crud_province_view import (
     get_province_number_answer
+)
+from db.crud_jmp import (
+    get_jmp_school_detail_popup
 )
 from models.data import MapsData, ChartDataDetail
 from models.data import DataDetail, DataResponse
@@ -197,6 +201,28 @@ def get_data_detail_by_data_id(
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND, detail="Data not found"
         )
+    # get history data
+    history_data = get_history_data_by_school(
+        session=session,
+        schools=data.school_information,
+        year_conducted=data.year_conducted)
+    # get JMP status
+    jmp_levels = []
+    histories = [data.get_data_id_and_year_conducted]
+    histories += [hd.get_data_id_and_year_conducted for hd in history_data]
+    for h in histories:
+        jmp_check = get_jmp_school_detail_popup(
+            session=session, data_id=h.get('id'))
+        for lev in jmp_check:
+            category = lev.get('category')
+            level = lev.get('options')[0].get('name')
+            jmp_levels.append({
+                'year': h.get('year_conducted'),
+                'history': h.get('history'),
+                'category': category,
+                'level': level
+            })
+    # start generate school detail popup
     data = data.to_school_detail_popup
     # province, school name - code
     school_information = data.get("school_information")
@@ -269,18 +295,17 @@ def get_data_detail_by_data_id(
     for k, values in groups:
         temp = list(values)
         qg_name = temp[0]["question_group_name"]
-        child = []
-        for da in temp:
-            child.append({
-                "question_id": da["question_id"],
-                "question_name": da["question_name"],
-                "render": da["render"],
-                "value": da["value"]
-            })
+        child = [{
+            "question_id": da["question_id"],
+            "question_name": da["question_name"],
+            "render": da["render"],
+            "value": da["value"]
+        } for da in temp]
         grouped_answer.append({
             "group": qg_name,
             "child": child
         })
+    # Add JMP levels with history
+    data["jmp_levels"] = jmp_levels
     data["answer"] = grouped_answer
-    # TODO:: Add JMP categories per year conducted here
     return data
