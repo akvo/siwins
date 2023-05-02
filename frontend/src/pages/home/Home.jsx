@@ -34,12 +34,12 @@ const Home = () => {
       <Col key={`col-${index}`} span={cfg?.span} className="chart-card">
         <Card>
           <Row className="chart-header" justify="space-between" align="middle">
-            <h3>{cfg?.name}</h3>
+            <h3>{cfg?.title}</h3>
           </Row>
           <Chart
             height={300}
             type="PIE"
-            data={data.find((f) => f.name === cfg?.category)?.options}
+            data={data.find((f) => f.category === cfg?.path)?.options}
             wrapper={false}
             rose={false}
             loading={loading}
