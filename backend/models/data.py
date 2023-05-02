@@ -11,10 +11,11 @@ from sqlalchemy import ForeignKey, DateTime, BigInteger
 import sqlalchemy.dialects.postgresql as pg
 from sqlalchemy.orm import relationship
 from db.connection import Base
-from models.answer import Answer, AnswerDict, AnswerDetailDict
+from models.answer import Answer, AnswerDict
 from models.answer import AnswerBase, MonitoringAnswerDict, AnswerDictWithText
 from models.form import Form
 from models.history import History
+from models.question import QuestionAttributes
 
 
 class GeoData(BaseModel):
@@ -49,7 +50,7 @@ class MapsData(BaseModel):
     id: int
     identifier: str
     name: str
-    school_information: List[str]
+    school_information: dict
     year_conducted: int
     geo: List[float]
     answer: Union[AnswerDict, dict]
@@ -63,8 +64,19 @@ class RegistrationDict(TypedDict):
 class DataDetail(BaseModel):
     id: int
     name: str
-    geo: Optional[GeoData] = None
-    answer: List[AnswerDetailDict]
+    year_conducted: int
+    school_information: List[str]
+    jmp_levels: List[dict]
+    answer: List[dict]
+
+
+class DataDetailPopup(BaseModel):
+    id: int
+    name: str
+    year_conducted: int
+    school_information: dict
+    jmp_levels: List[dict]
+    answer: List[dict]
 
 
 class ChartDataDetail(TypedDict):
@@ -183,14 +195,21 @@ class Data(Base):
         }
 
     @property
-    def to_detail(self) -> DataDetail:
+    def to_school_detail_popup(self) -> DataDetail:
+        answer_filter = QuestionAttributes.school_detail_popup.value
+        answers = [a.to_school_detail_popup for a in self.answer]
+        answers = list(filter(
+            lambda x: (
+                x.get("attributes") and answer_filter in x.get("attributes")
+            ),
+            answers
+        ))
         return {
             "id": self.id,
             "name": self.name,
-            "geo": {
-                "lat": self.geo[0], "long": self.geo[1]
-            } if self.geo else None,
-            "answer": [a.to_detail for a in self.answer]
+            "year_conducted": self.year_conducted,
+            "school_information": self.school_information,
+            "answer": answers
         }
 
     @property
@@ -203,6 +222,14 @@ class Data(Base):
                 for a in self.answer
             ],
             "monitoring": [],
+        }
+
+    @property
+    def get_data_id_and_year_conducted(self):
+        return {
+            "id": self.id,
+            "history": not self.current,
+            "year_conducted": self.year_conducted
         }
 
 

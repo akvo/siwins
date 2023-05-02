@@ -4,6 +4,12 @@ from itertools import groupby
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from AkvoResponseGrouper.views import get_categories
+from AkvoResponseGrouper.models import Category
+from AkvoResponseGrouper.utils import (
+    transform_categories_to_df,
+    get_counted_category,
+    group_by_category_output,
+)
 from db.crud_data import get_all_data
 
 
@@ -142,3 +148,15 @@ def get_jmp_labels(configs: list, name: str) -> list:
         except KeyError:
             return []
     return labels
+
+
+def get_jmp_school_detail_popup(
+    session: Session,
+    data_id: int
+) -> List[Category]:
+    categories = session.query(Category).filter(
+        Category.data == data_id).all()
+    categories = [c.serialize for c in categories]
+    df = transform_categories_to_df(categories=categories)
+    dt = get_counted_category(df=df)
+    return group_by_category_output(data=dt)

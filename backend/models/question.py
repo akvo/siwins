@@ -22,6 +22,7 @@ class QuestionAttributes(enum.Enum):
     indicator = "indicator"
     advance_filter = "advance_filter"
     generic_bar_chart = "generic_bar_chart"
+    school_detail_popup = "school_detail_popup"
 
 
 class QuestionType(enum.Enum):
