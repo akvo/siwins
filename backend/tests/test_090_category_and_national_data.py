@@ -51,31 +51,60 @@ class TestMigrationCategoryAndNationalData:
             app.url_path_for("charts:get_bar_charts"),
         )
         assert res.status_code == 200
-
         res = res.json()
-        assert res == [
-            {
-                "category": "Hygiene",
-                "form": 647170919,
-                "options": [
-                    {"name": "Basic", "count": 1},
-                ],
-            },
-            {
-                "category": "Sanitation",
-                "form": 647170919,
-                "options": [
-                    {"name": "Limited", "count": 1},
-                ],
-            },
-            {
-                "category": "Water",
-                "form": 647170919,
-                "options": [
-                    {"name": "Limited", "count": 1},
-                ],
-            },
-        ]
+        assert res == [{
+            'category': 'Hygiene',
+            'form': 647170919,
+            'options': [{
+                'name': 'Basic',
+                'color': '#51B453',
+                'count': 1
+            }, {
+                'name': 'Limited',
+                'color': '#fff176',
+                'count': 0
+            }, {
+                'name': 'No Service',
+                'color': '#FEBC11',
+                'count': 0
+            }]
+        }, {
+            'category': 'Sanitation',
+            'form': 647170919,
+            'options': [{
+                'name': 'Basic',
+                'color': '#ab47bc',
+                'count': 0
+            }, {
+                'name': 'Limited',
+                'color': '#fff176',
+                'count': 1
+            }, {
+                'name': 'No Service',
+                'color': '#FEBC11',
+                'count': 0
+            }]
+        }, {
+            'category': 'Water',
+            'form': 647170919,
+            'options': [{
+                'name': 'Safely Managed',
+                'color': '#0080c6',
+                'count': 0
+            }, {
+                'name': 'Basic',
+                'color': '#00b8ec',
+                'count': 0
+            }, {
+                'name': 'Limited',
+                'color': '#fff176',
+                'count': 1
+            }, {
+                'name': 'No Service',
+                'color': '#FEBC11',
+                'count': 0
+            }]
+        }]
 
     @pytest.mark.asyncio
     async def test_get_bar_charts_filter_by_name_route(
@@ -84,17 +113,28 @@ class TestMigrationCategoryAndNationalData:
         api_url = app.url_path_for("charts:get_bar_charts")
         res = await client.get(f"{api_url}?name=Water")
         assert res.status_code == 200
-
         res = res.json()
-        assert res == [
-            {
-                "category": "Water",
-                "form": 647170919,
-                "options": [
-                    {"name": "Limited", "count": 1},
-                ],
-            },
-        ]
+        assert res == [{
+            'category': 'Water',
+            'form': 647170919,
+            'options': [{
+                'name': 'Safely Managed',
+                'color': '#0080c6',
+                'count': 0
+            }, {
+                'name': 'Basic',
+                'color': '#00b8ec',
+                'count': 0
+            }, {
+                'name': 'Limited',
+                'color': '#fff176',
+                'count': 1
+            }, {
+                'name': 'No Service',
+                'color': '#FEBC11',
+                'count': 0
+            }]
+        }]
 
     @pytest.mark.asyncio
     async def test_get_national_data_by_question(
