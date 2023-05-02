@@ -24,15 +24,20 @@ from db.crud_jmp import (
 )
 from db.crud_cascade import get_province_of_school_information
 from db.crud_option import get_option_by_question_id
+from db.crud_question import get_question_by_id
+from db.crud_province_view import (
+    get_province_number_answer, get_province_option_answer
+)
 from middleware import check_query, check_indicator_query
 from models.answer import Answer
+from models.question import QuestionType
 
 
 charts_route = APIRouter()
 
 
 @charts_route.get(
-    "/charts/bar",
+    "/chart/bar",
     response_model=List[GroupedCategory],
     name="charts:get_bar_charts",
     summary="get data to show in bar charts",
@@ -48,12 +53,69 @@ def get_bar_charts(
     ids = [i["id"] for i in lst]
     filters = [Category.data.in_(ids)]
     if name:
-        filters.append(Category.name == name)
+        filters.append(func.lower(Category.name) == name.lower())
     categories = session.query(Category).filter(*filters).all()
     categories = [c.serialize for c in categories]
     df = transform_categories_to_df(categories=categories)
     dt = get_counted_category(df=df)
     return group_by_category_output(data=dt)
+
+
+@charts_route.get(
+    "/chart/national/{question:path}",
+    name="charts:get_national_charts_by_question",
+    summary="show national chart data by question",
+    tags=["Charts"],
+)
+def get_national_chart_data_by_question(
+    req: Request,
+    question: int,
+    session: Session = Depends(get_session),
+):
+    current_question = get_question_by_id(
+        session=session, id=question)
+    if not current_question:
+        raise HTTPException(
+            status_code=404,
+            detail="Question not found"
+        )
+    if current_question.type not in [
+        QuestionType.number,
+        QuestionType.option, QuestionType.multiple_option
+    ]:
+        raise HTTPException(
+            status_code=404,
+            detail="Question type not supported"
+        )
+    qname = current_question.display_name or current_question.name
+    if current_question.type == QuestionType.number:
+        # get number national data
+        res = get_province_number_answer(
+            session=session, question_ids=[question], current=True)
+        total = sum(r.value for r in res)
+        count = sum(r.count for r in res)
+        return {
+            "name": qname,
+            "total": total,
+            "count": count
+        }
+    # get option national data
+    options = get_option_by_question_id(
+        session=session, question=question)
+    options = [o.simplify for o in options]
+    res = get_province_option_answer(
+        session=session, question_ids=[question], current=True)
+    res = [r.serialize for r in res]
+    for opt in options:
+        temps = list(filter(
+            lambda x: (x["value"].lower() == opt["name"].lower()),
+            res
+        ))
+        opt["count"] = sum(t["count"] for t in temps)
+    return {
+        "name": qname,
+        "option": options
+    }
 
 
 @charts_route.get(

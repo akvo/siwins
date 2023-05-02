@@ -15,7 +15,7 @@ pytestmark = pytest.mark.asyncio
 sys.path.append("..")
 
 
-class TestMigrationCategory:
+class TestMigrationCategoryAndNationalData:
     @pytest.mark.asyncio
     async def test_if_views_is_successfully_added(
         self, app: FastAPI, session: Session, client: AsyncClient
@@ -81,3 +81,81 @@ class TestMigrationCategory:
                 ],
             },
         ]
+
+    @pytest.mark.asyncio
+    async def test_get_national_data_by_question(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ):
+        # question not found
+        res = await client.get(
+            app.url_path_for(
+                "charts:get_national_charts_by_question",
+                question=12345
+            )
+        )
+        assert res.status_code == 404
+        # not number, multiple, option question
+        res = await client.get(
+            app.url_path_for(
+                "charts:get_national_charts_by_question",
+                question=638730937
+            )
+        )
+        assert res.status_code == 404
+        # number question
+        res = await client.get(
+            app.url_path_for(
+                "charts:get_national_charts_by_question",
+                question=624670928
+            )
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == {
+            'name': 'No. of classrooms',
+            'total': 13.0,
+            'count': 1
+        }
+        # option question
+        res = await client.get(
+            app.url_path_for(
+                "charts:get_national_charts_by_question",
+                question=624670933
+            )
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == {
+            'name': 'Type of power supply',
+            'option': [{
+                'name': 'Mains Electricity',
+                'order': 1,
+                'color': None,
+                'description': None,
+                'count': 1
+            }, {
+                'name': 'Solar',
+                'order': 2,
+                'color': None,
+                'description': None,
+                'count': 1
+            }, {
+                'name': 'Generator',
+                'order': 3,
+                'color': None,
+                'description': None,
+                'count': 1
+            }, {
+                'name': 'No power supply',
+                'order': 4,
+                'color': None,
+                'description': None,
+                'count': 0
+            }, {
+                'name': "Don't know / can't say",
+                'order': 5,
+                'color': None,
+                'description': None,
+                'count': 0
+            }]
+        }
