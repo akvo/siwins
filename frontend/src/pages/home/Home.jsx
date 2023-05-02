@@ -1,9 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
-import { Col, Row, Button, Image } from "antd";
+import { Col, Row, Button, Image, Card } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
+import { api } from "../../lib";
+import { Chart } from "../../components";
 
+const chartConfig = window.dashboardjson?.tabs;
 const Home = () => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [chartList, setChartList] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    const chartList = chartConfig.find(
+      (item) => item.component === "OVERVIEW-CHARTS"
+    )?.chartList;
+
+    setChartList(chartList);
+
+    const apiCall = chartList?.map((chart) => {
+      const url = `chart/bar?name=${chart?.path}`;
+      return api.get(url);
+    });
+    Promise.all(apiCall).then((res) => {
+      setData(res?.map((item) => item.data).flat());
+      setLoading(false);
+    });
+  }, []);
+
+  const renderColumn = (cfg, index) => {
+    return (
+      <Col key={`col-${index}`} span={cfg?.span} className="chart-card">
+        <Card>
+          <Row className="chart-header" justify="space-between" align="middle">
+            <h3>{cfg?.name}</h3>
+          </Row>
+          <Chart
+            height={300}
+            type="PIE"
+            data={data.find((f) => f.name === cfg?.category)?.options}
+            wrapper={false}
+            rose={false}
+            loading={loading}
+          />
+        </Card>
+      </Col>
+    );
+  };
+
   return (
     <div id="home">
       <section className="home-landing container">
@@ -46,6 +91,14 @@ const Home = () => {
           </Col>
         </Row>
         <Row justify="space-between" align="middle" gutter={[48, 48]}>
+          <Col span={24} align="center">
+            <Row className="flexible-container row-wrapper" gutter={[10, 10]}>
+              {chartList?.map((row, index) => {
+                return renderColumn(row, index);
+              })}
+            </Row>
+          </Col>
+
           <Col span={8} className="icon-group">
             <Image src="/images/icons/wash.png" preview={false} />
             <h3>WASH in Schools</h3>
