@@ -30,6 +30,20 @@ class TestMigrationCategoryAndNationalData:
         assert len(res) > 1
 
     @pytest.mark.asyncio
+    async def test_get_number_of_school(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ):
+        res = await client.get(
+            app.url_path_for("charts:get_number_of_school"),
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == {
+            "name": "Number of schools",
+            "total": 1
+        }
+
+    @pytest.mark.asyncio
     async def test_get_bar_charts_route(
         self, app: FastAPI, session: Session, client: AsyncClient
     ):

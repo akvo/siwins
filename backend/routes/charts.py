@@ -37,6 +37,24 @@ charts_route = APIRouter()
 
 
 @charts_route.get(
+    "/chart/number_of_school",
+    name="charts:get_number_of_school",
+    summary="show total of current schools reported",
+    tags=["Charts"],
+)
+def get_number_of_school(
+    req: Request,
+    session: Session = Depends(get_session),
+):
+    data = get_all_data(
+        session=session, current=True, count=True)
+    return {
+        "name": "Number of schools",
+        "total": data
+    }
+
+
+@charts_route.get(
     "/chart/bar",
     response_model=List[GroupedCategory],
     name="charts:get_bar_charts",

@@ -114,6 +114,7 @@ def get_all_data(
     data_ids: Optional[List[int]] = None,
     prov: Optional[List[str]] = None,
     sctype: Optional[List[str]] = None,
+    count: Optional[bool] = False
 ) -> DataDict:
     data = session.query(Data)
     if registration is not None:
@@ -141,6 +142,8 @@ def get_all_data(
         or_query = or_(
             Data.school_information.contains([v]) for v in sctype)
         data = data.filter(or_query)
+    if count:
+        return data.count()
     data = data.all()
     return data
 
