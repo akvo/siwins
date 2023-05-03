@@ -8,7 +8,7 @@ import CountUp from "react-countup";
 
 const chartConfig = window.dashboardjson?.tabs;
 
-const formatter = (value) => <CountUp end={value} separator="," />;
+const formatter = (value) => <CountUp end={value} duration={3} separator="," />;
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
@@ -108,7 +108,7 @@ const Home = () => {
         <Row justify="space-between" align="middle" gutter={[48, 48]}>
           <Col span={24} style={{ textAlign: "center" }}>
             <Statistic
-              title="Number of schools"
+              title={<h3>Number of schools</h3>}
               value={schoolTotal}
               formatter={formatter}
             />
