@@ -30,7 +30,10 @@ from models.data import MapsData, ChartDataDetail
 from models.data import DataDetailPopup, DataResponse
 from models.answer import Answer
 from models.history import History
-from middleware import check_query, check_indicator_query
+from middleware import (
+    check_query, check_indicator_query,
+    check_jmp_query
+)
 from utils.functions import extract_school_information
 
 security = HTTPBearer()
@@ -107,8 +110,10 @@ def get_maps(
     if "jmp" not in str(indicator):
         answer_data_ids, answer_temp = check_indicator_query(
             session=session, indicator=indicator, number=number)
+    # jmp option/levek filter
+    jmp_query, non_jmp_query = check_jmp_query(q)
     # for advance filter and indicator option filter
-    options = check_query(q) if q else None
+    options = check_query(non_jmp_query) if non_jmp_query else None
     # get the data
     data = get_all_data(
         session=session,
@@ -121,17 +126,20 @@ def get_maps(
     # map answer by identifier for each datapoint
     data_ids = [d.id for d in data]
     data = [d.to_maps for d in data]
+    jmp_name = None
     if "jmp" in str(indicator):
         # get JMP status
-        name = indicator.split("-")[1]
+        jmp_name = indicator.split("-")[1]
         jmp_levels = get_jmp_school_detail_popup(
             session=session, data_ids=data_ids,
-            name=name, raw=True)
+            name=jmp_name, raw=True)
     for d in data:
+        d["jmp_filter"] = None
         data_id = str(d.get('identifier'))
         if "jmp" not in str(indicator):
             d["answer"] = answer_temp.get(data_id) or {}
         if "jmp" in str(indicator):
+            # JMP indicator answer
             find_jmp = next(
                 (
                     x for x in jmp_levels
@@ -145,12 +153,24 @@ def get_maps(
             dt = get_counted_category(df=df)
             jmp_res = group_by_category_output(data=dt)
             level = jmp_res[0].get('options')[0].get('name')
+            d["jmp_filter"] = f"{jmp_name}|{level}"
             d["answer"] = {
                 "question": f"{indicator}_{d['id']}",
                 "value": level
             }
         d["school_information"] = extract_school_information(
             school_information=d["school_information"], to_object=True)
+    # JMP filter: filter data by jmp filter value in jmp_query
+    if "jmp" in str(indicator) and jmp_query:
+        data = list(filter(
+            lambda x: (
+                x["jmp_filter"] and x["jmp_filter"].lower() in jmp_query
+            ),
+            data
+        ))
+        for d in data:
+            # delete jmp filter param
+            del d["jmp_filter"]
     return data
 
 
