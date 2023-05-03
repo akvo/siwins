@@ -266,37 +266,6 @@
           }
         }
       }
-      .data-view {
-        table {
-          border-collapse: separate;
-          border-radius: 2px 2px 0 0;
-          border-spacing: 0;
-          text-align: left;
-          width: 100%;
-          .ant-table-thead {
-            th {
-              background: #fafafa;
-              border-bottom: 1px solid #f0f0f0;
-              color: rgba(0, 0, 0, 0.85);
-              font-weight: 500;
-              position: relative;
-              text-align: left;
-              transition: background 0.3s ease;
-              padding: 8px;
-            }
-          }
-          .ant-table-tbody {
-            td {
-              border-bottom: 1px solid #f0f0f0;
-              transition: background 0.3s;
-              padding: 8px;
-            }
-            tr:nth-child(2n) td {
-              background-color: #faf9fb;
-            }
-          }
-        }
-      }
     }
   }
 }
