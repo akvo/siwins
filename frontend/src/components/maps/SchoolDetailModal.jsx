@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Spin, Tabs, Descriptions, Divider, Timeline } from "antd";
+import {
+  Modal,
+  Spin,
+  Tabs,
+  Descriptions,
+  Divider,
+  Timeline,
+  Row,
+  Col,
+  Switch,
+} from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 import { isEmpty, capitalize, groupBy, orderBy } from "lodash";
 import { api } from "../../lib";
+import { Chart } from "..";
 
 const MainTabContent = ({
   id,
@@ -72,7 +83,63 @@ const MainTabContent = ({
   );
 };
 
-const AnswerTabContent = ({ question_id, question_name, render, value }) => {
+const AnswerTabContent = ({
+  dataId,
+  question_id,
+  question_name,
+  render,
+  value,
+  year,
+  history,
+}) => {
+  const currentChartValues =
+    render === "chart"
+      ? value.map((v) => ({
+          ...v,
+          year: year,
+          history: history,
+          stack: [v],
+          value: v.total,
+          name: v.level,
+        }))
+      : [];
+  const [chartValues, setChartValues] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (showHistory && isEmpty(chartValues)) {
+      setLoading(true);
+      const url = `answer/history/${dataId}?question_id=${question_id}`;
+      api
+        .get(url)
+        .then((res) => {
+          const { data } = res;
+          const transform = data
+            .map((d) => {
+              return d.value.map((v) => ({
+                ...v,
+                year: d.year,
+                history: d.history,
+                stack: [v],
+                value: v.total,
+                name: v.level,
+              }));
+            })
+            .flat();
+          setChartValues(transform);
+        })
+        .catch((e) => console.error(e))
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [showHistory, chartValues, dataId, question_id]);
+
+  const handleOnChangeSwitch = (val) => {
+    setShowHistory(val ? question_id : false);
+  };
+
   // render value
   if (render === "value") {
     return (
@@ -82,7 +149,56 @@ const AnswerTabContent = ({ question_id, question_name, render, value }) => {
     );
   }
   // render chart
-  return "Chart";
+  return (
+    <Descriptions
+      title={
+        <Row aligns="middle" justify="space-between">
+          <Col span={18} style={{ fontSize: "16px" }}>
+            {question_name}
+          </Col>
+          <Col span={6}>
+            <div
+              style={{
+                float: "right",
+                fontWeight: "normal",
+                marginRight: "10px",
+              }}
+            >
+              <Switch
+                size="small"
+                checked={showHistory}
+                onChange={handleOnChangeSwitch}
+              />{" "}
+              Show History
+            </div>
+          </Col>
+        </Row>
+      }
+    >
+      <Descriptions.Item>
+        <Chart
+          height={350}
+          excelFile={"title"}
+          type={"BAR"}
+          dataZoom={false}
+          data={
+            showHistory
+              ? [...currentChartValues, ...chartValues]
+              : currentChartValues
+          }
+          wrapper={false}
+          horizontal={false}
+          showPercent={false}
+          loading={loading}
+          history={showHistory}
+          grid={{
+            top: 70,
+            left: 20,
+          }}
+        />
+      </Descriptions.Item>
+    </Descriptions>
+  );
 };
 
 const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
@@ -102,7 +218,6 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
         .get(url)
         .then((res) => {
           const { data } = res;
-          console.log(data);
           // main information
           const main = [
             {
@@ -116,12 +231,19 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
             return {
               key: `school-detail-tab-${data?.id}-${ai}`,
               label: a.group,
-              children: a.child.map((c, ci) => (
-                <div key={`answer-tab-content-${data.id}-${ai}-${ci}`}>
-                  <AnswerTabContent {...c} />
-                  <Divider />
-                </div>
-              )),
+              children: (
+                <Row align="middle" justify="space-between" gutter={[24, 24]}>
+                  {a.child.map((c, ci) => (
+                    <Col
+                      span={24}
+                      key={`answer-tab-content-${data.id}-${ai}-${ci}`}
+                    >
+                      <AnswerTabContent dataId={data.id} {...c} />
+                      <Divider />
+                    </Col>
+                  ))}
+                </Row>
+              ),
             };
           });
           setTabItems([...main, ...transform]);
@@ -137,7 +259,7 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
       open={!isEmpty(selectedDatapoint)}
       centered
       footer={null}
-      width="700px"
+      width="900px"
       onCancel={() => setSelectedDatapoint({})}
     >
       <div className="school-detail-modal-body">
