@@ -2,7 +2,7 @@
 # Keep the code clean and CLEAR
 
 import enum
-from typing import Optional, List
+from typing import Optional, List, Union
 from typing_extensions import TypedDict
 from pydantic import BaseModel
 from sqlalchemy import Column, ForeignKey, BigInteger
@@ -35,6 +35,7 @@ class QuestionType(enum.Enum):
     geo = "geo"
     cascade = "cascade"
     geoshape = "geoshape"
+    jmp = "jmp"
 
 
 class DependencyDict(TypedDict):
@@ -49,7 +50,7 @@ class QuestionFormatted(TypedDict):
 
 
 class QuestionFormattedWithAttributes(TypedDict):
-    id: int
+    id: Union[int, str]
     name: str
     type: QuestionType
     display_name: Optional[str] = None

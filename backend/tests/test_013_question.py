@@ -45,11 +45,87 @@ class TestQuestionRoutes:
         )
         assert res.status_code == 200
         res = res.json()
+        # JMP category in indicator dropdown
+        assert res[:3] == [{
+            'id': 'jmp-water',
+            'name': 'Water',
+            'type': 'jmp',
+            'display_name': 'Water',
+            'attributes': ['indicator'],
+            'option': [{
+                'name': 'Safely Managed',
+                'order': 1,
+                'color': '#0080c6',
+                'description': None
+            }, {
+                'name': 'Basic',
+                'order': 2,
+                'color': '#00b8ec',
+                'description': None
+            }, {
+                'name': 'Limited',
+                'order': 3,
+                'color': '#fff176',
+                'description': None
+            }, {
+                'name': 'No Service',
+                'order': 4,
+                'color': '#FEBC11',
+                'description': None
+            }],
+            'number': []
+        }, {
+            'id': 'jmp-sanitation',
+            'name': 'Sanitation',
+            'type': 'jmp',
+            'display_name': 'Sanitation',
+            'attributes': ['indicator'],
+            'option': [{
+                'name': 'Basic',
+                'order': 1,
+                'color': '#ab47bc',
+                'description': None
+            }, {
+                'name': 'Limited',
+                'order': 2,
+                'color': '#fff176',
+                'description': None
+            }, {
+                'name': 'No Service',
+                'order': 3,
+                'color': '#FEBC11',
+                'description': None
+            }],
+            'number': []
+        }, {
+            'id': 'jmp-hygiene',
+            'name': 'Hygiene',
+            'type': 'jmp',
+            'display_name': 'Hygiene',
+            'attributes': ['indicator'],
+            'option': [{
+                'name': 'Basic',
+                'order': 1,
+                'color': '#51B453',
+                'description': None
+            }, {
+                'name': 'Limited',
+                'order': 2,
+                'color': '#fff176',
+                'description': None
+            }, {
+                'name': 'No Service',
+                'order': 3,
+                'color': '#FEBC11',
+                'description': None
+            }],
+            'number': []
+        }]
         name = 'In the previous two weeks, was drinking water from the main '
         name += 'source available at the school throughout each school day?'
         display_name = 'Water availability at primary source '
         display_name += 'in previous two weeks'
-        assert res[0] == {
+        assert res[3] == {
             'id': 624660930,
             'name': name,
             "display_name": display_name,
@@ -82,7 +158,7 @@ class TestQuestionRoutes:
         name += 'typically available throughout the school year?'
         display_name = 'Water availability at primary source '
         display_name += 'throughout school year'
-        assert res[1] == {
+        assert res[4] == {
             'id': 624660927,
             'name': name,
             "display_name": display_name,

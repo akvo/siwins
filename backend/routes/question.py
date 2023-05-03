@@ -4,7 +4,12 @@ from fastapi import APIRouter
 from fastapi.security import HTTPBearer
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from db import crud_question
+from db.crud_question import (
+    get_question, get_question_by_attributes
+)
+from db.crud_jmp import (
+    get_jmp_config
+)
 from db.connection import get_session
 from models.question import QuestionFormattedWithAttributes
 from models.question import QuestionAttributes, QuestionType
@@ -29,12 +34,30 @@ def get(
     attribute: Optional[QuestionAttributes] = None,
     session: Session = Depends(get_session)
 ):
+    questions = []
     # collect all question / with attributes
     if not attribute:
-        question = crud_question.get_question(session=session)
+        question = get_question(session=session)
         question = [q.formatted_with_attributes for q in question]
+    if attribute == QuestionAttributes.indicator:
+        jmp_configs = get_jmp_config()
+        for jc in jmp_configs:
+            name = jc.get("name")
+            labels = jc.get("labels")
+            for lbi, lb in enumerate(labels):
+                lb["order"] = lbi + 1
+                lb["description"] = None
+            questions.append({
+                "id": f"jmp-{name.lower() if name else lbi}",
+                "name": name,
+                "type": "jmp",
+                "display_name": name,
+                "attributes": ["indicator"],
+                "option": labels,
+                "number": []
+            })
     if attribute:
-        question = crud_question.get_question_by_attributes(
+        question = get_question_by_attributes(
             session=session, attribute=attribute.value)
         # get answer number values
         number_qids = []
@@ -65,4 +88,4 @@ def get(
                 numbers.append({"value": val, "count": count})
             numbers.sort(key=lambda x: x.get('value'))
             q['number'] = numbers
-    return question
+    return questions + question
