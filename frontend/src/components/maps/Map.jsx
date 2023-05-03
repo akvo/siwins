@@ -219,6 +219,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
                     height={350}
                     excelFile={"title"}
                     type={"PIE"}
+                    showRoseChart={true}
                     data={roseChartValues.map((v) => ({
                       name: v.name,
                       value: v.count,

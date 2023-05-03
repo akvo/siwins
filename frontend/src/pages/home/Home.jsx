@@ -56,7 +56,7 @@ const Home = () => {
             type="PIE"
             data={data.find((f) => f.category === cfg?.path)?.options}
             wrapper={false}
-            rose={false}
+            showRoseChart={false}
             loading={loading}
           />
         </Card>

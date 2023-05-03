@@ -9,7 +9,13 @@ import {
 } from "./common";
 import { isEmpty, sumBy } from "lodash";
 
-const Pie = (data, chartTitle, extra = {}, series = {}) => {
+const Pie = (
+  data,
+  chartTitle,
+  extra = {},
+  series = {},
+  showRoseChart = false
+) => {
   data = !data ? [] : data;
   let labels = [];
   if (data.length > 0) {
@@ -63,6 +69,7 @@ const Pie = (data, chartTitle, extra = {}, series = {}) => {
         name: "main",
         type: "pie",
         avoidLabelOverlap: true,
+        ...(showRoseChart && { roseType: "area" }),
         label: {
           show: true,
           formatter: "{d}%",
