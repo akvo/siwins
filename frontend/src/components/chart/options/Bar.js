@@ -24,16 +24,19 @@ const Bar = (
   horizontal = false,
   grid = {},
   dataZoom,
-  history
+  history,
+  showPercent = true
 ) => {
   if (isEmpty(data) || !data) {
     return NoData;
   }
   // Custom Axis Title
   const { xAxisTitle, yAxisTitle } = axisTitle(extra);
-  const total = sumBy(data, "value");
-  data = sortBy(data, "order");
-  data = data.map((x) => ({ ...x, percentage: (x.value / total) * 100 }));
+  if (showPercent) {
+    const total = sumBy(data, "value");
+    data = sortBy(data, "order");
+    data = data.map((x) => ({ ...x, percentage: (x.value / total) * 100 }));
+  }
   let result = [];
   let labels = data.map((x) => x.name);
   if (history) {
@@ -86,7 +89,7 @@ const Bar = (
     tooltip: {
       show: true,
       trigger: "item",
-      formatter: '<div class="no-border">{b}</div>',
+      // formatter: '<div class="no-border">{b}</div>',
       padding: 5,
       backgroundColor: "#f2f2f2",
       ...TextStyle,
@@ -107,7 +110,11 @@ const Bar = (
         dataView: {
           ...DataView,
           optionToContent: (e) =>
-            optionToContent({ option: e, horizontal: horizontal, suffix: "%" }),
+            optionToContent({
+              option: e,
+              horizontal: horizontal,
+              suffix: showPercent ? "%" : "",
+            }),
         },
         myDownload: {
           show: true,
@@ -158,7 +165,7 @@ const Bar = (
           {
             data: data.map((v, vi) => ({
               name: v.name,
-              value: v.percentage ? v.percentage?.toFixed(2) : v.value,
+              value: showPercent ? v.percentage?.toFixed(2) : v.value,
               count: v.count,
               itemStyle: { color: v.color || Color.color[vi] },
             })),
@@ -173,7 +180,7 @@ const Bar = (
               ...TextStyle,
               color: "#fff",
               formatter: (s) => {
-                return `${s.value} %`;
+                return showPercent ? `${s.value}%` : s.value;
               },
             },
           },

@@ -13,7 +13,8 @@ export const generateOptions = (
   axis,
   grid,
   dataZoom,
-  history
+  history,
+  showPercent
 ) => {
   switch (type) {
     case "BARSTACK":
@@ -23,10 +24,11 @@ export const generateOptions = (
         extra,
         excelFile,
         horizontal,
-        highlighted
+        highlighted,
+        showPercent
       );
     case "PIE":
-      return Pie(data, chartTitle, extra, series);
+      return Pie(data, chartTitle, extra, series, showPercent);
     default:
       return Bar(
         data,
@@ -38,7 +40,8 @@ export const generateOptions = (
         grid,
         dataZoom,
         history,
-        axis
+        axis,
+        showPercent
       );
   }
 };
@@ -84,6 +87,7 @@ const Chart = ({
   dataZoom = {},
   history,
   setValues,
+  showPercent = true,
 }) => {
   const [echartsReactRef, setEchartsReactRef] = useState();
   if (transform) {
@@ -111,7 +115,8 @@ const Chart = ({
     axis,
     grid,
     dataZoom,
-    history
+    history,
+    showPercent
   );
   const onEvents = {
     click: (e) => {

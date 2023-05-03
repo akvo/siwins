@@ -6,7 +6,7 @@ import {
   MapContainer,
   GeoJSON,
   TileLayer,
-  Tooltip,
+  Popup,
   Marker,
   useMap,
 } from "react-leaflet";
@@ -18,9 +18,11 @@ import { api } from "../../lib";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
-import { Chart } from "../";
-import { Card, Spin } from "antd";
+import SchoolDetailModal from "./SchoolDetailModal";
+import { Chart } from "..";
+import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
+import capitalize from "lodash/capitalize";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -42,6 +44,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
     startValue: 0,
     endValue: 100,
   });
+  const [selectedDatapoint, setSelectedDatapoint] = useState({});
 
   useEffect(() => {
     setLoading(true);
@@ -263,17 +266,29 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
                   selectedQuestion={selectedQuestion}
                   searchValue={searchValue}
                   mapData={mapData}
+                  setSelectedDatapoint={setSelectedDatapoint}
                 />
               )}
             </MarkerClusterGroup>
           </MapContainer>
         </div>
       </div>
+      <SchoolDetailModal
+        selectedDatapoint={selectedDatapoint}
+        setSelectedDatapoint={setSelectedDatapoint}
+      />
     </>
   );
 };
 
-const Markers = ({ zoom, data, selectedQuestion, searchValue, mapData }) => {
+const Markers = ({
+  zoom,
+  data,
+  selectedQuestion,
+  searchValue,
+  mapData,
+  setSelectedDatapoint,
+}) => {
   const [hovered, setHovered] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(zoom);
 
@@ -293,9 +308,9 @@ const Markers = ({ zoom, data, selectedQuestion, searchValue, mapData }) => {
   }, [searchValue]);
 
   data = data.filter((d) => d.geo);
-  return data.map(({ id, geo, name, answer }) => {
+  return data.map((d) => {
+    const { id, geo, answer, school_information, year_conducted } = d;
     const isHovered = id === hovered;
-    console.info(isHovered);
     return (
       <Marker
         key={id}
@@ -309,18 +324,45 @@ const Markers = ({ zoom, data, selectedQuestion, searchValue, mapData }) => {
             html: `<span style="background-color:${
               selectedQuestion?.option?.find((f) => f.name === answer?.value)
                 ?.color || "#2EA745"
-            }"/>`,
+            }; border:${isHovered ? "2px solid #fff" : ""};"/>`,
           })
         }
         eventHandlers={{
           mouseover: () => setHovered(id),
           mouseout: () => setHovered(null),
-          click: () => {
-            mapHook.setView(geo, 14);
-          },
+          // click: () => {
+          //   mapHook.setView(geo, 14);
+          // },
         }}
       >
-        <Tooltip direction="top">{name}</Tooltip>
+        <Popup direction="top">
+          <Space direction="vertical">
+            <div>
+              {Object.keys(school_information).map((key) => {
+                const name = key
+                  .split("_")
+                  .map((x) => capitalize(x))
+                  .join(" ");
+                const val = school_information[key];
+                return (
+                  <div key={`popup-${id}-${key}`}>{`${name}: ${val}`}</div>
+                );
+              })}
+              <div key={`popup-${id}-year_conducted`}>
+                Year Conducted: {year_conducted}
+              </div>
+            </div>
+            <Button
+              type="primary"
+              size="small"
+              ghost
+              block
+              onClick={() => setSelectedDatapoint(d)}
+            >
+              View Details
+            </Button>
+          </Space>
+        </Popup>
       </Marker>
     );
   });

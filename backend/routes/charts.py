@@ -81,6 +81,8 @@ def get_bar_charts(
     for r in res:
         labels = get_jmp_labels(configs=configs, name=r.get("category"))
         temp = []
+        for o in r.get("options"):
+            o["color"] = None
         for label in labels:
             find_count = next(
                 (
@@ -92,7 +94,7 @@ def get_bar_charts(
             label["count"] = find_count.get("count") \
                 if find_count else 0
             temp.append(label)
-        r["options"] = temp
+        r["options"] = temp if labels else r["options"]
     return res
 
 
