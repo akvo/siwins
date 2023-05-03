@@ -72,6 +72,19 @@ const MainTabContent = ({
   );
 };
 
+const AnswerTabContent = ({ question_id, question_name, render, value }) => {
+  // render value
+  if (render === "value") {
+    return (
+      <Descriptions title={question_name}>
+        <Descriptions.Item label="Answer">{value}</Descriptions.Item>
+      </Descriptions>
+    );
+  }
+  // render chart
+  return "Chart";
+};
+
 const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(true);
@@ -101,9 +114,14 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
           // group of answer
           const transform = data?.answer.map((a, ai) => {
             return {
-              key: `school-detail-tab-${data?.id}-${ai + 1}`,
+              key: `school-detail-tab-${data?.id}-${ai}`,
               label: a.group,
-              children: "content" + a.group,
+              children: a.child.map((c, ci) => (
+                <div key={`answer-tab-content-${data.id}-${ai}-${ci}`}>
+                  <AnswerTabContent {...c} />
+                  <Divider />
+                </div>
+              )),
             };
           });
           setTabItems([...main, ...transform]);
@@ -119,7 +137,7 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
       open={!isEmpty(selectedDatapoint)}
       centered
       footer={null}
-      width="680px"
+      width="700px"
       onCancel={() => setSelectedDatapoint({})}
     >
       <div className="school-detail-modal-body">
