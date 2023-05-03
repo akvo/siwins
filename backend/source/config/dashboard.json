@@ -43,6 +43,33 @@
           "span": 24
         }
       ]
+    },
+    {
+      "component": "OVERVIEW-CHARTS",
+      "selected": true,
+      "chartList": [
+          {
+            "type": "chart",
+            "title": "Sanitation service levels",
+            "calc": "jmp",
+            "path": "Sanitation",
+            "span": 8
+          },
+          {
+            "type": "chart",
+            "title": "Hygiene service levels",
+            "calc": "jmp",
+            "path": "Hygiene",
+            "span": 8
+          },
+          {
+            "type": "chart",
+            "title": "Water service levels",
+            "calc": "jmp",
+            "path": "Water",
+            "span": 8
+          }
+      ]
     }
   ]
 }

@@ -101,6 +101,34 @@
           margin-bottom: 20px;
         }
       }
+      .chart-card {
+        .ant-card-body {
+          padding: 0;
+          .chart-header {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 8px 12px;
+            h3 {
+              margin-bottom: 0;
+            }
+          }
+          .echarts-for-react {
+            padding-top: 20px;
+          }
+        }
+      }
+      .ant-statistic {
+        text-align: center;
+        .ant-statistic-title {
+          font-weight: 600;
+          color: #000000;
+          font-size: 20px;
+        }
+        .ant-statistic-content-value {
+          span {
+            font-size: 28px;
+          }
+        }
+      }
     }
     .about-section {
       background-color: $bg-grey !important;

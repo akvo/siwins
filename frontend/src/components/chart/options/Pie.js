@@ -5,16 +5,20 @@ import {
   backgroundColor,
   Icons,
   Title,
+  Legend,
 } from "./common";
 import { isEmpty, sumBy } from "lodash";
 
 const Pie = (data, chartTitle, extra = {}, series = {}) => {
   data = !data ? [] : data;
+  let labels = [];
   if (data.length > 0) {
-    data = data.filter((x) => x.value >= 0);
-    const total = sumBy(data, "value");
+    data = data.filter((x) => x.value >= 0 || x.count >= 0);
+    labels = data.map((x) => x.name);
+    const total = sumBy(data, "count");
     data = data.map((x) => ({
       ...x,
+      value: x.count,
       percentage: ((x.value / total) * 100)?.toFixed(0) || 0,
     }));
   }
@@ -58,7 +62,6 @@ const Pie = (data, chartTitle, extra = {}, series = {}) => {
       {
         name: "main",
         type: "pie",
-        roseType: "area",
         avoidLabelOverlap: true,
         label: {
           show: true,
@@ -77,7 +80,12 @@ const Pie = (data, chartTitle, extra = {}, series = {}) => {
         ...rose,
       },
     ],
-    legend: { show: false },
+    legend: {
+      data: labels,
+      ...Legend,
+      top: "top",
+      left: "center",
+    },
     ...Color,
     ...backgroundColor,
     ...Easing,

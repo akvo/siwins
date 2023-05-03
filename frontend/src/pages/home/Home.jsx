@@ -1,9 +1,69 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
-import { Col, Row, Button, Image } from "antd";
+import { Col, Row, Button, Image, Card, Statistic } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
+import { api } from "../../lib";
+import { Chart } from "../../components";
+import CountUp from "react-countup";
+
+const chartConfig = window.dashboardjson?.tabs;
+
+const formatter = (value) => <CountUp end={value} duration={3} separator="," />;
 
 const Home = () => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [chartList, setChartList] = useState([]);
+  const [schoolTotal, setSchoolTotal] = useState(0);
+
+  useEffect(() => {
+    setLoading(true);
+    const chartList = chartConfig.find(
+      (item) => item.component === "OVERVIEW-CHARTS"
+    )?.chartList;
+
+    setChartList(chartList);
+
+    const apiCall = chartList?.map((chart) => {
+      const url = `chart/bar?name=${chart?.path}`;
+      return api.get(url);
+    });
+    Promise.all(apiCall).then((res) => {
+      setData(res?.map((item) => item.data).flat());
+      setLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    const url = `chart/number_of_school`;
+    api
+      .get(url)
+      .then((res) => {
+        setSchoolTotal(res?.data?.total);
+      })
+      .catch((e) => console.error(e));
+  }, []);
+
+  const renderColumn = (cfg, index) => {
+    return (
+      <Col key={`col-${index}`} span={cfg?.span} className="chart-card">
+        <Card>
+          <Row className="chart-header" justify="space-between" align="middle">
+            <h3>{cfg?.title}</h3>
+          </Row>
+          <Chart
+            height={300}
+            type="PIE"
+            data={data.find((f) => f.category === cfg?.path)?.options}
+            wrapper={false}
+            rose={false}
+            loading={loading}
+          />
+        </Card>
+      </Col>
+    );
+  };
+
   return (
     <div id="home">
       <section className="home-landing container">
@@ -46,59 +106,19 @@ const Home = () => {
           </Col>
         </Row>
         <Row justify="space-between" align="middle" gutter={[48, 48]}>
-          <Col span={8} className="icon-group">
-            <Image src="/images/icons/wash.png" preview={false} />
-            <h3>WASH in Schools</h3>
-            <p>
-              Insights into the state of water sanitation and hygiene
-              infrastructure in Solomon Islands with a special focus on the
-              schools
-            </p>
+          <Col span={24} style={{ textAlign: "center" }}>
+            <Statistic
+              title={<h3>Number of schools</h3>}
+              value={schoolTotal}
+              formatter={formatter}
+            />
           </Col>
-          <Col span={8} className="icon-group">
-            <Image src="/images/icons/jmp.png" preview={false} />
-            <h3>JMP Indicators</h3>
-            <p>
-              Insights into the state of water sanitation and hygiene
-              infrastructure in Solomon Islands with a special focus on the
-              schools
-            </p>
-          </Col>
-          <Col span={8} className="icon-group">
-            <Image src="/images/icons/summary.png" preview={false} />
-            <h3>National Summaries</h3>
-            <p>
-              Insights into the state of water sanitation and hygiene
-              infrastructure in Solomon Islands with a special focus on the
-              schools
-            </p>
-          </Col>
-          <Col span={8} className="icon-group">
-            <Image src="/images/icons/access.png" preview={false} />
-            <h3>Access to Clean Water</h3>
-            <p>
-              Insights into the state of water sanitation and hygiene
-              infrastructure in Solomon Islands with a special focus on the
-              schools
-            </p>
-          </Col>
-          <Col span={8} className="icon-group">
-            <Image src="/images/icons/sanitation.png" preview={false} />
-            <h3>Sanitation Coverage</h3>
-            <p>
-              Insights into the state of water sanitation and hygiene
-              infrastructure in Solomon Islands with a special focus on the
-              schools
-            </p>
-          </Col>
-          <Col span={8} className="icon-group">
-            <Image src="/images/icons/hygiene.png" preview={false} />
-            <h3>Hygiene behaviour Change</h3>
-            <p>
-              Insights into the state of water sanitation and hygiene
-              infrastructure in Solomon Islands with a special focus on the
-              schools
-            </p>
+          <Col span={24} align="center">
+            <Row className="flexible-container row-wrapper" gutter={[10, 10]}>
+              {chartList?.map((row, index) => {
+                return renderColumn(row, index);
+              })}
+            </Row>
           </Col>
         </Row>
       </section>
