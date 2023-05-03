@@ -260,6 +260,32 @@ class TestDataRoutes:
                 'value': 12
             }
         }
+        # JMP indicator
+        res = await client.get(
+            app.url_path_for("data:get_maps_data"),
+            params={"indicator": "jmp-water"})
+        assert res.status_code == 200
+        res = res.json()
+        assert res[0] == {
+            'id': 649130936,
+            'identifier': 'eptc-hraw-kkps',
+            'name': 'Untitled',
+            'school_information': {
+                'province': 'Guadalcanal',
+                'school_type': 'Community High School',
+                'school_name': 'AO CHS',
+                'school_code': '21710'
+            },
+            'year_conducted': 2023,
+            'geo': [
+                -51.14834033402119,
+                41.7559732176761
+            ],
+            'answer': {
+                'question': 'jmp-water_649130936',
+                'value': 'Limited'
+            }
+        }
 
     @pytest.mark.asyncio
     async def test_get_chart_data(

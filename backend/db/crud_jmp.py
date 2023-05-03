@@ -2,6 +2,7 @@ import json
 from collections import defaultdict
 from itertools import groupby
 from typing import List, Optional
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from AkvoResponseGrouper.views import get_categories
 from AkvoResponseGrouper.models import Category
@@ -152,11 +153,19 @@ def get_jmp_labels(configs: list, name: str) -> list:
 
 def get_jmp_school_detail_popup(
     session: Session,
-    data_id: int
+    data_ids: List[int],
+    name: Optional[str] = None,
+    raw: Optional[bool] = False
 ) -> List[Category]:
     categories = session.query(Category).filter(
-        Category.data == data_id).all()
+        Category.data.in_(data_ids))
+    if name:
+        categories = categories.filter(
+            func.lower(Category.name) == name.lower())
+    categories = categories.all()
     categories = [c.serialize for c in categories]
+    if raw:
+        return categories
     df = transform_categories_to_df(categories=categories)
     dt = get_counted_category(df=df)
     return group_by_category_output(data=dt)
