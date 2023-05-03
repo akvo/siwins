@@ -18,8 +18,9 @@ import { api } from "../../lib";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
-import { Chart } from "../";
-import { Card, Spin, Button, Space, Modal } from "antd";
+import SchoolDetailModal from "./SchoolDetailModal";
+import { Chart } from "..";
+import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
 import capitalize from "lodash/capitalize";
 
@@ -43,7 +44,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
     startValue: 0,
     endValue: 100,
   });
-  const [selectedDatapoint, setSelectedDatapoint] = useState(null);
+  const [selectedDatapoint, setSelectedDatapoint] = useState({});
 
   useEffect(() => {
     setLoading(true);
@@ -272,18 +273,10 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
           </MapContainer>
         </div>
       </div>
-      <Modal
-        title={selectedDatapoint}
-        open={selectedDatapoint}
-        centered
-        footer={null}
-        width="680px"
-        onCancel={() => setSelectedDatapoint(null)}
-      >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal>
+      <SchoolDetailModal
+        selectedDatapoint={selectedDatapoint}
+        setSelectedDatapoint={setSelectedDatapoint}
+      />
     </>
   );
 };
@@ -315,9 +308,9 @@ const Markers = ({
   }, [searchValue]);
 
   data = data.filter((d) => d.geo);
-  return data.map(({ id, geo, answer, school_information, year_conducted }) => {
+  return data.map((d) => {
+    const { id, geo, answer, school_information, year_conducted } = d;
     const isHovered = id === hovered;
-    console.info(isHovered);
     return (
       <Marker
         key={id}
@@ -331,7 +324,7 @@ const Markers = ({
             html: `<span style="background-color:${
               selectedQuestion?.option?.find((f) => f.name === answer?.value)
                 ?.color || "#2EA745"
-            }"/>`,
+            }; border:${isHovered ? "2px solid #fff" : ""};"/>`,
           })
         }
         eventHandlers={{
@@ -352,10 +345,10 @@ const Markers = ({
                   .join(" ");
                 const val = school_information[key];
                 return (
-                  <div key={`tooltip-${id}-${key}`}>{`${name}: ${val}`}</div>
+                  <div key={`popup-${id}-${key}`}>{`${name}: ${val}`}</div>
                 );
               })}
-              <div key={`tooltip-${id}-year_conducted`}>
+              <div key={`popup-${id}-year_conducted`}>
                 Year Conducted: {year_conducted}
               </div>
             </div>
@@ -364,7 +357,7 @@ const Markers = ({
               size="small"
               ghost
               block
-              onClick={() => setSelectedDatapoint(id)}
+              onClick={() => setSelectedDatapoint(d)}
             >
               View Details
             </Button>
