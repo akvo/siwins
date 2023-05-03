@@ -87,7 +87,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   ]);
 
   useEffect(() => {
-    if (data.length > 0 && selectedQuestion.type === "option") {
+    if (data.length > 0 && ["option", "jmp"].includes(selectedQuestion.type)) {
       let results = Object.values(
         data.reduce((obj, item) => {
           obj[item.answer.value] = obj[item.answer.value] || {
@@ -211,7 +211,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
             setValues={setValuesOfNumber}
             barChartValues={barChartValues}
           />
-          {selectedQuestion.type === "option" && (
+          {["option", "jmp"].includes(selectedQuestion.type) && (
             <Draggable>
               <div className="map-chart-container">
                 <Card>
