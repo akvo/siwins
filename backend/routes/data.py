@@ -312,6 +312,8 @@ def get_data_detail_by_data_id(
             "question_id": da["question_id"],
             "question_name": da["question_name"],
             "render": da["render"],
+            "history": da["history"],
+            "year": da["year"],
             "value": da["value"]
         } for da in temp]
         grouped_answer.append({
