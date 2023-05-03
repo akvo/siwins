@@ -29,7 +29,7 @@ export const generateOptions = (
         showPercent
       );
     case "PIE":
-      return Pie(data, chartTitle, extra, series, showRoseChart);
+      return Pie(data, chartTitle, extra, series, showRoseChart, legend);
     default:
       return Bar(
         data,

@@ -21,8 +21,10 @@ MAP_CENTER = GeoCenter[CLASS_PATH].value
 CHART_CONFIG = f"{FRONTEND_CONFIG_PATH}/charts.js"
 CHART_CONFIG = jsmin(open(CHART_CONFIG).read())
 HINT_CONFIG = f"{FRONTEND_CONFIG_PATH}/indicator-hint.json"
+JMP_HINT_CONFIG = f"{FRONTEND_CONFIG_PATH}/jmp-hint.json"
 JMP_CONFIG = f"{FRONTEND_CONFIG_PATH}/dashboard.json"
 HINT_JSON = open(HINT_CONFIG).read()
+JMP_HINT_JSON = open(JMP_HINT_CONFIG).read()
 DASHBOARD_JSON = open(JMP_CONFIG).read()
 
 MINJS = jsmin(
@@ -41,6 +43,9 @@ MINJS = jsmin(
             ";",
             "var hintjson=",
             HINT_JSON,
+            ";",
+            "var jmphintjson=",
+            JMP_HINT_JSON,
             ";",
             "var dashboardjson=",
             DASHBOARD_JSON,

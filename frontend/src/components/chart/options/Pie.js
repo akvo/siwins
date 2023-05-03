@@ -14,7 +14,8 @@ const Pie = (
   chartTitle,
   extra = {},
   series = {},
-  showRoseChart = false
+  showRoseChart = false,
+  legend
 ) => {
   data = !data ? [] : data;
   let labels = [];
@@ -87,12 +88,14 @@ const Pie = (
         ...rose,
       },
     ],
-    legend: {
-      data: labels,
-      ...Legend,
-      top: "top",
-      left: "center",
-    },
+    ...(legend && {
+      legend: {
+        data: labels,
+        ...Legend,
+        top: "top",
+        left: "center",
+      },
+    }),
     ...Color,
     ...backgroundColor,
     ...Easing,

@@ -57,6 +57,7 @@ const Home = () => {
             data={data.find((f) => f.category === cfg?.path)?.options}
             wrapper={false}
             showRoseChart={false}
+            legend={true}
             loading={loading}
           />
         </Card>
