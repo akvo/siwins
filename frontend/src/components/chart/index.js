@@ -41,7 +41,6 @@ export const generateOptions = (
         grid,
         dataZoom,
         history,
-        axis,
         showPercent
       );
   }

@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [barChartData, setBarChartData] = useState([]);
   const [data, setData] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
+  const [chartTitle, setChartTitle] = useState("");
 
   useEffect(() => {
     const chartList = chartConfig
@@ -57,6 +58,11 @@ const Dashboard = () => {
   };
 
   const handleOnChangeQuestionDropdown = (val) => {
+    const find = barChartQuestions.find((f) => f.id === val);
+    const chartTitleTemp = `This chart shows the distribution of  {question|${
+      find?.display_name ? find?.display_name : find?.name
+    }}`;
+    setChartTitle(chartTitleTemp);
     if (val) {
       const url = `chart/generic-bar/${val}`;
       api
@@ -126,19 +132,22 @@ const Dashboard = () => {
                   >
                     <Col span={24}>
                       <Chart
-                        height={50 * barChartData?.data.length + 188}
+                        height={550}
                         type={"BAR"}
                         dataZoom={false}
-                        data={barChartData?.data.map((v) => ({
-                          name: v.name,
-                          value: v.value,
-                          count: v.value,
-                        }))}
+                        data={barChartData?.data
+                          .filter((h) => !h.history)
+                          .map((v) => ({
+                            name: v.name,
+                            value: v.value,
+                            count: v.value,
+                          }))}
                         wrapper={false}
                         horizontal={false}
+                        showPercent={true}
+                        title={chartTitle}
                         grid={{
                           top: 70,
-                          left: 20,
                         }}
                       />
                     </Col>
