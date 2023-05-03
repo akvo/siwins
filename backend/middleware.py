@@ -9,6 +9,19 @@ from sqlalchemy.orm import Session
 query_pattern = re.compile(r"[0-9]*\|(.*)")
 
 
+def check_jmp_query(keywords):
+    jmp_query = []
+    non_jmp_query = []
+    if not keywords:
+        return jmp_query, non_jmp_query
+    for q in keywords:
+        if "jmp" not in q:
+            non_jmp_query.append(q)
+            continue
+        jmp_query.append(q.split("-")[1].lower())
+    return jmp_query, non_jmp_query
+
+
 def check_query(keywords):
     keys = []
     if not keywords:

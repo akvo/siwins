@@ -152,7 +152,7 @@ const RenderQuestionOption = ({
 
   const hint = hints.find((f) => f.question_id === selectedQuestion.id)?.hint;
 
-  if (selectedQuestion?.type === "option") {
+  if (["option", "jmp"].includes(selectedQuestion?.type)) {
     return (
       <Space direction="vertical">
         <MultipleOptionToRender

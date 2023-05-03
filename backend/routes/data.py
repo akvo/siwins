@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.security import HTTPBearer
 
 # from fastapi.security import HTTPBasicCredentials as credentials
-from typing import List, Optional
+from typing import List, Optional, Union
 from sqlalchemy.orm import Session
 from db.connection import get_session
 from db.crud_data import (
@@ -21,11 +21,19 @@ from db.crud_jmp import (
     get_jmp_config,
     get_jmp_labels
 )
+from AkvoResponseGrouper.utils import (
+    transform_categories_to_df,
+    get_counted_category,
+    group_by_category_output,
+)
 from models.data import MapsData, ChartDataDetail
 from models.data import DataDetailPopup, DataResponse
 from models.answer import Answer
 from models.history import History
-from middleware import check_query, check_indicator_query
+from middleware import (
+    check_query, check_indicator_query,
+    check_jmp_query
+)
 from utils.functions import extract_school_information
 
 security = HTTPBearer()
@@ -81,8 +89,8 @@ def get_paginated_data(
 def get_maps(
     req: Request,
     session: Session = Depends(get_session),
-    indicator: int = Query(
-        None, description="indicator is a question id"),
+    indicator: Union[int, str] = Query(
+        None, description="indicator is a question id or JMP category"),
     q: Optional[List[str]] = Query(
         None, description="format: question_id|option value \
             (indicator option & advance filter)"),
@@ -97,10 +105,15 @@ def get_maps(
     # credentials: credentials = Depends(security)
 ):
     # check indicator query
-    answer_data_ids, answer_temp = check_indicator_query(
-        session=session, indicator=indicator, number=number)
+    answer_data_ids = None
+    answer_temp = {}
+    if "jmp" not in str(indicator):
+        answer_data_ids, answer_temp = check_indicator_query(
+            session=session, indicator=indicator, number=number)
+    # jmp option/levek filter
+    jmp_query, non_jmp_query = check_jmp_query(q)
     # for advance filter and indicator option filter
-    options = check_query(q) if q else None
+    options = check_query(non_jmp_query) if non_jmp_query else None
     # get the data
     data = get_all_data(
         session=session,
@@ -111,12 +124,53 @@ def get_maps(
         sctype=sctype
     )
     # map answer by identifier for each datapoint
+    data_ids = [d.id for d in data]
     data = [d.to_maps for d in data]
+    jmp_name = None
+    if "jmp" in str(indicator):
+        # get JMP status
+        jmp_name = indicator.split("-")[1]
+        jmp_levels = get_jmp_school_detail_popup(
+            session=session, data_ids=data_ids,
+            name=jmp_name, raw=True)
     for d in data:
+        d["jmp_filter"] = None
         data_id = str(d.get('identifier'))
-        d["answer"] = answer_temp.get(data_id) or {}
+        if "jmp" not in str(indicator):
+            d["answer"] = answer_temp.get(data_id) or {}
+        if "jmp" in str(indicator):
+            # JMP indicator answer
+            find_jmp = next(
+                (
+                    x for x in jmp_levels
+                    if x["data"] == d["id"]
+                ),
+                None
+            )
+            if not find_jmp:
+                continue
+            df = transform_categories_to_df(categories=[find_jmp])
+            dt = get_counted_category(df=df)
+            jmp_res = group_by_category_output(data=dt)
+            level = jmp_res[0].get('options')[0].get('name')
+            d["jmp_filter"] = f"{jmp_name}|{level}"
+            d["answer"] = {
+                "question": f"{indicator}_{d['id']}",
+                "value": level
+            }
         d["school_information"] = extract_school_information(
             school_information=d["school_information"], to_object=True)
+    # JMP filter: filter data by jmp filter value in jmp_query
+    if "jmp" in str(indicator) and jmp_query:
+        data = list(filter(
+            lambda x: (
+                x["jmp_filter"] and x["jmp_filter"].lower() in jmp_query
+            ),
+            data
+        ))
+        for d in data:
+            # delete jmp filter param
+            del d["jmp_filter"]
     return data
 
 
@@ -205,7 +259,7 @@ def get_data_detail_by_data_id(
     histories += [hd.get_data_id_and_year_conducted for hd in history_data]
     for h in histories:
         jmp_check = get_jmp_school_detail_popup(
-            session=session, data_id=h.get('id'))
+            session=session, data_ids=[h.get('id')])
         for lev in jmp_check:
             category = lev.get('category')
             level = lev.get('options')[0].get('name')
