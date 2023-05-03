@@ -91,30 +91,31 @@ truncate_datapoint(session=session)
 
 
 def generate_school_information():
-    cascade_answers = []
+    check = True
+    res = []
     cascade_levels = CascadeLevels.school_information.value
     prev_choice = None
-    for name, level in cascade_levels.items():
-        if level == 0:
-            prev_choice = random.choice(
-                school_information_value)
+    while check:
+        cascade_answers = []
+        for name, level in cascade_levels.items():
+            if level == 0:
+                prev_choice = random.choice(
+                    school_information_value)
+                cascade_answers.append(prev_choice)
+                continue
+            child = crud_cascade.get_cascade_by_parent(
+                session=session,
+                parent=prev_choice.id,
+                level=level)
+            prev_choice = random.choice(child)
             cascade_answers.append(prev_choice)
-            continue
-        child = crud_cascade.get_cascade_by_parent(
+        res = [c.name for c in cascade_answers]
+        # check if that school exist in same year
+        check = crud_data.get_data_by_school(
             session=session,
-            parent=prev_choice.id,
-            level=level)
-        prev_choice = random.choice(child)
-        cascade_answers.append(prev_choice)
-    cascade_answers = [c.name for c in cascade_answers]
-    # check if that school exist in same year
-    check = crud_data.get_data_by_school(
-        session=session,
-        schools=cascade_answers)
-    if check:
-        return generate_school_information()
-    # EOL check if that school exist in same year
-    return cascade_answers
+            schools=res)
+        # EOL check if that school exist in same year
+    return res
 
 
 def seed_fake_datapoint(
