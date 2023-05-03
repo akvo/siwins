@@ -305,6 +305,8 @@ const Markers = ({
     );
     if (findCordinates?.geo) {
       mapHook.setView(findCordinates?.geo, 14);
+    } else {
+      mapHook.setView(defCenter, 7);
     }
   }, [searchValue]);
 
