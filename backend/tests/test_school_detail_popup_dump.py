@@ -325,32 +325,38 @@ res_school_detail_popup = {
         "year": 2023,
         "history": False,
         "category": "Hygiene",
-        "level": "Basic"
+        "level": "Basic",
+        "color": "#51B453",
     }, {
         "year": 2023,
         "history": False,
         "category": "Sanitation",
-        "level": "Limited"
+        "level": "Limited",
+        "color": "#fff176",
     }, {
         "year": 2023,
         "history": False,
         "category": "Water",
-        "level": "Limited"
+        "level": "Limited",
+        "color": "#fff176",
     }, {
         "year": 2018,
         "history": True,
         "category": "Hygiene",
-        "level": "Basic"
+        "level": "Basic",
+        "color": "#51B453",
     }, {
         "year": 2018,
         "history": True,
         "category": "Sanitation",
         "level": "No Service",
+        "color": "#FEBC11",
     }, {
         "year": 2018,
         "history": True,
         "category": "Water",
-        "level": "Safely Managed"
+        "level": "Safely Managed",
+        "color": "#0080c6",
     }, ],
     "answer": answer_temp
 }

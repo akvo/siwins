@@ -17,7 +17,9 @@ from db.crud_province_view import (
     get_province_number_answer
 )
 from db.crud_jmp import (
-    get_jmp_school_detail_popup
+    get_jmp_school_detail_popup,
+    get_jmp_config,
+    get_jmp_labels
 )
 from models.data import MapsData, ChartDataDetail
 from models.data import DataDetailPopup, DataResponse
@@ -197,6 +199,7 @@ def get_data_detail_by_data_id(
         schools=data.school_information,
         year_conducted=data.year_conducted)
     # get JMP status
+    configs = get_jmp_config()
     jmp_levels = []
     histories = [data.get_data_id_and_year_conducted]
     histories += [hd.get_data_id_and_year_conducted for hd in history_data]
@@ -206,11 +209,21 @@ def get_data_detail_by_data_id(
         for lev in jmp_check:
             category = lev.get('category')
             level = lev.get('options')[0].get('name')
+            labels = get_jmp_labels(configs=configs, name=category)
+            find_label = next(
+                (
+                    x for x in labels
+                    if x["name"].lower() == level.lower()
+                ),
+                None
+            )
+            color = find_label.get('color') if find_label else None
             jmp_levels.append({
                 'year': h.get('year_conducted'),
                 'history': h.get('history'),
                 'category': category,
-                'level': level
+                'level': level,
+                'color': color
             })
     # start generate school detail popup
     data = data.to_school_detail_popup
