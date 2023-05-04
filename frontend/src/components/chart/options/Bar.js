@@ -180,7 +180,7 @@ const Bar = (
               ...TextStyle,
               color: "#fff",
               formatter: (s) => {
-                return showPercent ? `${s.value}%` : s.value;
+                return showPercent ? `${s.data.count} (${s.value} %)` : s.value;
               },
             },
           },

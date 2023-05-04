@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Row, Col, Select } from "antd";
+import { Row, Col, Select, Breadcrumb } from "antd";
 import { Map } from "../../components";
 import AdvanceFilter from "../../components/filter";
 import { UIState } from "../../state/ui";
+import { SearchOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 function Maps() {
   const [data, setData] = useState([]);
@@ -42,7 +44,7 @@ function Maps() {
 
   return (
     <div id="map">
-      <Row>
+      <Row justify="space-between" align="middle">
         <Col span={24}>
           <AdvanceFilter
             provinceValues={provinceValues}
@@ -51,6 +53,19 @@ function Maps() {
             handleProvinceFilter={handleProvinceFilter}
             selectedProvince={selectedProvince}
             selectedSchoolType={selectedSchoolType}
+            prefix={
+              <Col>
+                <Breadcrumb>
+                  <Breadcrumb.Item>
+                    <Link to="/">Home</Link>
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item>
+                    <Link to="/dashboard">Dashboard</Link>
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item>Maps</Breadcrumb.Item>
+                </Breadcrumb>
+              </Col>
+            }
           >
             <Select
               open={open}
@@ -60,7 +75,6 @@ function Maps() {
               value={value ? value : null}
               placeholder="Search School"
               defaultActiveFirstOption={false}
-              showArrow={false}
               filterOption={false}
               onSearch={handleSearch}
               notFoundContent={null}
@@ -68,6 +82,7 @@ function Maps() {
                 value: d[2],
                 label: d[2],
               }))}
+              suffixIcon={<SearchOutlined />}
               dropdownMatchSelectWidth={false}
               popupClassName="search-popup"
               onClear={() => setValue("")}

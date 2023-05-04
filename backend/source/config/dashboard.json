@@ -7,14 +7,14 @@
         [
           {
             "type": "chart",
-            "title": "Sanitation service levels",
+            "title": "Service level for sanitation in schools",
             "calc": "jmp",
             "path": "Sanitation",
             "span": 12
           },
           {
             "type": "chart",
-            "title": "Hygiene service levels",
+            "title": "Service level for Hygiene in schools",
             "calc": "jmp",
             "path": "Hygiene",
             "span": 12
@@ -23,7 +23,7 @@
         [
           {
             "type": "chart",
-            "title": "Water service levels",
+            "title": "Service level for drinking water in schools",
             "calc": "jmp",
             "path": "Water",
             "span": 24
@@ -50,21 +50,21 @@
       "chartList": [
           {
             "type": "chart",
-            "title": "Sanitation service levels",
+            "title": "Service level for sanitation in schools",
             "calc": "jmp",
             "path": "Sanitation",
             "span": 8
           },
           {
             "type": "chart",
-            "title": "Hygiene service levels",
+            "title": "Service level for Hygiene in schools",
             "calc": "jmp",
             "path": "Hygiene",
             "span": 8
           },
           {
             "type": "chart",
-            "title": "Water service levels",
+            "title": "Service level for drinking water in schools",
             "calc": "jmp",
             "path": "Water",
             "span": 8

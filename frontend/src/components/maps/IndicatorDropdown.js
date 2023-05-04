@@ -5,6 +5,7 @@ import { isEmpty, sortBy, groupBy } from "lodash";
 import { Chart } from "../";
 
 const hints = window.hintjson;
+const jmpHints = window.jmphintjson;
 
 const IndicatorDropdown = ({
   indicatorQuestion,
@@ -71,6 +72,7 @@ const RenderQuestionOption = ({
   barChartValues,
 }) => {
   const [showInfo, setShowInfo] = useState(false);
+  const [value, setValue] = useState("");
 
   const MultipleOptionToRender = ({ option }) => {
     return sortBy(option, "order").map((opt) => (
@@ -95,9 +97,11 @@ const RenderQuestionOption = ({
           handleOnChangeQuestionOption(opt.name, selectedQuestion?.type)
         }
         onMouseEnter={() => {
+          setValue(opt.name);
           setShowInfo(true);
         }}
         onMouseLeave={() => {
+          setValue("");
           setShowInfo(false);
         }}
       >
@@ -161,7 +165,13 @@ const RenderQuestionOption = ({
     return <NumberOptionToRender option={selectedQuestion.number} />;
   }
 
-  const hint = hints.find((f) => f.question_id === selectedQuestion.id)?.hint;
+  const hint = hints.find(
+    (f) =>
+      f.question_id === selectedQuestion.id && selectedQuestion?.type !== "jmp"
+  )?.hint;
+  const jmpHint = jmpHints
+    .find((f) => f.name === selectedQuestion.name)
+    ?.labels?.find((h) => h.name === value)?.hint;
 
   if (["option", "jmp"].includes(selectedQuestion?.type)) {
     return (
@@ -170,16 +180,14 @@ const RenderQuestionOption = ({
           option={selectedQuestion.option}
           questionId={selectedQuestion.id}
         />
-        {showInfo && hint && (
+        {showInfo && (hint || jmpHint) && (
           <div className="option-info-container">
-            <Alert message={hint} type="info" showIcon />
+            <Alert message={hint ? hint : jmpHint} type="info" showIcon />
           </div>
         )}
       </Space>
     );
   }
-
-  return <div>tes</div>;
 };
 
 export default IndicatorDropdown;

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Select } from "antd";
+import { Row, Col, Select, Breadcrumb } from "antd";
 import { api } from "../../lib";
 import { UIState } from "../../state/ui";
 import ChartVisual from "./components/ChartVisual";
 import { Chart } from "../../components";
 import AdvanceFilter from "../../components/filter";
 import { generateAdvanceFilterURL } from "../../util/utils";
+import { Link } from "react-router-dom";
 
 const chartConfig = window.dashboardjson?.tabs;
 
@@ -17,6 +18,7 @@ const Dashboard = () => {
   const [barChartData, setBarChartData] = useState([]);
   const [data, setData] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
+  const [chartTitle, setChartTitle] = useState("");
 
   useEffect(() => {
     const chartList = chartConfig
@@ -57,6 +59,11 @@ const Dashboard = () => {
   };
 
   const handleOnChangeQuestionDropdown = (val) => {
+    const find = barChartQuestions.find((f) => f.id === val);
+    const chartTitleTemp = `This chart shows the distribution of  {question|${
+      find?.display_name ? find?.display_name : find?.name
+    }}`;
+    setChartTitle(chartTitleTemp);
     if (val) {
       const url = `chart/generic-bar/${val}`;
       api
@@ -74,7 +81,24 @@ const Dashboard = () => {
     <div id="dashboard">
       <Row className="main-wrapper" align="center">
         <Col span={24} style={{ marginBottom: 20 }}>
-          <AdvanceFilter provinceValues={false} schoolTypeValues={false} />
+          <Row justify="space-between" align="middle">
+            <Col span={24}>
+              <AdvanceFilter
+                prefix={
+                  <Col>
+                    <Breadcrumb>
+                      <Breadcrumb.Item>
+                        <Link to="/">Home</Link>
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
+                    </Breadcrumb>
+                  </Col>
+                }
+                provinceValues={false}
+                schoolTypeValues={false}
+              />
+            </Col>
+          </Row>
         </Col>
         <Col span={24} align="center">
           {chartList?.map((row, index) => {
@@ -126,19 +150,22 @@ const Dashboard = () => {
                   >
                     <Col span={24}>
                       <Chart
-                        height={50 * barChartData?.data.length + 188}
+                        height={550}
                         type={"BAR"}
                         dataZoom={false}
-                        data={barChartData?.data.map((v) => ({
-                          name: v.name,
-                          value: v.value,
-                          count: v.value,
-                        }))}
+                        data={barChartData?.data
+                          .filter((h) => !h.history)
+                          .map((v) => ({
+                            name: v.name,
+                            value: v.value,
+                            count: v.value,
+                          }))}
                         wrapper={false}
                         horizontal={false}
+                        showPercent={true}
+                        title={chartTitle}
                         grid={{
                           top: 70,
-                          left: 20,
                         }}
                       />
                     </Col>

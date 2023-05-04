@@ -121,11 +121,11 @@ const ChartVisual = ({ chartConfig }) => {
           <h3>{title}</h3>
           <Space align="center">
             <div>
-              <span>Show By Country </span>
+              <span>Show By Province </span>
               <Switch size="small" checked={isStack} onChange={setIsStack} />
             </div>
             <div>
-              <span>History </span>
+              <span>Show History </span>
               <Switch
                 size="small"
                 checked={showHistory}

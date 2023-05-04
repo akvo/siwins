@@ -1,0 +1,57 @@
+[
+  {
+    "name": "Water",
+    "labels": [
+      {
+        "name": "Safely Managed",
+        "hint": "School has an improved water source (water is protected from the outside environment), and water is available at the school on the day of the survey and  is free from feacal contamination"
+      },
+      {
+        "name": "Basic",
+        "hint": "School has an improved water source (water is protected from the outside environment), and water is available at the school on the day of the survey"
+      },
+      {
+        "name": "Limited",
+        "hint": "School has an improved water source (water is protected from the outside environment), and/or the source is shared,  and/or far away from the school, and/or water is not available at the school on the day of the survey"
+      },
+      {
+        "name": "No Service",
+        "hint": "School has no water source or has an Unimproved” (water is not protected from the outside environment) source"
+      }
+    ]
+  },
+  {
+    "name": "Sanitation",
+    "labels": [
+      {
+        "name": "Basic",
+        "hint": "School has an 'improved toilet' i.e. sanitation facility that is hygienically separates human excreta from human contact, and toilets are sex separated, and available (doors are unlocked or a key is available at all times), functional  (not broken, hole is not blocked, and water is available for flush/pour-flush toilets), and private (there are closable doors that lock from the inside and no large gaps in the structure) on the day of the survey"
+      },
+      {
+        "name": "Limited",
+        "hint": "School has an 'improved toilet' i.e. sanitation facility that is hygienically separates human excreta from human contact, and /or toilets are sex separated, and/or toilets are available (doors are unlocked or a key is available at all times), functional  (not broken, hole is not blocked, and water is available for flush/pour-flush toilets), and private (there are closable doors that lock from the inside and no large gaps in the structure) on the day of the survey"
+      },
+      {
+        "name": "No Service",
+        "hint": "School has no or “Unimproved” facilities or any other facility where human excreta is not separated from human contact."
+      }
+    ]
+  },
+  {
+    "name": "Hygiene",
+    "labels": [
+      {
+        "name": "Basic",
+        "hint": "School has handwashing facilities i.e. any device or infrastructure that enables students to wash their hands effectively using running water, and both water and soap are available at the handwashing facilities on the day of the questionnaire or survey."
+      },
+      {
+        "name": "Limited",
+        "hint": "School has an 'improved toilet' i.e. sanitation facility that is hygienically separates human excreta from human contact, and /or toilets are sex separated, and/or toilets are available (doors are unlocked or a key is available at all times), functional  (not broken, hole is not blocked, and water is available for flush/pour-flush toilets), and private (there are closable doors that lock from the inside and no large gaps in the structure) on the day of the survey"
+      },
+      {
+        "name": "No Service",
+        "hint": "There are no handwashing facilities at the school"
+      }
+    ]
+  }
+]

@@ -14,7 +14,8 @@ export const generateOptions = (
   grid,
   dataZoom,
   history,
-  showPercent
+  showPercent,
+  showRoseChart
 ) => {
   switch (type) {
     case "BARSTACK":
@@ -28,7 +29,7 @@ export const generateOptions = (
         showPercent
       );
     case "PIE":
-      return Pie(data, chartTitle, extra, series, showPercent);
+      return Pie(data, chartTitle, extra, series, showRoseChart, legend);
     default:
       return Bar(
         data,
@@ -40,7 +41,6 @@ export const generateOptions = (
         grid,
         dataZoom,
         history,
-        axis,
         showPercent
       );
   }
@@ -88,6 +88,7 @@ const Chart = ({
   history,
   setValues,
   showPercent = true,
+  showRoseChart = false,
 }) => {
   const [echartsReactRef, setEchartsReactRef] = useState();
   if (transform) {
@@ -116,7 +117,8 @@ const Chart = ({
     grid,
     dataZoom,
     history,
-    showPercent
+    showPercent,
+    showRoseChart
   );
   const onEvents = {
     click: (e) => {

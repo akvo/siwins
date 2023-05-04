@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Image, Layout, Menu } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 import "./style.scss";
 import { ReactComponent as MapsIcon } from "../../images/icons/maps.svg";
 import { ReactComponent as DashboardIcon } from "../../images/icons/dashboard.svg";
@@ -25,7 +25,7 @@ const items = [
 
 const DashboardView = () => {
   const location = useLocation();
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
     Promise.all([
@@ -54,34 +54,50 @@ const DashboardView = () => {
 
   return (
     <Layout className="dashboard-layout">
-      <Sider width={300} trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo-container">
-          {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            {
-              className: "trigger",
-              onClick: () => setCollapsed(!collapsed),
-            }
-          )}
-          <Image src="/images/dashboard-logo.png" preview={false} />
+      <Header
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+          width: "100%",
+        }}
+      >
+        <div className="logo">
+          <Image
+            src="/images/dashboard-logo.png"
+            preview={false}
+            height={40}
+            width={40}
+          />
         </div>
-        <Menu
-          defaultSelectedKeys={[
-            items.find((item) => item.link === location.pathname).key,
-          ]}
-          mode="inline"
-          className="menu"
-        >
-          {items.map((item) => (
-            <Menu.Item key={item.key}>
-              <div>{item.icon}</div>
-              <span>{item.label}</span>
-              <Link to={item.link} />
-            </Menu.Item>
-          ))}
-        </Menu>
-      </Sider>
+      </Header>
       <Layout className="site-layout">
+        <Sider trigger={null} collapsible collapsed={collapsed}>
+          <div className="logo-container">
+            {React.createElement(
+              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+              {
+                className: "trigger",
+                onClick: () => setCollapsed(!collapsed),
+              }
+            )}
+          </div>
+          <Menu
+            defaultSelectedKeys={[
+              items.find((item) => item.link === location.pathname).key,
+            ]}
+            mode="inline"
+            className="menu"
+          >
+            {items.map((item) => (
+              <Menu.Item key={item.key}>
+                <div>{item.icon}</div>
+                <span>{item.label}</span>
+                <Link to={item.link} />
+              </Menu.Item>
+            ))}
+          </Menu>
+        </Sider>
         <Content className="dashboard-content">
           <Routes>
             <Route exact path="/" element={<Dashboard />} />
