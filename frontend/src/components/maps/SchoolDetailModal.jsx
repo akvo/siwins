@@ -9,8 +9,10 @@ import {
   Row,
   Col,
   Switch,
+  Carousel,
+  Image,
 } from "antd";
-import { HomeOutlined } from "@ant-design/icons";
+import { HomeOutlined, CameraOutlined } from "@ant-design/icons";
 import { isEmpty, capitalize, groupBy, orderBy } from "lodash";
 import { api } from "../../lib";
 import { Chart } from "..";
@@ -201,6 +203,49 @@ const AnswerTabContent = ({
   );
 };
 
+const ImageContent = ({ child }) => {
+  return (
+    <Carousel autoplay dotPosition="bottom" effect="fade">
+      {child.map((c) => {
+        return (
+          <div
+            key={`answer-tab-content-image-${c.question_id}`}
+            style={{
+              margin: 0,
+              width: "100%",
+              position: "relative",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                background: "#000",
+                opacity: 0.55,
+                width: "100%",
+                position: "absolute",
+                top: 0,
+                padding: 8,
+                color: "#fff",
+                zIndex: 1,
+              }}
+            >
+              {c.question_name}
+            </div>
+            <Image
+              width="100%"
+              height={410}
+              style={{ objectFit: "cover" }}
+              src={c.value}
+              alt={c.question_name}
+            />
+          </div>
+        );
+      })}
+    </Carousel>
+  );
+};
+
 const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(true);
@@ -228,9 +273,18 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
           ];
           // group of answer
           const transform = data?.answer.map((a, ai) => {
+            const isImage = a.group.toLowerCase() === "images";
+            const label = isImage ? <CameraOutlined /> : a.group;
+            if (isImage) {
+              return {
+                key: `school-detail-tab-${data?.id}-${ai}`,
+                label: label,
+                children: <ImageContent {...a} />,
+              };
+            }
             return {
               key: `school-detail-tab-${data?.id}-${ai}`,
-              label: a.group,
+              label: label,
               children: (
                 <Row align="middle" justify="space-between" gutter={[24, 24]}>
                   {a.child.map((c, ci) => (
