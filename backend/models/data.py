@@ -4,18 +4,25 @@
 from datetime import datetime
 from typing_extensions import TypedDict
 from typing import Optional, List, Union
-from pydantic import BaseModel
-from pydantic import confloat
-from sqlalchemy import Column, Float, String, Boolean, Integer
-from sqlalchemy import ForeignKey, DateTime, BigInteger
+from pydantic import BaseModel, confloat
+from sqlalchemy import (
+    Column, Float, String, Boolean, Integer,
+    ForeignKey, DateTime, BigInteger
+)
 import sqlalchemy.dialects.postgresql as pg
 from sqlalchemy.orm import relationship
 from db.connection import Base
 from models.answer import Answer, AnswerDict
-from models.answer import AnswerBase, MonitoringAnswerDict, AnswerDictWithText
+from models.answer import (
+    AnswerBase, MonitoringAnswerDict,
+    AnswerDictWithText
+)
 from models.form import Form
 from models.history import History
-from models.question import QuestionAttributes
+from models.question import (
+    QuestionAttributes,
+    QuestionType
+)
 
 
 class GeoData(BaseModel):
@@ -200,7 +207,15 @@ class Data(Base):
         answers = [a.to_school_detail_popup for a in self.answer]
         answers = list(filter(
             lambda x: (
-                x.get("attributes") and answer_filter in x.get("attributes")
+                (
+                    x.get(
+                        "attributes"
+                    ) and answer_filter in x.get(
+                        "attributes"
+                    )
+                ) or x.get(
+                    "type"
+                ) == QuestionType.photo.value
             ),
             answers
         ))
