@@ -85,6 +85,7 @@ const RenderQuestionOption = ({
             ? opt.color
             : "#1677ff",
         }}
+        className={`${selectedOption.includes(opt.name) ? "selected" : ""}`}
         type="primary"
         icon={
           selectedOption.includes(opt.name) ? (
