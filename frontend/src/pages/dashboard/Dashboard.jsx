@@ -6,6 +6,7 @@ import ChartVisual from "./components/ChartVisual";
 import { Chart } from "../../components";
 import AdvanceFilter from "../../components/filter";
 import { generateAdvanceFilterURL } from "../../util/utils";
+import { Link } from "react-router-dom";
 
 const chartConfig = window.dashboardjson?.tabs;
 
@@ -83,7 +84,9 @@ const Dashboard = () => {
           <Row justify="space-between" align="middle">
             <Col>
               <Breadcrumb>
-                <Breadcrumb.Item>Home</Breadcrumb.Item>
+                <Breadcrumb.Item>
+                  <Link to="/">Home</Link>
+                </Breadcrumb.Item>
                 <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
               </Breadcrumb>
             </Col>

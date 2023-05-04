@@ -3,6 +3,8 @@ import { Row, Col, Select, Breadcrumb } from "antd";
 import { Map } from "../../components";
 import AdvanceFilter from "../../components/filter";
 import { UIState } from "../../state/ui";
+import { SearchOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 function Maps() {
   const [data, setData] = useState([]);
@@ -45,8 +47,12 @@ function Maps() {
       <Row justify="space-between" align="middle">
         <Col>
           <Breadcrumb>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Link to="/">Home</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Link to="/dashboard">Dashboard</Link>
+            </Breadcrumb.Item>
             <Breadcrumb.Item>Maps</Breadcrumb.Item>
           </Breadcrumb>
         </Col>
@@ -67,7 +73,6 @@ function Maps() {
               value={value ? value : null}
               placeholder="Search School"
               defaultActiveFirstOption={false}
-              showArrow={false}
               filterOption={false}
               onSearch={handleSearch}
               notFoundContent={null}
@@ -75,6 +80,7 @@ function Maps() {
                 value: d[2],
                 label: d[2],
               }))}
+              suffixIcon={<SearchOutlined />}
               dropdownMatchSelectWidth={false}
               popupClassName="search-popup"
               onClear={() => setValue("")}
