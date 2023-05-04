@@ -117,7 +117,7 @@ const Dashboard = () => {
       <Row className="bar-chart-wrapper" align="center">
         <Col span={24} align="center">
           <div className="header-container">
-            <h3>Bar Chart for Any Indicator</h3>
+            <h3>Bar Chart for Indicator</h3>
           </div>
         </Col>
         <Col span={24} align="center">
