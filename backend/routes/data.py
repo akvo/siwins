@@ -134,6 +134,8 @@ def get_maps(
             session=session, data_ids=data_ids,
             name=jmp_name, raw=True)
     for d in data:
+        d["school_information"] = extract_school_information(
+            school_information=d["school_information"], to_object=True)
         d["jmp_filter"] = None
         data_id = str(d.get('identifier'))
         if "jmp" not in str(indicator):
@@ -158,8 +160,6 @@ def get_maps(
                 "question": f"{indicator}_{d['id']}",
                 "value": level
             }
-        d["school_information"] = extract_school_information(
-            school_information=d["school_information"], to_object=True)
     # JMP filter: filter data by jmp filter value in jmp_query
     if "jmp" in str(indicator) and jmp_query:
         data = list(filter(

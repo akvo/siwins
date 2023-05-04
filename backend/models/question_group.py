@@ -16,6 +16,7 @@ class QuestionGroupDict(TypedDict):
     form: int
     name: str
     order: Optional[int] = None
+    display_name: Optional[str] = None
     description: Optional[str] = None
     repeatable: Optional[bool] = False
 
@@ -25,6 +26,7 @@ class QuestionGroup(Base):
     id = Column(BigInteger, primary_key=True, index=True, nullable=True)
     form = Column(BigInteger, ForeignKey("form.id"))
     name = Column(String)
+    display_name = Column(String, nullable=True)
     order = Column(Integer, nullable=True)
     description = Column(Text, nullable=True)
     repeatable = Column(Boolean, nullable=True)
@@ -42,6 +44,7 @@ class QuestionGroup(Base):
         name: str,
         form: form,
         order: order,
+        display_name: Optional[str] = None,
         description: Optional[str] = None,
         repeatable: Optional[bool] = False,
     ):
@@ -49,6 +52,7 @@ class QuestionGroup(Base):
         self.name = name
         self.form = form
         self.order = order
+        self.display_name = display_name
         self.description = description
         self.repeatable = repeatable
 
@@ -63,6 +67,7 @@ class QuestionGroup(Base):
             "question": self.question,
             "name": self.name,
             "order": self.order,
+            "display_name": self.display_name,
             "description": self.description,
             "repeatable": self.repeatable,
         }
@@ -73,6 +78,7 @@ class QuestionGroupBase(BaseModel):
     form: int
     name: str
     order: Optional[int] = None
+    display_name: Optional[str] = None
     description: Optional[str] = None
     repeatable: Optional[bool] = False
     question: List[QuestionBase]

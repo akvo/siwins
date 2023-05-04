@@ -43,7 +43,9 @@ def group_children(p, data_source, labels, year_conducted):
     if not labels:
         labels = list(set([x['category'] for x in data]))
         labels.sort()
-        labels = [{'name': x, 'color': None} for x in labels]
+        labels = [
+            {'name': x, 'color': None, 'order': 0}
+            for x in labels]
     # end of labels
     for lb in labels:
         label = lb["name"]
@@ -54,7 +56,8 @@ def group_children(p, data_source, labels, year_conducted):
                 "option": label,
                 "count": count,
                 "percent": percent,
-                "color": lb["color"],
+                "color": lb.get("color") or None,
+                "order": lb.get("order") or None,
             }
         )
     return {

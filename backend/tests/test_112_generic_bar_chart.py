@@ -180,14 +180,14 @@ class TestGenericBarChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        name = 'In the previous two weeks, was drinking water from the main '
-        name += 'source available at the school throughout each school day?'
+        # name = 'In the previous two weeks, was drinking water from the main '
+        # name += 'source available at the school throughout each school day?'
         display_name = 'Water availability at primary source '
         display_name += 'in previous two weeks'
         assert res[0] == {
             'id': 624660930,
-            'name': name,
-            "display_name": display_name,
+            'group': 'Water Availability',
+            'name': display_name,
             "type": "option",
             'attributes': [
                 'indicator',

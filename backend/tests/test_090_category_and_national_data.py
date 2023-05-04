@@ -58,14 +58,17 @@ class TestMigrationCategoryAndNationalData:
             'options': [{
                 'name': 'Basic',
                 'color': '#51B453',
+                'order': 1,
                 'count': 1
             }, {
                 'name': 'Limited',
                 'color': '#fff176',
+                'order': 2,
                 'count': 0
             }, {
                 'name': 'No Service',
                 'color': '#FEBC11',
+                'order': 3,
                 'count': 0
             }]
         }, {
@@ -74,14 +77,17 @@ class TestMigrationCategoryAndNationalData:
             'options': [{
                 'name': 'Basic',
                 'color': '#ab47bc',
+                'order': 1,
                 'count': 0
             }, {
                 'name': 'Limited',
                 'color': '#fff176',
+                'order': 2,
                 'count': 1
             }, {
                 'name': 'No Service',
                 'color': '#FEBC11',
+                'order': 3,
                 'count': 0
             }]
         }, {
@@ -90,18 +96,22 @@ class TestMigrationCategoryAndNationalData:
             'options': [{
                 'name': 'Safely Managed',
                 'color': '#0080c6',
+                'order': 1,
                 'count': 0
             }, {
                 'name': 'Basic',
                 'color': '#00b8ec',
+                'order': 2,
                 'count': 0
             }, {
                 'name': 'Limited',
                 'color': '#fff176',
+                'order': 3,
                 'count': 1
             }, {
                 'name': 'No Service',
                 'color': '#FEBC11',
+                'order': 4,
                 'count': 0
             }]
         }]
@@ -120,18 +130,22 @@ class TestMigrationCategoryAndNationalData:
             'options': [{
                 'name': 'Safely Managed',
                 'color': '#0080c6',
+                'order': 1,
                 'count': 0
             }, {
                 'name': 'Basic',
                 'color': '#00b8ec',
+                'order': 2,
                 'count': 0
             }, {
                 'name': 'Limited',
                 'color': '#fff176',
+                'order': 3,
                 'count': 1
             }, {
                 'name': 'No Service',
                 'color': '#FEBC11',
+                'order': 4,
                 'count': 0
             }]
         }]

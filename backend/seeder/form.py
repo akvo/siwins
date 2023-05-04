@@ -51,6 +51,7 @@ def form_seeder(session: Session, forms: List[dict]):
                 session=session,
                 name=qg.get("heading"),
                 form=form.id,
+                display_name=qg.get("displayName") or None,
                 description=qg.get("description"),
                 repeatable=True if qg.get("repeatable") else False,
             )

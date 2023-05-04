@@ -9,18 +9,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -35,18 +38,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -61,18 +67,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -87,18 +96,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -113,18 +125,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -139,18 +154,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 1,
                     "percent": 100.0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -165,18 +183,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -191,18 +212,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -217,18 +241,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -243,18 +270,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -269,18 +299,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -295,18 +328,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -321,18 +357,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -347,18 +386,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -373,18 +415,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -399,18 +444,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 1,
                     "percent": 100.0,
                     "color": "#FEBC11",
@@ -425,18 +473,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -451,18 +502,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -477,18 +531,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -503,18 +560,21 @@ res_jmp_no_fiter = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -536,18 +596,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -562,18 +625,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -588,18 +654,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -614,18 +683,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -640,18 +712,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -666,18 +741,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 1,
                     "percent": 100.0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -692,18 +770,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -718,18 +799,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -744,18 +828,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -770,18 +857,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -796,18 +886,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -822,18 +915,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -848,18 +944,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -874,18 +973,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -900,18 +1002,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -926,18 +1031,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 1,
                     "percent": 100.0,
                     "color": "#FEBC11",
@@ -952,18 +1060,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -978,18 +1089,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1004,18 +1118,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1030,18 +1147,21 @@ res_jmp_filtered = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1063,18 +1183,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1089,18 +1212,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1115,18 +1241,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1141,18 +1270,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1167,18 +1299,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1193,18 +1328,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1219,18 +1357,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1245,18 +1386,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1271,18 +1415,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1297,18 +1444,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1323,18 +1473,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1349,18 +1502,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1375,18 +1531,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1401,18 +1560,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1427,18 +1589,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1453,18 +1618,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11",
@@ -1479,18 +1647,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1505,18 +1676,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1531,18 +1705,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
@@ -1557,18 +1734,21 @@ res_jmp_filter_by_prov_sc_type = {
             "child": [
                 {
                     "option": "Basic",
+                    "order": 1,
                     "count": 0,
                     "percent": 0,
                     "color": "#ab47bc"
                 },
                 {
                     "option": "Limited",
+                    "order": 2,
                     "count": 0,
                     "percent": 0,
                     "color": "#fff176"
                 },
                 {
                     "option": "No Service",
+                    "order": 3,
                     "count": 0,
                     "percent": 0,
                     "color": "#FEBC11"
