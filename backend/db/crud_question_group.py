@@ -24,6 +24,7 @@ def add_question_group(
     name: str,
     id: Optional[int] = None,
     order: Optional[int] = None,
+    display_name: Optional[str] = None,
     description: Optional[str] = None,
     repeatable: Optional[bool] = False,
 ) -> QuestionGroupDict:
@@ -33,6 +34,7 @@ def add_question_group(
         name=name,
         form=form,
         order=order if order else last_question_group,
+        display_name=display_name,
         description=description,
         repeatable=repeatable,
     )

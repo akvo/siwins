@@ -16,6 +16,7 @@ class QuestionGroupDict(TypedDict):
     form: int
     name: str
     order: Optional[int] = None
+    display_name: Optional[str] = None
     description: Optional[str] = None
     repeatable: Optional[bool] = False
 
@@ -66,6 +67,7 @@ class QuestionGroup(Base):
             "question": self.question,
             "name": self.name,
             "order": self.order,
+            "display_name": self.display_name,
             "description": self.description,
             "repeatable": self.repeatable,
         }
