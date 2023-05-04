@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import "./style.scss";
 import "leaflet/dist/leaflet.css";
 import {
@@ -22,7 +22,7 @@ import SchoolDetailModal from "./SchoolDetailModal";
 import { Chart } from "..";
 import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
-import capitalize from "lodash/capitalize";
+import { isEmpty, capitalize, intersection } from "lodash";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -46,6 +46,35 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   });
   const [selectedDatapoint, setSelectedDatapoint] = useState({});
 
+  const filteredData = useMemo(() => {
+    if (isEmpty(selectedQuestion)) {
+      return [];
+    }
+    const { type, option, number } = selectedQuestion;
+    if (["jmp", "option"].includes(type)) {
+      const optionNames = option.map((o) => o.name);
+      const allOptionSelected =
+        intersection(optionNames, selectedOption).length === option.length;
+      if (allOptionSelected) {
+        return [];
+      }
+      return data.filter((d) => !selectedOption.includes(d.answer.value));
+    }
+  }, [selectedQuestion, selectedOption, data, mapData]);
+  console.log(filteredData);
+
+  useEffect(() => {
+    UIState.update((s) => {
+      s.mapData = filteredData.map((d) => {
+        const school_information_array = Object.values(d.school_information);
+        return {
+          ...d,
+          school_information_array: school_information_array,
+        };
+      });
+    });
+  }, [filteredData]);
+
   useEffect(() => {
     setLoading(true);
     let url = `data/maps`;
@@ -65,17 +94,6 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
       .get(url)
       .then((res) => {
         setData(res.data);
-        UIState.update((s) => {
-          s.mapData = res.data.map((d) => {
-            const school_information_array = Object.values(
-              d.school_information
-            );
-            return {
-              ...d,
-              school_information_array: school_information_array,
-            };
-          });
-        });
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
@@ -129,7 +147,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
       newArray = [...selectedOption, value];
       setSelectedOption(newArray);
     }
-    filterIndicatorOption(newArray);
+    // filterIndicatorOption(newArray);
   };
 
   const updateGlobalState = (value, type) => {
@@ -261,7 +279,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
               {!loading && (
                 <Markers
                   zoom={defZoom}
-                  data={data}
+                  data={filteredData}
                   selectedQuestion={selectedQuestion}
                   searchValue={searchValue}
                   mapData={mapData}
