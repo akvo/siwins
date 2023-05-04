@@ -312,8 +312,8 @@ def get_data_detail_by_data_id(
         if da["type"] == QuestionType.photo.value:
             # handle photo question to be one group
             da["question_group_id"] = 0
-            da["question_group_name"] = "photos"
-            da["render"] = "photo"
+            da["question_group_name"] = "Images"
+            da["render"] = "image"
             continue
         if da["type"] != QuestionType.number.value:
             da["render"] = "value"
