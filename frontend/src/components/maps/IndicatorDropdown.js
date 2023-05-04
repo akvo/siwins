@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Select, Row, Col, Space, Button, Card, Alert } from "antd";
 import { CloseCircleFilled, CheckCircleFilled } from "@ant-design/icons";
-import isEmpty from "lodash/isEmpty";
-import sortBy from "lodash/sortBy";
+import { isEmpty, sortBy, groupBy } from "lodash";
 import { Chart } from "../";
 
 const hints = window.hintjson;
@@ -16,6 +15,21 @@ const IndicatorDropdown = ({
   setValues,
   barChartValues,
 }) => {
+  const indicatorDropdownOptions = useMemo(() => {
+    const grouped = groupBy(indicatorQuestion, "group");
+    return Object.keys(grouped).map((key) => {
+      const val = grouped[key];
+      return {
+        key: key.toLowerCase().split(" ").join("-"),
+        label: key,
+        options: val.map((v) => ({
+          label: v?.display_name ? v?.display_name : v.name,
+          value: v.id,
+        })),
+      };
+    });
+  }, [indicatorQuestion]);
+
   return (
     <div className="indicator-dropdown-container">
       <Row>
@@ -29,10 +43,7 @@ const IndicatorDropdown = ({
             filterOption={(input, option) =>
               (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
             }
-            options={indicatorQuestion?.map((q) => ({
-              label: q?.display_name ? q?.display_name : q.name,
-              value: q.id,
-            }))}
+            options={indicatorDropdownOptions}
             onChange={(val) => handleOnChangeQuestionDropdown(val)}
           />
           {!isEmpty(selectedQuestion) && (
