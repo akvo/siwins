@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Row, Col, Select } from "antd";
+import { Row, Col, Select, Breadcrumb } from "antd";
+import { Link } from "react-router-dom";
 import { Map } from "../../components";
 import AdvanceFilter from "../../components/filter";
 import { UIState } from "../../state/ui";
@@ -42,8 +43,15 @@ function Maps() {
 
   return (
     <div id="map">
-      <Row>
-        <Col span={24}>
+      <Row justify="space-between" align="middle">
+        <Col>
+          <Breadcrumb>
+            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
+            <Breadcrumb.Item>Maps</Breadcrumb.Item>
+          </Breadcrumb>
+        </Col>
+        <Col>
           <AdvanceFilter
             provinceValues={provinceValues}
             schoolTypeValues={schoolTypeValues}

@@ -35,7 +35,6 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   const baseMap = tileOSM;
   const map = useRef();
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
   const [selectedRoseChartValue, setSelectedRoseChartValue] = useState("");
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
@@ -64,7 +63,6 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
     api
       .get(url)
       .then((res) => {
-        setData(res.data);
         UIState.update((s) => {
           s.mapData = res.data.map((d) => {
             const school_information_array = Object.values(
@@ -87,9 +85,12 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   ]);
 
   useEffect(() => {
-    if (data.length > 0 && ["option", "jmp"].includes(selectedQuestion.type)) {
+    if (
+      mapData.length > 0 &&
+      ["option", "jmp"].includes(selectedQuestion.type)
+    ) {
       let results = Object.values(
-        data.reduce((obj, item) => {
+        mapData.reduce((obj, item) => {
           obj[item.answer.value] = obj[item.answer.value] || {
             name: item.answer.value,
             color: selectedQuestion?.option?.find(
@@ -110,7 +111,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
       });
       setRoseChartValues(results);
     }
-  }, [data]);
+  }, [mapData]);
 
   // Indicator filter functions
   const handleOnChangeQuestionDropdown = (id) => {
@@ -269,7 +270,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
               {!loading && (
                 <Markers
                   zoom={defZoom}
-                  data={data}
+                  data={mapData}
                   selectedQuestion={selectedQuestion}
                   searchValue={searchValue}
                   mapData={mapData}

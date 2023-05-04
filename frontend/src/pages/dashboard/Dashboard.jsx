@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Select } from "antd";
+import { Row, Col, Select, Breadcrumb } from "antd";
 import { api } from "../../lib";
 import { UIState } from "../../state/ui";
 import ChartVisual from "./components/ChartVisual";
@@ -80,7 +80,17 @@ const Dashboard = () => {
     <div id="dashboard">
       <Row className="main-wrapper" align="center">
         <Col span={24} style={{ marginBottom: 20 }}>
-          <AdvanceFilter provinceValues={false} schoolTypeValues={false} />
+          <Row justify="space-between" align="middle">
+            <Col>
+              <Breadcrumb>
+                <Breadcrumb.Item>Home</Breadcrumb.Item>
+                <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
+              </Breadcrumb>
+            </Col>
+            <Col>
+              <AdvanceFilter provinceValues={false} schoolTypeValues={false} />
+            </Col>
+          </Row>
         </Col>
         <Col span={24} align="center">
           {chartList?.map((row, index) => {
