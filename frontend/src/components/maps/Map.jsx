@@ -114,11 +114,10 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
 
   // Indicator filter functions
   const handleOnChangeQuestionDropdown = (id) => {
+    setSelectedOption([]);
+    updateGlobalState([], "option");
     const filterQuestion = indicatorQuestions.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
-    if (!id) {
-      updateGlobalState([], "option");
-    }
   };
 
   const handleOnChangeQuestionOption = (value) => {
