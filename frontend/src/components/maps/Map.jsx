@@ -256,6 +256,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
                       count: v.count,
                       color: v.color,
                     }))}
+                    showRoseChart={true}
                     wrapper={false}
                     horizontal={false}
                     callbacks={{ onClick: chartClick }}
