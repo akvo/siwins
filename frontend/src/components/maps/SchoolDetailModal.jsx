@@ -24,17 +24,16 @@ const MainTabContent = ({
   jmp_levels,
 }) => {
   const keyName = "school-detail-modal-main-";
-
   // school information
-  const School = () =>
-    Object.keys(school_information).map((key) => {
-      const name = key
-        .split("_")
-        .map((x) => capitalize(x))
-        .join(" ");
-      const val = school_information[key];
-      return <div key={`${keyName}-${id}-${key}`}>{`${name}: ${val}`}</div>;
-    });
+  const School = () => {
+    return (
+      <>
+        <div>{`School: ${school_information?.["school_name"]}(${school_information?.["school_code"]})`}</div>
+        <div>{`School Type: ${school_information?.["school_type"]}`}</div>
+        <div>{`Province: ${school_information?.["province"]}`}</div>
+      </>
+    );
+  };
 
   // JMP Level
   const JMPLevel = () => {
@@ -74,7 +73,7 @@ const MainTabContent = ({
       <div className="main-school-information">
         <School />
         <div key={`${keyName}-${id}-year_conducted`}>
-          Year Conducted: {year_conducted}
+          Last updated: {year_conducted}
         </div>
       </div>
       <Divider />
