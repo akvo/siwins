@@ -40,14 +40,15 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
   const [roseChartValues, setRoseChartValues] = useState([]);
-  const [barChartValues, setBarChartValues] = useState({
+  const barChartDefValues = {
     startValue: 0,
     endValue: 100,
-  });
+  };
+  const [barChartValues, setBarChartValues] = useState(barChartDefValues);
   const [selectedDatapoint, setSelectedDatapoint] = useState({});
 
   const filteredData = useMemo(() => {
-    if (isEmpty(selectedQuestion) || isEmpty(data)) {
+    if (isEmpty(data)) {
       return [];
     }
     const { type, option } = selectedQuestion;
@@ -145,7 +146,9 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   // Indicator filter functions
   const handleOnChangeQuestionDropdown = (id) => {
     setSelectedOption([]);
+    setBarChartValues(barChartDefValues);
     updateGlobalState([], "option");
+    updateGlobalState([], "number");
     const filterQuestion = indicatorQuestions.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
   };
