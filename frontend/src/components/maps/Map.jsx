@@ -246,6 +246,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
             <Draggable>
               <div className="map-chart-container">
                 <Card>
+                  <h5>{selectedQuestion?.name}</h5>
                   <Chart
                     height={350}
                     excelFile={"title"}
