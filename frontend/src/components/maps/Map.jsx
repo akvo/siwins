@@ -115,10 +115,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   ]);
 
   useEffect(() => {
-    if (
-      mapData.length > 0 &&
-      ["option", "jmp"].includes(selectedQuestion.type)
-    ) {
+    if (["option", "jmp"].includes(selectedQuestion.type)) {
       let results = Object.values(
         mapData.reduce((obj, item) => {
           obj[item.answer.value] = obj[item.answer.value] || {
