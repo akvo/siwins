@@ -101,7 +101,6 @@
       }
     }
     .dashboard-content {
-      padding: 20px 30px;
       background-color: #f5f5f5;
       #map,
       #dashboard {
@@ -126,20 +125,13 @@
         }
 
         .map-wrapper {
-          margin-top: 20px;
           background: rgba(69, 173, 217, 0.15) 0% 0% no-repeat padding-box;
-          border: 1px solid rgba(69, 173, 217, 0.15);
-          border-radius: 10px;
+          margin-top: 20px;
+          padding-right: 10px;
         }
         .map-container {
           width: 100% !important;
           height: 87vh !important;
-          filter: drop-shadow(4px 4px 12px rgba(0, 0, 0, 0.1));
-          border-radius: 10px;
-        }
-        .leaflet-container {
-          filter: drop-shadow(4px 4px 12px rgba(0, 0, 0, 0.1));
-          border-radius: 10px;
         }
 
         .loading-wrapper {
@@ -190,6 +182,7 @@
         }
         .advance-search-container {
           width: 100%;
+          padding: 20px 30px 0px 30px;
           .align-right {
             margin-left: auto;
             display: flex;
