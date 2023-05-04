@@ -45,18 +45,7 @@ function Maps() {
   return (
     <div id="map">
       <Row justify="space-between" align="middle">
-        <Col>
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <Link to="/">Home</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <Link to="/dashboard">Dashboard</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Maps</Breadcrumb.Item>
-          </Breadcrumb>
-        </Col>
-        <Col>
+        <Col span={24}>
           <AdvanceFilter
             provinceValues={provinceValues}
             schoolTypeValues={schoolTypeValues}
@@ -64,6 +53,19 @@ function Maps() {
             handleProvinceFilter={handleProvinceFilter}
             selectedProvince={selectedProvince}
             selectedSchoolType={selectedSchoolType}
+            prefix={
+              <Col>
+                <Breadcrumb>
+                  <Breadcrumb.Item>
+                    <Link to="/">Home</Link>
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item>
+                    <Link to="/dashboard">Dashboard</Link>
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item>Maps</Breadcrumb.Item>
+                </Breadcrumb>
+              </Col>
+            }
           >
             <Select
               open={open}

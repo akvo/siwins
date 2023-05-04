@@ -17,7 +17,11 @@ import sortBy from "lodash/sortBy";
 import ProvinceFilter from "../maps/ProvinceFilter";
 
 function AdvanceFilter({
-  customStyle = {},
+  customStyle = {
+    backgroundColor: "#fff",
+    borderRadius: "4px",
+    padding: "24px",
+  },
   provinceValues,
   schoolTypeValues,
   handleProvinceFilter,
@@ -25,6 +29,7 @@ function AdvanceFilter({
   selectedProvince,
   selectedSchoolType,
   children,
+  prefix,
 }) {
   const { advanceSearchValue, advanceFilterQuestions } = UIState.useState(
     (s) => s
@@ -61,8 +66,13 @@ function AdvanceFilter({
 
   return (
     <div>
-      <Row className="advance-search-container">
-        <Col span={24}>
+      <Row
+        justify="space-between"
+        align="middle"
+        className="advance-search-container"
+      >
+        {prefix}
+        <Col className="align-right">
           <Space
             direction="horizontal"
             size="small"

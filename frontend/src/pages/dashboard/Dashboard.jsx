@@ -82,16 +82,21 @@ const Dashboard = () => {
       <Row className="main-wrapper" align="center">
         <Col span={24} style={{ marginBottom: 20 }}>
           <Row justify="space-between" align="middle">
-            <Col>
-              <Breadcrumb>
-                <Breadcrumb.Item>
-                  <Link to="/">Home</Link>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-              </Breadcrumb>
-            </Col>
-            <Col>
-              <AdvanceFilter provinceValues={false} schoolTypeValues={false} />
+            <Col span={24}>
+              <AdvanceFilter
+                prefix={
+                  <Col>
+                    <Breadcrumb>
+                      <Breadcrumb.Item>
+                        <Link to="/">Home</Link>
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
+                    </Breadcrumb>
+                  </Col>
+                }
+                provinceValues={false}
+                schoolTypeValues={false}
+              />
             </Col>
           </Row>
         </Col>

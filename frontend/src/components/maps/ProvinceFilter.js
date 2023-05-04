@@ -1,6 +1,5 @@
 import React from "react";
 import { Space, Select } from "antd";
-import { ArrowDownOutlined, DownOutlined } from "@ant-design/icons";
 
 const ProvinceFilter = ({
   provinceValues,
