@@ -11,7 +11,7 @@ import {
   Switch,
 } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
-import { isEmpty, capitalize, groupBy, orderBy } from "lodash";
+import { isEmpty, groupBy, orderBy } from "lodash";
 import { api } from "../../lib";
 import { Chart } from "..";
 
@@ -143,7 +143,7 @@ const AnswerTabContent = ({
   if (render === "value") {
     return (
       <Descriptions title={question_name}>
-        <Descriptions.Item label="Answer">{value}</Descriptions.Item>
+        <Descriptions.Item>{value}</Descriptions.Item>
       </Descriptions>
     );
   }
@@ -231,11 +231,12 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
               key: `school-detail-tab-${data?.id}-${ai}`,
               label: a.group,
               children: (
-                <Row align="middle" justify="space-between" gutter={[24, 24]}>
+                <Row align="middle" justify="space-between" gutter={[8, 8]}>
                   {a.child.map((c, ci) => (
                     <Col
                       span={24}
                       key={`answer-tab-content-${data.id}-${ai}-${ci}`}
+                      className="school-description"
                     >
                       <AnswerTabContent dataId={data.id} {...c} />
                       <Divider />

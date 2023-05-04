@@ -213,4 +213,12 @@
     height: calc(100vh - 500px);
     padding: 10px 20px;
   }
+  .school-description {
+    .ant-descriptions-header {
+      margin-bottom: 0px;
+    }
+    .ant-divider {
+      margin: 10px 0;
+    }
+  }
 }
