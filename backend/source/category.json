@@ -5,18 +5,22 @@
     "labels": [
       {
         "name": "Safely Managed",
+        "order": 1,
         "color": "#0080c6"
       },
       {
         "name": "Basic",
+        "order": 2,
         "color": "#00b8ec"
       },
       {
         "name": "Limited",
+        "order": 3,
         "color": "#fff176"
       },
       {
         "name": "No Service",
+        "order": 4,
         "color": "#FEBC11"
       }
     ],
@@ -124,14 +128,17 @@
     "labels": [
       {
         "name": "Basic",
+        "order": 1,
         "color": "#ab47bc"
       },
       {
         "name": "Limited",
+        "order": 2,
         "color": "#fff176"
       },
       {
         "name": "No Service",
+        "order": 3,
         "color": "#FEBC11"
       }
     ],
@@ -241,14 +248,17 @@
     "labels": [
       {
         "name": "Basic",
+        "order": 1,
         "color": "#51B453"
       },
       {
         "name": "Limited",
+        "order": 2,
         "color": "#fff176"
       },
       {
         "name": "No Service",
+        "order": 3,
         "color": "#FEBC11"
       }
     ],
