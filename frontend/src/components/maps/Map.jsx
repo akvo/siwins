@@ -22,7 +22,7 @@ import SchoolDetailModal from "./SchoolDetailModal";
 import { Chart } from "..";
 import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
-import { isEmpty, capitalize, intersection } from "lodash";
+import { isEmpty, intersection } from "lodash";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
