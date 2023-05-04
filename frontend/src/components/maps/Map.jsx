@@ -90,14 +90,16 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
     let url = `data/maps`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
     const urlParams = new URLSearchParams(url);
-    const queryUrlPrefix = url.includes("?") ? "&" : "?";
     if (selectedQuestion?.id && !urlParams.get("indicator")) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
       url = `${url}${queryUrlPrefix}indicator=${selectedQuestion?.id}`;
     }
     if (selectedProvince && selectedProvince.length > 0) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
       url = `${url}${queryUrlPrefix}prov=${selectedProvince}`;
     }
     if (selectedSchoolType && selectedSchoolType.length > 0) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
       url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
     }
     api
