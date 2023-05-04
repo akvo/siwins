@@ -49,9 +49,9 @@ def get(
                 lb["description"] = None
             questions.append({
                 "id": f"jmp-{name.lower() if name else lbi}",
+                "group": "JMP Indicator",
                 "name": name,
                 "type": "jmp",
-                "display_name": name,
                 "attributes": ["indicator"],
                 "option": labels,
                 "number": []
