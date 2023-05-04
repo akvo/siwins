@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import "./style.scss";
 import "leaflet/dist/leaflet.css";
 import {
@@ -22,7 +22,7 @@ import SchoolDetailModal from "./SchoolDetailModal";
 import { Chart } from "..";
 import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
-import capitalize from "lodash/capitalize";
+import { isEmpty, capitalize, intersection } from "lodash";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -40,11 +40,50 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
   const [roseChartValues, setRoseChartValues] = useState([]);
-  const [barChartValues, setBarChartValues] = useState({
+  const barChartDefValues = {
     startValue: 0,
     endValue: 100,
-  });
+  };
+  const [barChartValues, setBarChartValues] = useState(barChartDefValues);
   const [selectedDatapoint, setSelectedDatapoint] = useState({});
+
+  const filteredData = useMemo(() => {
+    if (isEmpty(data)) {
+      return [];
+    }
+    const { type, option } = selectedQuestion;
+    if (type === "number") {
+      const { startValue, endValue } = barChartValues;
+      return data.filter((d) => {
+        const { value } = d.answer;
+        if (value >= startValue && value <= endValue) {
+          return d;
+        }
+      });
+    }
+    if (["jmp", "option"].includes(type)) {
+      const optionNames = option.map((o) => o.name);
+      const allOptionSelected =
+        intersection(optionNames, selectedOption).length === option.length;
+      if (allOptionSelected) {
+        return [];
+      }
+      return data.filter((d) => !selectedOption.includes(d.answer.value));
+    }
+    return data;
+  }, [selectedQuestion, selectedOption, data, barChartValues]);
+
+  useEffect(() => {
+    UIState.update((s) => {
+      s.mapData = filteredData.map((d) => {
+        const school_information_array = Object.values(d.school_information);
+        return {
+          ...d,
+          school_information_array: school_information_array,
+        };
+      });
+    });
+  }, [filteredData]);
 
   useEffect(() => {
     setLoading(true);
@@ -65,17 +104,6 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
       .get(url)
       .then((res) => {
         setData(res.data);
-        UIState.update((s) => {
-          s.mapData = res.data.map((d) => {
-            const school_information_array = Object.values(
-              d.school_information
-            );
-            return {
-              ...d,
-              school_information_array: school_information_array,
-            };
-          });
-        });
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
@@ -87,9 +115,12 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
   ]);
 
   useEffect(() => {
-    if (data.length > 0 && ["option", "jmp"].includes(selectedQuestion.type)) {
+    if (
+      mapData.length > 0 &&
+      ["option", "jmp"].includes(selectedQuestion.type)
+    ) {
       let results = Object.values(
-        data.reduce((obj, item) => {
+        mapData.reduce((obj, item) => {
           obj[item.answer.value] = obj[item.answer.value] || {
             name: item.answer.value,
             color: selectedQuestion?.option?.find(
@@ -110,12 +141,14 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
       });
       setRoseChartValues(results);
     }
-  }, [data]);
+  }, [mapData]);
 
   // Indicator filter functions
   const handleOnChangeQuestionDropdown = (id) => {
     setSelectedOption([]);
+    setBarChartValues(barChartDefValues);
     updateGlobalState([], "option");
+    updateGlobalState([], "number");
     const filterQuestion = indicatorQuestions.find((q) => q.id === id);
     setSelectedQuestion(filterQuestion);
   };
@@ -129,7 +162,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
       newArray = [...selectedOption, value];
       setSelectedOption(newArray);
     }
-    filterIndicatorOption(newArray);
+    // filterIndicatorOption(newArray);
   };
 
   const updateGlobalState = (value, type) => {
@@ -261,7 +294,6 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
               {!loading && (
                 <Markers
                   zoom={defZoom}
-                  data={data}
                   selectedQuestion={selectedQuestion}
                   searchValue={searchValue}
                   mapData={mapData}
@@ -282,7 +314,6 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
 
 const Markers = ({
   zoom,
-  data,
   selectedQuestion,
   searchValue,
   mapData,
@@ -306,65 +337,66 @@ const Markers = ({
     }
   }, [searchValue]);
 
-  data = data.filter((d) => d.geo);
-  return data.map((d) => {
-    const { id, geo, answer, school_information, year_conducted } = d;
-    const isHovered = id === hovered;
-    return (
-      <Marker
-        key={id}
-        position={geo}
-        answerValue={answer}
-        selectedQuestion={selectedQuestion}
-        icon={
-          new L.divIcon({
-            className: "custom-marker",
-            iconSize: [32, 32],
-            html: `<span style="background-color:${
-              selectedQuestion?.option?.find((f) => f.name === answer?.value)
-                ?.color || "#2EA745"
-            }; border:${isHovered ? "2px solid #fff" : ""};"/>`,
-          })
-        }
-        eventHandlers={{
-          mouseover: () => setHovered(id),
-          mouseout: () => setHovered(null),
-          // click: () => {
-          //   mapHook.setView(geo, 14);
-          // },
-        }}
-      >
-        <Popup direction="top">
-          <Space direction="vertical">
-            <div>
-              {Object.keys(school_information).map((key) => {
-                const name = key
-                  .split("_")
-                  .map((x) => capitalize(x))
-                  .join(" ");
-                const val = school_information[key];
-                return (
-                  <div key={`popup-${id}-${key}`}>{`${name}: ${val}`}</div>
-                );
-              })}
-              <div key={`popup-${id}-year_conducted`}>
-                Year Conducted: {year_conducted}
+  return mapData
+    .filter((d) => d.geo)
+    .map((d) => {
+      const { id, geo, answer, school_information, year_conducted } = d;
+      const isHovered = id === hovered;
+      return (
+        <Marker
+          key={id}
+          position={geo}
+          answerValue={answer}
+          selectedQuestion={selectedQuestion}
+          icon={
+            new L.divIcon({
+              className: "custom-marker",
+              iconSize: [32, 32],
+              html: `<span style="background-color:${
+                selectedQuestion?.option?.find((f) => f.name === answer?.value)
+                  ?.color || "#2EA745"
+              }; border:${isHovered ? "2px solid #fff" : ""};"/>`,
+            })
+          }
+          eventHandlers={{
+            mouseover: () => setHovered(id),
+            mouseout: () => setHovered(null),
+            // click: () => {
+            //   mapHook.setView(geo, 14);
+            // },
+          }}
+        >
+          <Popup direction="top">
+            <Space direction="vertical">
+              <div>
+                {Object.keys(school_information).map((key) => {
+                  const name = key
+                    .split("_")
+                    .map((x) => capitalize(x))
+                    .join(" ");
+                  const val = school_information[key];
+                  return (
+                    <div key={`popup-${id}-${key}`}>{`${name}: ${val}`}</div>
+                  );
+                })}
+                <div key={`popup-${id}-year_conducted`}>
+                  Year Conducted: {year_conducted}
+                </div>
               </div>
-            </div>
-            <Button
-              type="primary"
-              size="small"
-              ghost
-              block
-              onClick={() => setSelectedDatapoint(d)}
-            >
-              View Details
-            </Button>
-          </Space>
-        </Popup>
-      </Marker>
-    );
-  });
+              <Button
+                type="primary"
+                size="small"
+                ghost
+                block
+                onClick={() => setSelectedDatapoint(d)}
+              >
+                View Details
+              </Button>
+            </Space>
+          </Popup>
+        </Marker>
+      );
+    });
 };
 
 const createClusterCustomIcon = (cluster) => {
