@@ -21,8 +21,8 @@ class TestQuestionRoutes:
         res = res.json()
         assert res[0] == {
             "id": 654960929,
-            "name": "Which year was the survey conducted?",
-            "display_name": "Year of survey",
+            "group": "General Information",
+            "name": "Year of survey",
             "type": "option",
             "option": [{
                 'name': '2018',
@@ -48,9 +48,9 @@ class TestQuestionRoutes:
         # JMP category in indicator dropdown
         assert res[:3] == [{
             'id': 'jmp-water',
+            'group': 'JMP Indicator',
             'name': 'Water',
             'type': 'jmp',
-            'display_name': 'Water',
             'attributes': ['indicator'],
             'option': [{
                 'name': 'Safely Managed',
@@ -76,9 +76,9 @@ class TestQuestionRoutes:
             'number': []
         }, {
             'id': 'jmp-sanitation',
+            'group': 'JMP Indicator',
             'name': 'Sanitation',
             'type': 'jmp',
-            'display_name': 'Sanitation',
             'attributes': ['indicator'],
             'option': [{
                 'name': 'Basic',
@@ -99,9 +99,9 @@ class TestQuestionRoutes:
             'number': []
         }, {
             'id': 'jmp-hygiene',
+            'group': 'JMP Indicator',
             'name': 'Hygiene',
             'type': 'jmp',
-            'display_name': 'Hygiene',
             'attributes': ['indicator'],
             'option': [{
                 'name': 'Basic',
@@ -121,14 +121,14 @@ class TestQuestionRoutes:
             }],
             'number': []
         }]
-        name = 'In the previous two weeks, was drinking water from the main '
-        name += 'source available at the school throughout each school day?'
+        # name = 'In the previous two weeks, was drinking water from the main '
+        # name += 'source available at the school throughout each school day?'
         display_name = 'Water availability at primary source '
         display_name += 'in previous two weeks'
         assert res[3] == {
             'id': 624660930,
-            'name': name,
-            "display_name": display_name,
+            'group': 'Water Availability',
+            'name': display_name,
             "type": "option",
             'attributes': [
                 'indicator',
@@ -154,14 +154,14 @@ class TestQuestionRoutes:
             }],
             'number': []
         }
-        name = 'Is drinking water from the main source '
-        name += 'typically available throughout the school year?'
+        # name = 'Is drinking water from the main source '
+        # name += 'typically available throughout the school year?'
         display_name = 'Water availability at primary source '
         display_name += 'throughout school year'
         assert res[4] == {
             'id': 624660927,
-            'name': name,
-            "display_name": display_name,
+            'group': 'Water Availability',
+            'name': display_name,
             "type": "option",
             'attributes': [
                 'indicator',

@@ -51,9 +51,9 @@ class QuestionFormatted(TypedDict):
 
 class QuestionFormattedWithAttributes(TypedDict):
     id: Union[int, str]
+    group: str
     name: str
     type: QuestionType
-    display_name: Optional[str] = None
     attributes: Optional[List[QuestionAttributes]] = []
     option: Optional[List[OptionSimplified]] = []
     number: Optional[List[AnswerNumberCount]] = []
@@ -154,8 +154,8 @@ class Question(Base):
     def formatted_with_attributes(self) -> QuestionFormattedWithAttributes:
         return {
             "id": self.id,
-            "name": self.name,
-            "display_name": self.display_name,
+            "group": self.question.display_name or self.question.name,
+            "name": self.display_name or self.name,
             "type": self.type.value,
             "attributes": self.attributes or [],
             "option": [o.simplify for o in self.option] or [],
