@@ -98,7 +98,6 @@ const BarStack = (
     name: s.name,
     itemStyle: { color: s.color || Color.color[si] },
   }));
-  console.log(series);
   const option = {
     ...Color,
     title: {
