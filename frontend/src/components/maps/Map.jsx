@@ -376,11 +376,21 @@ const Markers = ({
           <Popup direction="top">
             <Space direction="vertical">
               <div>
-                <div>{`School: ${school_information?.["school_name"]}(${school_information?.["school_code"]})`}</div>
-                <div>{`School Type: ${school_information?.["school_type"]}`}</div>
-                <div>{`Province: ${school_information?.["province"]}`}</div>
+                <div>
+                  <b>School: </b>
+                  {`${school_information?.["school_name"]}(${school_information?.["school_code"]})`}
+                </div>
+                <div>
+                  <b>School Type: </b>
+                  {`${school_information?.["school_type"]}`}
+                </div>
+                <div>
+                  <b>Province: </b>
+                  {`${school_information?.["province"]}`}
+                </div>
                 <div key={`popup-${id}-year_conducted`}>
-                  Last updated: {year_conducted}
+                  <b>Last updated: </b>
+                  {year_conducted}
                 </div>
               </div>
               <Button
