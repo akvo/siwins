@@ -63,12 +63,14 @@ const DashboardView = () => {
         }}
       >
         <div className="logo">
-          <Image
-            src="/images/dashboard-logo.png"
-            preview={false}
-            height={40}
-            width={40}
-          />
+          <Link to="/">
+            <Image
+              src="/images/dashboard-logo.png"
+              preview={false}
+              height={40}
+              width={40}
+            />
+          </Link>
         </div>
       </Header>
       <Layout className="site-layout">

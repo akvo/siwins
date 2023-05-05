@@ -22,7 +22,7 @@ import SchoolDetailModal from "./SchoolDetailModal";
 import { Chart } from "..";
 import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
-import { isEmpty, capitalize, intersection } from "lodash";
+import { isEmpty, intersection } from "lodash";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -246,6 +246,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
             <Draggable>
               <div className="map-chart-container">
                 <Card>
+                  <h5>{selectedQuestion?.name}</h5>
                   <Chart
                     height={350}
                     excelFile={"title"}
@@ -256,6 +257,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
                       count: v.count,
                       color: v.color,
                     }))}
+                    showRoseChart={true}
                     wrapper={false}
                     horizontal={false}
                     callbacks={{ onClick: chartClick }}
@@ -370,18 +372,11 @@ const Markers = ({
           <Popup direction="top">
             <Space direction="vertical">
               <div>
-                {Object.keys(school_information).map((key) => {
-                  const name = key
-                    .split("_")
-                    .map((x) => capitalize(x))
-                    .join(" ");
-                  const val = school_information[key];
-                  return (
-                    <div key={`popup-${id}-${key}`}>{`${name}: ${val}`}</div>
-                  );
-                })}
+                <div>{`School: ${school_information?.["school_name"]}(${school_information?.["school_code"]})`}</div>
+                <div>{`School Type: ${school_information?.["school_type"]}`}</div>
+                <div>{`Province: ${school_information?.["province"]}`}</div>
                 <div key={`popup-${id}-year_conducted`}>
-                  Year Conducted: {year_conducted}
+                  Last updated: {year_conducted}
                 </div>
               </div>
               <Button

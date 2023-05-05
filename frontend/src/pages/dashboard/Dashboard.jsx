@@ -80,7 +80,7 @@ const Dashboard = () => {
   return (
     <div id="dashboard">
       <Row className="main-wrapper" align="center">
-        <Col span={24} style={{ marginBottom: 20 }}>
+        <Col span={24}>
           <Row justify="space-between" align="middle">
             <Col span={24}>
               <AdvanceFilter
@@ -100,7 +100,7 @@ const Dashboard = () => {
             </Col>
           </Row>
         </Col>
-        <Col span={24} align="center">
+        <Col span={24} align="center" style={{ padding: "20px 30px" }}>
           {chartList?.map((row, index) => {
             return (
               <Row
@@ -117,7 +117,7 @@ const Dashboard = () => {
       <Row className="bar-chart-wrapper" align="center">
         <Col span={24} align="center">
           <div className="header-container">
-            <h3>Bar Chart for Any Indicator</h3>
+            <h3>Bar Chart for Indicator</h3>
           </div>
         </Col>
         <Col span={24} align="center">

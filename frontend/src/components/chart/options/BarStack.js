@@ -85,6 +85,7 @@ const BarStack = (
       label: {
         show: true,
         position: "insideLeft",
+        padding: 5,
         formatter: function (item) {
           const year = item.data.year;
           return year;
@@ -166,6 +167,9 @@ const BarStack = (
       nameTextStyle: { ...TextStyle },
       nameLocation: "middle",
       nameGap: 50,
+      max: function () {
+        return 100;
+      },
       axisLabel: {
         formatter: (e) => e + "%",
         ...TextStyle,
