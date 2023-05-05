@@ -25,7 +25,6 @@ answer_route = APIRouter()
 
 
 # Endpoint to fetch answer history
-# ADD cascades level to config.js
 @answer_route.get(
     "/answer/history/{data_id:path}",
     # response_model=List[CascadeNameAndLevel],

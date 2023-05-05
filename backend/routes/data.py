@@ -55,11 +55,6 @@ def get_paginated_data(
     form_id: int = Query(None),
     session: Session = Depends(get_session)
 ):
-    # TODO:: How we handle registration monitoring form data ?
-    # if we do the pagination like this, the data will contains
-    # mix of registration and monitoring data
-    # I think better if we wait for the design
-    # for now only show registration data
     res = get_data(
         session=session,
         registration=True,
@@ -71,7 +66,7 @@ def get_paginated_data(
     total_page = ceil(count / perpage) if count > 0 else 0
     if total_page < page:
         return []
-    data = [d.serialize for d in res.get("data")]
+    data = [d.simplify for d in res.get("data")]
     return {
         "current": page,
         "data": data,
@@ -237,7 +232,7 @@ def get_data_detail_for_chart(
     summary="get data detail by data id",
     tags=["Data"],
 )
-def get_data_detail_by_data_id(
+def get_data_detail_popup_by_data_id(
     req: Request,
     data_id: int,
     session: Session = Depends(get_session),

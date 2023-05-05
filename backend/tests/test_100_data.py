@@ -21,6 +21,12 @@ class TestDataRoutes:
         assert "data" in res
         assert "total" in res
         assert "total_page" in res
+        for d in res.get("data"):
+            assert "id" in d
+            assert "name" in d
+            assert "geo" in d
+            assert "year_conducted" in d
+            assert "school_information" in d
 
     @pytest.mark.asyncio
     async def test_get_maps_data(

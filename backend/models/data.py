@@ -46,9 +46,17 @@ class DataDict(TypedDict):
     answer: List[AnswerDict]
 
 
+class DataSimplified(TypedDict):
+    id: int
+    name: Optional[str] = None
+    geo: Optional[GeoData] = None
+    year_conducted: Optional[int] = None
+    school_information: Optional[List[str]] = None
+
+
 class DataResponse(BaseModel):
     current: int
-    data: List[DataDict]
+    data: List[DataSimplified]
     total: int
     total_page: int
 
@@ -175,6 +183,18 @@ class Data(Base):
             ) if self.updated else None,
             "answer": [a.formatted for a in self.answer],
             "history": [h.formatted for h in self.history],
+        }
+
+    @property
+    def simplify(self) -> DataSimplified:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "geo": {
+                "lat": self.geo[0], "long": self.geo[1]
+            } if self.geo else None,
+            "year_conducted": self.year_conducted,
+            "school_information": self.school_information
         }
 
     @property
