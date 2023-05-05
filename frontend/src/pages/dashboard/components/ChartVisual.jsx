@@ -7,7 +7,7 @@ import { InfoCircleFilled } from "@ant-design/icons";
 const config = window.dashboardjson?.tabs;
 const jmpHints = window.jmphintjson;
 
-const ChartVisual = ({ chartConfig }) => {
+const ChartVisual = ({ chartConfig, loading }) => {
   const { title, type, data, provinceValues, index, path, span } = chartConfig;
   const [isStack, setIsStack] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -186,7 +186,7 @@ const ChartVisual = ({ chartConfig }) => {
             data={chartData.find((f) => f.name === path)?.data}
             wrapper={false}
             horizontal={true}
-            loading={!chartData.find((f) => f.name === path)?.data.length}
+            loading={loading}
           />
         ) : (
           <Chart
@@ -201,7 +201,7 @@ const ChartVisual = ({ chartConfig }) => {
             data={chartData.find((f) => f.name === path)?.data}
             wrapper={false}
             horizontal={true}
-            loading={!chartData.find((f) => f.name === path)?.data.length}
+            loading={loading}
             grid={{
               top: 70,
               left: 120,

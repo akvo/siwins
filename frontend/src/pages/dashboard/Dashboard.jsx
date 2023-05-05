@@ -11,14 +11,28 @@ import { Link } from "react-router-dom";
 const chartConfig = window.dashboardjson?.tabs;
 
 const Dashboard = () => {
-  const { provinceValues, barChartQuestions, advanceSearchValue } =
-    UIState.useState((s) => s);
+  const {
+    provinceValues,
+    barChartQuestions,
+    advanceSearchValue,
+    schoolTypeValues,
+  } = UIState.useState((s) => s);
   const [chartList, setChartList] = useState([]);
   const [barChartList, setBarChartList] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
   const [data, setData] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [chartTitle, setChartTitle] = useState("");
+  const [selectedProvince, setSelectedProvince] = useState([]);
+  const [selectedSchoolType, setSelectedSchoolType] = useState([]);
+
+  const handleProvinceFilter = (value) => {
+    setSelectedProvince(value);
+  };
+
+  const handleSchoolTypeFilter = (value) => {
+    setSelectedSchoolType(value);
+  };
 
   useEffect(() => {
     const chartList = chartConfig
@@ -35,13 +49,21 @@ const Dashboard = () => {
     const apiCall = chartList?.map((chart) => {
       let url = `chart/jmp-data/${chart?.path}`;
       url = generateAdvanceFilterURL(advanceSearchValue, url);
+      if (selectedProvince && selectedProvince.length > 0) {
+        const queryUrlPrefix = url.includes("?") ? "&" : "?";
+        url = `${url}${queryUrlPrefix}prov=${selectedProvince}`;
+      }
+      if (selectedSchoolType && selectedSchoolType.length > 0) {
+        const queryUrlPrefix = url.includes("?") ? "&" : "?";
+        url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
+      }
       return api.get(url);
     });
     Promise.all(apiCall).then((res) => {
       setData(res);
       setPageLoading(false);
     });
-  }, [advanceSearchValue]);
+  }, [advanceSearchValue, selectedProvince, selectedSchoolType]);
 
   const renderColumn = (cfg, index) => {
     return (
@@ -94,8 +116,12 @@ const Dashboard = () => {
                     </Breadcrumb>
                   </Col>
                 }
-                provinceValues={false}
-                schoolTypeValues={false}
+                provinceValues={provinceValues}
+                schoolTypeValues={schoolTypeValues}
+                handleSchoolTypeFilter={handleSchoolTypeFilter}
+                handleProvinceFilter={handleProvinceFilter}
+                selectedProvince={selectedProvince}
+                selectedSchoolType={selectedSchoolType}
               />
             </Col>
           </Row>
