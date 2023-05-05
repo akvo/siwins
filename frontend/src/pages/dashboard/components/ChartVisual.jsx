@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from "react";
-import { Row, Col, Card, Switch, Space } from "antd";
+import { Row, Col, Card, Switch, Space, Popover } from "antd";
 import { Chart } from "../../../components";
 import { get } from "lodash";
+import { InfoCircleFilled } from "@ant-design/icons";
 
 const config = window.dashboardjson?.tabs;
+const jmpHints = window.jmphintjson;
 
 const ChartVisual = ({ chartConfig }) => {
   const { title, type, data, provinceValues, index, path, span } = chartConfig;
@@ -114,25 +116,63 @@ const ChartVisual = ({ chartConfig }) => {
     }
   }, [data, chartList, isStack, provinceValues, showHistory]);
 
+  const content = (path) => {
+    const find = jmpHints?.find((item) => item.name === path);
+    return (
+      <>
+        <div className="category">
+          <h3>{title}</h3>
+          <p>{find?.hint}</p>
+        </div>
+        <ul>
+          {find?.labels.map((item) => (
+            <li key={item.name}>
+              <h5>
+                <span style={{ backgroundColor: item?.color }} />
+                {item.name}
+              </h5>
+              <p>{item.hint}</p>
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  };
+
   return (
     <Col key={`col-${type}-${index}`} span={span} className="chart-card">
       <Card>
         <Row className="chart-header" justify="space-between" align="middle">
-          <h3>{title}</h3>
-          <Space align="center">
-            <div>
-              <span>Show By Province </span>
-              <Switch size="small" checked={isStack} onChange={setIsStack} />
-            </div>
-            <div>
-              <span>Show History </span>
-              <Switch
-                size="small"
-                checked={showHistory}
-                onChange={setShowHistory}
-              />
-            </div>
-          </Space>
+          <Col span={24}>
+            <h3>
+              {title}{" "}
+              <Popover
+                content={content(path)}
+                overlayStyle={{
+                  width: "30vw",
+                }}
+                overlayClassName="custom-popover"
+              >
+                <InfoCircleFilled />
+              </Popover>
+            </h3>
+          </Col>
+          <Col span={24}>
+            <Space align="center">
+              <div>
+                <span>Show By Province </span>
+                <Switch size="small" checked={isStack} onChange={setIsStack} />
+              </div>
+              <div>
+                <span>Show History </span>
+                <Switch
+                  size="small"
+                  checked={showHistory}
+                  onChange={setShowHistory}
+                />
+              </div>
+            </Space>
+          </Col>
         </Row>
 
         {isStack ? (
