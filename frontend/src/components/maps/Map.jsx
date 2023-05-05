@@ -246,8 +246,8 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
             <Draggable>
               <div className="map-chart-container">
                 <Card>
-                  <h5>{selectedQuestion?.name}</h5>
                   <Chart
+                    title={selectedQuestion?.name}
                     height={350}
                     excelFile={"title"}
                     type={"PIE"}
@@ -257,10 +257,14 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
                       count: v.count,
                       color: v.color,
                     }))}
+                    legend={true}
                     showRoseChart={true}
                     wrapper={false}
                     horizontal={false}
                     callbacks={{ onClick: chartClick }}
+                    grid={{
+                      top: 90,
+                    }}
                   />
                 </Card>
               </div>

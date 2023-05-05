@@ -54,8 +54,8 @@ const Pie = (
       show: true,
       showTitle: true,
       orient: "horizontal",
-      right: 30,
-      top: 10,
+      right: 10,
+      top: 80,
       feature: {
         saveAsImage: {
           type: "jpg",
@@ -92,7 +92,7 @@ const Pie = (
       legend: {
         data: labels,
         ...Legend,
-        top: "top",
+        top: 30,
         left: "center",
       },
     }),
