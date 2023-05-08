@@ -29,6 +29,7 @@ from AkvoResponseGrouper.utils import (
 from models.data import MapsData, ChartDataDetail
 from models.data import DataDetailPopup, DataResponse
 from models.answer import Answer
+from models.question import QuestionType
 from models.history import History
 from middleware import (
     check_query, check_indicator_query,
@@ -308,7 +309,13 @@ def get_data_detail_by_data_id(
         del da["qg_order"]
         del da["q_order"]
         del da["attributes"]
-        if da["type"] != "number":
+        if da["type"] == QuestionType.photo.value:
+            # handle photo question to be one group
+            da["question_group_id"] = 0
+            da["question_group_name"] = "Images"
+            da["render"] = "image"
+            continue
+        if da["type"] != QuestionType.number.value:
             da["render"] = "value"
             continue
         # generate national data
@@ -357,6 +364,7 @@ def get_data_detail_by_data_id(
         da["value"] = temp_numb
     # EOL generate chart data for number answer
     # group by question group
+    data["answer"].sort(key=lambda x: x.get("question_group_id"))
     groups = groupby(data["answer"], key=lambda d: d["question_group_id"])
     grouped_answer = []
     for k, values in groups:

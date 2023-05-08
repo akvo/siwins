@@ -9,8 +9,10 @@ import {
   Row,
   Col,
   Switch,
+  Carousel,
+  Image,
 } from "antd";
-import { HomeOutlined } from "@ant-design/icons";
+import { HomeOutlined, CameraOutlined } from "@ant-design/icons";
 import { isEmpty, groupBy, orderBy } from "lodash";
 import { api } from "../../lib";
 import { Chart } from "..";
@@ -26,9 +28,18 @@ const MainTabContent = ({
   const School = () => {
     return (
       <>
-        <div>{`School: ${school_information?.["school_name"]}(${school_information?.["school_code"]})`}</div>
-        <div>{`School Type: ${school_information?.["school_type"]}`}</div>
-        <div>{`Province: ${school_information?.["province"]}`}</div>
+        <div>
+          <b>School: </b>
+          {`${school_information?.["school_name"]} (${school_information?.["school_code"]})`}
+        </div>
+        <div>
+          <b>School Type: </b>
+          {`${school_information?.["school_type"]}`}
+        </div>
+        <div>
+          <b>Province: </b>
+          {`${school_information?.["province"]}`}
+        </div>
       </>
     );
   };
@@ -71,7 +82,7 @@ const MainTabContent = ({
       <div className="main-school-information">
         <School />
         <div key={`${keyName}-${id}-year_conducted`}>
-          Last updated: {year_conducted}
+          <b>Last updated: </b> {year_conducted}
         </div>
       </div>
       <Divider />
@@ -200,6 +211,49 @@ const AnswerTabContent = ({
   );
 };
 
+const ImageContent = ({ child }) => {
+  return (
+    <Carousel autoplay dotPosition="bottom" effect="fade">
+      {child.map((c) => {
+        return (
+          <div
+            key={`answer-tab-content-image-${c.question_id}`}
+            style={{
+              margin: 0,
+              width: "100%",
+              position: "relative",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                background: "#000",
+                opacity: 0.55,
+                width: "100%",
+                position: "absolute",
+                top: 0,
+                padding: 8,
+                color: "#fff",
+                zIndex: 1,
+              }}
+            >
+              {c.question_name}
+            </div>
+            <Image
+              width="100%"
+              height={410}
+              style={{ objectFit: "cover" }}
+              src={c.value}
+              alt={c.question_name}
+            />
+          </div>
+        );
+      })}
+    </Carousel>
+  );
+};
+
 const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(true);
@@ -211,7 +265,7 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
       // modal title
       const name = school_information?.school_name;
       const code = school_information?.school_code;
-      setTitle(`${name} ${code}`);
+      setTitle(`${name} (${code})`);
       const url = `data/${id}`;
       api
         .get(url)
@@ -227,9 +281,18 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
           ];
           // group of answer
           const transform = data?.answer.map((a, ai) => {
+            const isImage = a.group.toLowerCase() === "images";
+            const label = isImage ? <CameraOutlined /> : a.group;
+            if (isImage) {
+              return {
+                key: `school-detail-tab-${data?.id}-${ai}`,
+                label: label,
+                children: <ImageContent {...a} />,
+              };
+            }
             return {
               key: `school-detail-tab-${data?.id}-${ai}`,
-              label: a.group,
+              label: label,
               children: (
                 <Row align="middle" justify="space-between" gutter={[8, 8]}>
                   {a.child.map((c, ci) => (
