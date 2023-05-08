@@ -196,8 +196,9 @@ const ChartVisual = ({ chartConfig, loading }) => {
                 : 300
             }
             type={"BAR"}
+            showPercent={true}
             dataZoom={false}
-            history={true}
+            history={showHistory}
             data={chartData.find((f) => f.name === path)?.data}
             wrapper={false}
             horizontal={true}
