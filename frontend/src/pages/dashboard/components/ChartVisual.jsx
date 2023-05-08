@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { Row, Col, Card, Switch, Space, Popover } from "antd";
 import { Chart } from "../../../components";
 import { get } from "lodash";
-import { InfoCircleFilled } from "@ant-design/icons";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 const config = window.dashboardjson?.tabs;
 const jmpHints = window.jmphintjson;
@@ -153,7 +153,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
                 }}
                 overlayClassName="custom-popover"
               >
-                <InfoCircleFilled />
+                <InfoCircleOutlined />
               </Popover>
             </h3>
           </Col>
