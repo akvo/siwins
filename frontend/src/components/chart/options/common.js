@@ -209,7 +209,7 @@ export const optionToContent = (
     table += `<tr>`;
     columns.map((s) => {
       table += `<td class="ant-table-cell">`;
-      table += s === "value" ? `${d[s]}${suffix}` : d[s];
+      table += s === "value" ? `${d[s]}${suffix}` : upperFirst(d[s]);
       table += `</td">`;
     });
     table += `</tr>`;
@@ -245,7 +245,10 @@ export const downloadToExcel = (
   }));
 
   const dataSource = data.map((x) =>
-    columns.reduce((prev, current) => ({ ...prev, [current]: x[current] }), {})
+    columns.reduce(
+      (prev, current) => ({ ...prev, [current]: upperFirst(x[current]) }),
+      {}
+    )
   );
 
   const excel = new Excel();

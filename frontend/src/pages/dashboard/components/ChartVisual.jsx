@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { Row, Col, Card, Switch, Space, Popover } from "antd";
 import { Chart } from "../../../components";
 import { get } from "lodash";
-import { InfoCircleFilled } from "@ant-design/icons";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 const config = window.dashboardjson?.tabs;
 const jmpHints = window.jmphintjson;
@@ -153,7 +153,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
                 }}
                 overlayClassName="custom-popover"
               >
-                <InfoCircleFilled />
+                <InfoCircleOutlined />
               </Popover>
             </h3>
           </Col>
@@ -196,16 +196,13 @@ const ChartVisual = ({ chartConfig, loading }) => {
                 : 300
             }
             type={"BAR"}
+            showPercent={true}
             dataZoom={false}
-            history={true}
+            history={showHistory}
             data={chartData.find((f) => f.name === path)?.data}
             wrapper={false}
             horizontal={true}
             loading={loading}
-            grid={{
-              top: 70,
-              left: 120,
-            }}
           />
         )}
       </Card>

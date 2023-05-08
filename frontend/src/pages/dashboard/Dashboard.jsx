@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Row, Col, Select, Breadcrumb } from "antd";
 import { api } from "../../lib";
@@ -23,6 +24,7 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [chartTitle, setChartTitle] = useState("");
+  const [selectedIndicator, setSelectedIndicator] = useState("");
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedSchoolType, setSelectedSchoolType] = useState([]);
 
@@ -80,12 +82,16 @@ const Dashboard = () => {
     );
   };
 
+  useEffect(() => {
+    if (barChartData.length === 0) {
+      handleOnChangeQuestionDropdown(barChartQuestions?.[0]?.id);
+    }
+  }, [barChartQuestions, barChartData]);
+
   const handleOnChangeQuestionDropdown = (val) => {
+    setSelectedIndicator(val);
     const find = barChartQuestions.find((f) => f.id === val);
-    const chartTitleTemp = `This chart shows the distribution of  {question|${
-      find?.display_name ? find?.display_name : find?.name
-    }}`;
-    setChartTitle(chartTitleTemp);
+    setChartTitle(find?.display_name ? find?.display_name : find?.name);
     if (val) {
       const url = `chart/generic-bar/${val}`;
       api
@@ -153,6 +159,7 @@ const Dashboard = () => {
               placement={"bottomLeft"}
               showSearch
               allowClear
+              value={selectedIndicator}
               placeholder="Select question"
               optionFilterProp="children"
               filterOption={(input, option) =>
@@ -189,9 +196,18 @@ const Dashboard = () => {
                         wrapper={false}
                         horizontal={false}
                         showPercent={true}
-                        title={chartTitle}
+                        title={`This chart shows the distribution of  {question|${chartTitle}}`}
+                        extra={{
+                          axisTitle: {
+                            x: [chartTitle || null],
+                            y: "Percentage",
+                          },
+                        }}
                         grid={{
-                          top: 70,
+                          top: "25%",
+                          right: "5%",
+                          left: "5%",
+                          bottom: "15%",
                         }}
                       />
                     </Col>
