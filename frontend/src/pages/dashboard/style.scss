@@ -131,7 +131,7 @@
         }
         .map-container {
           width: 100% !important;
-          height: 87vh !important;
+          height: calc(100vh - 130px) !important;
         }
 
         .loading-wrapper {
