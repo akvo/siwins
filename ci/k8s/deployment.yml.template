@@ -83,3 +83,7 @@ spec:
             limits:
               cpu: "500m"
               memory: "1024Mi"
+      volumes:
+          - name: siwins-secrets
+            secret:
+              secretName: siwins
