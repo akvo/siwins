@@ -30,7 +30,7 @@ const MainTabContent = ({
       <>
         <div>
           <b>School: </b>
-          {`${school_information?.["school_name"]}(${school_information?.["school_code"]})`}
+          {`${school_information?.["school_name"]} (${school_information?.["school_code"]})`}
         </div>
         <div>
           <b>School Type: </b>
@@ -265,7 +265,7 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
       // modal title
       const name = school_information?.school_name;
       const code = school_information?.school_code;
-      setTitle(`${name} ${code}`);
+      setTitle(`${name} (${code})`);
       const url = `data/${id}`;
       api
         .get(url)

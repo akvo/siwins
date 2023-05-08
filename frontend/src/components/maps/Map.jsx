@@ -378,7 +378,7 @@ const Markers = ({
               <div>
                 <div>
                   <b>School: </b>
-                  {`${school_information?.["school_name"]}(${school_information?.["school_code"]})`}
+                  {`${school_information?.["school_name"]} (${school_information?.["school_code"]})`}
                 </div>
                 <div>
                   <b>School Type: </b>
