@@ -140,6 +140,7 @@ const Bar = (
     [horizontal ? "yAxis" : "xAxis"]: {
       type: "category",
       data: labels,
+      ...(horizontal && { inverse: true }),
       name: xAxisTitle || "",
       nameTextStyle: { ...TextStyle },
       nameLocation: "middle",
