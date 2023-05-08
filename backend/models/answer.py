@@ -51,6 +51,18 @@ class AnswerDictWithText(TypedDict):
     ]
 
 
+class DataAnswerDetailDict(TypedDict):
+    qg_order: int
+    question_group_id: str
+    question_group_name: str
+    question_id: int
+    q_order: int
+    question_name: str
+    value: Union[
+        int, float, str, bool, dict, List[str], List[int], List[float], None
+    ]
+
+
 class SchoolPopupAnswerDict(TypedDict):
     qg_order: int
     question_group_id: str
@@ -163,12 +175,27 @@ class Answer(Base):
         return answer
 
     @property
-    def to_school_detail_popup(self) -> SchoolPopupAnswerDict:
+    def to_data_answer_detail(self) -> DataAnswerDetailDict:
         qdetail = self.question_detail
         answer = {
             "qg_order": qdetail.question.order,
             "question_group_id": qdetail.question.id,
             "question_group_name": qdetail.question.name,
+            "question_id": self.question,
+            "q_order": qdetail.order,
+            "question_name": qdetail.name,
+        }
+        answer = append_value(self, answer)
+        return answer
+
+    @property
+    def to_school_detail_popup(self) -> SchoolPopupAnswerDict:
+        qdetail = self.question_detail
+        qg_name = qdetail.question.display_name or qdetail.question.name
+        answer = {
+            "qg_order": qdetail.question.order,
+            "question_group_id": qdetail.question.id,
+            "question_group_name": qg_name,
             "question_id": self.question,
             "q_order": qdetail.order,
             "question_name": qdetail.display_name or qdetail.name,

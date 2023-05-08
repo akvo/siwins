@@ -19,7 +19,11 @@ services:
       - db
     network_mode: service:mainnetwork
   backend:
+    volumes:
+      - ./backend:/app:delegated
+      - ../akvo-config/k8s-secrets/test/siwins:/credentials/:ro
     environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/siwins-service-account.json
       - AUTH0_CLIENT=$AUTH0_CLIENT
       - AUTH0_USER=$AUTH0_USER
       - AUTH0_PWD=$AUTH0_PWD

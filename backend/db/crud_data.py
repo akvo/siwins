@@ -85,24 +85,19 @@ def delete_bulk(session: Session, ids: List[int]) -> None:
 
 
 # for paginated data purpose
-def get_data(
-    session: Session,
-    skip: int,
-    perpage: int,
-    form: Optional[int] = None,
-    registration: Optional[bool] = None,
-    options: List[str] = None,
-    question: List[int] = None,
-) -> PaginatedData:
-    data = session.query(Data)
-    if form:
-        data = data.filter(Data.form == form)
-    if registration is not None:
-        data = data.filter(Data.registration == registration)
-    count = data.count()
-    data = data.order_by(desc(Data.id))
-    data = data.offset(skip).limit(perpage).all()
-    return PaginatedData(data=data, count=count)
+# def get_data(
+#     session: Session,
+#     registration: Optional[bool] = None,
+#     options: List[str] = None,
+#     question: List[int] = None,
+# ) -> PaginatedData:
+#     data = session.query(Data)
+#     if registration is not None:
+#         data = data.filter(Data.registration == registration)
+#     count = data.count()
+#     data = data.order_by(desc(Data.id))
+#     data = data.offset(skip).limit(perpage).all()
+#     return PaginatedData(data=data, count=count)
 
 
 # get all data with filtered value
@@ -114,7 +109,11 @@ def get_all_data(
     data_ids: Optional[List[int]] = None,
     prov: Optional[List[str]] = None,
     sctype: Optional[List[str]] = None,
-    count: Optional[bool] = False
+    monitoring_round: Optional[int] = None,
+    count: Optional[bool] = False,
+    # pagination param
+    skip: Optional[int] = None,
+    perpage: Optional[int] = None,
 ) -> DataDict:
     data = session.query(Data)
     if registration is not None:
@@ -142,8 +141,16 @@ def get_all_data(
         or_query = or_(
             Data.school_information.contains([v]) for v in sctype)
         data = data.filter(or_query)
+    if monitoring_round:
+        data = data.filter(Data.year_conducted == monitoring_round)
     if count:
         return data.count()
+    # pagination param
+    if skip is not None and perpage is not None:
+        count = data.count()
+        data = data.order_by(desc(Data.id))
+        data = data.offset(skip).limit(perpage).all()
+        return PaginatedData(data=data, count=count)
     data = data.all()
     return data
 

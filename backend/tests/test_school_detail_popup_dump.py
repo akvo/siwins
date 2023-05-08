@@ -243,7 +243,7 @@ answer_temp = [{
         }, ],
     }, ],
 }, {
-    "group": "Water Supply Core Questions",
+    "group": "Water Supply",
     "child": [{
         "question_id": 640620926,
         "question_name": "Primary drinking water source",
@@ -354,7 +354,7 @@ answer_temp = [{
         "value": "River",
     }, ],
 }, {
-    "group": "Hygiene Core Questions",
+    "group": "Hygiene",
     "child": [{
         "question_id": 638770930,
         "question_name": "Availability of handwashing facilities",

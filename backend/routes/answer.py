@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from itertools import groupby
 from fastapi import Depends, Request
 from fastapi import APIRouter, HTTPException
 from fastapi.security import HTTPBearer
@@ -12,7 +13,8 @@ from db.crud_question import (
     get_question_by_id
 )
 from db.crud_answer import (
-    get_answer_by_question
+    get_answer_by_question,
+    get_answer_by_data
 )
 from db.crud_province_view import (
     get_province_number_answer
@@ -25,12 +27,10 @@ answer_route = APIRouter()
 
 
 # Endpoint to fetch answer history
-# ADD cascades level to config.js
 @answer_route.get(
     "/answer/history/{data_id:path}",
-    # response_model=List[CascadeNameAndLevel],
     name="answer:get_history",
-    summary="get answet history by datapoint & question",
+    summary="get answer history by datapoint & question",
     tags=["Answer"]
 )
 def get_answer_history(
@@ -139,3 +139,43 @@ def get_answer_history(
         da["value"] = temp_numb
     # EOL generate chart data for number answer
     return history_answers
+
+
+# Endpoint to fetch data answers
+@answer_route.get(
+    "/answer/data/{data_id:path}",
+    name="answer:get_data_answers",
+    summary="get data answers by data id",
+    tags=["Answer"]
+)
+def get_data_answers_history(
+    req: Request,
+    data_id: int,
+    session: Session = Depends(get_session)
+):
+    # fetch current data
+    data = get_data_by_id(session=session, id=data_id)
+    if not data:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail="Data not found"
+        )
+    answers = get_answer_by_data(
+        session=session, data=data_id)
+    answers = [a.to_data_answer_detail for a in answers]
+    answers.sort(key=lambda x: (x.get("qg_order"), x.get("q_order")))
+    groups = groupby(answers, key=lambda d: d["question_group_id"])
+    grouped_answer = []
+    for k, values in groups:
+        temp = list(values)
+        qg_name = temp[0]["question_group_name"]
+        child = [{
+            "question_id": da["question_id"],
+            "question_name": da["question_name"],
+            "value": da["value"]
+        } for da in temp]
+        grouped_answer.append({
+            "group": qg_name,
+            "child": child
+        })
+    return grouped_answer

@@ -14,6 +14,7 @@ class TestDataRoutes:
     async def test_get_paginated_data(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
+        # no filter
         res = await client.get(app.url_path_for("data:get_all"))
         assert res.status_code == 200
         res = res.json()
@@ -21,6 +22,112 @@ class TestDataRoutes:
         assert "data" in res
         assert "total" in res
         assert "total_page" in res
+        for d in res.get("data"):
+            assert "id" in d
+            assert "name" in d
+            assert "geo" in d
+            assert "year_conducted" in d
+            assert "school_information" in d
+        # filter with monitoring round
+        empty_res = {
+            'current': 1,
+            'data': [],
+            'total': 0,
+            'total_page': 0
+        }
+        res = await client.get(
+            app.url_path_for("data:get_all"),
+            params={"monitoring_round": 2010}
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == empty_res
+        # filter with monitoring round
+        res_guadalcanal_chs_2018 = {
+            'current': 1,
+            'data': [{
+                'id': 632510922,
+                'name': 'Untitled',
+                'geo': {
+                    'long': 71.64445931032847,
+                    'lat': -47.72084919070232
+                },
+                'year_conducted': 2018,
+                'school_information': {
+                    'province': 'Guadalcanal',
+                    'school_type': 'Community High School',
+                    'school_name': 'AO CHS',
+                    'school_code': '21710'
+                }
+            }],
+            'total': 1,
+            'total_page': 1
+        }
+        res = await client.get(
+            app.url_path_for("data:get_all"),
+            params={"monitoring_round": 2018}
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == res_guadalcanal_chs_2018
+        # filter with monitoring round, province, school_type
+        res = await client.get(
+            app.url_path_for("data:get_all"),
+            params={
+                "monitoring_round": 2018,
+                "prov": "Central",
+                "sctype": "Community High School"
+            }
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == empty_res
+        # filter with monitoring round, province, school_type
+        res = await client.get(
+            app.url_path_for("data:get_all"),
+            params={
+                "monitoring_round": 2018,
+                "prov": "Guadalcanal",
+                "sctype": "Community High School"
+            }
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == res_guadalcanal_chs_2018
+        # filter with monitoring round, province, school_type
+        res = await client.get(
+            app.url_path_for("data:get_all"),
+            params={
+                "monitoring_round": 2018,
+                "prov": "Guadalcanal",
+                "sctype": "Primary School",
+                "q": "624660930|no"
+            }
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == empty_res
+
+    @pytest.mark.asyncio
+    async def test_get_answers_of_data(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        res = await client.get(
+            app.url_path_for("answer:get_data_answers", data_id=1234)
+        )
+        assert res.status_code == 404
+        res = await client.get(
+            app.url_path_for("answer:get_data_answers", data_id=649130936)
+        )
+        assert res.status_code == 200
+        res = res.json()
+        for r in res:
+            assert "group" in r
+            assert "child" in r
+            for c in r.get("child"):
+                assert "question_id" in c
+                assert "question_name" in c
+                assert "value" in c
 
     @pytest.mark.asyncio
     async def test_get_maps_data(
