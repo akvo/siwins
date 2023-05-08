@@ -202,10 +202,6 @@ const ChartVisual = ({ chartConfig, loading }) => {
             wrapper={false}
             horizontal={true}
             loading={loading}
-            grid={{
-              top: 70,
-              left: 120,
-            }}
           />
         )}
       </Card>

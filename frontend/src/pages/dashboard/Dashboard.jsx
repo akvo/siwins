@@ -203,6 +203,12 @@ const Dashboard = () => {
                             y: "Percentage",
                           },
                         }}
+                        grid={{
+                          top: "25%",
+                          right: "5%",
+                          left: "5%",
+                          bottom: "15%",
+                        }}
                       />
                     </Col>
                   </Row>
