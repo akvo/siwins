@@ -10,7 +10,7 @@ from typing import List, Optional, Union
 from sqlalchemy.orm import Session
 from db.connection import get_session
 from db.crud_data import (
-    get_data, get_all_data, get_data_by_id,
+    get_all_data, get_data_by_id,
     get_monitoring_data, get_history_data_by_school
 )
 from db.crud_province_view import (
@@ -52,21 +52,50 @@ def get_paginated_data(
     req: Request,
     page: int = 1,
     perpage: int = 10,
-    form_id: int = Query(None),
+    monitoring_round: int = Query(
+        None, description="filter data by monitoring round (year)"),
+    q: Optional[List[str]] = Query(
+        None, description="format: question_id|option value \
+            (indicator option & advance filter)"),
+    prov: Optional[List[str]] = Query(
+        None, description="format: province name \
+            (filter by province name)"),
+    sctype: Optional[List[str]] = Query(
+        None, description="format: school_type name \
+            (filter by shcool type)"),
     session: Session = Depends(get_session)
 ):
-    res = get_data(
+    # check query
+    options = check_query(q) if q else None
+    res = get_all_data(
         session=session,
-        registration=True,
+        monitoring_round=monitoring_round,
+        options=options,
+        prov=prov,
+        sctype=sctype,
         skip=(perpage * (page - 1)),
         perpage=perpage)
     count = res.get("count")
     if not count:
-        return []
+        return {
+            "current": page,
+            "data": [],
+            "total": count,
+            "total_page": 0,
+        }
     total_page = ceil(count / perpage) if count > 0 else 0
     if total_page < page:
-        return []
+        return {
+            "current": page,
+            "data": [],
+            "total": count,
+            "total_page": total_page,
+        }
     data = [d.simplify for d in res.get("data")]
+    for d in data:
+        d["school_information"] = extract_school_information(
+            school_information=d.get("school_information"),
+            to_object=True)
     return {
         "current": page,
         "data": data,

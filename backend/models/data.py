@@ -51,7 +51,7 @@ class DataSimplified(TypedDict):
     name: Optional[str] = None
     geo: Optional[GeoData] = None
     year_conducted: Optional[int] = None
-    school_information: Optional[List[str]] = None
+    school_information: Optional[Union[List[str], dict]] = None
 
 
 class DataResponse(BaseModel):
