@@ -76,10 +76,7 @@ const Bar = (
       subtext: chartTitle?.subTitle,
     },
     grid: {
-      top: grid?.top ? grid.top : horizontal ? 80 : 20,
-      bottom: grid?.bottom ? grid.bottom : horizontal ? 28 : 20,
-      left: grid?.left ? grid.left : horizontal ? 100 : 0,
-      right: grid?.right ? grid.right : horizontal ? 20 : 0,
+      top: "25%",
       show: true,
       label: {
         color: "#222",
