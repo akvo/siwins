@@ -63,7 +63,20 @@ const Bar = (
           return c;
         }, new Map())
         .values(),
-    ];
+    ].map((item) => {
+      return {
+        ...item,
+        data: item.data.map((d) => {
+          return {
+            ...d,
+            value: +(
+              (d.value / item.data.reduce((a, c) => a + c.value, 0)) *
+              100
+            ).toFixed(2),
+          };
+        }),
+      };
+    });
     labels = uniqBy(flatten(data), "name").map((x) => x.name);
   }
 
