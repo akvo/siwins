@@ -359,7 +359,7 @@ def get_data_detail_popup_by_data_id(
         da["value"] = temp_numb
     # EOL generate chart data for number answer
     # group by question group
-    data["answer"].sort(key=lambda x: x.get("question_group_id"))
+    data["answer"].sort(key=lambda x: (x.get("qg_order"), x.get("q_order")))
     groups = groupby(data["answer"], key=lambda d: d["question_group_id"])
     grouped_answer = []
     for k, values in groups:

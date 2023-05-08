@@ -29,6 +29,27 @@ class TestDataRoutes:
             assert "school_information" in d
 
     @pytest.mark.asyncio
+    async def test_get_answers_of_data(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        res = await client.get(
+            app.url_path_for("answer:get_data_answers", data_id=1234)
+        )
+        assert res.status_code == 404
+        res = await client.get(
+            app.url_path_for("answer:get_data_answers", data_id=649130936)
+        )
+        assert res.status_code == 200
+        res = res.json()
+        for r in res:
+            assert "group" in r
+            assert "child" in r
+            for c in r.get("child"):
+                assert "question_id" in c
+                assert "question_name" in c
+                assert "value" in c
+
+    @pytest.mark.asyncio
     async def test_get_maps_data(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
