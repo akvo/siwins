@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from models.jobs import Jobs, JobsBase, JobStatus
 
 
-def add_job(
+def add_jobs(
     session: Session,
     payload: str,
     info: Optional[TypedDict] = None
@@ -20,7 +20,7 @@ def add_job(
     return jobs.serialize
 
 
-def update_job(
+def update_jobs(
     session: Session,
     id: int,
     payload: Optional[str] = None,
