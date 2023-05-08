@@ -17,7 +17,7 @@ depends_on = None
 
 data_answers = PGMaterializedView(
     schema="public",
-    signature="data_answers",
+    signature="data_answer",
     definition="""
     select
         tmp.id,
