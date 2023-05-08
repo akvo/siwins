@@ -246,8 +246,8 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
             <Draggable>
               <div className="map-chart-container">
                 <Card>
-                  <h5>{selectedQuestion?.name}</h5>
                   <Chart
+                    title={selectedQuestion?.name}
                     height={350}
                     excelFile={"title"}
                     type={"PIE"}
@@ -257,10 +257,14 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
                       count: v.count,
                       color: v.color,
                     }))}
+                    legend={true}
                     showRoseChart={true}
                     wrapper={false}
                     horizontal={false}
                     callbacks={{ onClick: chartClick }}
+                    grid={{
+                      top: 90,
+                    }}
                   />
                 </Card>
               </div>
@@ -372,11 +376,21 @@ const Markers = ({
           <Popup direction="top">
             <Space direction="vertical">
               <div>
-                <div>{`School: ${school_information?.["school_name"]}(${school_information?.["school_code"]})`}</div>
-                <div>{`School Type: ${school_information?.["school_type"]}`}</div>
-                <div>{`Province: ${school_information?.["province"]}`}</div>
+                <div>
+                  <b>School: </b>
+                  {`${school_information?.["school_name"]}(${school_information?.["school_code"]})`}
+                </div>
+                <div>
+                  <b>School Type: </b>
+                  {`${school_information?.["school_type"]}`}
+                </div>
+                <div>
+                  <b>Province: </b>
+                  {`${school_information?.["province"]}`}
+                </div>
                 <div key={`popup-${id}-year_conducted`}>
-                  Last updated: {year_conducted}
+                  <b>Last updated: </b>
+                  {year_conducted}
                 </div>
               </div>
               <Button
