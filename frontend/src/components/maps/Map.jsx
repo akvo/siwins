@@ -246,7 +246,6 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
             <Draggable>
               <div className="map-chart-container">
                 <Card>
-                  <h5>{selectedQuestion?.name}</h5>
                   <Chart
                     title={selectedQuestion?.name}
                     height={350}
