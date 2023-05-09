@@ -9,6 +9,7 @@ import { ReactComponent as DocIcon } from "../../images/icons/doc.svg";
 import { Routes, Route, useLocation, Link } from "react-router-dom";
 import Maps from "./Maps";
 import Dashboard from "./Dashboard";
+import ManageData from "./ManageData";
 import { UIState } from "../../state/ui";
 import { api } from "../../lib";
 
@@ -20,6 +21,12 @@ const items = [
     link: "/dashboard/documentation",
     icon: <DocIcon />,
     key: "3",
+  },
+  {
+    label: "Manage Data",
+    link: "/dashboard/manage-data",
+    icon: <DocIcon />,
+    key: "4",
   },
 ];
 
@@ -104,6 +111,7 @@ const DashboardView = () => {
           <Routes>
             <Route exact path="/" element={<Dashboard />} />
             <Route path="/maps" element={<Maps />} />
+            <Route path="/manage-data" element={<ManageData />} />
           </Routes>
         </Content>
       </Layout>
