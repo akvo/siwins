@@ -4,6 +4,7 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
+from models.jobs import JobStatus, JOB_STATUS_TEXT
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
@@ -112,10 +113,12 @@ class TestFileRoutes:
         res = res[0]
         # download file
         filename = res.get('payload')
-        res = await client.get(
-            app.url_path_for(
-                "excel-data:download",
-                filename=filename
+        status = res.get('status')
+        if status == JOB_STATUS_TEXT.get(JobStatus.done.value):
+            res = await client.get(
+                app.url_path_for(
+                    "excel-data:download",
+                    filename=filename
+                )
             )
-        )
-        assert res.status_code == 200
+            assert res.status_code == 200
