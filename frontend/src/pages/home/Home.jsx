@@ -5,16 +5,18 @@ import { ArrowDownOutlined } from "@ant-design/icons";
 import { api } from "../../lib";
 import { Chart } from "../../components";
 import CountUp from "react-countup";
+import { UIState } from "../../state/ui";
+import { Link } from "react-router-dom";
 
 const chartConfig = window.dashboardjson?.tabs;
 
 const formatter = (value) => <CountUp end={value} duration={3} separator="," />;
 
 const Home = () => {
+  const { schoolTotal } = UIState.useState((s) => s);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [chartList, setChartList] = useState([]);
-  const [schoolTotal, setSchoolTotal] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -32,16 +34,6 @@ const Home = () => {
       setData(res?.map((item) => item.data).flat());
       setLoading(false);
     });
-  }, []);
-
-  useEffect(() => {
-    const url = `chart/number_of_school`;
-    api
-      .get(url)
-      .then((res) => {
-        setSchoolTotal(res?.data?.total);
-      })
-      .catch((e) => console.error(e));
   }, []);
 
   const renderColumn = (cfg, index) => {
@@ -79,7 +71,9 @@ const Home = () => {
         </Row>
         <Row align="middle" justify="space-between" className="explore-row">
           <Col span={12}>
-            <Button className="explore-button">Explore Data</Button>
+            <Link to="/dashboard/maps">
+              <Button className="explore-button">Explore Data</Button>
+            </Link>
           </Col>
           <Col span={12} style={{ textAlign: "end" }}>
             <Button type="text" className="scroll-button">

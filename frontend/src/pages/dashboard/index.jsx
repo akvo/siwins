@@ -33,6 +33,7 @@ const items = [
 const DashboardView = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(true);
+  const { schoolTotal } = UIState.useState((s) => s);
 
   useEffect(() => {
     Promise.all([
@@ -78,6 +79,11 @@ const DashboardView = () => {
               width={40}
             />
           </Link>
+          <h3>
+            Monitoring WaSH progress for {schoolTotal || 0} schools in Solomon
+            Islands
+          </h3>
+          <Image src="/images/unicef-logo.png" preview={false} height={35} />
         </div>
       </Header>
       <Layout className="site-layout">
