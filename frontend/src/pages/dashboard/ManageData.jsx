@@ -5,7 +5,7 @@ import { Row, Col, Table, Breadcrumb, Select, Tabs, Spin } from "antd";
 import { UIState } from "../../state/ui";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { api } from "../../lib";
-import { HomeOutlined, CameraOutlined } from "@ant-design/icons";
+import { HomeOutlined } from "@ant-design/icons";
 import { upperFirst } from "lodash";
 
 const ManageData = () => {
@@ -106,17 +106,8 @@ const ManageData = () => {
           },
         ];
 
-        // group of answer
         const transform = data?.map((a, ai) => {
-          const isImage = a.group.toLowerCase() === "images";
-          const label = isImage ? <CameraOutlined /> : a.group;
-          if (isImage) {
-            return {
-              key: `school-detail-tab-${a?.group}-${ai}`,
-              label: label,
-              // children: <ImageContent {...a} />,
-            };
-          }
+          const label = a.group;
           return {
             key: `school-detail-tab-${a?.group}-${ai}`,
             label: label,
@@ -282,10 +273,13 @@ const MainTabContent = ({ data }) => {
 };
 
 const AnswerTabContent = ({ title, data }) => {
-  const transformData = data.map(({ question_name, value }) => ({
-    name: question_name,
-    value,
-  }));
+  const transformData = data
+    .filter((d) => d.type !== "school_information")
+    .map(({ question_name, type, value }) => ({
+      name: question_name,
+      type,
+      value,
+    }));
   const columns = [
     {
       title: "",
@@ -294,6 +288,19 @@ const AnswerTabContent = ({ title, data }) => {
     {
       title: "",
       dataIndex: "value",
+      render: (_, record) => {
+        return (
+          <>
+            {record?.type === "photo" ? (
+              <div style={{ height: 200 }}>
+                <img src={record.value} />
+              </div>
+            ) : (
+              record.value
+            )}
+          </>
+        );
+      },
     },
   ];
   return (

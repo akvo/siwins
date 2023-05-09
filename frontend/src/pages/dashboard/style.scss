@@ -331,7 +331,14 @@
         }
         .ant-table-container {
           .ant-tabs {
-            width: 50%;
+            .ant-tabs-nav-wrap {
+              width: 80vw;
+            }
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
           }
         }
         .answer-table {
