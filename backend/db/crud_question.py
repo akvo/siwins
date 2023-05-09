@@ -1,8 +1,9 @@
 from typing import List, Optional
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
-from models.question import Question
+from models.question_group import QuestionGroup
 from models.question import (
+    Question,
     QuestionDict,
     QuestionBase,
     QuestionType,
@@ -181,6 +182,13 @@ def get_question_name(session: Session, ids: List[int]) -> dict:
     if questions:
         return {q.id: q.name for q in questions}
     return []
+
+
+def get_excel_headers(session: Session) -> List[str]:
+    questions = (session.query(Question).join(
+        QuestionGroup).order_by(
+            QuestionGroup.order, Question.order))
+    return [q.to_excel_header for q in questions]
 
 
 # def get_question_by_ids(

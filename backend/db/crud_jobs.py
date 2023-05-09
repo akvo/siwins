@@ -1,5 +1,5 @@
 # from fastapi import HTTPException
-from typing import Optional, Union
+from typing import Optional
 from typing_extensions import TypedDict
 from datetime import datetime
 from sqlalchemy.orm import Session
@@ -24,7 +24,7 @@ def update_jobs(
     session: Session,
     id: int,
     payload: Optional[str] = None,
-    status: Union[JobStatus] = None,
+    status: int = None,
     info: Optional[TypedDict] = None
 ) -> JobsBase:
     jobs = session.query(Jobs).filter(Jobs.id == id).first()
