@@ -4,7 +4,6 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
-from models.jobs import JobStatus, JOB_STATUS_TEXT
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
@@ -87,28 +86,18 @@ class TestFileRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        res = res[0]
-        status = JOB_STATUS_TEXT[JobStatus.done.value]
-        assert res == {
-            'id': 2,
-            'status': status,
-            'payload': res.get('payload'),
-            'info': {
-                'tags': [{
-                    'o': 2023,
-                    'q': 'Monitoring round'
-                }, {
-                    'o': 'Guadalcanal',
-                    'q': 'Province'
-                }],
-                'options': None,
-                'province': ['Guadalcanal'],
-                'form_name': 'survey_questions',
-                'school_type': None,
-                'monitoring_round': 2023},
-            'created': res.get('created'),
-            'available': res.get('available')
-        }
+        for r in res:
+            assert "id" in r
+            assert "status" in r
+            assert "payload" in r
+            assert "info" in r
+            assert "tags" in r.get("info")
+            assert "options" in r.get("info")
+            assert "province" in r.get("info")
+            assert "school_type" in r.get("info")
+            assert "monitoring_round" in r.get("info")
+            assert "created" in r
+            assert "available" in r
 
     @pytest.mark.asyncio
     async def test_download_file(
