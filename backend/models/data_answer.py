@@ -27,3 +27,16 @@ class DataAnswer(Base):
             "created": self.created,
             "answers": self.answers
         }
+
+    @property
+    def to_data_frame(self):
+        res = {
+            "id": self.id,
+            "created_at": self.created,
+            "identifier": self.identifier,
+            "datapoint_name": self.name,
+            "geolocation": self.geo,
+        }
+        for a in self.answers:
+            res.update(a)
+        return res

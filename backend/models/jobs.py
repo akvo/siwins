@@ -14,9 +14,17 @@ import sqlalchemy.dialects.postgresql as pg
 from db.connection import Base
 
 
+JOB_STATUS_TEXT = {
+    0: "Pending",
+    1: "in Progress",
+    2: "Failed",
+    3: "Done"
+}
+
+
 class JobStatus(enum.Enum):
     pending = 0
-    on_progress = 1
+    in_progress = 1
     failed = 2
     done = 3
 
