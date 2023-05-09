@@ -127,6 +127,7 @@ class TestDataRoutes:
             for c in r.get("child"):
                 assert "question_id" in c
                 assert "question_name" in c
+                assert "type" in c
                 assert "value" in c
 
     @pytest.mark.asyncio
