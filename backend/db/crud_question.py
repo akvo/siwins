@@ -174,6 +174,15 @@ def get_question_by_attributes(
         Question.attributes.contains([attribute])).all()
 
 
+def get_question_name(session: Session, ids: List[int]) -> dict:
+    questions = session.query(
+        Question.id, Question.name
+    ).filter(Question.id.in_(ids)).all()
+    if questions:
+        return {q.id: q.name for q in questions}
+    return []
+
+
 # def get_question_by_ids(
 #     session: Session, ids: List[int]
 # ) -> List[QuestionDict]:

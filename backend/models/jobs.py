@@ -8,7 +8,7 @@ from typing_extensions import TypedDict
 from pydantic import BaseModel
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy import (
-    Column, Integer, Text, Enum, DateTime
+    Column, Integer, Text, DateTime
 )
 import sqlalchemy.dialects.postgresql as pg
 from db.connection import Base
@@ -33,7 +33,7 @@ class JobsDict(TypedDict):
 class Jobs(Base):
     __tablename__ = "jobs"
     id = Column(Integer, primary_key=True, index=True, nullable=True)
-    status = Column(Enum(JobStatus), nullable=True, default=0)
+    status = Column(Integer, nullable=True, default=0)
     payload = Column(Text)
     info = Column(MutableDict.as_mutable(pg.JSONB), nullable=True)
     created = Column(DateTime, default=datetime.utcnow)

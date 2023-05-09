@@ -34,6 +34,11 @@ def get_form_by_id(session: Session, id: int) -> FormBase:
     return session.query(Form).filter(Form.id == id).first()
 
 
+def get_form_name(session: Session) -> str:
+    form = session.query(Form.name).first()
+    return form.name
+
+
 # def update_form(
 #     session: Session,
 #     id: int,
