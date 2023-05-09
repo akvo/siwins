@@ -15,7 +15,7 @@ from db.crud_question import get_question_name
 from utils.storage import StorageFolder, upload, download
 from utils.helper import UUID, write_log
 from utils.downloader import generate_download_data
-from db.crud_jobs import add_jobs, update_jobs
+from db.crud_jobs import add_jobs, update_jobs, query_jobs
 from models.jobs import JobsBase, JobStatus, JOB_STATUS_TEXT
 from middleware import check_query
 from source.main_config import DOWNLOAD_PATH
@@ -141,3 +141,25 @@ async def download_file(
 ):
     filepath = download(f"{StorageFolder.download.value}/{filename}")
     return FileResponse(path=filepath, filename=filename, media_type=ftype)
+
+
+@file_route.get(
+    "/download/list",
+    response_model=List[JobsBase],
+    summary="list of generated dowload data",
+    name="excel-data:download-list",
+    tags=["File"])
+async def download_list(
+    req: Request,
+    page: Optional[int] = 1,
+    perpage: Optional[int] = 5,
+    session: Session = Depends(get_session)
+):
+    res = query_jobs(
+        session=session,
+        limit=perpage,
+        skip=(perpage * (page - 1))
+    )
+    if not res:
+        raise HTTPException(status_code=404, detail="Not found")
+    return res

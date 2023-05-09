@@ -1,9 +1,8 @@
-# from fastapi import HTTPException
 from typing import Optional
 from typing_extensions import TypedDict
 from datetime import datetime
 from sqlalchemy.orm import Session
-# from sqlalchemy import asc, desc
+from sqlalchemy import desc
 from models.jobs import Jobs, JobsBase, JobStatus
 
 
@@ -32,7 +31,7 @@ def update_jobs(
         jobs.payload = payload
     if status:
         jobs.status = status
-    if status == JobStatus.done:
+    if status == JobStatus.done.value:
         jobs.available = datetime.now()
     if info:
         jobs.info = info
@@ -40,3 +39,18 @@ def update_jobs(
     session.flush()
     session.refresh(jobs)
     return jobs.serialize
+
+
+def query_jobs(
+    session: Session,
+    status: Optional[int] = None,
+    limit: Optional[int] = 5,
+    skip: Optional[int] = 0
+) -> JobsBase:
+    jobs = session.query(Jobs)
+    if status:
+        jobs = jobs.filter(Jobs.status == status)
+    jobs = jobs.order_by(
+        desc(Jobs.created)
+    ).offset(skip).limit(limit).all()
+    return [j.serialize for j in jobs]
