@@ -8,12 +8,13 @@ from fastapi import (
     HTTPException, BackgroundTasks
 )
 from fastapi.security import HTTPBearer
+from fastapi.responses import FileResponse
 from db.connection import get_session
 from db.crud_form import get_form_name
 from db.crud_question import get_question_name
-from utils.storage import StorageFolder, upload
+from utils.storage import StorageFolder, upload, download
 from utils.helper import UUID, write_log
-from utils.downloader import download_data
+from utils.downloader import generate_download_data
 from db.crud_jobs import add_jobs, update_jobs
 from models.jobs import JobsBase, JobStatus, JOB_STATUS_TEXT
 from middleware import check_query
@@ -41,7 +42,7 @@ def run_download(session: Session, jobs: dict):
     payload = jobs["payload"]
     # download start
     out_file = payload
-    file, context = download_data(
+    file, context = generate_download_data(
         session=session, jobs=jobs, file=f"{DOWNLOAD_PATH}/{out_file}")
     if file:
         output = upload(file, StorageFolder.download.value, out_file)
@@ -126,3 +127,17 @@ async def generate_file(
         })
     background_tasks.add_task(run_download, session, res)
     return res
+
+
+@file_route.get(
+    "/download/file/{filename:path}",
+    summary="download file by filename",
+    name="excel-data:download",
+    tags=["File"])
+async def download_file(
+    req: Request,
+    filename: str,
+    session: Session = Depends(get_session)
+):
+    filepath = download(f"{StorageFolder.download.value}/{filename}")
+    return FileResponse(path=filepath, filename=filename, media_type=ftype)

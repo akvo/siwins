@@ -16,7 +16,7 @@ def rearange_columns(col_names: list):
     return col_names
 
 
-def download_data(session: Session, jobs: dict, file: str):
+def generate_download_data(session: Session, jobs: dict, file: str):
     info = jobs.get("info") or {}
     if os.path.exists(file):
         os.remove(file)
