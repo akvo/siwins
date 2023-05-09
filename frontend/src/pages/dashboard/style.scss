@@ -307,6 +307,21 @@
             }
           }
         }
+        .ant-table-wrapper {
+          .ant-table-thead {
+            tr {
+              th,
+              td {
+                background: #fff !important;
+                border-color: #fafafa;
+                border-bottom: 3px solid #0288d1;
+                color: #0288d1;
+                font-weight: 700;
+                padding: 10px;
+              }
+            }
+          }
+        }
       }
     }
   }

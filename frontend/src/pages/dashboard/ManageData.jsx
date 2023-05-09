@@ -168,6 +168,18 @@ const ManageData = () => {
               current: paginate.current,
               total: paginate.total,
             }}
+            expandable={{
+              expandIconColumnIndex: columns.length,
+              expandedRowRender: () => (
+                <p
+                  style={{
+                    margin: 0,
+                  }}
+                >
+                  test
+                </p>
+              ),
+            }}
           />
         </Col>
       </Row>
