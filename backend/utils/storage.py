@@ -3,7 +3,7 @@ import enum
 import shutil
 from pathlib import Path
 from google.cloud import storage
-from source.main_config import DOWNLOAD_PATH
+from source.main_config import DOWNLOAD_PATH, FAKE_STORAGE_PATH
 
 bucket_name = "siwins"
 
@@ -19,7 +19,7 @@ def upload(file: str, folder: str, filename: str = None, public: bool = False):
     TESTING = os.environ.get("TESTING")
     STORAGE_LOCATION = os.environ.get("STORAGE_LOCATION")
     if TESTING:
-        fake_location = f"./tmp/fake-storage/{filename}"
+        fake_location = f"{FAKE_STORAGE_PATH}/{filename}"
         shutil.copy2(file, fake_location)
         return fake_location
     if STORAGE_LOCATION:
@@ -68,7 +68,8 @@ def download(url):
     TESTING = os.environ.get("TESTING")
     STORAGE_LOCATION = os.environ.get("STORAGE_LOCATION")
     if TESTING or STORAGE_LOCATION:
-        return url
+        tmp_file = url.split("/")[-1]
+        return f"{FAKE_STORAGE_PATH}/{tmp_file}"
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(url)

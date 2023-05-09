@@ -2,7 +2,7 @@
 # Keep the code clean and CLEAR
 
 import enum
-from typing import Optional
+from typing import Optional, Union
 from datetime import datetime
 from typing_extensions import TypedDict
 from pydantic import BaseModel
@@ -73,10 +73,23 @@ class Jobs(Base):
             "available": self.available,
         }
 
+    @property
+    def simplify(self) -> JobsDict:
+        payload = self.payload.split('/')[-1]
+        status = JOB_STATUS_TEXT.get(self.status)
+        return {
+            "id": self.id,
+            "status": status,
+            "payload": payload,
+            "info": self.info,
+            "created": self.created.strftime("%B %d, %Y at %I:%M %p"),
+            "available": self.available,
+        }
+
 
 class JobsBase(BaseModel):
     id: int
-    status: Optional[JobStatus] = JobStatus.pending
+    status: Union[JobStatus, str]
     payload: str
     info: Optional[dict] = None
     created: Optional[str] = None

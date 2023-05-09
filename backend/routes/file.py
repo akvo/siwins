@@ -45,9 +45,10 @@ def run_download(session: Session, jobs: dict):
     file, context = generate_download_data(
         session=session, jobs=jobs, file=f"{DOWNLOAD_PATH}/{out_file}")
     if file:
-        output = upload(file, StorageFolder.download.value, out_file)
+        storage_folder = StorageFolder.download.value
+        output = upload(file, storage_folder, out_file)
         status = JobStatus.done.value
-        payload = output.split("/")[1]
+        payload = output
     else:
         status = JobStatus.failed.value
     jobs = update_jobs(
@@ -139,7 +140,9 @@ async def download_file(
     filename: str,
     session: Session = Depends(get_session)
 ):
-    filepath = download(f"{StorageFolder.download.value}/{filename}")
+    filename = filename.split('/')[-1]
+    storage_folder = StorageFolder.download.value
+    filepath = download(f"{storage_folder}/{filename}")
     return FileResponse(path=filepath, filename=filename, media_type=ftype)
 
 

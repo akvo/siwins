@@ -53,4 +53,4 @@ def query_jobs(
     jobs = jobs.order_by(
         desc(Jobs.created)
     ).offset(skip).limit(limit).all()
-    return [j.serialize for j in jobs]
+    return [j.simplify for j in jobs]
