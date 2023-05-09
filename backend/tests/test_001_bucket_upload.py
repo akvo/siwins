@@ -4,7 +4,10 @@ from sqlalchemy.orm import Session
 from utils.storage import (
     upload, delete, check, StorageFolder
 )
-from source.main_config import TEST_PATH
+from source.main_config import (
+    TEST_PATH, DOWNLOAD_PATH,
+    FAKE_STORAGE_PATH, LOG_PATH
+)
 
 
 def create_test_file():
@@ -16,6 +19,16 @@ def create_test_file():
 
 
 class TestStorage():
+    @pytest.mark.asyncio
+    async def test_dir_exist(self, session: Session) -> None:
+        dirs = [TEST_PATH, DOWNLOAD_PATH, FAKE_STORAGE_PATH, LOG_PATH]
+        for dr in dirs:
+            if not os.path.exists(dr):
+                os.makedirs(dr)
+        # check exist
+        for dr in dirs:
+            assert os.path.exists(dr) is True
+
     @pytest.mark.asyncio
     async def test_upload_file_to_bucket(self, session: Session) -> None:
         if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
