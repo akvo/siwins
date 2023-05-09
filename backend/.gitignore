@@ -5,3 +5,5 @@
 __pycache__
 .coverage
 .coverage.*
+./tmp/fake-storage/*
+./tmp/log/*
