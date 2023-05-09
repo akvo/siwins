@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "antd/es/typography/Link";
 import AdvanceFilter from "../../components/filter";
-import { Row, Col, Table, Breadcrumb } from "antd";
+import { Row, Col, Table, Breadcrumb, Select } from "antd";
 import { UIState } from "../../state/ui";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { api } from "../../lib";
@@ -12,6 +12,8 @@ const ManageData = () => {
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedSchoolType, setSelectedSchoolType] = useState([]);
   const [data, setData] = useState([]);
+  const [monitoringData, setMonitoringData] = useState([]);
+  const [monitoringRound, setMonitoringRound] = useState("");
   const [loading, setLoading] = useState(false);
   const [paginate, setPaginate] = useState({
     total: 1,
@@ -27,6 +29,23 @@ const ManageData = () => {
     setSelectedSchoolType(value);
   };
 
+  const handleMonitoringFilter = (value) => {
+    setMonitoringRound(value);
+  };
+
+  useEffect(() => {
+    const url = `option/monitoring_round`;
+
+    api
+      .get(url)
+      .then((res) => {
+        setMonitoringData(res.data);
+      })
+      .catch(() => {
+        setMonitoringData([]);
+      });
+  }, []);
+
   const getdata = useCallback(
     (page = 1, pageSize = 10) => {
       setLoading(true);
@@ -39,6 +58,10 @@ const ManageData = () => {
       if (selectedSchoolType && selectedSchoolType.length > 0) {
         const queryUrlPrefix = url.includes("?") ? "&" : "?";
         url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
+      }
+      if (monitoringRound) {
+        const queryUrlPrefix = url.includes("?") ? "&" : "?";
+        url = `${url}${queryUrlPrefix}monitoring_round=${monitoringRound}`;
       }
       api
         .get(url)
@@ -57,7 +80,7 @@ const ManageData = () => {
           setLoading(false);
         });
     },
-    [advanceSearchValue, selectedProvince, selectedSchoolType]
+    [advanceSearchValue, selectedProvince, selectedSchoolType, monitoringRound]
   );
 
   useEffect(() => {
@@ -116,7 +139,21 @@ const ManageData = () => {
                 handleProvinceFilter={handleProvinceFilter}
                 selectedProvince={selectedProvince}
                 selectedSchoolType={selectedSchoolType}
-              />
+              >
+                <Select
+                  style={{ width: 200 }}
+                  allowClear
+                  showArrow
+                  showSearch
+                  placeholder="Select Monitoring Round"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                  options={monitoringData.map((x) => ({ label: x, value: x }))}
+                  onChange={(val) => handleMonitoringFilter(val)}
+                />
+              </AdvanceFilter>
             </Col>
           </Row>
         </Col>
