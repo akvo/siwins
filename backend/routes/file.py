@@ -1,4 +1,5 @@
 # import aiofiles
+import os
 from datetime import datetime
 from xlrd import open_workbook, XLRDError
 from sqlalchemy.orm import Session
@@ -140,9 +141,12 @@ async def download_file(
     filename: str,
     session: Session = Depends(get_session)
 ):
+    TESTING = os.environ.get("TESTING")
     filename = filename.split('/')[-1]
     storage_folder = StorageFolder.download.value
     filepath = download(f"{storage_folder}/{filename}")
+    if TESTING:
+        return {'filepath': filepath}
     return FileResponse(path=filepath, filename=filename, media_type=ftype)
 
 

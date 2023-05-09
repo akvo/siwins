@@ -122,10 +122,11 @@ class TestFileRoutes:
         res = res.json()
         res = res[0]
         # download file
+        filename = res.get('payload')
         res = await client.get(
             app.url_path_for(
                 "excel-data:download",
-                filename=res.get('payload')
+                filename=filename
             )
         )
         assert res.status_code == 200
