@@ -1,9 +1,14 @@
 import os
+import enum
 from pathlib import Path
 from google.cloud import storage
 import shutil
 
 bucket_name = "siwins"
+
+
+class StorageFolder(enum.Enum):
+    download = "download"
 
 
 def upload(file: str, folder: str, filename: str = None, public: bool = False):

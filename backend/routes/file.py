@@ -11,11 +11,13 @@ from fastapi.security import HTTPBearer
 from db.connection import get_session
 from db.crud_form import get_form_name
 from db.crud_question import get_question_name
-# from utils import excel, storage
+from utils.storage import StorageFolder, upload
 from utils.helper import UUID, write_log
-from db.crud_jobs import add_jobs
-from models.jobs import JobsBase
+from utils.downloader import download_data
+from db.crud_jobs import add_jobs, update_jobs
+from models.jobs import JobsBase, JobStatus, JOB_STATUS_TEXT
 from middleware import check_query
+from source.main_config import DOWNLOAD_PATH
 
 
 out_file_path = "./tmp/"
@@ -28,14 +30,34 @@ file_route = APIRouter()
 def test_excel(file):
     try:
         open_workbook(file)
-        # return storage.upload(file, "test")
+        return upload(file, "test")
         return True
     except XLRDError:
         raise HTTPException(status_code=404, detail="Not Valid Excel File")
 
 
-def test(job: dict):
-    log_content = f"job_id: {job['id']} || {str(job)}"
+def run_download(session: Session, jobs: dict):
+    status = jobs.get("status")
+    payload = jobs["payload"]
+    # download start
+    out_file = payload
+    file, context = download_data(
+        session=session, jobs=jobs, file=f"{DOWNLOAD_PATH}/{out_file}")
+    if file:
+        output = upload(file, StorageFolder.download.value, out_file)
+        status = JobStatus.done.value
+        payload = output.split("/")[1]
+    else:
+        status = JobStatus.failed.value
+    jobs = update_jobs(
+        session=session,
+        id=jobs.get("id"),
+        payload=payload,
+        status=status)
+    # write download log
+    job_id = f"job_id: {jobs['id']}"
+    job_status = f"status: {JOB_STATUS_TEXT.get(status)}"
+    log_content = f"{job_status} || {job_id} || {str(jobs)}"
     write_log(log_filename="download_log", log_content=log_content)
 
 
@@ -102,5 +124,5 @@ async def generate_file(
             "school_type": sctype,
             "tags": tags
         })
-    background_tasks.add_task(test, res)
+    background_tasks.add_task(run_download, session, res)
     return res

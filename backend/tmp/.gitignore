@@ -4,3 +4,4 @@
 *.csv
 /fake-storage/*
 /log/*
+/download/*
