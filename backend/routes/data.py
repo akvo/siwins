@@ -339,6 +339,10 @@ def get_data_detail_popup_by_data_id(
             da["question_group_name"] = "Images"
             da["render"] = "image"
             continue
+        if da["type"] == QuestionType.multiple_option.value:
+            da["render"] = "value"
+            da["value"] = ", ".join(da["value"])
+            continue
         if da["type"] != QuestionType.number.value:
             da["render"] = "value"
             continue

@@ -20,6 +20,7 @@ from db.crud_province_view import (
     get_province_number_answer
 )
 from utils.functions import extract_school_information
+from source.main_config import QuestionConfig
 
 
 security = HTTPBearer()
@@ -169,11 +170,26 @@ def get_data_answers_history(
     for k, values in groups:
         temp = list(values)
         qg_name = temp[0]["question_group_name"]
-        child = [{
-            "question_id": da["question_id"],
-            "question_name": da["question_name"],
-            "value": da["value"]
-        } for da in temp]
+        child = []
+        for da in temp:
+            qid = da["question_id"]
+            qname = da["question_name"]
+            qtype = da["type"]
+            value = da["value"]
+            if qid == QuestionConfig.school_information.value:
+                qtype = "school_information"
+                value = extract_school_information(
+                    school_information=da["value"],
+                    to_object=True
+                )
+            if qtype == QuestionType.multiple_option.value:
+                value = ', '.join(value)
+            child.append({
+                "question_id": qid,
+                "question_name": qname,
+                "value": value,
+                "type": qtype
+            })
         grouped_answer.append({
             "group": qg_name,
             "child": child
