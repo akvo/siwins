@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "antd/es/typography/Link";
 import AdvanceFilter from "../../components/filter";
-import { Row, Col, Table, Breadcrumb, Select } from "antd";
+import { Row, Col, Table, Breadcrumb, Select, Tabs, Spin } from "antd";
 import { UIState } from "../../state/ui";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { api } from "../../lib";
+import { HomeOutlined, CameraOutlined } from "@ant-design/icons";
+import { upperFirst } from "lodash";
 
 const ManageData = () => {
   const { provinceValues, advanceSearchValue, schoolTypeValues } =
@@ -15,11 +17,13 @@ const ManageData = () => {
   const [monitoringData, setMonitoringData] = useState([]);
   const [monitoringRound, setMonitoringRound] = useState("");
   const [loading, setLoading] = useState(false);
+  const [tabLoading, setTabLoading] = useState(false);
   const [paginate, setPaginate] = useState({
     total: 1,
     current: 1,
     pageSize: 10,
   });
+  const [tabItems, setTabItems] = useState([]);
 
   const handleProvinceFilter = (value) => {
     setSelectedProvince(value);
@@ -86,6 +90,48 @@ const ManageData = () => {
   useEffect(() => {
     getdata();
   }, [getdata]);
+
+  const getSchoolDetails = (id, record) => {
+    setTabLoading(true);
+    const url = `answer/data/${id}`;
+    api
+      .get(url)
+      .then((res) => {
+        const { data } = res;
+        const main = [
+          {
+            key: "main",
+            label: <HomeOutlined />,
+            children: <MainTabContent data={record} />,
+          },
+        ];
+
+        // group of answer
+        const transform = data?.map((a, ai) => {
+          const isImage = a.group.toLowerCase() === "images";
+          const label = isImage ? <CameraOutlined /> : a.group;
+          if (isImage) {
+            return {
+              key: `school-detail-tab-${a?.group}-${ai}`,
+              label: label,
+              // children: <ImageContent {...a} />,
+            };
+          }
+          return {
+            key: `school-detail-tab-${a?.group}-${ai}`,
+            label: label,
+            children: <AnswerTabContent title={a.group} data={a.child} />,
+          };
+        });
+        setTabItems([...main, ...transform]);
+      })
+      .catch(() => {
+        setTabItems([]);
+      })
+      .finally(() => {
+        setTabLoading(false);
+      });
+  };
 
   const handleTableChange = (pagination) => {
     const { current, pageSize } = pagination;
@@ -171,19 +217,96 @@ const ManageData = () => {
             expandable={{
               expandIconColumnIndex: columns.length,
               expandedRowRender: () => (
-                <p
-                  style={{
-                    margin: 0,
-                  }}
-                >
-                  test
-                </p>
+                <>
+                  {tabLoading ? (
+                    <div className="loading-wrapper">
+                      <Spin />
+                    </div>
+                  ) : (
+                    <Tabs items={tabItems} />
+                  )}
+                </>
               ),
+            }}
+            onExpand={(expanded, record) => {
+              if (expanded) {
+                getSchoolDetails(record?.id, record);
+              }
             }}
           />
         </Col>
       </Row>
     </div>
+  );
+};
+
+const MainTabContent = ({ data }) => {
+  const transformData = Object.entries(data?.school_information).map(
+    ([name, value]) => ({ name: upperFirst(name.replace(/_/g, " ")), value })
+  );
+
+  const School = () => {
+    const columns = [
+      {
+        title: "",
+        dataIndex: "name",
+      },
+      {
+        title: "",
+        dataIndex: "value",
+      },
+    ];
+    return (
+      <>
+        <Table
+          className={"answer-table"}
+          rowKey={(record) => record.name}
+          columns={columns}
+          dataSource={transformData.concat([
+            { name: "Last updated", value: data?.year_conducted },
+          ])}
+          title={() => "School Information"}
+          pagination={false}
+        />
+      </>
+    );
+  };
+
+  return (
+    <div className="main-tab-content">
+      <div className="main-school-information">
+        <School />
+      </div>
+    </div>
+  );
+};
+
+const AnswerTabContent = ({ title, data }) => {
+  const transformData = data.map(({ question_name, value }) => ({
+    name: question_name,
+    value,
+  }));
+  const columns = [
+    {
+      title: "",
+      dataIndex: "name",
+    },
+    {
+      title: "",
+      dataIndex: "value",
+    },
+  ];
+  return (
+    <>
+      <Table
+        className={"answer-table"}
+        rowKey={(record) => `${record.name}-${title}`}
+        columns={columns}
+        dataSource={transformData}
+        title={() => title}
+        pagination={false}
+      />
+    </>
   );
 };
 

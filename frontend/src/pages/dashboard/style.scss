@@ -322,6 +322,21 @@
             }
           }
         }
+        .ant-table-container {
+          .ant-tabs {
+            width: 50%;
+          }
+        }
+        .answer-table {
+          .ant-table-title {
+            border-bottom: 3px solid #0288d1;
+            color: #0288d1;
+            font-weight: 700;
+          }
+          .ant-table-thead {
+            display: none;
+          }
+        }
       }
     }
   }
