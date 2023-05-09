@@ -148,7 +148,7 @@ def get_all_data(
     # pagination param
     if skip is not None and perpage is not None:
         count = data.count()
-        data = data.order_by(desc(Data.id))
+        data = data.order_by(desc(Data.created))
         data = data.offset(skip).limit(perpage).all()
         return PaginatedData(data=data, count=count)
     data = data.all()
