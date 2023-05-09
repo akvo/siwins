@@ -27,31 +27,38 @@ const ManageData = () => {
     setSelectedSchoolType(value);
   };
 
-  const getdata = useCallback((page = 1, pageSize = 10, query) => {
-    setLoading(true);
-    let url = `data`;
-    url = generateAdvanceFilterURL(advanceSearchValue, url);
-    const queryUrlPrefix = url.includes("?") ? "&" : "?";
-    url = `${url}${queryUrlPrefix}page=${page}&perpage=${pageSize}${
-      query ? `&${query}` : ""
-    }`;
-    api
-      .get(url)
-      .then((res) => {
-        setData(res.data?.data);
-        setPaginate({
-          current: res.data.current,
-          total: res.data.total,
-          pageSize: pageSize,
+  const getdata = useCallback(
+    (page = 1, pageSize = 10) => {
+      setLoading(true);
+      let url = `data?page=${page}&perpage=${pageSize}`;
+      url = generateAdvanceFilterURL(advanceSearchValue, url);
+      if (selectedProvince && selectedProvince.length > 0) {
+        const queryUrlPrefix = url.includes("?") ? "&" : "?";
+        url = `${url}${queryUrlPrefix}prov=${selectedProvince}`;
+      }
+      if (selectedSchoolType && selectedSchoolType.length > 0) {
+        const queryUrlPrefix = url.includes("?") ? "&" : "?";
+        url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
+      }
+      api
+        .get(url)
+        .then((res) => {
+          setData(res.data?.data);
+          setPaginate({
+            current: res.data.current,
+            total: res.data.total,
+            pageSize: pageSize,
+          });
+        })
+        .catch(() => {
+          setData([]);
+        })
+        .finally(() => {
+          setLoading(false);
         });
-      })
-      .catch(() => {
-        setData([]);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+    },
+    [advanceSearchValue, selectedProvince, selectedSchoolType]
+  );
 
   useEffect(() => {
     getdata();
