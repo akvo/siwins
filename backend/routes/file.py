@@ -12,11 +12,10 @@ from db.connection import get_session
 from db.crud_form import get_form_name
 from db.crud_question import get_question_name
 # from utils import excel, storage
-from utils.helper import UUID
+from utils.helper import UUID, write_log
 from db.crud_jobs import add_jobs
 from models.jobs import JobsBase
 from middleware import check_query
-from source.main_config import LOG_PATH
 
 
 out_file_path = "./tmp/"
@@ -36,10 +35,8 @@ def test_excel(file):
 
 
 def test(job: dict):
-    today = datetime.today().strftime("%y%m%d")
-    log_file = f"download_log_{today}.txt"
-    with open(f"{LOG_PATH}/{log_file}", mode="a+") as log:
-        log.write(f"job_id: {job['id']} || {str(job)}")
+    log_content = f"job_id: {job['id']} || {str(job)}"
+    write_log(log_filename="download_log", log_content=log_content)
 
 
 @file_route.get(

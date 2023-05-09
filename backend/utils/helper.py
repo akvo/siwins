@@ -1,8 +1,17 @@
 import uuid
+from datetime import datetime
+from source.main_config import LOG_PATH
 
 
 def get_uuid():
     return "-".join(str(uuid.uuid4()).split("-")[1:4])
+
+
+def write_log(log_filename: str, log_content: str):
+    today = datetime.today().strftime("%y%m%d")
+    log_file = f"{log_filename}_{today}.txt"
+    with open(f"{LOG_PATH}/{log_file}", mode="a+") as f:
+        f.write(log_content + "\n")
 
 
 class UUID(str):
