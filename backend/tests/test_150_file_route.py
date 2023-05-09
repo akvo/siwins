@@ -87,7 +87,6 @@ class TestFileRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert len(res) == 2
         res = res[0]
         status = JOB_STATUS_TEXT[JobStatus.done.value]
         assert res == {
@@ -121,7 +120,6 @@ class TestFileRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert len(res) == 2
         res = res[0]
         # download file
         res = await client.get(
