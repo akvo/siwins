@@ -86,6 +86,7 @@ async def generate_file(
         None, description="format: school_type name \
             (filter by shcool type)"),
 ):
+    TESTING = os.environ.get("TESTING")
     tags = []
     options = check_query(q) if q else None
     form_name = get_form_name(session=session)
@@ -127,6 +128,9 @@ async def generate_file(
             "school_type": sctype,
             "tags": tags
         })
+    if TESTING:
+        run_download(session=session, jobs=res)
+        return res
     background_tasks.add_task(run_download, session, res)
     return res
 
