@@ -1,14 +1,16 @@
 import os
 import enum
+import shutil
 from pathlib import Path
 from google.cloud import storage
-import shutil
+from source.main_config import DOWNLOAD_PATH
 
 bucket_name = "siwins"
 
 
 class StorageFolder(enum.Enum):
     download = "download"
+    test = "test"
 
 
 def upload(file: str, folder: str, filename: str = None, public: bool = False):
@@ -71,6 +73,6 @@ def download(url):
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(url)
     tmp_file = url.split("/")[-1]
-    tmp_file = f"./tmp/{tmp_file}"
+    tmp_file = f"{DOWNLOAD_PATH}/{tmp_file}"
     blob.download_to_filename(tmp_file)
     return tmp_file

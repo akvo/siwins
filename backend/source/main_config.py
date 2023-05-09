@@ -27,6 +27,7 @@ TMP_PATH = "./tmp"
 FAKE_STORAGE_PATH = f"{TMP_PATH}/fake-storage"
 LOG_PATH = f"{TMP_PATH}/log"
 DOWNLOAD_PATH = f"{TMP_PATH}/download"
+TEST_PATH = f"{TMP_PATH}/test"
 
 
 class QuestionConfig(enum.Enum):
