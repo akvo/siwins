@@ -1,6 +1,10 @@
 import React, { useState, useMemo } from "react";
 import { Select, Row, Col, Space, Button, Card, Alert } from "antd";
-import { CloseCircleFilled, CheckCircleFilled } from "@ant-design/icons";
+import {
+  CloseCircleFilled,
+  CheckCircleFilled,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import { isEmpty, sortBy, groupBy } from "lodash";
 import { Chart } from "../";
 
@@ -87,13 +91,6 @@ const RenderQuestionOption = ({
         }}
         className={`${selectedOption.includes(opt.name) ? "selected" : ""}`}
         type="primary"
-        icon={
-          selectedOption.includes(opt.name) ? (
-            <CloseCircleFilled />
-          ) : (
-            <CheckCircleFilled />
-          )
-        }
         onClick={() =>
           handleOnChangeQuestionOption(opt.name, selectedQuestion?.type)
         }
@@ -106,7 +103,15 @@ const RenderQuestionOption = ({
           setShowInfo(false);
         }}
       >
-        {opt.name}
+        <div>
+          {selectedOption.includes(opt.name) ? (
+            <CloseCircleFilled />
+          ) : (
+            <CheckCircleFilled />
+          )}
+          {opt.name}
+        </div>
+        <InfoCircleOutlined />
       </Button>
     ));
   };
