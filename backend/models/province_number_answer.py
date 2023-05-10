@@ -20,7 +20,7 @@ class ProvinceNumberAnswer(Base):
     count = Column(Integer)
 
     def __repr__(self) -> int:
-        return f"<ProvinceNumberAnswer {self.question}>"
+        return f"<ProvinceNumberAnswer {self.id}>"
 
     @property
     def serialize(self):

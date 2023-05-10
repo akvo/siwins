@@ -1,0 +1,7 @@
+*.txt
+*.xlsx
+*.xls
+*.csv
+/fake-storage/*
+/log/*
+/download/*

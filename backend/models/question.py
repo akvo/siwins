@@ -162,6 +162,10 @@ class Question(Base):
             "number": []
         }
 
+    @property
+    def to_excel_header(self):
+        return f"{self.id}|{self.name}"
+
 
 class QuestionBase(BaseModel):
     id: int
