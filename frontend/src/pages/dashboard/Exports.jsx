@@ -58,7 +58,7 @@ const Export = () => {
       });
   }, []);
 
-  const pending = fileList.filter((item) => item.status !== "done");
+  const pending = fileList.filter((item) => item.status !== "Done");
 
   useEffect(() => {
     if (pending.length && !pendingFile) {
