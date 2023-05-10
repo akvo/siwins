@@ -123,7 +123,11 @@ const Export = () => {
           lineHeight: "32px",
         }}
       >
-        {loadMoreButton ? <Button onClick={onLoadMore}>test</Button> : "test"}
+        {loadMoreButton ? (
+          <Button onClick={onLoadMore}>Load More</Button>
+        ) : (
+          "End of the list"
+        )}
       </div>
     ) : null;
 
