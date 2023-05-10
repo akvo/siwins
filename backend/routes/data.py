@@ -330,11 +330,11 @@ def get_data_detail_popup_by_data_id(
         current=True)
     prov_numb_answers = [p.serialize for p in prov_numb_answers]
     for da in data["answer"]:
-        del da["qg_order"]
-        del da["q_order"]
         del da["attributes"]
         if da["type"] == QuestionType.photo.value:
             # handle photo question to be one group
+            da["qg_order"] = 0
+            da["q_order"] = 0
             da["question_group_id"] = 0
             da["question_group_name"] = "Images"
             da["render"] = "image"
@@ -391,7 +391,7 @@ def get_data_detail_popup_by_data_id(
         da["render"] = "chart"
         da["value"] = temp_numb
     # EOL generate chart data for number answer
-    # group by question group
+    # order and group by question group
     data["answer"].sort(key=lambda x: (x.get("qg_order"), x.get("q_order")))
     groups = groupby(data["answer"], key=lambda d: d["question_group_id"])
     grouped_answer = []
