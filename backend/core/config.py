@@ -12,9 +12,12 @@ from routes.cascade import cascade_route
 from routes.charts import charts_route
 from routes.answer import answer_route
 from routes.option import option_route
+from routes.file import file_route
 from AkvoResponseGrouper.routes import collection_route
 from source.geoconfig import GeoLevels, GeoCenter
-from source.main_config import CLASS_PATH, TOPO_JSON_PATH, FRONTEND_CONFIG_PATH
+from source.main_config import (
+    CLASS_PATH, TOPO_JSON_PATH, FRONTEND_CONFIG_PATH
+)
 
 TOPO_JSON = open(TOPO_JSON_PATH).read()
 GEO_CONFIG = GeoLevels[CLASS_PATH].value
@@ -97,6 +100,7 @@ app.include_router(data_route)
 app.include_router(collection_route)
 app.include_router(charts_route)
 app.include_router(answer_route)
+app.include_router(file_route)
 
 
 @lru_cache()
