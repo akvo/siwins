@@ -5,8 +5,6 @@ import { Row, Col, Table, Breadcrumb, Select, Tabs, Spin } from "antd";
 import { UIState } from "../../state/ui";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { api } from "../../lib";
-import { HomeOutlined } from "@ant-design/icons";
-import { upperFirst } from "lodash";
 
 const ManageData = () => {
   const { provinceValues, advanceSearchValue, schoolTypeValues } =
