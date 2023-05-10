@@ -91,20 +91,13 @@ const ManageData = () => {
     getdata();
   }, [getdata]);
 
-  const getSchoolDetails = (id, record) => {
+  const getSchoolDetails = (id) => {
     setTabLoading(true);
     const url = `answer/data/${id}`;
     api
       .get(url)
       .then((res) => {
         const { data } = res;
-        const main = [
-          {
-            key: "main",
-            label: <HomeOutlined />,
-            children: <MainTabContent data={record} />,
-          },
-        ];
 
         const transform = data?.map((a, ai) => {
           const label = a.group;
@@ -114,7 +107,7 @@ const ManageData = () => {
             children: <AnswerTabContent title={a.group} data={a.child} />,
           };
         });
-        setTabItems([...main, ...transform]);
+        setTabItems([...transform]);
       })
       .catch(() => {
         setTabItems([]);
@@ -231,55 +224,12 @@ const ManageData = () => {
   );
 };
 
-const MainTabContent = ({ data }) => {
-  const transformData = Object.entries(data?.school_information).map(
-    ([name, value]) => ({ name: upperFirst(name.replace(/_/g, " ")), value })
-  );
-
-  const School = () => {
-    const columns = [
-      {
-        title: "",
-        dataIndex: "name",
-      },
-      {
-        title: "",
-        dataIndex: "value",
-      },
-    ];
-    return (
-      <>
-        <Table
-          className={"answer-table"}
-          rowKey={(record) => record.name}
-          columns={columns}
-          dataSource={transformData.concat([
-            { name: "Last updated", value: data?.year_conducted },
-          ])}
-          title={() => "School Information"}
-          pagination={false}
-        />
-      </>
-    );
-  };
-
-  return (
-    <div className="main-tab-content">
-      <div className="main-school-information">
-        <School />
-      </div>
-    </div>
-  );
-};
-
 const AnswerTabContent = ({ title, data }) => {
-  const transformData = data
-    .filter((d) => d.type !== "school_information")
-    .map(({ question_name, type, value }) => ({
-      name: question_name,
-      type,
-      value,
-    }));
+  const transformData = data.map(({ question_name, type, value }) => ({
+    name: question_name,
+    type,
+    value,
+  }));
   const columns = [
     {
       title: "",
@@ -294,6 +244,21 @@ const AnswerTabContent = ({ title, data }) => {
             {record?.type === "photo" ? (
               <div style={{ height: 200 }}>
                 <img src={record.value} />
+              </div>
+            ) : record?.type === "school_information" ? (
+              <div>
+                <div>
+                  <b>School: </b>
+                  {`${record.value?.["school_name"]} (${record.value?.["school_code"]})`}
+                </div>
+                <div>
+                  <b>School Type: </b>
+                  {`${record.value?.["school_type"]}`}
+                </div>
+                <div>
+                  <b>Province: </b>
+                  {`${record.value?.["province"]}`}
+                </div>
               </div>
             ) : (
               record.value

@@ -6,6 +6,8 @@
     aside {
       background-color: $bg-grey-dashboard;
       box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      height: 100%;
       .menu {
         line-height: 20px;
         background-color: inherit;
@@ -109,6 +111,7 @@
     }
     .dashboard-content {
       background-color: #f5f5f5;
+      transition: all 0.2s ease 0s, background 0s ease 0s;
       #map,
       #dashboard {
         .title-wrapper {

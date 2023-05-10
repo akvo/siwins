@@ -113,7 +113,10 @@ const DashboardView = () => {
             ))}
           </Menu>
         </Sider>
-        <Content className="dashboard-content">
+        <Content
+          className="dashboard-content"
+          style={{ marginLeft: collapsed ? 80 : 200 }}
+        >
           <Routes>
             <Route exact path="/" element={<Dashboard />} />
             <Route path="/maps" element={<Maps />} />
