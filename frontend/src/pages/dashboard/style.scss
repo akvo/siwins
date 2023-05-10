@@ -339,6 +339,10 @@
               height: 100%;
               object-fit: cover;
             }
+            .ant-tabs-tabpane {
+              max-height: 50vh;
+              overflow: auto;
+            }
           }
         }
         .answer-table {
