@@ -54,3 +54,7 @@ def query_jobs(
         desc(Jobs.created)
     ).offset(skip).limit(limit).all()
     return [j.simplify for j in jobs]
+
+
+def get_jobs_by_id(session: Session, id: int) -> Jobs:
+    return session.query(Jobs).filter(Jobs.id == id).first()

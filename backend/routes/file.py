@@ -16,7 +16,10 @@ from db.crud_question import get_question_name
 from utils.storage import StorageFolder, upload, download
 from utils.helper import UUID, write_log
 from utils.downloader import generate_download_data
-from db.crud_jobs import add_jobs, update_jobs, query_jobs
+from db.crud_jobs import (
+    add_jobs, update_jobs,
+    query_jobs, get_jobs_by_id
+)
 from models.jobs import JobsBase, JobStatus, JOB_STATUS_TEXT
 from middleware import check_query
 from source.main_config import DOWNLOAD_PATH
@@ -174,3 +177,20 @@ async def download_list(
     if not res:
         raise HTTPException(status_code=404, detail="Not found")
     return res
+
+
+@file_route.get(
+    "/download/status",
+    response_model=JobsBase,
+    summary="get download detail by id",
+    name="excel-data:download-status",
+    tags=["File"])
+async def download_check(
+    req: Request,
+    id: int,
+    session: Session = Depends(get_session)
+):
+    res = get_jobs_by_id(session=session, id=id)
+    if not res:
+        raise HTTPException(status_code=404, detail="Not found")
+    return res.simplify
