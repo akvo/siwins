@@ -16,8 +16,11 @@ import { UIState } from "../../state/ui";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { api } from "../../lib";
 import { DownloadOutlined } from "@ant-design/icons";
+import Exports from "./Exports";
 
-const ManageData = () => {
+const { TabPane } = Tabs;
+
+const ManageData = ({ match }) => {
   const { provinceValues, advanceSearchValue, schoolTypeValues } =
     UIState.useState((s) => s);
   const [selectedProvince, setSelectedProvince] = useState([]);
@@ -33,6 +36,8 @@ const ManageData = () => {
     current: 1,
     pageSize: 10,
   });
+  const [page, setPage] = useState("database");
+
   const [tabItems, setTabItems] = useState([]);
 
   const handleProvinceFilter = (value) => {
@@ -45,6 +50,10 @@ const ManageData = () => {
 
   const handleMonitoringFilter = (value) => {
     setMonitoringRound(value);
+  };
+
+  const handleTabClick = (key) => {
+    setPage(key);
   };
 
   useEffect(() => {
@@ -154,6 +163,7 @@ const ManageData = () => {
         notification.success({
           message: "Success",
         });
+        setPage("exports");
         setExportLoading(false);
       })
       .catch(() => {
@@ -185,87 +195,107 @@ const ManageData = () => {
   return (
     <div id="dashboard">
       <Row className="main-wrapper" align="center">
-        <Col span={24}>
-          <Row justify="space-between" align="middle">
-            <Col span={24}>
-              <AdvanceFilter
-                prefix={
-                  <Col>
-                    <Breadcrumb>
-                      <Breadcrumb.Item>
-                        <Link to="/">Home</Link>
-                      </Breadcrumb.Item>
-                      <Breadcrumb.Item>
-                        <Link to="/dashboard">Dashboard</Link>
-                      </Breadcrumb.Item>
-                      <Breadcrumb.Item>Manage Data</Breadcrumb.Item>
-                    </Breadcrumb>
-                  </Col>
-                }
-                suffix={
-                  <Button
-                    icon={<DownloadOutlined />}
-                    onClick={handleExport}
-                    disabled={exportLoading}
-                  >
-                    Export
-                  </Button>
-                }
-                provinceValues={provinceValues}
-                schoolTypeValues={schoolTypeValues}
-                handleSchoolTypeFilter={handleSchoolTypeFilter}
-                handleProvinceFilter={handleProvinceFilter}
-                selectedProvince={selectedProvince}
-                selectedSchoolType={selectedSchoolType}
-              >
-                <Select
-                  style={{ width: 200 }}
-                  allowClear
-                  showArrow
-                  showSearch
-                  placeholder="Select Monitoring Round"
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                  options={monitoringData.map((x) => ({ label: x, value: x }))}
-                  onChange={(val) => handleMonitoringFilter(val)}
-                />
-              </AdvanceFilter>
-            </Col>
-          </Row>
-        </Col>
         <Col span={24} style={{ padding: "20px 30px" }}>
-          <Table
-            rowKey={(record) => record.id}
-            columns={columns}
-            dataSource={data}
-            loading={loading}
-            onChange={handleTableChange}
-            pagination={{
-              current: paginate.current,
-              total: paginate.total,
-            }}
-            expandable={{
-              expandIconColumnIndex: columns.length,
-              expandedRowRender: () => (
-                <>
-                  {tabLoading ? (
-                    <div className="loading-wrapper">
-                      <Spin />
-                    </div>
-                  ) : (
-                    <Tabs items={tabItems} />
-                  )}
-                </>
-              ),
-            }}
-            onExpand={(expanded, record) => {
-              if (expanded) {
-                getSchoolDetails(record?.id, record);
-              }
-            }}
-          />
+          <div className="card-container">
+            <Tabs
+              type="card"
+              size="large"
+              tabBarGutter={0}
+              activeKey={page}
+              onTabClick={handleTabClick}
+              className="admin-tabs-wrapper"
+            >
+              <TabPane
+                tab={<div className="tab-pane-text">Manage Data</div>}
+                key="database"
+              />
+              <TabPane
+                tab={<div className="tab-pane-text">Exports</div>}
+                key="exports"
+              />
+            </Tabs>
+          </div>
+          <div className="card-content-container">
+            {page === "database" && (
+              <Row justify="space-between" align="middle">
+                <Col span={24}>
+                  <Row justify="space-between" align="middle">
+                    <Col span={24} style={{ margin: "0px 30px" }}>
+                      <AdvanceFilter
+                        suffix={
+                          <Button
+                            icon={<DownloadOutlined />}
+                            onClick={handleExport}
+                            disabled={exportLoading}
+                          >
+                            Export
+                          </Button>
+                        }
+                        provinceValues={provinceValues}
+                        schoolTypeValues={schoolTypeValues}
+                        handleSchoolTypeFilter={handleSchoolTypeFilter}
+                        handleProvinceFilter={handleProvinceFilter}
+                        selectedProvince={selectedProvince}
+                        selectedSchoolType={selectedSchoolType}
+                      >
+                        <Select
+                          style={{ width: 200 }}
+                          allowClear
+                          showArrow
+                          showSearch
+                          placeholder="Select Monitoring Round"
+                          optionFilterProp="children"
+                          filterOption={(input, option) =>
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          }
+                          options={monitoringData.map((x) => ({
+                            label: x,
+                            value: x,
+                          }))}
+                          onChange={(val) => handleMonitoringFilter(val)}
+                        />
+                      </AdvanceFilter>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col span={24} style={{ padding: "20px 0px" }}>
+                  <Table
+                    rowKey={(record) => record.id}
+                    columns={columns}
+                    dataSource={data}
+                    loading={loading}
+                    onChange={handleTableChange}
+                    pagination={{
+                      current: paginate.current,
+                      total: paginate.total,
+                    }}
+                    expandable={{
+                      expandIconColumnIndex: columns.length,
+                      expandedRowRender: () => (
+                        <>
+                          {tabLoading ? (
+                            <div className="loading-wrapper">
+                              <Spin />
+                            </div>
+                          ) : (
+                            <Tabs items={tabItems} />
+                          )}
+                        </>
+                      ),
+                    }}
+                    onExpand={(expanded, record) => {
+                      if (expanded) {
+                        getSchoolDetails(record?.id, record);
+                      }
+                    }}
+                  />
+                </Col>
+              </Row>
+            )}
+            {page === "exports" && <Exports />}
+          </div>
         </Col>
       </Row>
     </div>

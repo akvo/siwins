@@ -138,7 +138,7 @@ const Export = () => {
         align="middle"
         justify="space-between"
       >
-        <Col span={24} style={{ padding: "20px 30px" }}>
+        <Col span={24} style={{ padding: "20px 0px" }}>
           <List
             loading={loading}
             bordered={true}

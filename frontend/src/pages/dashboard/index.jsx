@@ -10,7 +10,6 @@ import { Routes, Route, useLocation, Link } from "react-router-dom";
 import Maps from "./Maps";
 import Dashboard from "./Dashboard";
 import ManageData from "./ManageData";
-import Exports from "./Exports";
 import { UIState } from "../../state/ui";
 import { api } from "../../lib";
 
@@ -24,16 +23,10 @@ const items = [
     key: "3",
   },
   {
-    label: "Manage Data",
-    link: "/dashboard/manage-data",
+    label: "Database",
+    link: "/dashboard/database",
     icon: <DocIcon />,
     key: "4",
-  },
-  {
-    label: "Exports",
-    link: "/dashboard/exports",
-    icon: <DocIcon />,
-    key: "5",
   },
 ];
 
@@ -127,8 +120,7 @@ const DashboardView = () => {
           <Routes>
             <Route exact path="/" element={<Dashboard />} />
             <Route path="/maps" element={<Maps />} />
-            <Route path="/manage-data" element={<ManageData />} />
-            <Route path="/exports" element={<Exports />} />
+            <Route path="/database" element={<ManageData />} />
           </Routes>
         </Content>
       </Layout>
