@@ -101,6 +101,37 @@ class TestFileRoutes:
             assert "available" in r
 
     @pytest.mark.asyncio
+    async def test_check_download_status(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        # get file
+        res = await client.get(
+            app.url_path_for("excel-data:download-list")
+        )
+        assert res.status_code == 200
+        res = res.json()
+        res = res[0]
+        # check status
+        job_id = res.get("id")
+        res = await client.get(
+            app.url_path_for("excel-data:download-status"),
+            params={"id": job_id}
+        )
+        assert res.status_code == 200
+        r = res.json()
+        assert "id" in r
+        assert "status" in r
+        assert "payload" in r
+        assert "info" in r
+        assert "tags" in r.get("info")
+        assert "options" in r.get("info")
+        assert "province" in r.get("info")
+        assert "school_type" in r.get("info")
+        assert "monitoring_round" in r.get("info")
+        assert "created" in r
+        assert "available" in r
+
+    @pytest.mark.asyncio
     async def test_download_file(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
