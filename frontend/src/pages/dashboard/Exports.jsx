@@ -147,7 +147,7 @@ const Export = () => {
             dataSource={fileList}
             renderItem={(item) => {
               const filename = item?.payload?.replace("download/", "");
-              const done = item?.status === "done";
+              const done = item?.status === "Done";
               const isDownloading = item?.payload === downloading;
               return (
                 <List.Item key={item.id}>
