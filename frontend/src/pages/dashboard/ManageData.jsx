@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Link from "antd/es/typography/Link";
 import AdvanceFilter from "../../components/filter";
 import {
   Row,
   Col,
   Table,
-  Breadcrumb,
   Select,
   Tabs,
   Spin,
@@ -20,7 +18,7 @@ import Exports from "./Exports";
 
 const { TabPane } = Tabs;
 
-const ManageData = ({ match }) => {
+const ManageData = () => {
   const { provinceValues, advanceSearchValue, schoolTypeValues } =
     UIState.useState((s) => s);
   const [selectedProvince, setSelectedProvince] = useState([]);
