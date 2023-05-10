@@ -1,10 +1,21 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "antd/es/typography/Link";
 import AdvanceFilter from "../../components/filter";
-import { Row, Col, Table, Breadcrumb, Select, Tabs, Spin } from "antd";
+import {
+  Row,
+  Col,
+  Table,
+  Breadcrumb,
+  Select,
+  Tabs,
+  Spin,
+  Button,
+  notification,
+} from "antd";
 import { UIState } from "../../state/ui";
 import { generateAdvanceFilterURL } from "../../util/utils";
 import { api } from "../../lib";
+import { DownloadOutlined } from "@ant-design/icons";
 
 const ManageData = () => {
   const { provinceValues, advanceSearchValue, schoolTypeValues } =
@@ -16,6 +27,7 @@ const ManageData = () => {
   const [monitoringRound, setMonitoringRound] = useState("");
   const [loading, setLoading] = useState(false);
   const [tabLoading, setTabLoading] = useState(false);
+  const [exportLoading, setExportLoading] = useState(false);
   const [paginate, setPaginate] = useState({
     total: 1,
     current: 1,
@@ -120,6 +132,35 @@ const ManageData = () => {
     getdata(current, pageSize);
   };
 
+  const handleExport = () => {
+    setExportLoading(true);
+    let url = `download/data`;
+    url = generateAdvanceFilterURL(advanceSearchValue, url);
+    if (selectedProvince && selectedProvince.length > 0) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
+      url = `${url}${queryUrlPrefix}prov=${selectedProvince}`;
+    }
+    if (selectedSchoolType && selectedSchoolType.length > 0) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
+      url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
+    }
+    if (monitoringRound) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
+      url = `${url}${queryUrlPrefix}monitoring_round=${monitoringRound}`;
+    }
+    api
+      .get(url)
+      .then(() => {
+        notification.success({
+          message: "Success",
+        });
+        setExportLoading(false);
+      })
+      .catch(() => {
+        setExportLoading(false);
+      });
+  };
+
   const columns = [
     {
       title: "School Name",
@@ -160,6 +201,15 @@ const ManageData = () => {
                       <Breadcrumb.Item>Manage Data</Breadcrumb.Item>
                     </Breadcrumb>
                   </Col>
+                }
+                suffix={
+                  <Button
+                    icon={<DownloadOutlined />}
+                    onClick={handleExport}
+                    disabled={exportLoading}
+                  >
+                    Export
+                  </Button>
                 }
                 provinceValues={provinceValues}
                 schoolTypeValues={schoolTypeValues}
