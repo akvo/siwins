@@ -78,6 +78,8 @@ def get(
                 answer_values.update({key: answer_values[key] + [a.value]})
         # EOL number values
         question = [q.formatted_with_attributes for q in question]
+        # sort
+        question.sort(key=lambda x: (x.get("qg_order"), x.get("q_oder")))
         for q in question:
             key = q.get('id')
             # nadd umber value to question

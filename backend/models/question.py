@@ -151,12 +151,14 @@ class Question(Base):
         }
 
     @property
-    def formatted_with_attributes(self) -> QuestionFormattedWithAttributes:
+    def formatted_with_attributes(self):
         return {
             "id": self.id,
+            "qg_order": self.question.order,
             "group": self.question.display_name or self.question.name,
             "name": self.display_name or self.name,
             "type": self.type.value,
+            "q_order": self.order,
             "attributes": self.attributes or [],
             "option": [o.simplify for o in self.option] or [],
             "number": []
