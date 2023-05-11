@@ -16,12 +16,12 @@ import { api } from "../../lib";
 const items = [
   { label: "Maps", link: "/dashboard/maps", icon: <MapsIcon />, key: "1" },
   { label: "Dashboard", link: "/dashboard", icon: <DashboardIcon />, key: "2" },
-  {
-    label: "Documentation",
-    link: "/dashboard/documentation",
-    icon: <DocIcon />,
-    key: "3",
-  },
+  // {
+  //   label: "Documentation",
+  //   link: "/dashboard/documentation",
+  //   icon: <DocIcon />,
+  //   key: "3",
+  // },
   {
     label: "Database",
     link: "/dashboard/database",
