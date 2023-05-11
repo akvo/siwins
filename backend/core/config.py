@@ -15,9 +15,7 @@ from routes.option import option_route
 from routes.file import file_route
 from AkvoResponseGrouper.routes import collection_route
 from source.geoconfig import GeoLevels, GeoCenter
-from source.main_config import (
-    CLASS_PATH, TOPO_JSON_PATH, FRONTEND_CONFIG_PATH
-)
+from source.main_config import CLASS_PATH, TOPO_JSON_PATH, FRONTEND_CONFIG_PATH
 
 TOPO_JSON = open(TOPO_JSON_PATH).read()
 GEO_CONFIG = GeoLevels[CLASS_PATH].value

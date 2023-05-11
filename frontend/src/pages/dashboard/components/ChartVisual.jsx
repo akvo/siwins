@@ -187,6 +187,11 @@ const ChartVisual = ({ chartConfig, loading }) => {
             wrapper={false}
             horizontal={true}
             loading={loading}
+            extra={{
+              axisTitle: {
+                y: "Percentage of schools",
+              },
+            }}
           />
         ) : (
           <Chart
@@ -203,6 +208,14 @@ const ChartVisual = ({ chartConfig, loading }) => {
             wrapper={false}
             horizontal={true}
             loading={loading}
+            extra={{
+              axisTitle: {
+                y: "Percentage of schools",
+              },
+            }}
+            grid={{
+              bottom: "25%",
+            }}
           />
         )}
       </Card>

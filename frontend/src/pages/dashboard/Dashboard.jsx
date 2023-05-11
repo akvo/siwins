@@ -140,7 +140,7 @@ const Dashboard = () => {
                 className="flexible-container row-wrapper"
                 gutter={[10, 10]}
               >
-                {row.map((r, ri) => renderColumn(r, ri))}
+                {renderColumn(row, index)}
               </Row>
             );
           })}
