@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Row, Col, List, Space, Button, Tag, Popover } from "antd";
 import {
   FileExcelFilled,
@@ -60,17 +60,24 @@ const Export = () => {
 
   const pending = fileList.filter((item) => item.status !== "Done");
 
+  const checkStatus = useCallback(() => {
+    api.get(`download/status?id=${pending?.[0]?.id}`).then((res) => {
+      if (res?.data?.status === "done") {
+        setPendingFile(res.data);
+      }
+    });
+  }, [pending]);
+
   useEffect(() => {
-    if (pending.length && !pendingFile) {
-      setTimeout(() => {
-        api.get(`download/status?id=${pending?.[0]?.id}`).then((res) => {
-          if (res?.data?.status === "done") {
-            setPendingFile(res.data);
-          }
-        });
-      }, 3000);
-    }
-  }, [pendingFile, pending]);
+    const intervalCall = setInterval(() => {
+      if (pending.length && !pendingFile) {
+        checkStatus();
+      }
+    }, 10000);
+    return () => {
+      clearInterval(intervalCall);
+    };
+  }, [pendingFile, pending, checkStatus]);
 
   useEffect(() => {
     if (pendingFile) {
