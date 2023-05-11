@@ -46,6 +46,13 @@
       "chartList": [
         {
           "type": "chart",
+          "title": "Service level for drinking water in schools",
+          "calc": "jmp",
+          "path": "Water",
+          "span": 8
+        },
+        {
+          "type": "chart",
           "title": "Service level for sanitation in schools",
           "calc": "jmp",
           "path": "Sanitation",
@@ -56,13 +63,6 @@
           "title": "Service level for Hygiene in schools",
           "calc": "jmp",
           "path": "Hygiene",
-          "span": 8
-        },
-        {
-          "type": "chart",
-          "title": "Service level for drinking water in schools",
-          "calc": "jmp",
-          "path": "Water",
           "span": 8
         }
       ]
