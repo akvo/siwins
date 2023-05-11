@@ -140,7 +140,6 @@ class TestDataRoutes:
         res = res.json()
         assert res[0] == {
             'id': 649130936,
-            'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
                 'province': 'Guadalcanal',
@@ -148,7 +147,6 @@ class TestDataRoutes:
                 'school_name': 'AO CHS',
                 'school_code': '21710'
             },
-            'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {}
         }
@@ -160,7 +158,6 @@ class TestDataRoutes:
         res = res.json()
         assert res[0] == {
             'id': 649130936,
-            'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
                 'province': 'Guadalcanal',
@@ -168,7 +165,6 @@ class TestDataRoutes:
                 'school_name': 'AO CHS',
                 'school_code': '21710'
             },
-            'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
                 'question': 624660930,
@@ -189,7 +185,6 @@ class TestDataRoutes:
         res = res.json()
         assert res == [{
             'id': 649130936,
-            'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
                 'province': 'Guadalcanal',
@@ -197,7 +192,6 @@ class TestDataRoutes:
                 'school_name': 'AO CHS',
                 'school_code': '21710'
             },
-            'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
                 'question': 624660930,
@@ -218,7 +212,6 @@ class TestDataRoutes:
         res = res.json()
         assert res[0] == {
             'id': 649130936,
-            'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
                 'province': 'Guadalcanal',
@@ -226,7 +219,6 @@ class TestDataRoutes:
                 'school_name': 'AO CHS',
                 'school_code': '21710'
             },
-            'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
                 'question': 630020919,
@@ -250,7 +242,6 @@ class TestDataRoutes:
         res = res.json()
         assert res[0] == {
             'id': 649130936,
-            'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
                 'province': 'Guadalcanal',
@@ -258,7 +249,6 @@ class TestDataRoutes:
                 'school_name': 'AO CHS',
                 'school_code': '21710'
             },
-            'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
                 'question': 630020919,
@@ -280,7 +270,6 @@ class TestDataRoutes:
         res = res.json()
         assert res[0] == {
             'id': 649130936,
-            'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
                 'province': 'Guadalcanal',
@@ -288,7 +277,6 @@ class TestDataRoutes:
                 'school_name': 'AO CHS',
                 'school_code': '21710'
             },
-            'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
                 'question': 630020919,
@@ -316,7 +304,6 @@ class TestDataRoutes:
         res = res.json()
         assert res[0] == {
             'id': 649130936,
-            'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
                 'province': 'Guadalcanal',
@@ -324,7 +311,6 @@ class TestDataRoutes:
                 'school_name': 'AO CHS',
                 'school_code': '21710'
             },
-            'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
                 'question': 630020919,
@@ -353,7 +339,6 @@ class TestDataRoutes:
         res = res.json()
         assert res[0] == {
             'id': 649130936,
-            'identifier': 'eptc-hraw-kkps',
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
                 'province': 'Guadalcanal',
@@ -361,7 +346,6 @@ class TestDataRoutes:
                 'school_name': 'AO CHS',
                 'school_code': '21710'
             },
-            'name': 'Untitled',
             'year_conducted': 2023,
             'answer': {
                 'question': 630020919,
@@ -376,8 +360,6 @@ class TestDataRoutes:
         res = res.json()
         assert res[0] == {
             'id': 649130936,
-            'identifier': 'eptc-hraw-kkps',
-            'name': 'Untitled',
             'school_information': {
                 'province': 'Guadalcanal',
                 'school_type': 'Community High School',
@@ -408,8 +390,6 @@ class TestDataRoutes:
         res = res.json()
         assert res[0] == {
             'id': 649130936,
-            'identifier': 'eptc-hraw-kkps',
-            'name': 'Untitled',
             'school_information': {
                 'province': 'Guadalcanal',
                 'school_type': 'Community High School',

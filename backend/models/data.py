@@ -63,8 +63,6 @@ class DataResponse(BaseModel):
 
 class MapsData(BaseModel):
     id: int
-    identifier: str
-    name: str
     school_information: dict
     year_conducted: int
     geo: List[float]
@@ -198,11 +196,10 @@ class Data(Base):
         }
 
     @property
-    def to_maps(self) -> MapsData:
+    def to_maps(self):
         return {
             "id": self.id,
             "identifier": self.identifier,
-            "name": self.name,
             "school_information": self.school_information,
             "year_conducted": self.year_conducted,
             "geo": self.geo,

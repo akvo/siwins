@@ -1,10 +1,12 @@
+import orjson
 from math import ceil
 from itertools import groupby
 from http import HTTPStatus
-from fastapi import Depends, Request
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import (
+    Depends, Request, APIRouter,
+    HTTPException, Query, Response
+)
 from fastapi.security import HTTPBearer
-
 # from fastapi.security import HTTPBasicCredentials as credentials
 from typing import List, Optional, Union
 from sqlalchemy.orm import Session
@@ -193,10 +195,16 @@ def get_maps(
             ),
             data
         ))
-        for d in data:
-            # delete jmp filter param
-            del d["jmp_filter"]
-    return data
+    for d in data:
+        # delete jmp filter param
+        if "jmp_filter" not in d:
+            continue
+        del d["jmp_filter"]
+        del d["identifier"]
+    return Response(
+        content=orjson.dumps(data),
+        media_type="application/json"
+    )
 
 
 # current chart history detail (delete?)
