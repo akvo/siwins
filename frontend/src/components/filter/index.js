@@ -30,6 +30,7 @@ function AdvanceFilter({
   selectedSchoolType,
   children,
   prefix,
+  suffix,
 }) {
   const { advanceSearchValue, advanceFilterQuestions } = UIState.useState(
     (s) => s
@@ -97,6 +98,7 @@ function AdvanceFilter({
             >
               Advanced Filter
             </Button>
+            {suffix}
           </Space>
         </Col>
       </Row>
