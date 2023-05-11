@@ -8,36 +8,33 @@ import CountUp from "react-countup";
 import { UIState } from "../../state/ui";
 import { Link } from "react-router-dom";
 import { orderBy } from "lodash";
+import { sequentialPromise } from "../../util/utils";
 
 const chartConfig = window.dashboardjson?.tabs;
 
-const formatter = (value) => <CountUp end={value} duration={3} separator="," />;
+const formatter = (value) => <CountUp end={value} duration={2} separator="," />;
 
 const Home = () => {
   const { schoolTotal } = UIState.useState((s) => s);
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
   const [chartList, setChartList] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     const chartList = chartConfig.find(
       (item) => item.component === "OVERVIEW-CHARTS"
     )?.chartList;
-
     setChartList(chartList);
 
     const apiCall = chartList?.map((chart) => {
       const url = `chart/bar?name=${chart?.path}`;
       return api.get(url);
     });
-    Promise.all(apiCall).then((res) => {
-      setData(res?.map((item) => item.data).flat());
-      setLoading(false);
-    });
+    sequentialPromise(apiCall).then((res) => setData(res));
   }, []);
 
   const renderColumn = (cfg, index) => {
+    const findData = data?.find((f) => f.category === cfg?.path);
     return (
       <Col key={`col-${index}`} span={cfg?.span} className="chart-card">
         <Card>
@@ -47,11 +44,11 @@ const Home = () => {
           <Chart
             height={300}
             type="PIE"
-            data={data.find((f) => f.category === cfg?.path)?.options}
+            data={findData?.options}
             wrapper={false}
             showRoseChart={false}
             legend={true}
-            loading={loading}
+            loading={!findData}
           />
         </Card>
       </Col>

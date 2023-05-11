@@ -45,3 +45,12 @@ export const generateFilterURL = (value, url) => {
   }
   return url;
 };
+
+export const sequentialPromise = async (promises) => {
+  const temp = [];
+  for (const promise of promises) {
+    const res = await promise;
+    temp.push(res.data);
+  }
+  return temp.flat();
+};
