@@ -6,6 +6,7 @@ from typing import List, Optional
 from sqlalchemy import and_, func
 from sqlalchemy.orm import Session, aliased
 from db.connection import get_session
+from AkvoResponseGrouper.views import get_categories
 from AkvoResponseGrouper.models import Category
 from AkvoResponseGrouper.utils import (
     transform_categories_to_df,
@@ -370,10 +371,15 @@ def get_aggregated_jmp_chart_data(
         "year": y.year_conducted,
         "current": y.current
     } for y in years]
+    # get categories from akvo response grouper
+    try:
+        categories = get_categories(session=session, name=type)
+    except Exception:
+        categories = []
     # generate JMP data
     data = get_jmp_overview(
         session=session,
-        name=type,
+        categories=categories,
         options=options,
         data_ids=answer_data_ids,
         prov=prov,
