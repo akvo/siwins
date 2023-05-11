@@ -50,7 +50,7 @@ export const sequentialPromise = async (promises) => {
   const temp = [];
   for (const promise of promises) {
     const res = await promise;
-    temp.push(res.data);
+    temp.push(res);
   }
-  return temp.flat();
+  return temp;
 };

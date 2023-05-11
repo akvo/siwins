@@ -6,7 +6,11 @@ import { UIState } from "../../state/ui";
 import ChartVisual from "./components/ChartVisual";
 import { Chart } from "../../components";
 import AdvanceFilter from "../../components/filter";
-import { generateAdvanceFilterURL, generateFilterURL } from "../../util/utils";
+import {
+  generateAdvanceFilterURL,
+  generateFilterURL,
+  sequentialPromise,
+} from "../../util/utils";
 import { Link } from "react-router-dom";
 import { orderBy } from "lodash";
 const chartConfig = window.dashboardjson?.tabs;
@@ -63,7 +67,7 @@ const Dashboard = () => {
       url = generateFilterURL(provinceFilterValue, url);
       return api.get(url);
     });
-    Promise.all(apiCall).then((res) => {
+    sequentialPromise(apiCall).then((res) => {
       setData(res);
       setPageLoading(false);
     });

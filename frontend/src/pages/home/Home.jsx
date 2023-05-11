@@ -16,11 +16,12 @@ const formatter = (value) => <CountUp end={value} duration={2} separator="," />;
 
 const Home = () => {
   const { schoolTotal } = UIState.useState((s) => s);
-  const [chartList, setChartList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [chartList, setChartList] = useState([]);
 
   useEffect(() => {
-    // setLoading(true);
+    setLoading(true);
     const chartList = chartConfig.find(
       (item) => item.component === "OVERVIEW-CHARTS"
     )?.chartList;
@@ -30,7 +31,11 @@ const Home = () => {
       const url = `chart/bar?name=${chart?.path}`;
       return api.get(url);
     });
-    sequentialPromise(apiCall).then((res) => setData(res));
+    sequentialPromise(apiCall).then((res) => {
+      const dataTemp = res.map((r) => r.data).flat();
+      setData(dataTemp);
+      setLoading(false);
+    });
   }, []);
 
   const renderColumn = (cfg, index) => {
@@ -48,7 +53,7 @@ const Home = () => {
             wrapper={false}
             showRoseChart={false}
             legend={true}
-            loading={!findData}
+            loading={loading}
           />
         </Card>
       </Col>
