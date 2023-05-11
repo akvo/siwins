@@ -115,7 +115,8 @@ def get_paginated_data(
 )
 def get_maps(
     req: Request,
-    session: Session = Depends(get_session),
+    page: int = 1,
+    perpage: int = 100,
     indicator: Union[int, str] = Query(
         None, description="indicator is a question id or JMP category"),
     q: Optional[List[str]] = Query(
@@ -128,7 +129,8 @@ def get_maps(
             (filter by province name)"),
     sctype: Optional[List[str]] = Query(
         None, description="format: school_type name \
-            (filter by shcool type)")
+            (filter by shcool type)"),
+    session: Session = Depends(get_session),
     # credentials: credentials = Depends(security)
 ):
     # check indicator query
@@ -142,15 +144,35 @@ def get_maps(
     # for advance filter and indicator option filter
     options = check_query(non_jmp_query) if non_jmp_query else None
     # get the data
-    data = get_all_data(
+    page_data = get_all_data(
         session=session,
         current=True,
         options=options,
         data_ids=answer_data_ids,
         prov=prov,
-        sctype=sctype
+        sctype=sctype,
+        skip=(perpage * (page - 1)),
+        perpage=perpage
     )
+    # handle pagination
+    count = page_data.get("count")
+    if not count:
+        return {
+            "current": page,
+            "data": [],
+            "total": count,
+            "total_page": 0,
+        }
+    total_page = ceil(count / perpage) if count > 0 else 0
+    if total_page < page:
+        return {
+            "current": page,
+            "data": [],
+            "total": count,
+            "total_page": total_page,
+        }
     # map answer by identifier for each datapoint
+    data = page_data.get("data") or []
     data_ids = [d.id for d in data]
     data = [d.to_maps for d in data]
     jmp_name = None
@@ -201,8 +223,14 @@ def get_maps(
             continue
         del d["jmp_filter"]
         del d["identifier"]
+    res = {
+        "current": page,
+        "data": data,
+        "total": count,
+        "total_page": total_page,
+    }
     return Response(
-        content=orjson.dumps(data),
+        content=orjson.dumps(res),
         media_type="application/json"
     )
 

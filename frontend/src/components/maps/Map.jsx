@@ -1,5 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import "./style.scss";
 import "leaflet/dist/leaflet.css";
 import {
@@ -23,6 +29,7 @@ import { Chart } from "..";
 import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
 import { isEmpty, intersection } from "lodash";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -49,6 +56,14 @@ const Map = ({ searchValue }) => {
   };
   const [barChartValues, setBarChartValues] = useState(barChartDefValues);
   const [selectedDatapoint, setSelectedDatapoint] = useState({});
+
+  const defPagination = {
+    page: 1,
+    perPage: 100,
+    totalPage: 0,
+  };
+  const [pagination, setPagination] = useState(defPagination);
+  const [dataTemp, setDataTemp] = useState([]);
 
   const filteredData = useMemo(() => {
     if (isEmpty(data)) {
@@ -88,24 +103,55 @@ const Map = ({ searchValue }) => {
     });
   }, [filteredData]);
 
+  const fetchMapsData = useCallback(
+    (url) => {
+      const { page, perPage, totalPage } = pagination;
+      if (page === 1 || page <= totalPage) {
+        // pagination
+        const queryUrlPrefix = url.includes("?") ? "&" : "?";
+        url = `${url}${queryUrlPrefix}page=${page}&perpage=${perPage}`;
+        api
+          .get(url)
+          .then((res) => {
+            const { current, total_page, data: resData } = res.data;
+            setPagination({
+              ...pagination,
+              page: current + 1,
+              totalPage: total_page,
+            });
+            setDataTemp([...dataTemp, ...resData]);
+          })
+          .catch((e) => console.error(e));
+      } else {
+        setData(dataTemp.flat());
+        setLoading(false);
+      }
+    },
+    [pagination]
+  );
+
   useEffect(() => {
-    setLoading(true);
-    let url = `data/maps`;
-    url = generateAdvanceFilterURL(advanceSearchValue, url);
-    const urlParams = new URLSearchParams(url);
-    if (selectedQuestion?.id && !urlParams.get("indicator")) {
-      const queryUrlPrefix = url.includes("?") ? "&" : "?";
-      url = `${url}${queryUrlPrefix}indicator=${selectedQuestion?.id}`;
+    if (isEmpty(data)) {
+      setLoading(true);
+      let url = `data/maps`;
+      url = generateAdvanceFilterURL(advanceSearchValue, url);
+      const urlParams = new URLSearchParams(url);
+      if (selectedQuestion?.id && !urlParams.get("indicator")) {
+        const queryUrlPrefix = url.includes("?") ? "&" : "?";
+        url = `${url}${queryUrlPrefix}indicator=${selectedQuestion?.id}`;
+      }
+      url = generateFilterURL(provinceFilterValue, url);
+      setTimeout(() => {
+        fetchMapsData(url);
+      }, 500);
     }
-    url = generateFilterURL(provinceFilterValue, url);
-    api
-      .get(url)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((e) => console.error(e))
-      .finally(() => setLoading(false));
   }, [advanceSearchValue, selectedQuestion, provinceFilterValue]);
+
+  useEffect(() => {
+    setData([]);
+    setDataTemp([]);
+    setPagination(defPagination);
+  }, [advanceSearchValue, provinceFilterValue]);
 
   useEffect(() => {
     if (["option", "jmp"].includes(selectedQuestion.type)) {
@@ -220,7 +266,14 @@ const Map = ({ searchValue }) => {
       <div id="map-view">
         {loading && (
           <div className="map-loading">
-            <Spin />
+            <Spin
+              indicator={
+                <LoadingOutlined
+                  style={{ fontSize: 30, color: "#ffffff", opacity: 0.6 }}
+                  spin
+                />
+              }
+            />
           </div>
         )}
         <div className="map-container">
@@ -256,6 +309,7 @@ const Map = ({ searchValue }) => {
                     grid={{
                       top: 90,
                     }}
+                    loading={loading}
                   />
                 </Card>
               </div>
