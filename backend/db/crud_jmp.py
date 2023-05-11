@@ -12,6 +12,7 @@ from AkvoResponseGrouper.utils import (
     group_by_category_output,
 )
 from db.crud_data import get_all_data
+from models.data import Data
 
 
 def group_children(p, data_source, labels, year_conducted):
@@ -111,7 +112,10 @@ def get_jmp_overview(
 ):
     data = get_all_data(
         session=session,
-        # current=True,
+        columns=[
+            Data.id, Data.school_information,
+            Data.year_conducted, Data.current
+        ],
         options=options,
         data_ids=data_ids,
         prov=prov,

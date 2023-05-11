@@ -39,7 +39,8 @@ def check_query(keywords):
 def check_indicator_query(
     session: Session,
     indicator: int,
-    number: Optional[List[int]]
+    number: Optional[List[int]],
+    return_answer_temp: Optional[bool] = True
 ):
     # 1. indicator filter by option,
     #  - use same format as advanced filter: q param = qid|option
@@ -64,6 +65,7 @@ def check_indicator_query(
         answers = get_answer_by_question(
             session=session, question=indicator, number=number)
         answer_data_ids = [a.data for a in answers]
+    if indicator and return_answer_temp:
         answers = [
             a.formatted_with_data for a in answers
         ] if answers else []

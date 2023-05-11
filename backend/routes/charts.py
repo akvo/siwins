@@ -31,6 +31,8 @@ from db.crud_province_view import (
 from middleware import check_query, check_indicator_query
 from models.answer import Answer
 from models.question import QuestionType
+from models.data import Data
+from models.option import Option
 
 
 charts_route = APIRouter()
@@ -47,7 +49,10 @@ def get_number_of_school(
     session: Session = Depends(get_session),
 ):
     data = get_all_data(
-        session=session, current=True, count=True)
+        session=session,
+        columns=[Data.id],
+        current=True,
+        count=True)
     return {
         "name": "Number of schools",
         "total": data
@@ -67,9 +72,9 @@ def get_bar_charts(
     session: Session = Depends(get_session),
 ):
     configs = get_jmp_config()
-    all = get_all_data(session=session, current=True)
-    lst = [a.serialize for a in all]
-    ids = [i["id"] for i in lst]
+    all_data = get_all_data(
+        session=session, columns=[Data.id], current=True)
+    ids = [d.id for d in all_data]
     filters = [Category.data.in_(ids)]
     if name:
         filters.append(func.lower(Category.name) == name.lower())
@@ -190,11 +195,15 @@ def get_aggregated_chart_data(
         raise HTTPException(status_code=406, detail="Not Acceptable")
     # options values
     question_options = get_option_by_question_id(
-        session=session, question=question)
+        session=session,
+        columns=[Option.id, Option.name],
+        question=question)
     stack_options = []
     if stack:
         stack_options = get_option_by_question_id(
-            session=session, question=stack)
+            session=session,
+            columns=[Option.id, Option.name],
+            question=stack)
     # year conducted
     years = get_year_conducted_from_datapoint(session=session)
     years = [{
@@ -205,7 +214,7 @@ def get_aggregated_chart_data(
     # fetch data
     data_source = get_all_data(
         session=session,
-        # current=current,
+        columns=[Data.id, Data.current, Data.year_conducted],
         options=options,
         data_ids=answer_data_ids,
         prov=prov,
@@ -228,7 +237,6 @@ def get_aggregated_chart_data(
         # chart query
         type = "BAR"
         if stack:
-
             type = "BARSTACK"
             answerStack = aliased(Answer)
             answer = session.query(
@@ -344,7 +352,10 @@ def get_aggregated_jmp_chart_data(
 ):
     # check indicator query
     answer_data_ids, answer_temp = check_indicator_query(
-        session=session, indicator=indicator, number=number)
+        session=session,
+        indicator=indicator,
+        number=number,
+        return_answer_temp=False)
     # for advance filter and indicator option filter
     options = check_query(q) if q else None
     # administration / province

@@ -103,6 +103,7 @@ def delete_bulk(session: Session, ids: List[int]) -> None:
 # get all data with filtered value
 def get_all_data(
     session: Session,
+    columns: Optional[List] = None,
     registration: Optional[bool] = None,
     current: Optional[bool] = None,
     options: Optional[List[str]] = None,
@@ -115,7 +116,8 @@ def get_all_data(
     skip: Optional[int] = None,
     perpage: Optional[int] = None,
 ) -> DataDict:
-    data = session.query(Data)
+    columns = columns if columns else [Data]
+    data = session.query(*columns)
     if registration is not None:
         data = data.filter(
             Data.registration == registration)
