@@ -28,8 +28,10 @@ from AkvoResponseGrouper.utils import (
     get_counted_category,
     group_by_category_output,
 )
-from models.data import MapsData, ChartDataDetail
-from models.data import DataDetailPopup, DataResponse
+from models.data import (
+    MapDataResponse, ChartDataDetail,
+    DataDetailPopup, DataResponse
+)
 from models.answer import Answer
 from models.question import QuestionType
 from models.history import History
@@ -108,7 +110,7 @@ def get_paginated_data(
 
 @data_route.get(
     "/data/maps",
-    response_model=List[MapsData],
+    response_model=MapDataResponse,
     name="data:get_maps_data",
     summary="get maps data",
     tags=["Data"],

@@ -138,7 +138,12 @@ class TestDataRoutes:
         res = await client.get(app.url_path_for("data:get_maps_data"))
         assert res.status_code == 200
         res = res.json()
-        assert res[0] == {
+        assert "current" in res
+        assert "data" in res
+        assert "total" in res
+        assert "total_page" in res
+        data = res.get("data")
+        assert data[0] == {
             'id': 649130936,
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
@@ -156,7 +161,8 @@ class TestDataRoutes:
             params={"indicator": 624660930})
         assert res.status_code == 200
         res = res.json()
-        assert res[0] == {
+        data = res.get("data")
+        assert data[0] == {
             'id': 649130936,
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
@@ -183,7 +189,8 @@ class TestDataRoutes:
             params={"indicator": 624660930, "q": "624660930|no"})
         assert res.status_code == 200
         res = res.json()
-        assert res == [{
+        data = res.get("data")
+        assert data == [{
             'id': 649130936,
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
@@ -203,14 +210,16 @@ class TestDataRoutes:
             params={"indicator": 624660930, "q": "624660930|yes"})
         assert res.status_code == 200
         res = res.json()
-        assert res == []
+        data = res.get("data")
+        assert data == []
         # number indicator with number filter
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": 630020919})
         assert res.status_code == 200
         res = res.json()
-        assert res[0] == {
+        data = res.get("data")
+        assert data[0] == {
             'id': 649130936,
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
@@ -234,13 +243,15 @@ class TestDataRoutes:
             params={"indicator": 630020919, "number": [1, 10]})
         assert res.status_code == 200
         res = res.json()
-        assert res == []
+        data = res.get("data")
+        assert data == []
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": 630020919, "number": [1, 20]})
         assert res.status_code == 200
         res = res.json()
-        assert res[0] == {
+        data = res.get("data")
+        assert data[0] == {
             'id': 649130936,
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
@@ -261,14 +272,16 @@ class TestDataRoutes:
             params={"indicator": 630020919, "prov": ["Central"]})
         assert res.status_code == 200
         res = res.json()
-        assert res == []
+        data = res.get("data")
+        assert data == []
         # filter by province
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": 630020919, "prov": ["Guadalcanal"]})
         assert res.status_code == 200
         res = res.json()
-        assert res[0] == {
+        data = res.get("data")
+        assert data[0] == {
             'id': 649130936,
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
@@ -292,7 +305,8 @@ class TestDataRoutes:
             })
         assert res.status_code == 200
         res = res.json()
-        assert res == []
+        data = res.get("data")
+        assert data == []
         # filter by school type
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
@@ -302,7 +316,8 @@ class TestDataRoutes:
             })
         assert res.status_code == 200
         res = res.json()
-        assert res[0] == {
+        data = res.get("data")
+        assert data[0] == {
             'id': 649130936,
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
@@ -327,7 +342,8 @@ class TestDataRoutes:
             })
         assert res.status_code == 200
         res = res.json()
-        assert res == []
+        data = res.get("data")
+        assert data == []
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={
@@ -337,7 +353,8 @@ class TestDataRoutes:
             })
         assert res.status_code == 200
         res = res.json()
-        assert res[0] == {
+        data = res.get("data")
+        assert data[0] == {
             'id': 649130936,
             'geo': [-51.14834033402119, 41.7559732176761],
             'school_information': {
@@ -358,7 +375,8 @@ class TestDataRoutes:
             params={"indicator": "jmp-water"})
         assert res.status_code == 200
         res = res.json()
-        assert res[0] == {
+        data = res.get("data")
+        assert data[0] == {
             'id': 649130936,
             'school_information': {
                 'province': 'Guadalcanal',
@@ -382,13 +400,15 @@ class TestDataRoutes:
             params={"indicator": "jmp-water", "q": "jmp-water|basic"})
         assert res.status_code == 200
         res = res.json()
-        assert res == []
+        data = res.get("data")
+        assert data == []
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": "jmp-water", "q": "jmp-water|limited"})
         assert res.status_code == 200
         res = res.json()
-        assert res[0] == {
+        data = res.get("data")
+        assert data[0] == {
             'id': 649130936,
             'school_information': {
                 'province': 'Guadalcanal',

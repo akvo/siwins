@@ -69,6 +69,13 @@ class MapsData(BaseModel):
     answer: Union[AnswerDict, dict]
 
 
+class MapDataResponse(BaseModel):
+    current: int
+    data: List[MapsData]
+    total: int
+    total_page: int
+
+
 class RegistrationDict(TypedDict):
     question: str
     answer: Union[str, int, List[str]]
