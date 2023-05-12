@@ -8,7 +8,7 @@ import { Chart } from "../../components";
 import AdvanceFilter from "../../components/filter";
 import { generateAdvanceFilterURL, generateFilterURL } from "../../util/utils";
 import { Link } from "react-router-dom";
-
+import { orderBy } from "lodash";
 const chartConfig = window.dashboardjson?.tabs;
 
 const Dashboard = () => {
@@ -135,7 +135,7 @@ const Dashboard = () => {
           </Row>
         </Col>
         <Col span={24} align="center" style={{ padding: "20px 30px" }}>
-          {chartList?.map((row, index) => {
+          {orderBy(chartList, ["order"], ["asc"])?.map((row, index) => {
             return (
               <Row
                 key={`row-${index}`}
@@ -176,7 +176,7 @@ const Dashboard = () => {
               onChange={(val) => handleOnChangeQuestionDropdown(val)}
             />
             {barChartData?.data?.length > 0 &&
-              barChartList?.map((row) => {
+              orderBy(barChartList, ["order"], ["asc"])?.map((row) => {
                 return (
                   <Row
                     key={`row-${row.name}`}

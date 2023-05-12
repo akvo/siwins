@@ -7,6 +7,7 @@ import { Chart } from "../../components";
 import CountUp from "react-countup";
 import { UIState } from "../../state/ui";
 import { Link } from "react-router-dom";
+import { orderBy } from "lodash";
 
 const chartConfig = window.dashboardjson?.tabs;
 
@@ -40,7 +41,7 @@ const Home = () => {
     return (
       <Col key={`col-${index}`} span={cfg?.span} className="chart-card">
         <Card>
-          <Row className="chart-header" justify="space-between" align="middle">
+          <Row className="chart-header" justify="center" align="middle">
             <h3>{cfg?.title}</h3>
           </Row>
           <Chart
@@ -110,7 +111,7 @@ const Home = () => {
           </Col>
           <Col span={24} align="center">
             <Row className="flexible-container row-wrapper" gutter={[10, 10]}>
-              {chartList?.map((row, index) => {
+              {orderBy(chartList, ["order"], ["asc"])?.map((row, index) => {
                 return renderColumn(row, index);
               })}
             </Row>
