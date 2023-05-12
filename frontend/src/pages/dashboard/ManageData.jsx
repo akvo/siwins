@@ -11,7 +11,7 @@ import {
   notification,
 } from "antd";
 import { UIState } from "../../state/ui";
-import { generateAdvanceFilterURL } from "../../util/utils";
+import { generateAdvanceFilterURL, generateFilterURL } from "../../util/utils";
 import { api } from "../../lib";
 import { DownloadOutlined } from "@ant-design/icons";
 import Exports from "./Exports";
@@ -19,10 +19,12 @@ import Exports from "./Exports";
 const { TabPane } = Tabs;
 
 const ManageData = () => {
-  const { provinceValues, advanceSearchValue, schoolTypeValues } =
-    UIState.useState((s) => s);
-  const [selectedProvince, setSelectedProvince] = useState([]);
-  const [selectedSchoolType, setSelectedSchoolType] = useState([]);
+  const {
+    provinceValues,
+    advanceSearchValue,
+    schoolTypeValues,
+    provinceFilterValue,
+  } = UIState.useState((s) => s);
   const [data, setData] = useState([]);
   const [monitoringData, setMonitoringData] = useState([]);
   const [monitoringRound, setMonitoringRound] = useState("");
@@ -39,11 +41,21 @@ const ManageData = () => {
   const [tabItems, setTabItems] = useState([]);
 
   const handleProvinceFilter = (value) => {
-    setSelectedProvince(value);
+    UIState.update((s) => {
+      s.provinceFilterValue = {
+        ...s.provinceFilterValue,
+        selectedProvince: value,
+      };
+    });
   };
 
   const handleSchoolTypeFilter = (value) => {
-    setSelectedSchoolType(value);
+    UIState.update((s) => {
+      s.provinceFilterValue = {
+        ...s.provinceFilterValue,
+        selectedSchoolType: value,
+      };
+    });
   };
 
   const handleMonitoringFilter = (value) => {
@@ -72,14 +84,7 @@ const ManageData = () => {
       setLoading(true);
       let url = `data?page=${page}&perpage=${pageSize}`;
       url = generateAdvanceFilterURL(advanceSearchValue, url);
-      if (selectedProvince && selectedProvince.length > 0) {
-        const queryUrlPrefix = url.includes("?") ? "&" : "?";
-        url = `${url}${queryUrlPrefix}prov=${selectedProvince}`;
-      }
-      if (selectedSchoolType && selectedSchoolType.length > 0) {
-        const queryUrlPrefix = url.includes("?") ? "&" : "?";
-        url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
-      }
+      url = generateFilterURL(provinceFilterValue, url);
       if (monitoringRound) {
         const queryUrlPrefix = url.includes("?") ? "&" : "?";
         url = `${url}${queryUrlPrefix}monitoring_round=${monitoringRound}`;
@@ -101,7 +106,7 @@ const ManageData = () => {
           setLoading(false);
         });
     },
-    [advanceSearchValue, selectedProvince, selectedSchoolType, monitoringRound]
+    [advanceSearchValue, provinceFilterValue, monitoringRound]
   );
 
   useEffect(() => {
@@ -143,14 +148,7 @@ const ManageData = () => {
     setExportLoading(true);
     let url = `download/data`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
-    if (selectedProvince && selectedProvince.length > 0) {
-      const queryUrlPrefix = url.includes("?") ? "&" : "?";
-      url = `${url}${queryUrlPrefix}prov=${selectedProvince}`;
-    }
-    if (selectedSchoolType && selectedSchoolType.length > 0) {
-      const queryUrlPrefix = url.includes("?") ? "&" : "?";
-      url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
-    }
+    url = generateFilterURL(provinceFilterValue, url);
     if (monitoringRound) {
       const queryUrlPrefix = url.includes("?") ? "&" : "?";
       url = `${url}${queryUrlPrefix}monitoring_round=${monitoringRound}`;
@@ -233,8 +231,10 @@ const ManageData = () => {
                         schoolTypeValues={schoolTypeValues}
                         handleSchoolTypeFilter={handleSchoolTypeFilter}
                         handleProvinceFilter={handleProvinceFilter}
-                        selectedProvince={selectedProvince}
-                        selectedSchoolType={selectedSchoolType}
+                        selectedProvince={provinceFilterValue?.selectedProvince}
+                        selectedSchoolType={
+                          provinceFilterValue?.selectedSchoolType
+                        }
                       >
                         <Select
                           style={{ width: 200 }}

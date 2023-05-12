@@ -33,3 +33,15 @@ export const generateAdvanceFilterURL = (advanceSearchValue, url) => {
   }
   return url;
 };
+
+export const generateFilterURL = (value, url) => {
+  if (value?.selectedProvince && value?.selectedProvince.length > 0) {
+    const queryUrlPrefix = url.includes("?") ? "&" : "?";
+    url = `${url}${queryUrlPrefix}prov=${value?.selectedProvince}`;
+  }
+  if (value?.selectedSchoolType && value?.selectedSchoolType.length > 0) {
+    const queryUrlPrefix = url.includes("?") ? "&" : "?";
+    url = `${url}${queryUrlPrefix}sctype=${value?.selectedSchoolType}`;
+  }
+  return url;
+};
