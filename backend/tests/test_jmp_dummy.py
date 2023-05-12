@@ -295,6 +295,252 @@ res_jmp_no_fiter = {
 }
 
 
+res_jmp_history_no_filter = {
+    'question': 'Sanitation',
+    'data': [{
+        'year': 2018,
+        'history': True,
+        'administration': 'Malaita',
+        'score': 0,
+        'child': [{
+            'option': 'Basic',
+            'count': 0,
+            'percent': 0,
+            'color': '#ab47bc',
+            'order': 1
+        }, {
+            'option': 'Limited',
+            'count': 0,
+            'percent': 0,
+            'color': '#fff176',
+            'order': 2
+        }, {
+            'option': 'No Service',
+            'count': 0,
+            'percent': 0,
+            'color': '#FEBC11',
+            'order': 3
+        }]
+    }, {
+        'year': 2018,
+        'history': True,
+        'administration': 'Rennell and Bellona',
+        'score': 0,
+        'child': [{
+            'option': 'Basic',
+            'count': 0,
+            'percent': 0,
+            'color': '#ab47bc',
+            'order': 1
+        }, {
+            'option': 'Limited',
+            'count': 0,
+            'percent': 0,
+            'color': '#fff176',
+            'order': 2
+        }, {
+            'option': 'No Service',
+            'count': 0,
+            'percent': 0,
+            'color': '#FEBC11',
+            'order': 3
+        }]
+    }, {
+        'year': 2018,
+        'history': True,
+        'administration': 'Temotu',
+        'score': 0,
+        'child': [{
+            'option': 'Basic',
+            'count': 0,
+            'percent': 0,
+            'color': '#ab47bc',
+            'order': 1
+        }, {
+            'option': 'Limited',
+            'count': 0,
+            'percent': 0,
+            'color': '#fff176',
+            'order': 2
+        }, {
+            'option': 'No Service',
+            'count': 0,
+            'percent': 0,
+            'color': '#FEBC11',
+            'order': 3
+        }]
+    }, {
+        'year': 2018,
+        'history': True,
+        'administration': 'Western',
+        'score': 0,
+        'child': [{
+            'option': 'Basic',
+            'count': 0,
+            'percent': 0,
+            'color': '#ab47bc',
+            'order': 1
+        }, {
+            'option': 'Limited',
+            'count': 0,
+            'percent': 0,
+            'color': '#fff176',
+            'order': 2
+        }, {
+            'option': 'No Service',
+            'count': 0,
+            'percent': 0,
+            'color': '#FEBC11',
+            'order': 3
+        }]
+    }, {
+        'year': 2018,
+        'history': True,
+        'administration': 'Choiseul',
+        'score': 0,
+        'child': [{
+            'option': 'Basic',
+            'count': 0,
+            'percent': 0,
+            'color': '#ab47bc',
+            'order': 1
+        }, {
+            'option': 'Limited',
+            'count': 0,
+            'percent': 0,
+            'color': '#fff176',
+            'order': 2
+        }, {
+            'option': 'No Service',
+            'count': 0,
+            'percent': 0,
+            'color': '#FEBC11',
+            'order': 3
+        }]
+    }, {
+        'year': 2018,
+        'history': True,
+        'administration': 'Guadalcanal',
+        'score': 0,
+        'child': [{
+            'option': 'Basic',
+            'count': 0,
+            'percent': 0,
+            'color': '#ab47bc',
+            'order': 1
+        }, {
+            'option': 'Limited',
+            'count': 0,
+            'percent': 0,
+            'color': '#fff176',
+            'order': 2
+        }, {
+            'option': 'No Service',
+            'count': 1,
+            'percent': 100.0,
+            'color': '#FEBC11',
+            'order': 3
+        }]
+    }, {
+        'year': 2018,
+        'history': True,
+        'administration': 'Honiara',
+        'score': 0,
+        'child': [{
+            'option': 'Basic',
+            'count': 0,
+            'percent': 0,
+            'color': '#ab47bc',
+            'order': 1
+        }, {
+            'option': 'Limited',
+            'count': 0,
+            'percent': 0,
+            'color': '#fff176',
+            'order': 2
+        }, {
+            'option': 'No Service',
+            'count': 0,
+            'percent': 0,
+            'color': '#FEBC11',
+            'order': 3
+        }]
+    }, {
+        'year': 2018,
+        'history': True,
+        'administration': 'Isabel',
+        'score': 0,
+        'child': [{
+            'option': 'Basic',
+            'count': 0,
+            'percent': 0,
+            'color': '#ab47bc',
+            'order': 1
+        }, {
+            'option': 'Limited',
+            'count': 0,
+            'percent': 0,
+            'color': '#fff176',
+            'order': 2
+        }, {
+            'option': 'No Service',
+            'count': 0,
+            'percent': 0,
+            'color': '#FEBC11',
+            'order': 3
+        }]
+    }, {
+        'year': 2018,
+        'history': True,
+        'administration': 'Makira and Ulawa',
+        'score': 0,
+        'child': [{
+            'option': 'Basic',
+            'count': 0,
+            'percent': 0,
+            'color': '#ab47bc',
+            'order': 1
+        }, {
+            'option': 'Limited',
+            'count': 0,
+            'percent': 0,
+            'color': '#fff176',
+            'order': 2
+        }, {
+            'option': 'No Service',
+            'count': 0,
+            'percent': 0,
+            'color': '#FEBC11',
+            'order': 3
+        }]
+    }, {
+        'year': 2018,
+        'history': True,
+        'administration': 'Central',
+        'score': 0,
+        'child': [{
+            'option': 'Basic',
+            'count': 0,
+            'percent': 0,
+            'color': '#ab47bc',
+            'order': 1
+        }, {
+            'option': 'Limited',
+            'count': 0,
+            'percent': 0,
+            'color': '#fff176',
+            'order': 2
+        }, {
+            'option': 'No Service',
+            'count': 0,
+            'percent': 0,
+            'color': '#FEBC11',
+            'order': 3
+        }]
+    }]
+}
+
+
 res_jmp_filtered = {
     "question": "Sanitation",
     "data": [
