@@ -337,6 +337,7 @@ def get_aggregated_chart_data(
 def get_aggregated_jmp_chart_data(
     req: Request,
     type: str,
+    history: Optional[bool] = False,
     session: Session = Depends(get_session),
     indicator: int = Query(
         None, description="indicator is a question id"),
@@ -352,6 +353,7 @@ def get_aggregated_jmp_chart_data(
         None, description="format: school_type name \
             (filter by shcool type)")
 ):
+    current = not history
     # check indicator param
     indicator = check_indicator_param(
         session=session, indicator=indicator, number=number)
@@ -364,7 +366,8 @@ def get_aggregated_jmp_chart_data(
     for p in parent_administration:
         p['children'] = [p['name']]
     # year conducted
-    years = get_year_conducted_from_datapoint(session=session)
+    years = get_year_conducted_from_datapoint(
+        session=session, current=current)
     years = [{
         "year": y.year_conducted,
         "current": y.current
@@ -374,13 +377,22 @@ def get_aggregated_jmp_chart_data(
         categories = get_categories(session=session, name=type)
     except Exception:
         categories = []
+    # get from data table
+    data = get_all_data(
+        session=session,
+        columns=[
+            Data.id, Data.school_information,
+            Data.year_conducted, Data.current
+        ],
+        current=current,
+        options=options,
+        prov=prov,
+        sctype=sctype)
     # generate JMP data
     data = get_jmp_overview(
         session=session,
         categories=categories,
-        options=options,
-        prov=prov,
-        sctype=sctype
+        data=data
     )
     configs = get_jmp_config()
     labels = get_jmp_labels(configs=configs, name=type)

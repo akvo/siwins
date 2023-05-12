@@ -259,7 +259,16 @@ def get_history_data_by_school(
     return data.all()
 
 
-def get_year_conducted_from_datapoint(session: Session):
-    return session.query(Data.year_conducted, Data.current).distinct(
-        Data.year_conducted).order_by(
-            desc(Data.year_conducted)).all()
+def get_year_conducted_from_datapoint(
+    session: Session,
+    current: Optional[bool] = None
+):
+    data = session.query(Data.year_conducted, Data.current)
+    if current is not None:
+        data = data.filter(Data.current == current)
+    data = data.distinct(
+        Data.year_conducted
+    ).order_by(
+        desc(Data.year_conducted)
+    ).all()
+    return data

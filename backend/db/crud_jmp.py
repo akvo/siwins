@@ -11,7 +11,6 @@ from AkvoResponseGrouper.utils import (
     get_counted_category,
     group_by_category_output,
 )
-from db.crud_data import get_all_data
 from models.data import Data
 from source.main_config import CascadeLevels, SchoolInformationEnum
 
@@ -107,21 +106,8 @@ def group_children(p, data_source, labels, year_conducted):
 def get_jmp_overview(
     session: Session,
     categories: List[dict],
-    options: Optional[List[str]] = None,
-    data_ids: Optional[List[int]] = None,
-    prov: Optional[List[str]] = None,
-    sctype: Optional[List[str]] = None
+    data: List[Data]
 ):
-    data = get_all_data(
-        session=session,
-        columns=[
-            Data.id, Data.school_information,
-            Data.year_conducted, Data.current
-        ],
-        options=options,
-        data_ids=data_ids,
-        prov=prov,
-        sctype=sctype)
     data = [{
         "data": d.id,
         "administration": d.school_information[province_level],
