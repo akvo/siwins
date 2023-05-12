@@ -9,17 +9,24 @@ import { ReactComponent as DocIcon } from "../../images/icons/doc.svg";
 import { Routes, Route, useLocation, Link } from "react-router-dom";
 import Maps from "./Maps";
 import Dashboard from "./Dashboard";
+import ManageData from "./ManageData";
 import { UIState } from "../../state/ui";
 import { api } from "../../lib";
 
 const items = [
   { label: "Maps", link: "/dashboard/maps", icon: <MapsIcon />, key: "1" },
   { label: "Dashboard", link: "/dashboard", icon: <DashboardIcon />, key: "2" },
+  // {
+  //   label: "Documentation",
+  //   link: "/dashboard/documentation",
+  //   icon: <DocIcon />,
+  //   key: "3",
+  // },
   {
-    label: "Documentation",
-    link: "/dashboard/documentation",
+    label: "Database",
+    link: "/dashboard/database",
     icon: <DocIcon />,
-    key: "3",
+    key: "4",
   },
 ];
 
@@ -106,10 +113,14 @@ const DashboardView = () => {
             ))}
           </Menu>
         </Sider>
-        <Content className="dashboard-content">
+        <Content
+          className="dashboard-content"
+          style={{ marginLeft: collapsed ? 80 : 200 }}
+        >
           <Routes>
             <Route exact path="/" element={<Dashboard />} />
             <Route path="/maps" element={<Maps />} />
+            <Route path="/database" element={<ManageData />} />
           </Routes>
         </Content>
       </Layout>

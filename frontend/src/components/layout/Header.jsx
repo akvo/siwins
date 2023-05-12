@@ -19,7 +19,7 @@ const Header = ({ className = "header" }) => {
           <div>
             <Link to="/dashboard/maps">Maps</Link>
             <Link to="/dashboard">Dashboard</Link>
-            <Link to="/documentation">Documentation</Link>
+            {/* <Link to="/documentation">Documentation</Link> */}
           </div>
         </Space>
       </Col>
