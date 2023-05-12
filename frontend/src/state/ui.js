@@ -9,6 +9,7 @@ const defaultUIState = {
   barChartQuestions: [],
   mapData: [],
   schoolTotal: 0,
+  provinceFilterValue: {},
 };
 
 export const UIState = new Store(defaultUIState);

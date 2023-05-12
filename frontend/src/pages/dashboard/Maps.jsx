@@ -10,18 +10,25 @@ function Maps() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState();
-  const [selectedProvince, setSelectedProvince] = useState([]);
-  const [selectedSchoolType, setSelectedSchoolType] = useState([]);
-  const { provinceValues, schoolTypeValues, mapData } = UIState.useState(
-    (s) => s
-  );
+  const { provinceValues, schoolTypeValues, provinceFilterValue, mapData } =
+    UIState.useState((s) => s);
 
   const handleProvinceFilter = (value) => {
-    setSelectedProvince(value);
+    UIState.update((s) => {
+      s.provinceFilterValue = {
+        ...s.provinceFilterValue,
+        selectedProvince: value,
+      };
+    });
   };
 
   const handleSchoolTypeFilter = (value) => {
-    setSelectedSchoolType(value);
+    UIState.update((s) => {
+      s.provinceFilterValue = {
+        ...s.provinceFilterValue,
+        selectedSchoolType: value,
+      };
+    });
   };
 
   const handleSearch = (val) => {
@@ -51,8 +58,8 @@ function Maps() {
             schoolTypeValues={schoolTypeValues}
             handleSchoolTypeFilter={handleSchoolTypeFilter}
             handleProvinceFilter={handleProvinceFilter}
-            selectedProvince={selectedProvince}
-            selectedSchoolType={selectedSchoolType}
+            selectedProvince={provinceFilterValue?.selectedProvince}
+            selectedSchoolType={provinceFilterValue?.selectedSchoolType}
             prefix={
               <Col>
                 <Breadcrumb>
@@ -108,8 +115,8 @@ function Maps() {
         <Col span={24}>
           <div className="map-wrapper">
             <Map
-              selectedProvince={selectedProvince}
-              selectedSchoolType={selectedSchoolType}
+              selectedProvince={provinceFilterValue?.selectedProvince}
+              selectedSchoolType={provinceFilterValue?.selectedSchoolType}
               searchValue={value}
             />
           </div>

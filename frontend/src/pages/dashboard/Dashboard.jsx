@@ -6,7 +6,7 @@ import { UIState } from "../../state/ui";
 import ChartVisual from "./components/ChartVisual";
 import { Chart } from "../../components";
 import AdvanceFilter from "../../components/filter";
-import { generateAdvanceFilterURL } from "../../util/utils";
+import { generateAdvanceFilterURL, generateFilterURL } from "../../util/utils";
 import { Link } from "react-router-dom";
 
 const chartConfig = window.dashboardjson?.tabs;
@@ -17,6 +17,7 @@ const Dashboard = () => {
     barChartQuestions,
     advanceSearchValue,
     schoolTypeValues,
+    provinceFilterValue,
   } = UIState.useState((s) => s);
   const [chartList, setChartList] = useState([]);
   const [barChartList, setBarChartList] = useState([]);
@@ -25,15 +26,23 @@ const Dashboard = () => {
   const [pageLoading, setPageLoading] = useState(false);
   const [chartTitle, setChartTitle] = useState("");
   const [selectedIndicator, setSelectedIndicator] = useState("");
-  const [selectedProvince, setSelectedProvince] = useState([]);
-  const [selectedSchoolType, setSelectedSchoolType] = useState([]);
 
   const handleProvinceFilter = (value) => {
-    setSelectedProvince(value);
+    UIState.update((s) => {
+      s.provinceFilterValue = {
+        ...s.provinceFilterValue,
+        selectedProvince: value,
+      };
+    });
   };
 
   const handleSchoolTypeFilter = (value) => {
-    setSelectedSchoolType(value);
+    UIState.update((s) => {
+      s.provinceFilterValue = {
+        ...s.provinceFilterValue,
+        selectedSchoolType: value,
+      };
+    });
   };
 
   useEffect(() => {
@@ -51,21 +60,14 @@ const Dashboard = () => {
     const apiCall = chartList?.map((chart) => {
       let url = `chart/jmp-data/${chart?.path}`;
       url = generateAdvanceFilterURL(advanceSearchValue, url);
-      if (selectedProvince && selectedProvince.length > 0) {
-        const queryUrlPrefix = url.includes("?") ? "&" : "?";
-        url = `${url}${queryUrlPrefix}prov=${selectedProvince}`;
-      }
-      if (selectedSchoolType && selectedSchoolType.length > 0) {
-        const queryUrlPrefix = url.includes("?") ? "&" : "?";
-        url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
-      }
+      url = generateFilterURL(provinceFilterValue, url);
       return api.get(url);
     });
     Promise.all(apiCall).then((res) => {
       setData(res);
       setPageLoading(false);
     });
-  }, [advanceSearchValue, selectedProvince, selectedSchoolType]);
+  }, [advanceSearchValue, provinceFilterValue]);
 
   const renderColumn = (cfg, index) => {
     return (
@@ -126,8 +128,8 @@ const Dashboard = () => {
                 schoolTypeValues={schoolTypeValues}
                 handleSchoolTypeFilter={handleSchoolTypeFilter}
                 handleProvinceFilter={handleProvinceFilter}
-                selectedProvince={selectedProvince}
-                selectedSchoolType={selectedSchoolType}
+                selectedProvince={provinceFilterValue?.selectedProvince}
+                selectedSchoolType={provinceFilterValue?.selectedSchoolType}
               />
             </Col>
           </Row>

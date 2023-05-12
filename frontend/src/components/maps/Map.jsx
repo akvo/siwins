@@ -15,7 +15,7 @@ import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
 import { geojson, tileOSM } from "../../util/geo-util";
 import { api } from "../../lib";
-import { generateAdvanceFilterURL } from "../../util/utils";
+import { generateAdvanceFilterURL, generateFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
 import SchoolDetailModal from "./SchoolDetailModal";
@@ -27,11 +27,14 @@ import { isEmpty, intersection } from "lodash";
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
 
-const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
+const Map = ({ searchValue }) => {
   // use tile layer from config
-  const { advanceSearchValue, indicatorQuestions, mapData } = UIState.useState(
-    (s) => s
-  );
+  const {
+    advanceSearchValue,
+    indicatorQuestions,
+    mapData,
+    provinceFilterValue,
+  } = UIState.useState((s) => s);
   const baseMap = tileOSM;
   const map = useRef();
   const [loading, setLoading] = useState(false);
@@ -94,14 +97,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
       const queryUrlPrefix = url.includes("?") ? "&" : "?";
       url = `${url}${queryUrlPrefix}indicator=${selectedQuestion?.id}`;
     }
-    if (selectedProvince && selectedProvince.length > 0) {
-      const queryUrlPrefix = url.includes("?") ? "&" : "?";
-      url = `${url}${queryUrlPrefix}prov=${selectedProvince}`;
-    }
-    if (selectedSchoolType && selectedSchoolType.length > 0) {
-      const queryUrlPrefix = url.includes("?") ? "&" : "?";
-      url = `${url}${queryUrlPrefix}sctype=${selectedSchoolType}`;
-    }
+    url = generateFilterURL(provinceFilterValue, url);
     api
       .get(url)
       .then((res) => {
@@ -109,12 +105,7 @@ const Map = ({ selectedProvince, selectedSchoolType, searchValue }) => {
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
-  }, [
-    advanceSearchValue,
-    selectedQuestion,
-    selectedProvince,
-    selectedSchoolType,
-  ]);
+  }, [advanceSearchValue, selectedQuestion, provinceFilterValue]);
 
   useEffect(() => {
     if (["option", "jmp"].includes(selectedQuestion.type)) {
