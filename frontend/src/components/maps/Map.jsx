@@ -1,11 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import "./style.scss";
 import "leaflet/dist/leaflet.css";
 import {
@@ -30,9 +24,15 @@ import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
 import { isEmpty, intersection } from "lodash";
 import { LoadingOutlined } from "@ant-design/icons";
+import { sequentialPromise } from "../../util/utils";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
+const defPagination = {
+  page: 1,
+  perPage: 250,
+  totalPage: 0,
+};
 
 const Map = ({ searchValue }) => {
   // use tile layer from config
@@ -56,14 +56,72 @@ const Map = ({ searchValue }) => {
   };
   const [barChartValues, setBarChartValues] = useState(barChartDefValues);
   const [selectedDatapoint, setSelectedDatapoint] = useState({});
+  const [pagination, setPagination] = useState({});
 
-  const defPagination = {
-    page: 1,
-    perPage: 100,
-    totalPage: 0,
-  };
-  const [pagination, setPagination] = useState(defPagination);
-  const [dataTemp, setDataTemp] = useState([]);
+  const endpointURL = useMemo(() => {
+    let url = `data/maps`;
+    url = generateAdvanceFilterURL(advanceSearchValue, url);
+    const urlParams = new URLSearchParams(url);
+    if (selectedQuestion?.id && !urlParams.get("indicator")) {
+      const queryUrlPrefix = url.includes("?") ? "&" : "?";
+      url = `${url}${queryUrlPrefix}indicator=${selectedQuestion?.id}`;
+    }
+    url = generateFilterURL(provinceFilterValue, url);
+    return url;
+  }, [advanceSearchValue, selectedQuestion, provinceFilterValue]);
+
+  useEffect(() => {
+    // get page size
+    setLoading(true);
+    const { page, perPage } = defPagination;
+    const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
+    api
+      .get(
+        `${endpointURL}${queryUrlPrefix}page_only=true&page=${page}&perpage=${perPage}`
+      )
+      .then((res) => {
+        const { current, total_page } = res.data;
+        setPagination({
+          ...defPagination,
+          page: current,
+          totalPage: total_page,
+        });
+      })
+      .catch((e) => {
+        console.error("Unable to fetch page size", e);
+      });
+  }, [defPagination, endpointURL]);
+
+  const apiCalls = useMemo(() => {
+    if (isEmpty(pagination) || !endpointURL) {
+      return [];
+    }
+    const tempURL = [];
+    const { page, totalPage, perPage } = pagination;
+    let curr = page;
+    while (curr <= totalPage) {
+      // pagination
+      const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
+      const pageURL = `${endpointURL}${queryUrlPrefix}page=${curr}&perpage=${perPage}`;
+      tempURL.push(api.get(pageURL));
+      curr += 1;
+    }
+    return tempURL;
+  }, [pagination]);
+
+  useEffect(() => {
+    sequentialPromise(apiCalls)
+      .then((res) => {
+        const paginatedData = res.map((item) => item.data).flat();
+        const dataTemp = paginatedData.map((pd) => pd.data).flat();
+        setData(dataTemp);
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      });
+  }, [apiCalls]);
 
   const filteredData = useMemo(() => {
     if (isEmpty(data)) {
@@ -102,56 +160,6 @@ const Map = ({ searchValue }) => {
       });
     });
   }, [filteredData]);
-
-  const fetchMapsData = useCallback(
-    (url) => {
-      const { page, perPage, totalPage } = pagination;
-      if (page === 1 || page <= totalPage) {
-        // pagination
-        const queryUrlPrefix = url.includes("?") ? "&" : "?";
-        url = `${url}${queryUrlPrefix}page=${page}&perpage=${perPage}`;
-        api
-          .get(url)
-          .then((res) => {
-            const { current, total_page, data: resData } = res.data;
-            setPagination({
-              ...pagination,
-              page: current + 1,
-              totalPage: total_page,
-            });
-            setDataTemp([...dataTemp, ...resData]);
-          })
-          .catch((e) => console.error(e));
-      } else {
-        setData(dataTemp.flat());
-        setLoading(false);
-      }
-    },
-    [pagination]
-  );
-
-  useEffect(() => {
-    if (isEmpty(data)) {
-      setLoading(true);
-      let url = `data/maps`;
-      url = generateAdvanceFilterURL(advanceSearchValue, url);
-      const urlParams = new URLSearchParams(url);
-      if (selectedQuestion?.id && !urlParams.get("indicator")) {
-        const queryUrlPrefix = url.includes("?") ? "&" : "?";
-        url = `${url}${queryUrlPrefix}indicator=${selectedQuestion?.id}`;
-      }
-      url = generateFilterURL(provinceFilterValue, url);
-      setTimeout(() => {
-        fetchMapsData(url);
-      }, 500);
-    }
-  }, [advanceSearchValue, selectedQuestion, provinceFilterValue]);
-
-  useEffect(() => {
-    setData([]);
-    setDataTemp([]);
-    setPagination(defPagination);
-  }, [advanceSearchValue, provinceFilterValue]);
 
   useEffect(() => {
     if (["option", "jmp"].includes(selectedQuestion.type)) {
