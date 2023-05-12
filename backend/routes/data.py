@@ -119,6 +119,7 @@ def get_maps(
     req: Request,
     page: int = 1,
     perpage: int = 100,
+    page_only: Optional[bool] = False,
     indicator: Union[int, str] = Query(
         None, description="indicator is a question id or JMP category"),
     q: Optional[List[str]] = Query(
@@ -167,6 +168,13 @@ def get_maps(
         }
     total_page = ceil(count / perpage) if count > 0 else 0
     if total_page < page:
+        return {
+            "current": page,
+            "data": [],
+            "total": count,
+            "total_page": total_page,
+        }
+    if page_only:
         return {
             "current": page,
             "data": [],

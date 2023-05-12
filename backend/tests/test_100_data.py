@@ -135,6 +135,16 @@ class TestDataRoutes:
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         # without indicator
+        res = await client.get(
+            app.url_path_for("data:get_maps_data"),
+            params={"page_only": True}
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert "current" in res
+        assert "data" in res
+        assert "total" in res
+        assert "total_page" in res
         res = await client.get(app.url_path_for("data:get_maps_data"))
         assert res.status_code == 200
         res = res.json()
