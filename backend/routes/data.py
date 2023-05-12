@@ -37,7 +37,7 @@ from models.question import QuestionType
 from models.history import History
 from middleware import (
     check_query, check_indicator_query,
-    check_jmp_query
+    check_jmp_query, check_indicator_param
 )
 from utils.functions import extract_school_information
 
@@ -136,11 +136,9 @@ def get_maps(
     session: Session = Depends(get_session),
     # credentials: credentials = Depends(security)
 ):
-    # check indicator query
-    answer_data_ids = None
-    answer_temp = {}
+    # check indicator param
     if "jmp" not in str(indicator):
-        answer_data_ids, answer_temp = check_indicator_query(
+        indicator = check_indicator_param(
             session=session, indicator=indicator, number=number)
     # jmp option/levek filter
     jmp_query, non_jmp_query = check_jmp_query(q)
@@ -151,7 +149,6 @@ def get_maps(
         session=session,
         current=True,
         options=options,
-        data_ids=answer_data_ids,
         prov=prov,
         sctype=sctype,
         skip=(perpage * (page - 1)),
@@ -181,9 +178,20 @@ def get_maps(
             "total": count,
             "total_page": total_page,
         }
-    # map answer by identifier for each datapoint
+    # data
     data = page_data.get("data") or []
     data_ids = [d.id for d in data]
+    # indicator query
+    answer_data_ids = []
+    answer_temp = {}
+    if "jmp" not in str(indicator):
+        answer_data_ids, answer_temp = check_indicator_query(
+            session=session,
+            indicator=indicator,
+            number=number,
+            data_ids=data_ids
+        )
+    # map answer by identifier for each datapoint
     data = [d.to_maps for d in data]
     jmp_name = None
     if "jmp" in str(indicator):
@@ -192,6 +200,15 @@ def get_maps(
         jmp_levels = get_jmp_school_detail_popup(
             session=session, data_ids=data_ids,
             name=jmp_name, raw=True)
+    # filter data by answer_data_ids
+    if indicator and "jmp" not in str(indicator):
+        data = list(filter(
+            lambda x: (
+                x.get("id") in answer_data_ids
+            ),
+            data
+        ))
+    # transform data
     for d in data:
         d["school_information"] = extract_school_information(
             school_information=d["school_information"], to_object=True)

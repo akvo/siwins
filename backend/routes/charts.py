@@ -29,7 +29,9 @@ from db.crud_question import get_question_by_id
 from db.crud_province_view import (
     get_province_number_answer, get_province_option_answer
 )
-from middleware import check_query, check_indicator_query
+from middleware import (
+    check_query, check_indicator_param
+)
 from models.answer import Answer
 from models.question import QuestionType
 from models.data import Data
@@ -187,8 +189,8 @@ def get_aggregated_chart_data(
         None, description="format: school_type name \
             (filter by shcool type)")
 ):
-    # check indicator query
-    answer_data_ids, answer_temp = check_indicator_query(
+    # check indicator param
+    indicator = check_indicator_param(
         session=session, indicator=indicator, number=number)
     # for advance filter and indicator option filter
     options = check_query(q) if q else None
@@ -217,7 +219,6 @@ def get_aggregated_chart_data(
         session=session,
         columns=[Data.id, Data.current, Data.year_conducted],
         options=options,
-        data_ids=answer_data_ids,
         prov=prov,
         sctype=sctype
     )
@@ -351,12 +352,9 @@ def get_aggregated_jmp_chart_data(
         None, description="format: school_type name \
             (filter by shcool type)")
 ):
-    # check indicator query
-    answer_data_ids, answer_temp = check_indicator_query(
-        session=session,
-        indicator=indicator,
-        number=number,
-        return_answer_temp=False)
+    # check indicator param
+    indicator = check_indicator_param(
+        session=session, indicator=indicator, number=number)
     # for advance filter and indicator option filter
     options = check_query(q) if q else None
     # administration / province
@@ -381,7 +379,6 @@ def get_aggregated_jmp_chart_data(
         session=session,
         categories=categories,
         options=options,
-        data_ids=answer_data_ids,
         prov=prov,
         sctype=sctype
     )

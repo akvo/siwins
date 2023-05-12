@@ -106,16 +106,19 @@ def get_answer_by_question(
     session: Session,
     question: int,
     data_ids: Optional[List[int]] = None,
-    number: Optional[List[int]] = None
+    number: Optional[List[float]] = None
 ) -> List[AnswerDict]:
-    answers = session.query(Answer).filter(
-        Answer.question == question)
+    filters = [Answer.question == question]
     if data_ids:
-        answers = answers.filter(
-            Answer.data.in_(data_ids))
+        filters += [Answer.data.in_(data_ids)]
     if number:
-        answers = answers.filter(
-            Answer.value.between(number[0], number[1]))
+        min_numb = number[0]
+        max_numb = number[1]
+        filters += [
+            Answer.value >= min_numb,
+            Answer.value <= max_numb
+        ]
+    answers = session.query(Answer).filter(and_(*filters))
     return answers.all()
 
 
