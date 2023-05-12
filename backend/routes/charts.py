@@ -172,6 +172,7 @@ def get_national_chart_data_by_question(
 def get_aggregated_chart_data(
     req: Request,
     question: int,
+    history: Optional[bool] = False,
     session: Session = Depends(get_session),
     stack: Optional[int] = Query(
         None, description="question id to create stack BAR"),
@@ -189,6 +190,7 @@ def get_aggregated_chart_data(
         None, description="format: school_type name \
             (filter by shcool type)")
 ):
+    current = not history
     # check indicator param
     indicator = check_indicator_param(
         session=session, indicator=indicator, number=number)
@@ -208,7 +210,8 @@ def get_aggregated_chart_data(
             columns=[Option.id, Option.name],
             question=stack)
     # year conducted
-    years = get_year_conducted_from_datapoint(session=session)
+    years = get_year_conducted_from_datapoint(
+        session=session, current=current)
     years = [{
         "year": y.year_conducted,
         "current": y.current
@@ -218,6 +221,7 @@ def get_aggregated_chart_data(
     data_source = get_all_data(
         session=session,
         columns=[Data.id, Data.current, Data.year_conducted],
+        current=current,
         options=options,
         prov=prov,
         sctype=sctype
