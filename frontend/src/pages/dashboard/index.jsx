@@ -5,7 +5,7 @@ const { Content, Sider, Header } = Layout;
 import "./style.scss";
 import { ReactComponent as MapsIcon } from "../../images/icons/maps.svg";
 import { ReactComponent as DashboardIcon } from "../../images/icons/dashboard.svg";
-import { ReactComponent as DocIcon } from "../../images/icons/doc.svg";
+import { ReactComponent as DocIcon } from "../../images/icons/db.svg";
 import { Routes, Route, useLocation, Link } from "react-router-dom";
 import Maps from "./Maps";
 import Dashboard from "./Dashboard";
