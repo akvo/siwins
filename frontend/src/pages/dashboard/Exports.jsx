@@ -58,11 +58,13 @@ const Export = () => {
       });
   }, []);
 
-  const pending = fileList.filter((item) => item.status !== "Done");
+  const pending = fileList.filter(
+    (item) => item.status.toLowerCase() !== "done"
+  );
 
   const checkStatus = useCallback(() => {
     api.get(`download/status?id=${pending?.[0]?.id}`).then((res) => {
-      if (res?.data?.status === "done") {
+      if (res?.data?.status?.toLowerCase() === "done") {
         setPendingFile(res.data);
       }
     });
@@ -154,7 +156,7 @@ const Export = () => {
             dataSource={fileList}
             renderItem={(item) => {
               const filename = item?.payload?.replace("download/", "");
-              const done = item?.status === "Done";
+              const done = item?.status?.toLowerCase() === "done";
               const isDownloading = item?.payload === downloading;
               return (
                 <List.Item key={item.id}>
