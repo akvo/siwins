@@ -104,7 +104,7 @@ const BarStack = (
     title: {
       ...Title,
       show: !isEmpty(chartTitle),
-      text: chartTitle?.title,
+      text: !horizontal ? chartTitle?.title : "",
       subtext: chartTitle?.subTitle,
     },
     legend: {
@@ -156,7 +156,7 @@ const BarStack = (
           title: "Download Excel",
           icon: Icons.download,
           onclick: (e) => {
-            downloadToExcel(e, excelFile);
+            downloadToExcel(e, excelFile, chartTitle?.title);
           },
         },
       },

@@ -222,6 +222,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
               },
             }}
             loading={loading ? loading : historyLoading}
+            title={title}
           />
         ) : (
           <Chart
@@ -230,6 +231,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
                 ? 50 * chartData.find((f) => f.name === path)?.data.length + 188
                 : 300
             }
+            title={title}
             type={"BAR"}
             showPercent={true}
             dataZoom={false}

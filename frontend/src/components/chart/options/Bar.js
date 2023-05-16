@@ -85,7 +85,7 @@ const Bar = (
     title: {
       ...Title,
       show: !isEmpty(chartTitle),
-      text: chartTitle?.title,
+      text: !horizontal ? chartTitle?.title : "",
       subtext: chartTitle?.subTitle,
     },
     grid: {
@@ -134,7 +134,7 @@ const Bar = (
           title: "Download Excel",
           icon: Icons.download,
           onclick: (e) => {
-            downloadToExcel(e, excelFile);
+            downloadToExcel(e, excelFile, chartTitle?.title);
           },
         },
       },
