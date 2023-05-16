@@ -6,14 +6,20 @@ import "./style.scss";
 import { ReactComponent as MapsIcon } from "../../images/icons/maps.svg";
 import { ReactComponent as DashboardIcon } from "../../images/icons/dashboard.svg";
 import { ReactComponent as DocIcon } from "../../images/icons/db.svg";
-import { Routes, Route, useLocation, Link } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import Maps from "./Maps";
 import Dashboard from "./Dashboard";
 import ManageData from "./ManageData";
 import { UIState } from "../../state/ui";
 import { api } from "../../lib";
 
-const items = [
+const menuItems = [
   { label: "Maps", link: "/dashboard/maps", icon: <MapsIcon />, key: "1" },
   { label: "Dashboard", link: "/dashboard", icon: <DashboardIcon />, key: "2" },
   // {
@@ -32,6 +38,7 @@ const items = [
 
 const DashboardView = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(true);
   const { schoolTotal } = UIState.useState((s) => s);
 
@@ -60,6 +67,11 @@ const DashboardView = () => {
     });
   }, []);
 
+  const handleOnClickMenu = ({ key }) => {
+    const link = menuItems.find((x) => x.key === key)?.link;
+    navigate(link);
+  };
+
   return (
     <Layout className="dashboard-layout">
       <Header
@@ -76,14 +88,13 @@ const DashboardView = () => {
               src="/images/dashboard-logo.png"
               preview={false}
               height={40}
-              width={40}
             />
           </Link>
-          <h3>
+          <h4>
             Monitoring WaSH progress for {schoolTotal || 0} schools in Solomon
             Islands
-          </h3>
-          <Image src="/images/unicef-logo.png" preview={false} height={35} />
+          </h4>
+          <Image src="/images/unicef-logo.png" preview={false} height={20} />
         </div>
       </Header>
       <Layout className="site-layout">
@@ -99,19 +110,13 @@ const DashboardView = () => {
           </div>
           <Menu
             defaultSelectedKeys={[
-              items.find((item) => item.link === location.pathname).key,
+              menuItems.find((item) => item.link === location?.pathname).key,
             ]}
             mode="inline"
             className="menu"
-          >
-            {items.map((item) => (
-              <Menu.Item key={item.key}>
-                <div>{item.icon}</div>
-                <span>{item.label}</span>
-                <Link to={item.link} />
-              </Menu.Item>
-            ))}
-          </Menu>
+            items={menuItems}
+            onClick={handleOnClickMenu}
+          />
         </Sider>
         <Content
           className="dashboard-content"

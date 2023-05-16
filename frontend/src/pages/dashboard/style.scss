@@ -13,13 +13,16 @@
         background-color: inherit;
         li {
           cursor: pointer;
-          display: block;
-          padding: 20px 20px 20px 0px;
+          // display: block;
+          padding: 25px 20px 20px 27px;
           height: 90px;
           margin: 0;
           width: 100%;
           border-radius: 0px;
           border-bottom: 1px solid #bbb9b9;
+          &:first-child {
+            border-top: 1px solid #bbb9b9;
+          }
           &.ant-menu-item-selected {
             background: #c1e0f1;
             border-bottom: 10px solid #2493fd;
@@ -27,10 +30,10 @@
           }
         }
         .ant-menu-title-content {
-          width: 130px;
-          margin: 0 auto;
-          display: block;
-          text-align: center;
+          // width: 130px;
+          margin: 0 0 0 12px;
+          // display: block;
+          text-align: left;
           line-height: normal;
           p {
             margin-bottom: 0;
@@ -53,7 +56,7 @@
         .logo-container {
           .anticon {
             display: block;
-            text-align: right;
+            text-align: center;
             padding: 10px 10px;
           }
           .ant-image {
@@ -74,12 +77,12 @@
               text-align: center;
             }
           }
-          .ant-menu {
-            .ant-menu-item {
-              height: auto;
-              padding: 20px 20px 20px 20px;
-            }
-          }
+          // .ant-menu {
+          //   .ant-menu-item {
+          //     height: auto;
+          //     padding: 20px 20px 20px 20px;
+          //   }
+          // }
         }
         .ant-menu-title-content {
           width: auto;
@@ -103,7 +106,8 @@
         align-items: center;
         justify-content: space-between;
         padding-right: 15px;
-        h3 {
+        h3,
+        h4 {
           margin-bottom: 0px;
           color: #fff;
         }
