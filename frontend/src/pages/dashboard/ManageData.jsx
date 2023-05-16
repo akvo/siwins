@@ -27,7 +27,7 @@ const ManageData = () => {
   } = UIState.useState((s) => s);
   const [data, setData] = useState([]);
   const [monitoringData, setMonitoringData] = useState([]);
-  const [monitoringRound, setMonitoringRound] = useState("");
+  const [monitoringRound, setMonitoringRound] = useState(null);
   const [loading, setLoading] = useState(false);
   const [tabLoading, setTabLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
@@ -68,7 +68,6 @@ const ManageData = () => {
 
   useEffect(() => {
     const url = `option/monitoring_round`;
-
     api
       .get(url)
       .then((res) => {
@@ -202,7 +201,7 @@ const ManageData = () => {
               className="admin-tabs-wrapper"
             >
               <TabPane
-                tab={<div className="tab-pane-text">Manage Data</div>}
+                tab={<div className="tab-pane-text">View Data</div>}
                 key="database"
               />
               <TabPane
@@ -253,6 +252,7 @@ const ManageData = () => {
                             value: x,
                           }))}
                           onChange={(val) => handleMonitoringFilter(val)}
+                          value={monitoringRound}
                         />
                       </AdvanceFilter>
                     </Col>

@@ -75,7 +75,7 @@ const Export = () => {
       if (pending.length && !pendingFile) {
         checkStatus();
       }
-    }, 10000);
+    }, 5000);
     return () => {
       clearInterval(intervalCall);
     };
