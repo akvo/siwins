@@ -33,6 +33,7 @@ const defPagination = {
   perPage: 250,
   totalPage: 0,
 };
+const mapFilterConfig = window.mapFilterConfig;
 
 const Map = ({ searchValue }) => {
   // use tile layer from config
@@ -58,7 +59,19 @@ const Map = ({ searchValue }) => {
   const [selectedDatapoint, setSelectedDatapoint] = useState({});
   const [pagination, setPagination] = useState({});
 
+  useEffect(() => {
+    const findQ = indicatorQuestions.find(
+      (q) => q.id === mapFilterConfig?.defaultIndicator
+    );
+    if (findQ) {
+      setSelectedQuestion(findQ);
+    }
+  }, [indicatorQuestions]);
+
   const endpointURL = useMemo(() => {
+    if (isEmpty(selectedQuestion)) {
+      return null;
+    }
     let url = `data/maps`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
     const urlParams = new URLSearchParams(url);
@@ -71,25 +84,27 @@ const Map = ({ searchValue }) => {
   }, [advanceSearchValue, selectedQuestion, provinceFilterValue]);
 
   useEffect(() => {
-    // get page size
-    setLoading(true);
-    const { page, perPage } = defPagination;
-    const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
-    api
-      .get(
-        `${endpointURL}${queryUrlPrefix}page_only=true&page=${page}&perpage=${perPage}`
-      )
-      .then((res) => {
-        const { current, total_page } = res.data;
-        setPagination({
-          ...defPagination,
-          page: current,
-          totalPage: total_page,
+    if (endpointURL) {
+      // get page size
+      setLoading(true);
+      const { page, perPage } = defPagination;
+      const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
+      api
+        .get(
+          `${endpointURL}${queryUrlPrefix}page_only=true&page=${page}&perpage=${perPage}`
+        )
+        .then((res) => {
+          const { current, total_page } = res.data;
+          setPagination({
+            ...defPagination,
+            page: current,
+            totalPage: total_page,
+          });
+        })
+        .catch((e) => {
+          console.error("Unable to fetch page size", e);
         });
-      })
-      .catch((e) => {
-        console.error("Unable to fetch page size", e);
-      });
+    }
   }, [defPagination, endpointURL]);
 
   const apiCalls = useMemo(() => {
@@ -110,17 +125,19 @@ const Map = ({ searchValue }) => {
   }, [pagination]);
 
   useEffect(() => {
-    sequentialPromise(apiCalls)
-      .then((res) => {
-        const paginatedData = res.map((item) => item.data).flat();
-        const dataTemp = paginatedData.map((pd) => pd.data).flat();
-        setData(dataTemp);
-      })
-      .finally(() => {
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
-      });
+    if (!isEmpty(apiCalls)) {
+      sequentialPromise(apiCalls)
+        .then((res) => {
+          const paginatedData = res.map((item) => item.data).flat();
+          const dataTemp = paginatedData.map((pd) => pd.data).flat();
+          setData(dataTemp);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            setLoading(false);
+          }, 1000);
+        });
+    }
   }, [apiCalls]);
 
   const filteredData = useMemo(() => {
