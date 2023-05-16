@@ -13,6 +13,7 @@ import {
 } from "../../util/utils";
 import { Link } from "react-router-dom";
 import { orderBy } from "lodash";
+
 const chartConfig = window.dashboardjson?.tabs;
 
 const Dashboard = () => {

@@ -4,12 +4,20 @@ import { Chart } from "../../../components";
 import { get } from "lodash";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { api } from "../../../lib";
+import {
+  generateAdvanceFilterURL,
+  generateFilterURL,
+} from "../../../util/utils";
+import { UIState } from "../../../state/ui";
 
 const config = window.dashboardjson?.tabs;
 const jmpHints = window.jmphintjson;
 
 const ChartVisual = ({ chartConfig, loading }) => {
   const { title, type, data, provinceValues, index, path, span } = chartConfig;
+  const { advanceSearchValue, provinceFilterValue } = UIState.useState(
+    (s) => s
+  );
   const [isStack, setIsStack] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [historyLoading, setLoading] = useState(false);
@@ -17,6 +25,8 @@ const ChartVisual = ({ chartConfig, loading }) => {
 
   useEffect(() => {
     let url = `chart/jmp-data/${path}`;
+    url = generateAdvanceFilterURL(advanceSearchValue, url);
+    url = generateFilterURL(provinceFilterValue, url);
     if (showHistory) {
       setLoading(true);
       (async () => {
@@ -27,7 +37,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
         setHistoryData(res?.data?.data);
       })();
     }
-  }, [showHistory, path, setLoading]);
+  }, [showHistory, path, setLoading, advanceSearchValue, provinceFilterValue]);
 
   const chartList = config
     .find((item) => item.component === "JMP-CHARTS")
