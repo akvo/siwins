@@ -103,6 +103,7 @@ def delete_bulk(session: Session, ids: List[int]) -> None:
 # get all data with filtered value
 def get_all_data(
     session: Session,
+    columns: Optional[List] = None,
     registration: Optional[bool] = None,
     current: Optional[bool] = None,
     options: Optional[List[str]] = None,
@@ -115,7 +116,8 @@ def get_all_data(
     skip: Optional[int] = None,
     perpage: Optional[int] = None,
 ) -> DataDict:
-    data = session.query(Data)
+    columns = columns if columns else [Data]
+    data = session.query(*columns)
     if registration is not None:
         data = data.filter(
             Data.registration == registration)
@@ -257,7 +259,16 @@ def get_history_data_by_school(
     return data.all()
 
 
-def get_year_conducted_from_datapoint(session: Session):
-    return session.query(Data.year_conducted, Data.current).distinct(
-        Data.year_conducted).order_by(
-            desc(Data.year_conducted)).all()
+def get_year_conducted_from_datapoint(
+    session: Session,
+    current: Optional[bool] = None
+):
+    data = session.query(Data.year_conducted, Data.current)
+    if current is not None:
+        data = data.filter(Data.current == current)
+    data = data.distinct(
+        Data.year_conducted
+    ).order_by(
+        desc(Data.year_conducted)
+    ).all()
+    return data

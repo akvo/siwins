@@ -11,160 +11,178 @@ sys.path.append("..")
 
 res_bar = {
     'type': 'BAR',
-    'data': [
-        {
-            'year': 2023,
-            'history': False,
-            'name': 'yes',
-            'value': 0
-        },
-        {
-            'year': 2023,
-            'history': False,
-            'name': 'no',
-            'value': 1
-        },
-        {
-            'year': 2023,
-            'history': False,
-            'name': "don't know/can't say",
-            'value': 0
-        },
-        {
-            'year': 2018,
-            'history': True,
-            'name': 'yes',
-            'value': 0
-        },
-        {
-            'year': 2018,
-            'history': True,
-            'name': 'no',
-            'value': 1
-        },
-        {
-            'year': 2018,
-            'history': True,
-            'name': "don't know/can't say",
-            'value': 0
-        }
-    ]
+    'data': [{
+        'year': 2023,
+        'history': False,
+        'name': 'yes',
+        'value': 0
+    }, {
+        'year': 2023,
+        'history': False,
+        'name': 'no',
+        'value': 1
+    }, {
+        'year': 2023,
+        'history': False,
+        'name': "don't know/can't say",
+        'value': 0
+    }, ]
+}
+
+
+res_bar_history = {
+    'type': 'BAR',
+    'data': [{
+        'year': 2018,
+        'history': True,
+        'name': 'yes',
+        'value': 0
+    }, {
+        'year': 2018,
+        'history': True,
+        'name': 'no',
+        'value': 1
+    }, {
+        'year': 2018,
+        'history': True,
+        'name': "don't know/can't say",
+        'value': 0
+    }]
 }
 
 
 res_bar_filtered = {
     'type': 'BAR',
-    'data': [
-        {
-            'year': 2023,
-            'history': False,
-            'name': 'yes',
-            'value': 0
-        },
-        {
-            'year': 2023,
-            'history': False,
-            'name': 'no',
-            'value': 0
-        },
-        {
-            'year': 2023,
-            'history': False,
-            'name': "don't know/can't say",
-            'value': 0
-        },
-        {
-            'year': 2018,
-            'history': True,
-            'name': 'yes',
-            'value': 0
-        },
-        {
-            'year': 2018,
-            'history': True,
-            'name': 'no',
-            'value': 0
-        },
-        {
-            'year': 2018,
-            'history': True,
-            'name': "don't know/can't say",
-            'value': 0
-        }
-    ]
+    'data': [{
+        'year': 2023,
+        'history': False,
+        'name': 'yes',
+        'value': 0
+    }, {
+        'year': 2023,
+        'history': False,
+        'name': 'no',
+        'value': 0
+    }, {
+        'year': 2023,
+        'history': False,
+        'name': "don't know/can't say",
+        'value': 0
+    }, ]
 }
 
 
 res_bar_stack = {
     "type": "BARSTACK",
-    "data": [
-        {
-            "year": 2023,
-            "history": False,
-            "group": "yes",
-            "child": [
-                {"name": "yes (always available)", "value": 0},
-                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
-                {"name": "no (unavailable > 30 days total)", "value": 0},
-                {"name": "don't know/can't say", "value": 0},
-            ],
-        },
-        {
-            "year": 2023,
-            "history": False,
-            "group": "no",
-            "child": [
-                {"name": "yes (always available)", "value": 0},
-                {"name": "mostly (unavailable ≤ 30 days total)", "value": 1},
-                {"name": "no (unavailable > 30 days total)", "value": 0},
-                {"name": "don't know/can't say", "value": 0},
-            ],
-        },
-        {
-            "year": 2023,
-            "history": False,
-            "group": "don't know/can't say",
-            "child": [
-                {"name": "yes (always available)", "value": 0},
-                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
-                {"name": "no (unavailable > 30 days total)", "value": 0},
-                {"name": "don't know/can't say", "value": 0},
-            ],
-        },
-        {
-            "year": 2018,
-            "history": True,
-            "group": "yes",
-            "child": [
-                {"name": "yes (always available)", "value": 0},
-                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
-                {"name": "no (unavailable > 30 days total)", "value": 0},
-                {"name": "don't know/can't say", "value": 0},
-            ],
-        },
-        {
-            "year": 2018,
-            "history": True,
-            "group": "no",
-            "child": [
-                {"name": "yes (always available)", "value": 1},
-                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
-                {"name": "no (unavailable > 30 days total)", "value": 0},
-                {"name": "don't know/can't say", "value": 0},
-            ],
-        },
-        {
-            "year": 2018,
-            "history": True,
-            "group": "don't know/can't say",
-            "child": [
-                {"name": "yes (always available)", "value": 0},
-                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
-                {"name": "no (unavailable > 30 days total)", "value": 0},
-                {"name": "don't know/can't say", "value": 0},
-            ],
-        },
-    ],
+    "data": [{
+        "year": 2023,
+        "history": False,
+        "group": "yes",
+        "child": [{
+            "name": "yes (always available)",
+            "value": 0
+        }, {
+            "name": "mostly (unavailable ≤ 30 days total)",
+            "value": 0
+        }, {
+            "name": "no (unavailable > 30 days total)",
+            "value": 0
+        }, {
+            "name": "don't know/can't say",
+            "value": 0
+        }, ],
+    }, {
+        "year": 2023,
+        "history": False,
+        "group": "no",
+        "child": [{
+            "name": "yes (always available)",
+            "value": 0
+        }, {
+            "name": "mostly (unavailable ≤ 30 days total)",
+            "value": 1
+        }, {
+            "name": "no (unavailable > 30 days total)",
+            "value": 0
+        }, {
+            "name": "don't know/can't say",
+            "value": 0
+        }, ],
+    }, {
+        "year": 2023,
+        "history": False,
+        "group": "don't know/can't say",
+        "child": [{
+            "name": "yes (always available)",
+            "value": 0
+        }, {
+            "name": "mostly (unavailable ≤ 30 days total)",
+            "value": 0
+        }, {
+            "name": "no (unavailable > 30 days total)",
+            "value": 0
+        }, {
+            "name": "don't know/can't say",
+            "value": 0
+        }, ],
+    }, ],
+}
+
+
+res_bar_stack_history = {
+    'type': 'BARSTACK',
+    'data': [{
+        'year': 2018,
+        'history': True,
+        'group': 'yes',
+        'child': [{
+            'name': 'yes (always available)',
+            'value': 0
+        }, {
+            'name': 'mostly (unavailable ≤ 30 days total)',
+            'value': 0
+        }, {
+            'name': 'no (unavailable > 30 days total)',
+            'value': 0
+        }, {
+            'name': "don't know/can't say",
+            'value': 0
+        }]
+    }, {
+        'year': 2018,
+        'history': True,
+        'group': 'no',
+        'child': [{
+            'name': 'yes (always available)',
+            'value': 1
+        }, {
+            'name': 'mostly (unavailable ≤ 30 days total)',
+            'value': 0
+        }, {
+            'name': 'no (unavailable > 30 days total)',
+            'value': 0
+        }, {
+            'name': "don't know/can't say",
+            'value': 0
+        }]
+    }, {
+        'year': 2018,
+        'history': True,
+        'group': "don't know/can't say",
+        'child': [{
+            'name': 'yes (always available)',
+            'value': 0
+        }, {
+            'name': 'mostly (unavailable ≤ 30 days total)',
+            'value': 0
+        }, {
+            'name': 'no (unavailable > 30 days total)',
+            'value': 0
+        }, {
+            'name': "don't know/can't say",
+            'value': 0
+        }]
+    }]
 }
 
 
@@ -226,6 +244,15 @@ class TestGenericBarChartRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res == res_bar
+        # history data
+        res = await client.get(
+            app.url_path_for(
+                "charts:get_generic_chart_data", question=624660930),
+            params={"history": True}
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == res_bar_history
         # with stack = question
         res = await client.get(
             app.url_path_for(
@@ -242,6 +269,15 @@ class TestGenericBarChartRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res == res_bar_stack
+        # show history with stack
+        res = await client.get(
+            app.url_path_for(
+                "charts:get_generic_chart_data", question=624660930),
+            params={"stack": 624660927, "history": True}
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == res_bar_stack_history
         # with indicator
         res = await client.get(
             app.url_path_for(

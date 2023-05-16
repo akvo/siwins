@@ -6,6 +6,7 @@ from typing import List, Optional
 from sqlalchemy import and_, func
 from sqlalchemy.orm import Session, aliased
 from db.connection import get_session
+from AkvoResponseGrouper.views import get_categories
 from AkvoResponseGrouper.models import Category
 from AkvoResponseGrouper.utils import (
     transform_categories_to_df,
@@ -28,9 +29,13 @@ from db.crud_question import get_question_by_id
 from db.crud_province_view import (
     get_province_number_answer, get_province_option_answer
 )
-from middleware import check_query, check_indicator_query
+from middleware import (
+    check_query, check_indicator_param
+)
 from models.answer import Answer
 from models.question import QuestionType
+from models.data import Data
+from models.option import Option
 
 
 charts_route = APIRouter()
@@ -47,7 +52,10 @@ def get_number_of_school(
     session: Session = Depends(get_session),
 ):
     data = get_all_data(
-        session=session, current=True, count=True)
+        session=session,
+        columns=[Data.id],
+        current=True,
+        count=True)
     return {
         "name": "Number of schools",
         "total": data
@@ -67,9 +75,9 @@ def get_bar_charts(
     session: Session = Depends(get_session),
 ):
     configs = get_jmp_config()
-    all = get_all_data(session=session, current=True)
-    lst = [a.serialize for a in all]
-    ids = [i["id"] for i in lst]
+    all_data = get_all_data(
+        session=session, columns=[Data.id], current=True)
+    ids = [d.id for d in all_data]
     filters = [Category.data.in_(ids)]
     if name:
         filters.append(func.lower(Category.name) == name.lower())
@@ -164,6 +172,7 @@ def get_national_chart_data_by_question(
 def get_aggregated_chart_data(
     req: Request,
     question: int,
+    history: Optional[bool] = False,
     session: Session = Depends(get_session),
     stack: Optional[int] = Query(
         None, description="question id to create stack BAR"),
@@ -181,8 +190,9 @@ def get_aggregated_chart_data(
         None, description="format: school_type name \
             (filter by shcool type)")
 ):
-    # check indicator query
-    answer_data_ids, answer_temp = check_indicator_query(
+    current = not history
+    # check indicator param
+    indicator = check_indicator_param(
         session=session, indicator=indicator, number=number)
     # for advance filter and indicator option filter
     options = check_query(q) if q else None
@@ -190,13 +200,18 @@ def get_aggregated_chart_data(
         raise HTTPException(status_code=406, detail="Not Acceptable")
     # options values
     question_options = get_option_by_question_id(
-        session=session, question=question)
+        session=session,
+        columns=[Option.id, Option.name],
+        question=question)
     stack_options = []
     if stack:
         stack_options = get_option_by_question_id(
-            session=session, question=stack)
+            session=session,
+            columns=[Option.id, Option.name],
+            question=stack)
     # year conducted
-    years = get_year_conducted_from_datapoint(session=session)
+    years = get_year_conducted_from_datapoint(
+        session=session, current=current)
     years = [{
         "year": y.year_conducted,
         "current": y.current
@@ -205,9 +220,9 @@ def get_aggregated_chart_data(
     # fetch data
     data_source = get_all_data(
         session=session,
-        # current=current,
+        columns=[Data.id, Data.current, Data.year_conducted],
+        current=current,
         options=options,
-        data_ids=answer_data_ids,
         prov=prov,
         sctype=sctype
     )
@@ -228,7 +243,6 @@ def get_aggregated_chart_data(
         # chart query
         type = "BAR"
         if stack:
-
             type = "BARSTACK"
             answerStack = aliased(Answer)
             answer = session.query(
@@ -327,6 +341,7 @@ def get_aggregated_chart_data(
 def get_aggregated_jmp_chart_data(
     req: Request,
     type: str,
+    history: Optional[bool] = False,
     session: Session = Depends(get_session),
     indicator: int = Query(
         None, description="indicator is a question id"),
@@ -342,8 +357,9 @@ def get_aggregated_jmp_chart_data(
         None, description="format: school_type name \
             (filter by shcool type)")
 ):
-    # check indicator query
-    answer_data_ids, answer_temp = check_indicator_query(
+    current = not history
+    # check indicator param
+    indicator = check_indicator_param(
         session=session, indicator=indicator, number=number)
     # for advance filter and indicator option filter
     options = check_query(q) if q else None
@@ -354,19 +370,33 @@ def get_aggregated_jmp_chart_data(
     for p in parent_administration:
         p['children'] = [p['name']]
     # year conducted
-    years = get_year_conducted_from_datapoint(session=session)
+    years = get_year_conducted_from_datapoint(
+        session=session, current=current)
     years = [{
         "year": y.year_conducted,
         "current": y.current
     } for y in years]
+    # get categories from akvo response grouper
+    try:
+        categories = get_categories(session=session, name=type)
+    except Exception:
+        categories = []
+    # get from data table
+    data = get_all_data(
+        session=session,
+        columns=[
+            Data.id, Data.school_information,
+            Data.year_conducted, Data.current
+        ],
+        current=current,
+        options=options,
+        prov=prov,
+        sctype=sctype)
     # generate JMP data
     data = get_jmp_overview(
         session=session,
-        name=type,
-        options=options,
-        data_ids=answer_data_ids,
-        prov=prov,
-        sctype=sctype
+        categories=categories,
+        data=data
     )
     configs = get_jmp_config()
     labels = get_jmp_labels(configs=configs, name=type)

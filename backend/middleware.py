@@ -36,7 +36,7 @@ def check_query(keywords):
     return keys
 
 
-def check_indicator_query(
+def check_indicator_param(
     session: Session,
     indicator: int,
     number: Optional[List[int]]
@@ -57,13 +57,28 @@ def check_indicator_query(
         raise HTTPException(
             status_code=400,
             detail="Bad Request, number param length must equal to 2")
+    return indicator
+
+
+def check_indicator_query(
+    session: Session,
+    indicator: int,
+    number: Optional[List[int]],
+    data_ids: Optional[List[int]] = None,
+    return_answer_temp: Optional[bool] = True,
+):
     # get all answers by indicator
-    answer_data_ids = None
+    answer_data_ids = []
     answer_temp = {}
     if indicator:
         answers = get_answer_by_question(
-            session=session, question=indicator, number=number)
+            session=session,
+            question=indicator,
+            data_ids=data_ids,
+            number=number
+        )
         answer_data_ids = [a.data for a in answers]
+    if indicator and return_answer_temp:
         answers = [
             a.formatted_with_data for a in answers
         ] if answers else []

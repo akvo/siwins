@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 from tests.test_jmp_dummy import (
     res_jmp_no_fiter,
     res_jmp_filtered,
-    res_jmp_filter_by_prov_sc_type
+    res_jmp_filter_by_prov_sc_type,
+    res_jmp_history_no_filter
 )
 
 pytestmark = pytest.mark.asyncio
@@ -26,6 +27,16 @@ class TestJMPChartRoutes:
         assert res.status_code == 200
         res = res.json()
         assert res == res_jmp_no_fiter
+        # show history
+        res = await client.get(
+            app.url_path_for(
+                "charts:get_aggregated_jmp_chart_data", type="Sanitation"
+            ),
+            params={"history": True}
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert res == res_jmp_history_no_filter
         # with indicator
         res = await client.get(
             app.url_path_for(

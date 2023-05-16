@@ -4,14 +4,18 @@ from itertools import groupby
 from typing import List, Optional
 from sqlalchemy import func
 from sqlalchemy.orm import Session
-from AkvoResponseGrouper.views import get_categories
+# from AkvoResponseGrouper.views import get_categories
 from AkvoResponseGrouper.models import Category
 from AkvoResponseGrouper.utils import (
     transform_categories_to_df,
     get_counted_category,
     group_by_category_output,
 )
-from db.crud_data import get_all_data
+from models.data import Data
+from source.main_config import CascadeLevels, SchoolInformationEnum
+
+province_enum = SchoolInformationEnum.province.value
+province_level = CascadeLevels.school_information.value[province_enum]
 
 
 def group_children(p, data_source, labels, year_conducted):
@@ -69,63 +73,50 @@ def group_children(p, data_source, labels, year_conducted):
     }
 
 
-def get_jmp_table_view(session: Session, data: list, configs: list):
-    ids = [str(d["id"]) for d in data]
-    dts = ",".join(ids)
-    try:
-        gc = get_categories(session=session, data=dts)
-    except Exception:
-        gc = []
-    for d in data:
-        cs = list(filter(lambda c: (c["data"] == d["id"]), gc))
-        categories = []
-        for c in cs:
-            labels = get_jmp_labels(configs=configs, name=c["name"])
-            fl = list(
-                filter(
-                    lambda l: l["name"].lower() == str(c["category"]).lower(),
-                    labels,
-                )
-            )
-            color = None
-            if len(fl):
-                color = fl[0]["color"]
-            categories.append(
-                {
-                    "key": c["name"].lower(),
-                    "value": c["category"],
-                    "color": color,
-                }
-            )
-        d.update({"categories": categories})
-    return data
+# def get_jmp_table_view(session: Session, data: list, configs: list):
+#     ids = [str(d["id"]) for d in data]
+#     dts = ",".join(ids)
+#     try:
+#         gc = get_categories(session=session, data=dts)
+#     except Exception:
+#         gc = []
+#     for d in data:
+#         cs = list(filter(lambda c: (c["data"] == d["id"]), gc))
+#         categories = []
+#         for c in cs:
+#             labels = get_jmp_labels(configs=configs, name=c["name"])
+#             fl = list(filter(
+#                 lambda l: l["name"].lower() == str(c["category"]).lower(),
+#                 labels,
+#             ))
+#             color = None
+#             if len(fl):
+#                 color = fl[0]["color"]
+#             categories.append(
+#                 {
+#                     "key": c["name"].lower(),
+#                     "value": c["category"],
+#                     "color": color,
+#                 }
+#             )
+#         d.update({"categories": categories})
+#     return data
 
 
 def get_jmp_overview(
     session: Session,
-    name: str,
-    options: Optional[List[str]] = None,
-    data_ids: Optional[List[int]] = None,
-    prov: Optional[List[str]] = None,
-    sctype: Optional[List[str]] = None
+    categories: List[dict],
+    data: List[Data]
 ):
-    data = get_all_data(
-        session=session,
-        # current=True,
-        options=options,
-        data_ids=data_ids,
-        prov=prov,
-        sctype=sctype)
     data = [{
         "data": d.id,
-        "administration": d.school_information[0],
+        "administration": d.school_information[province_level],
         "year": d.year_conducted,
         "current": d.current,
     } for d in data]
     try:
-        gc = get_categories(session=session, name=name)
         for d in data:
-            fc = list(filter(lambda c: (c["data"] == d["data"]), gc))
+            fc = list(filter(lambda c: (c["data"] == d["data"]), categories))
             if len(fc):
                 d.update(fc[0])
         return data

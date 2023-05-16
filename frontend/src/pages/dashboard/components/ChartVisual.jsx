@@ -1,16 +1,43 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Row, Col, Card, Switch, Space, Popover } from "antd";
 import { Chart } from "../../../components";
 import { get } from "lodash";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import { api } from "../../../lib";
+import {
+  generateAdvanceFilterURL,
+  generateFilterURL,
+} from "../../../util/utils";
+import { UIState } from "../../../state/ui";
 
 const config = window.dashboardjson?.tabs;
 const jmpHints = window.jmphintjson;
 
 const ChartVisual = ({ chartConfig, loading }) => {
   const { title, type, data, provinceValues, index, path, span } = chartConfig;
+  const { advanceSearchValue, provinceFilterValue } = UIState.useState(
+    (s) => s
+  );
   const [isStack, setIsStack] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [historyLoading, setLoading] = useState(false);
+  const [historyData, setHistoryData] = useState([]);
+
+  useEffect(() => {
+    let url = `chart/jmp-data/${path}`;
+    url = generateAdvanceFilterURL(advanceSearchValue, url);
+    url = generateFilterURL(provinceFilterValue, url);
+    if (showHistory) {
+      setLoading(true);
+      (async () => {
+        const queryUrlPrefix = url.includes("?") ? "&" : "?";
+        url = `${url}${queryUrlPrefix}history=${showHistory}`;
+        const res = await api.get(url);
+        setLoading(false);
+        setHistoryData(res?.data?.data);
+      })();
+    }
+  }, [showHistory, path, setLoading, advanceSearchValue, provinceFilterValue]);
 
   const chartList = config
     .find((item) => item.component === "JMP-CHARTS")
@@ -23,7 +50,10 @@ const ChartVisual = ({ chartConfig, loading }) => {
           (c) => c.path === r?.data?.question
         );
         const data = provinceValues.map((adm) => {
-          const findData = r?.data?.data?.filter((d) =>
+          const tempData = showHistory
+            ? historyData.concat(r?.data?.data)
+            : r?.data?.data;
+          const findData = tempData?.filter((d) =>
             showHistory
               ? d.administration === adm.name
               : d.administration === adm.name && !d.history
@@ -62,7 +92,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
       const transform = data
         .map((d) => {
           const obj = get(d, "data.data");
-          const array = !showHistory ? obj.filter((h) => !h.history) : obj;
+          const array = !showHistory ? obj : obj.concat(historyData);
           return array.map((f) => ({
             name: d?.data.question,
             year: f.year,
@@ -114,7 +144,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
       });
       return finalArray;
     }
-  }, [data, chartList, isStack, provinceValues, showHistory]);
+  }, [data, chartList, isStack, provinceValues, showHistory, historyData]);
 
   const content = (path) => {
     const find = jmpHints?.find((item) => item.name === path);
@@ -186,12 +216,12 @@ const ChartVisual = ({ chartConfig, loading }) => {
             data={chartData.find((f) => f.name === path)?.data}
             wrapper={false}
             horizontal={true}
-            loading={loading}
             extra={{
               axisTitle: {
                 y: "Percentage of schools",
               },
             }}
+            loading={loading ? loading : historyLoading}
           />
         ) : (
           <Chart
@@ -207,7 +237,6 @@ const ChartVisual = ({ chartConfig, loading }) => {
             data={chartData.find((f) => f.name === path)?.data}
             wrapper={false}
             horizontal={true}
-            loading={loading}
             extra={{
               axisTitle: {
                 y: "Percentage of schools",
@@ -216,6 +245,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
             grid={{
               bottom: "25%",
             }}
+            loading={loading ? loading : historyLoading}
           />
         )}
       </Card>

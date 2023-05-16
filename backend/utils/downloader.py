@@ -6,6 +6,7 @@ from db.crud_data import get_all_data
 from db.crud_question import get_excel_headers
 from models.data_answer import DataAnswer
 from utils.helper import HText
+from models.data import Data
 
 
 def rearange_columns(col_names: list):
@@ -26,6 +27,7 @@ def generate_download_data(session: Session, jobs: dict, file: str):
         province_name = ", ".join(province_name)
     filtered_data = get_all_data(
         session=session,
+        columns=[Data.id],
         monitoring_round=info.get("monitoring_round"),
         options=info.get("options"),
         prov=info.get("province"),

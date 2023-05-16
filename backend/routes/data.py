@@ -1,10 +1,12 @@
+import orjson
 from math import ceil
 from itertools import groupby
 from http import HTTPStatus
-from fastapi import Depends, Request
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import (
+    Depends, Request, APIRouter,
+    HTTPException, Query, Response
+)
 from fastapi.security import HTTPBearer
-
 # from fastapi.security import HTTPBasicCredentials as credentials
 from typing import List, Optional, Union
 from sqlalchemy.orm import Session
@@ -26,14 +28,16 @@ from AkvoResponseGrouper.utils import (
     get_counted_category,
     group_by_category_output,
 )
-from models.data import MapsData, ChartDataDetail
-from models.data import DataDetailPopup, DataResponse
+from models.data import (
+    MapDataResponse, ChartDataDetail,
+    DataDetailPopup, DataResponse
+)
 from models.answer import Answer
 from models.question import QuestionType
 from models.history import History
 from middleware import (
     check_query, check_indicator_query,
-    check_jmp_query
+    check_jmp_query, check_indicator_param
 )
 from utils.functions import extract_school_information
 
@@ -106,14 +110,16 @@ def get_paginated_data(
 
 @data_route.get(
     "/data/maps",
-    response_model=List[MapsData],
+    response_model=MapDataResponse,
     name="data:get_maps_data",
     summary="get maps data",
     tags=["Data"],
 )
 def get_maps(
     req: Request,
-    session: Session = Depends(get_session),
+    page: int = 1,
+    perpage: int = 100,
+    page_only: Optional[bool] = False,
     indicator: Union[int, str] = Query(
         None, description="indicator is a question id or JMP category"),
     q: Optional[List[str]] = Query(
@@ -126,30 +132,66 @@ def get_maps(
             (filter by province name)"),
     sctype: Optional[List[str]] = Query(
         None, description="format: school_type name \
-            (filter by shcool type)")
+            (filter by shcool type)"),
+    session: Session = Depends(get_session),
     # credentials: credentials = Depends(security)
 ):
-    # check indicator query
-    answer_data_ids = None
-    answer_temp = {}
+    # check indicator param
     if "jmp" not in str(indicator):
-        answer_data_ids, answer_temp = check_indicator_query(
+        indicator = check_indicator_param(
             session=session, indicator=indicator, number=number)
     # jmp option/levek filter
     jmp_query, non_jmp_query = check_jmp_query(q)
     # for advance filter and indicator option filter
     options = check_query(non_jmp_query) if non_jmp_query else None
     # get the data
-    data = get_all_data(
+    page_data = get_all_data(
         session=session,
         current=True,
         options=options,
-        data_ids=answer_data_ids,
         prov=prov,
-        sctype=sctype
+        sctype=sctype,
+        skip=(perpage * (page - 1)),
+        perpage=perpage
     )
-    # map answer by identifier for each datapoint
+    # handle pagination
+    count = page_data.get("count")
+    if not count:
+        return {
+            "current": page,
+            "data": [],
+            "total": count,
+            "total_page": 0,
+        }
+    total_page = ceil(count / perpage) if count > 0 else 0
+    if total_page < page:
+        return {
+            "current": page,
+            "data": [],
+            "total": count,
+            "total_page": total_page,
+        }
+    if page_only:
+        return {
+            "current": page,
+            "data": [],
+            "total": count,
+            "total_page": total_page,
+        }
+    # data
+    data = page_data.get("data") or []
     data_ids = [d.id for d in data]
+    # indicator query
+    answer_data_ids = []
+    answer_temp = {}
+    if "jmp" not in str(indicator):
+        answer_data_ids, answer_temp = check_indicator_query(
+            session=session,
+            indicator=indicator,
+            number=number,
+            data_ids=data_ids
+        )
+    # map answer by identifier for each datapoint
     data = [d.to_maps for d in data]
     jmp_name = None
     if "jmp" in str(indicator):
@@ -158,6 +200,15 @@ def get_maps(
         jmp_levels = get_jmp_school_detail_popup(
             session=session, data_ids=data_ids,
             name=jmp_name, raw=True)
+    # filter data by answer_data_ids
+    if indicator and "jmp" not in str(indicator):
+        data = list(filter(
+            lambda x: (
+                x.get("id") in answer_data_ids
+            ),
+            data
+        ))
+    # transform data
     for d in data:
         d["school_information"] = extract_school_information(
             school_information=d["school_information"], to_object=True)
@@ -193,10 +244,22 @@ def get_maps(
             ),
             data
         ))
-        for d in data:
-            # delete jmp filter param
-            del d["jmp_filter"]
-    return data
+    for d in data:
+        # delete jmp filter param
+        if "jmp_filter" not in d:
+            continue
+        del d["jmp_filter"]
+        del d["identifier"]
+    res = {
+        "current": page,
+        "data": data,
+        "total": count,
+        "total_page": total_page,
+    }
+    return Response(
+        content=orjson.dumps(res),
+        media_type="application/json"
+    )
 
 
 # current chart history detail (delete?)
