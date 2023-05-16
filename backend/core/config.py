@@ -28,6 +28,8 @@ JMP_CONFIG = f"{FRONTEND_CONFIG_PATH}/dashboard.json"
 HINT_JSON = open(HINT_CONFIG).read()
 JMP_HINT_JSON = open(JMP_HINT_CONFIG).read()
 DASHBOARD_JSON = open(JMP_CONFIG).read()
+MAP_FILTER_CONFIG = f"{FRONTEND_CONFIG_PATH}/maps.js"
+MAP_FILTER_CONFIG = jsmin(open(MAP_FILTER_CONFIG).read())
 
 MINJS = jsmin(
     "".join(
@@ -52,6 +54,7 @@ MINJS = jsmin(
             "var dashboardjson=",
             DASHBOARD_JSON,
             ";",
+            MAP_FILTER_CONFIG,
             CHART_CONFIG,
         ]
     )
