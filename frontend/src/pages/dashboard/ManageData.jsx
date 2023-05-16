@@ -268,6 +268,10 @@ const ManageData = () => {
                     pagination={{
                       current: paginate.current,
                       total: paginate.total,
+                      showTotal: (total) =>
+                        `Total: ${total || 0} Submission${
+                          total > 1 ? "s" : ""
+                        }`,
                     }}
                     expandable={{
                       expandIconColumnIndex: columns.length,
