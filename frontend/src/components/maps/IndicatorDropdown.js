@@ -50,6 +50,7 @@ const IndicatorDropdown = ({
             }
             options={indicatorDropdownOptions}
             onChange={(val) => handleOnChangeQuestionDropdown(val)}
+            value={selectedQuestion?.id || []}
           />
           {!isEmpty(selectedQuestion) && (
             <div className="options-container">
