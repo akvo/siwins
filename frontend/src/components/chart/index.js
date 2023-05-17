@@ -22,8 +22,8 @@ export const generateOptions = (
       return BarStack(
         data,
         chartTitle,
-        extra,
         excelFile,
+        extra,
         horizontal,
         highlighted,
         showPercent

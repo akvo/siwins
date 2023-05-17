@@ -49,7 +49,6 @@ const BarStack = (
   horizontal = false,
   highlighted = null
 ) => {
-  // console.log(data);
   if (isEmpty(data) || !data) {
     return NoData;
   }
@@ -156,7 +155,7 @@ const BarStack = (
           title: "Download Excel",
           icon: Icons.download,
           onclick: (e) => {
-            downloadToExcel(e, excelFile, chartTitle?.title);
+            downloadToExcel(e, excelFile);
           },
         },
       },

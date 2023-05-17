@@ -212,6 +212,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
                 ? 50 * chartData.find((f) => f.name === path)?.data.length + 188
                 : 200
             }
+            excelFile={title}
             type="BARSTACK"
             data={chartData.find((f) => f.name === path)?.data}
             wrapper={false}
@@ -222,7 +223,6 @@ const ChartVisual = ({ chartConfig, loading }) => {
               },
             }}
             loading={loading ? loading : historyLoading}
-            excelFile={title}
           />
         ) : (
           <Chart
