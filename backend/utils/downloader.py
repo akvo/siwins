@@ -47,6 +47,12 @@ def generate_download_data(session: Session, jobs: dict, file: str):
             df[q] = ""
     col_names = rearange_columns(questions)
     df = df[col_names]
+    # rename columns, remove question id
+    df = df.rename(columns=(
+        lambda col: col.split("|")[1].strip()
+        if "|" in col else col
+    ))
+    # eol remove question id
     writer = pd.ExcelWriter(file, engine='xlsxwriter')
     df.to_excel(writer, sheet_name='data', index=False)
     context = [{

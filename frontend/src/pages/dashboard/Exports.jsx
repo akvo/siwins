@@ -178,7 +178,7 @@ const Export = () => {
                   <Button
                     onClick={() => handleDownload(item?.payload)}
                     icon={<DownloadOutlined />}
-                    loading={!done}
+                    loading={!done || isDownloading}
                     disabled={!done || isDownloading}
                   >
                     {!done
