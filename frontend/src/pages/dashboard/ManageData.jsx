@@ -32,7 +32,7 @@ const ManageData = () => {
   const [tabLoading, setTabLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
   const [paginate, setPaginate] = useState({
-    total: 1,
+    total: 0,
     current: 1,
     pageSize: 10,
   });
@@ -259,6 +259,11 @@ const ManageData = () => {
                   </Row>
                 </Col>
                 <Col span={24} style={{ padding: "20px 0px" }}>
+                  <div className="total-data">
+                    <p>{`Total: ${paginate.total || 0} Submission${
+                      paginate.total > 1 ? "s" : ""
+                    }`}</p>
+                  </div>
                   <Table
                     rowKey={(record) => record.id}
                     columns={columns}
@@ -268,10 +273,6 @@ const ManageData = () => {
                     pagination={{
                       current: paginate.current,
                       total: paginate.total,
-                      showTotal: (total) =>
-                        `Total: ${total || 0} Submission${
-                          total > 1 ? "s" : ""
-                        }`,
                     }}
                     expandable={{
                       expandIconColumnIndex: columns.length,
