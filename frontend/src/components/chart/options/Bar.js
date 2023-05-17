@@ -134,7 +134,7 @@ const Bar = (
           title: "Download Excel",
           icon: Icons.download,
           onclick: (e) => {
-            downloadToExcel(e, excelFile, chartTitle?.title);
+            downloadToExcel(e, excelFile);
           },
         },
       },

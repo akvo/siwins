@@ -210,6 +210,7 @@ const Dashboard = () => {
                             y: "Percentage",
                           },
                         }}
+                        excelFile={chartTitle}
                         grid={{
                           top: "25%",
                           right: "5%",
