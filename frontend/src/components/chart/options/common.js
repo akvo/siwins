@@ -221,12 +221,15 @@ export const optionToContent = (
 export const downloadToExcel = (
   { option, category = "category" },
   excelFile = "",
+  chartTitle = "",
   chartType = "NORMAL"
 ) => {
   const title = excelFile.length
     ? excelFile
     : option.title?.[0]?.text.length
     ? option.title[0].text
+    : chartTitle
+    ? chartTitle
     : "unknown-title";
 
   const { columns, data } =
@@ -251,10 +254,23 @@ export const downloadToExcel = (
     )
   );
 
+  const columnsTemp = [
+    {
+      title: title,
+      children: tableColumns.map((item) => {
+        return {
+          title: upperFirst(item.title),
+          dataIndex: item.dataIndex,
+          key: item.key,
+        };
+      }),
+    },
+  ];
+
   const excel = new Excel();
   excel
     .addSheet("data")
-    .addColumns(tableColumns)
+    .addColumns(columnsTemp)
     .addDataSource(dataSource)
     .saveAs(`${title}.xlsx`);
 };

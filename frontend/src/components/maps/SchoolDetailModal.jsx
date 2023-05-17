@@ -188,7 +188,7 @@ const AnswerTabContent = ({
       <Descriptions.Item>
         <Chart
           height={350}
-          excelFile={"title"}
+          excelFile={question_name}
           type={"BAR"}
           dataZoom={false}
           data={

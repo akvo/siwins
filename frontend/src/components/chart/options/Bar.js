@@ -85,7 +85,7 @@ const Bar = (
     title: {
       ...Title,
       show: !isEmpty(chartTitle),
-      text: chartTitle?.title,
+      text: !horizontal ? chartTitle?.title : "",
       subtext: chartTitle?.subTitle,
     },
     grid: {

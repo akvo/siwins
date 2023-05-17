@@ -49,7 +49,6 @@ const BarStack = (
   horizontal = false,
   highlighted = null
 ) => {
-  // console.log(data);
   if (isEmpty(data) || !data) {
     return NoData;
   }
@@ -104,7 +103,7 @@ const BarStack = (
     title: {
       ...Title,
       show: !isEmpty(chartTitle),
-      text: chartTitle?.title,
+      text: !horizontal ? chartTitle?.title : "",
       subtext: chartTitle?.subTitle,
     },
     legend: {
