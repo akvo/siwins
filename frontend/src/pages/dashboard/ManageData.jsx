@@ -180,7 +180,7 @@ const ManageData = () => {
       render: (text) => text?.school_type,
     },
     {
-      title: "Provice",
+      title: "Province",
       dataIndex: "school_information",
       key: "province",
       render: (text) => text?.province,
