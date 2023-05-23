@@ -35,10 +35,11 @@ function Maps() {
 
   const handleExport = () => {
     setExportLoading(true);
-    const url = `download/data?data_ids=${mapData
+    const dataIdsFilter = mapData
       .flatMap((x) => x.id)
       .map((x) => encodeURIComponent(x))
-      .join("&data_ids=")}&monitoring_round=${new Date().getFullYear()}`;
+      .join("&data_ids=");
+    const url = `download/data?data_ids=${dataIdsFilter}`;
     api
       .get(url)
       .then(() => {
