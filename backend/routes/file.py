@@ -123,11 +123,6 @@ async def generate_file(
             "q": "School type",
             "o": ", ".join(sctype)
         })
-    if data_ids:
-        tags.append({
-            "q": "Datapoint ID",
-            "o": ", ".join(data_ids)
-        })
     res = add_jobs(
         session=session,
         payload=f"download-{out_file}.xlsx",

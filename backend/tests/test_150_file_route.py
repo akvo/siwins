@@ -94,10 +94,7 @@ class TestFileRoutes:
             'status': 0,
             'payload': res.get('payload'),
             'info': {
-                'tags': [{
-                    'o': '649130936',
-                    'q': 'Datapoint ID'
-                }],
+                'tags': [],
                 'options': None,
                 'data_ids': ['649130936'],
                 'province': None,
