@@ -83,8 +83,8 @@ async def generate_file(
         None, description="format: question_id|option value \
             (indicator option & advance filter)"),
     data_ids: Optional[List[str]] = Query(
-        None, description="format: datapoint \
-            (filter by datapoint id)"),
+        None, description="format: datapoint id \
+            (filter by datapoint ids)"),
     prov: Optional[List[str]] = Query(
         None, description="format: province name \
             (filter by province name)"),
