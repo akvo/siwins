@@ -5,7 +5,6 @@ import AdvanceFilter from "../../components/filter";
 import { UIState } from "../../state/ui";
 import { SearchOutlined, DownloadOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { generateFilterURL, generateAdvanceFilterURL } from "../../util/utils";
 import { api } from "../../lib";
 
 function Maps() {
@@ -13,13 +12,8 @@ function Maps() {
   const [open, setOpen] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
   const [value, setValue] = useState();
-  const {
-    provinceValues,
-    schoolTypeValues,
-    provinceFilterValue,
-    mapData,
-    advanceSearchValue,
-  } = UIState.useState((s) => s);
+  const { provinceValues, schoolTypeValues, provinceFilterValue, mapData } =
+    UIState.useState((s) => s);
 
   const handleProvinceFilter = (value) => {
     UIState.update((s) => {
