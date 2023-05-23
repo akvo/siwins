@@ -82,6 +82,9 @@ async def generate_file(
     q: Optional[List[str]] = Query(
         None, description="format: question_id|option value \
             (indicator option & advance filter)"),
+    data_ids: Optional[List[str]] = Query(
+        None, description="format: datapoint id \
+            (filter by datapoint ids)"),
     prov: Optional[List[str]] = Query(
         None, description="format: province name \
             (filter by province name)"),
@@ -129,7 +132,8 @@ async def generate_file(
             "options": options,
             "province": prov,
             "school_type": sctype,
-            "tags": tags
+            "tags": tags,
+            "data_ids": data_ids,
         })
     if TESTING:
         run_download(session=session, jobs=res)

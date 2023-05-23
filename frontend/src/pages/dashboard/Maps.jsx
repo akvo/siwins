@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Row, Col, Select, Breadcrumb } from "antd";
+import { Row, Col, Select, Breadcrumb, notification, Button } from "antd";
 import { Map } from "../../components";
 import AdvanceFilter from "../../components/filter";
 import { UIState } from "../../state/ui";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, DownloadOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { api } from "../../lib";
 
 function Maps() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
+  const [exportLoading, setExportLoading] = useState(false);
   const [value, setValue] = useState();
   const { provinceValues, schoolTypeValues, provinceFilterValue, mapData } =
     UIState.useState((s) => s);
@@ -29,6 +31,26 @@ function Maps() {
         selectedSchoolType: value,
       };
     });
+  };
+
+  const handleExport = () => {
+    setExportLoading(true);
+    const dataIdsFilter = mapData
+      .flatMap((x) => x.id)
+      .map((x) => encodeURIComponent(x))
+      .join("&data_ids=");
+    const url = `download/data?data_ids=${dataIdsFilter}`;
+    api
+      .get(url)
+      .then(() => {
+        notification.success({
+          message: "Success",
+        });
+        setExportLoading(false);
+      })
+      .catch(() => {
+        setExportLoading(false);
+      });
   };
 
   const handleSearch = (val) => {
@@ -72,6 +94,15 @@ function Maps() {
                   <Breadcrumb.Item>Maps</Breadcrumb.Item>
                 </Breadcrumb>
               </Col>
+            }
+            suffix={
+              <Button
+                icon={<DownloadOutlined />}
+                onClick={handleExport}
+                disabled={exportLoading}
+              >
+                Export
+              </Button>
             }
           >
             <Select

@@ -41,7 +41,8 @@ class TestFileRoutes:
                 'province': None,
                 'form_name': 'survey_questions',
                 'school_type': None,
-                'monitoring_round': None
+                'monitoring_round': None,
+                'data_ids': None
             },
             'created': res.get('created'),
             'available': None
@@ -72,7 +73,34 @@ class TestFileRoutes:
                 'province': ["Guadalcanal"],
                 'form_name': 'survey_questions',
                 'school_type': None,
-                'monitoring_round': 2023
+                'monitoring_round': 2023,
+                'data_ids': None
+            },
+            'created': res.get('created'),
+            'available': None
+        }
+        # with data_ids only
+        res = await client.get(
+            app.url_path_for("excel-data:generate"),
+            params={
+                "data_ids": [649130936],
+            }
+        )
+        assert res.status_code == 200
+        res = res.json()
+        print(res)
+        assert res == {
+            'id': 3,
+            'status': 0,
+            'payload': res.get('payload'),
+            'info': {
+                'tags': [],
+                'options': None,
+                'data_ids': ['649130936'],
+                'province': None,
+                'form_name': 'survey_questions',
+                'school_type': None,
+                'monitoring_round': None
             },
             'created': res.get('created'),
             'available': None

@@ -32,6 +32,7 @@ def generate_download_data(session: Session, jobs: dict, file: str):
         options=info.get("options"),
         prov=info.get("province"),
         sctype=info.get("school_type"),
+        data_ids=info.get("data_ids"),
     )
     filtered_data_ids = [d.id for d in filtered_data]
     # fetch data from data answer view
