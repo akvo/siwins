@@ -12,8 +12,13 @@ function Maps() {
   const [open, setOpen] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
   const [value, setValue] = useState();
-  const { provinceValues, schoolTypeValues, provinceFilterValue, mapData } =
-    UIState.useState((s) => s);
+  const {
+    provinceValues,
+    schoolTypeValues,
+    provinceFilterValue,
+    mapData,
+    advanceSearchValue,
+  } = UIState.useState((s) => s);
 
   const handleProvinceFilter = (value) => {
     UIState.update((s) => {
@@ -35,11 +40,21 @@ function Maps() {
 
   const handleExport = () => {
     setExportLoading(true);
-    const dataIdsFilter = mapData
+    const data = value
+      ? mapData.filter((x) => x?.school_information?.school_name === value)
+      : mapData;
+    const dataIdsFilter = data
       .flatMap((x) => x.id)
       .map((x) => encodeURIComponent(x))
       .join("&data_ids=");
-    const url = `download/data?data_ids=${dataIdsFilter}`;
+    const url = `download/data${
+      provinceFilterValue.selectedProvince ||
+      provinceFilterValue.selectedSchoolType ||
+      value ||
+      advanceSearchValue.length > 0
+        ? "&data_ids" + dataIdsFilter
+        : ""
+    }`;
     api
       .get(url)
       .then(() => {
