@@ -41,7 +41,8 @@ class TestFileRoutes:
                 'province': None,
                 'form_name': 'survey_questions',
                 'school_type': None,
-                'monitoring_round': None
+                'monitoring_round': None,
+                'data_ids': None
             },
             'created': res.get('created'),
             'available': None
@@ -72,7 +73,8 @@ class TestFileRoutes:
                 'province': ["Guadalcanal"],
                 'form_name': 'survey_questions',
                 'school_type': None,
-                'monitoring_round': 2023
+                'monitoring_round': 2023,
+                'data_ids': None
             },
             'created': res.get('created'),
             'available': None

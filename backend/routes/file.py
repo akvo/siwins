@@ -82,6 +82,9 @@ async def generate_file(
     q: Optional[List[str]] = Query(
         None, description="format: question_id|option value \
             (indicator option & advance filter)"),
+    data_ids: Optional[List[str]] = Query(
+        None, description="format: datapoint \
+            (filter by datapoint id)"),
     prov: Optional[List[str]] = Query(
         None, description="format: province name \
             (filter by province name)"),
@@ -120,6 +123,11 @@ async def generate_file(
             "q": "School type",
             "o": ", ".join(sctype)
         })
+    if data_ids:
+        tags.append({
+            "q": "Datapoint ID",
+            "o": ", ".join(data_ids)
+        })
     res = add_jobs(
         session=session,
         payload=f"download-{out_file}.xlsx",
@@ -129,7 +137,8 @@ async def generate_file(
             "options": options,
             "province": prov,
             "school_type": sctype,
-            "tags": tags
+            "tags": tags,
+            "data_ids": data_ids,
         })
     if TESTING:
         run_download(session=session, jobs=res)

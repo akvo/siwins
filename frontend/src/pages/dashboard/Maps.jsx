@@ -41,9 +41,10 @@ function Maps() {
 
   const handleExport = () => {
     setExportLoading(true);
-    let url = `download/data?monitoring_round=${2023}`;
-    url = generateAdvanceFilterURL(advanceSearchValue, url);
-    url = generateFilterURL(provinceFilterValue, url);
+    const url = `download/data?data_ids=${mapData
+      .flatMap((x) => x.id)
+      .map((x) => encodeURIComponent(x))
+      .join("&data_ids=")}&monitoring_round=${new Date().getFullYear()}`;
     api
       .get(url)
       .then(() => {
