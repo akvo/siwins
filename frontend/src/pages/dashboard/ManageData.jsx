@@ -15,7 +15,7 @@ import { generateAdvanceFilterURL, generateFilterURL } from "../../util/utils";
 import { api } from "../../lib";
 import { DownloadOutlined } from "@ant-design/icons";
 import Exports from "./Exports";
-
+import { useLocation } from "react-router-dom";
 const { TabPane } = Tabs;
 
 const ManageData = () => {
@@ -25,6 +25,7 @@ const ManageData = () => {
     schoolTypeValues,
     provinceFilterValue,
   } = UIState.useState((s) => s);
+  const location = useLocation();
   const [data, setData] = useState([]);
   const [monitoringData, setMonitoringData] = useState([]);
   const [monitoringRound, setMonitoringRound] = useState(null);
@@ -111,6 +112,12 @@ const ManageData = () => {
   useEffect(() => {
     getdata();
   }, [getdata]);
+
+  useEffect(() => {
+    if (location?.state?.isExport) {
+      setPage("exports");
+    }
+  }, [location]);
 
   const getSchoolDetails = (id) => {
     setTabLoading(true);

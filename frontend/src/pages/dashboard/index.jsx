@@ -22,12 +22,6 @@ import { api } from "../../lib";
 const menuItems = [
   { label: "Maps", link: "/dashboard/maps", icon: <MapsIcon />, key: "1" },
   { label: "Dashboard", link: "/dashboard", icon: <DashboardIcon />, key: "2" },
-  // {
-  //   label: "Documentation",
-  //   link: "/dashboard/documentation",
-  //   icon: <DocIcon />,
-  //   key: "3",
-  // },
   {
     label: "Database",
     link: "/dashboard/database",
@@ -112,6 +106,9 @@ const DashboardView = () => {
             defaultSelectedKeys={[
               menuItems.find((item) => item.link === location?.pathname).key,
             ]}
+            selectedKeys={
+              menuItems.find((item) => item.link === location?.pathname).key
+            }
             mode="inline"
             className="menu"
             items={menuItems}

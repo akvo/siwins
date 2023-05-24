@@ -4,10 +4,11 @@ import { Map } from "../../components";
 import AdvanceFilter from "../../components/filter";
 import { UIState } from "../../state/ui";
 import { SearchOutlined, DownloadOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../lib";
 
 function Maps() {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
@@ -46,6 +47,7 @@ function Maps() {
         notification.success({
           message: "Success",
         });
+        navigate("/dashboard/database", { state: { isExport: true } });
         setExportLoading(false);
       })
       .catch(() => {
@@ -101,7 +103,7 @@ function Maps() {
                 onClick={handleExport}
                 disabled={exportLoading}
               >
-                Export
+                Export Filtered Data
               </Button>
             }
           >
