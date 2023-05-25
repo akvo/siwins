@@ -125,7 +125,7 @@ const RenderQuestionOption = ({
             <Chart
               height={350}
               excelFile={"title"}
-              type={"BAR"}
+              type={"LINE"}
               data={option.map((v) => ({
                 name: v.value,
                 value: v.count,
@@ -135,20 +135,20 @@ const RenderQuestionOption = ({
               wrapper={false}
               horizontal={false}
               loading={false}
-              dataZoom={[
-                {
-                  type: "inside",
-                  realtime: false,
-                  start: barChartValues.startValue,
-                  end: barChartValues.endValue,
-                },
-                {
-                  type: "slider",
-                  realtime: false,
-                  start: barChartValues.startValue,
-                  end: barChartValues.endValue,
-                },
-              ]}
+              // dataZoom={[
+              //   {
+              //     type: "inside",
+              //     realtime: false,
+              //     start: barChartValues.startValue,
+              //     end: barChartValues.endValue,
+              //   },
+              //   {
+              //     type: "slider",
+              //     realtime: false,
+              //     start: barChartValues.startValue,
+              //     end: barChartValues.endValue,
+              //   },
+              // ]}
               grid={{
                 top: 80,
                 bottom: 80,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Col, Card } from "antd";
 import ReactECharts from "echarts-for-react";
-import { Bar, BarStack, Pie } from "./options";
+import { Bar, BarStack, Pie, Line } from "./options";
 
 export const generateOptions = (
   { type, data, chartTitle, excelFile },
@@ -30,6 +30,17 @@ export const generateOptions = (
       );
     case "PIE":
       return Pie(data, chartTitle, extra, series, showRoseChart, legend);
+    case "LINE":
+      return Line(
+        data,
+        chartTitle,
+        excelFile,
+        extra,
+        legend,
+        grid,
+        horizontal,
+        showPercent
+      );
     default:
       return Bar(
         data,
