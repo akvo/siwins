@@ -88,7 +88,6 @@ class TestFileRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        print(res)
         assert res == {
             'id': 3,
             'status': 0,

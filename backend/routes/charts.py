@@ -376,11 +376,6 @@ def get_aggregated_jmp_chart_data(
         "year": y.year_conducted,
         "current": y.current
     } for y in years]
-    # get categories from akvo response grouper
-    try:
-        categories = get_categories(session=session, name=type)
-    except Exception:
-        categories = []
     # get from data table
     data = get_all_data(
         session=session,
@@ -392,6 +387,13 @@ def get_aggregated_jmp_chart_data(
         options=options,
         prov=prov,
         sctype=sctype)
+    # get categories from akvo response grouper by data_ids
+    try:
+        data_ids = [d.id for d in data]
+        categories = get_categories(
+            session=session, name=type, data=data_ids)
+    except Exception:
+        categories = []
     # generate JMP data
     data = get_jmp_overview(
         session=session,
