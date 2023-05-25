@@ -480,10 +480,9 @@ const Markers = ({
 };
 
 const createClusterCustomIcon = (cluster) => {
-  const color = ["#4475B4", "#73ADD1", "#AAD9E8", "#70CFAD"];
-
+  // const color = ["#4475B4", "#73ADD1", "#AAD9E8", "#70CFAD"];
+  const color = ["#4475B4"];
   const tempResult = {};
-
   cluster
     .getAllChildMarkers()
     .map((item) => {
