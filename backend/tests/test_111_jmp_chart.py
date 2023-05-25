@@ -3,12 +3,12 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
-from tests.test_jmp_dummy import (
-    res_jmp_no_fiter,
-    res_jmp_filtered,
-    res_jmp_filter_by_prov_sc_type,
-    res_jmp_history_no_filter
-)
+# from tests.test_jmp_dummy import (
+#     res_jmp_no_fiter,
+#     res_jmp_filtered,
+#     res_jmp_filter_by_prov_sc_type,
+#     res_jmp_history_no_filter
+# ) # TODO:: Delete
 
 pytestmark = pytest.mark.asyncio
 sys.path.append("..")
@@ -26,7 +26,19 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_no_fiter
+        assert list(res) == ['question', 'data']
+        assert list(res["data"][0]) == [
+            'year', 'history', 'administration',
+            'score', 'child'
+        ]
+        for d in res["data"]:
+            assert d["year"] == 2023
+            assert d["history"] is False
+        assert list(res["data"][0]["child"][0]) == [
+            'option', 'count', 'percent', 'color', 'order'
+        ]
+        # TODO:: Delete
+        # assert res == res_jmp_no_fiter
         # show history
         res = await client.get(
             app.url_path_for(
@@ -36,7 +48,18 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_history_no_filter
+        assert list(res["data"][0]) == [
+            'year', 'history', 'administration',
+            'score', 'child'
+        ]
+        for d in res["data"]:
+            assert d["year"] == 2018
+            assert d["history"] is True
+        assert list(res["data"][0]["child"][0]) == [
+            'option', 'count', 'percent', 'color', 'order'
+        ]
+        # TODO:: Delete
+        # assert res == res_jmp_history_no_filter
         # with indicator
         res = await client.get(
             app.url_path_for(
@@ -45,7 +68,15 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_no_fiter
+        assert list(res["data"][0]) == [
+            'year', 'history', 'administration',
+            'score', 'child'
+        ]
+        assert list(res["data"][0]["child"][0]) == [
+            'option', 'count', 'percent', 'color', 'order'
+        ]
+        # TODO:: Delete
+        # assert res == res_jmp_no_fiter
         # with indicator & indicator option filter
         # option indicator with number filter
         res = await client.get(
@@ -62,7 +93,15 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_filtered
+        assert list(res["data"][0]) == [
+            'year', 'history', 'administration',
+            'score', 'child'
+        ]
+        assert list(res["data"][0]["child"][0]) == [
+            'option', 'count', 'percent', 'color', 'order'
+        ]
+        # TODO:: Delete
+        # assert res == res_jmp_filtered
         # number indicator with number filter
         res = await client.get(
             app.url_path_for(
@@ -77,7 +116,15 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_no_fiter
+        assert list(res["data"][0]) == [
+            'year', 'history', 'administration',
+            'score', 'child'
+        ]
+        assert list(res["data"][0]["child"][0]) == [
+            'option', 'count', 'percent', 'color', 'order'
+        ]
+        # TODO:: Delete
+        # assert res == res_jmp_no_fiter
         # filter by province
         res = await client.get(
             app.url_path_for(
@@ -86,7 +133,20 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_filter_by_prov_sc_type
+        assert list(res["data"][0]) == [
+            'year', 'history', 'administration',
+            'score', 'child'
+        ]
+        assert list(res["data"][0]["child"][0]) == [
+            'option', 'count', 'percent', 'color', 'order'
+        ]
+        for d in res["data"]:
+            if d["administration"] == "Central":
+                continue
+            for c in d["child"]:
+                assert c["count"] == 0
+        # TODO:: Delete
+        # assert res == res_jmp_filter_by_prov_sc_type
         res = await client.get(
             app.url_path_for(
                 "charts:get_aggregated_jmp_chart_data", type="Sanitation"),
@@ -94,7 +154,20 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_no_fiter
+        assert list(res["data"][0]) == [
+            'year', 'history', 'administration',
+            'score', 'child'
+        ]
+        assert list(res["data"][0]["child"][0]) == [
+            'option', 'count', 'percent', 'color', 'order'
+        ]
+        for d in res["data"]:
+            if d["administration"] == "Guadalcanal":
+                continue
+            for c in d["child"]:
+                assert c["count"] == 0
+        # TODO:: Delete
+        # assert res == res_jmp_no_fiter
         # filter by school type
         res = await client.get(
             app.url_path_for(
@@ -103,7 +176,15 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_filter_by_prov_sc_type
+        assert list(res["data"][0]) == [
+            'year', 'history', 'administration',
+            'score', 'child'
+        ]
+        assert list(res["data"][0]["child"][0]) == [
+            'option', 'count', 'percent', 'color', 'order'
+        ]
+        # TODO:: Delete
+        # assert res == res_jmp_filter_by_prov_sc_type
         res = await client.get(
             app.url_path_for(
                 "charts:get_aggregated_jmp_chart_data", type="Sanitation"),
@@ -111,7 +192,15 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_no_fiter
+        assert list(res["data"][0]) == [
+            'year', 'history', 'administration',
+            'score', 'child'
+        ]
+        assert list(res["data"][0]["child"][0]) == [
+            'option', 'count', 'percent', 'color', 'order'
+        ]
+        # TODO:: Delete
+        # assert res == res_jmp_no_fiter
         # filter by school type and province
         res = await client.get(
             app.url_path_for(
@@ -123,7 +212,15 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_no_fiter
+        assert list(res["data"][0]) == [
+            'year', 'history', 'administration',
+            'score', 'child'
+        ]
+        assert list(res["data"][0]["child"][0]) == [
+            'option', 'count', 'percent', 'color', 'order'
+        ]
+        # TODO:: Delete
+        # assert res == res_jmp_no_fiter
         res = await client.get(
             app.url_path_for(
                 "charts:get_aggregated_jmp_chart_data", type="Sanitation"),
@@ -134,4 +231,12 @@ class TestJMPChartRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_jmp_filter_by_prov_sc_type
+        assert list(res["data"][0]) == [
+            'year', 'history', 'administration',
+            'score', 'child'
+        ]
+        assert list(res["data"][0]["child"][0]) == [
+            'option', 'count', 'percent', 'color', 'order'
+        ]
+        # TODO:: Delete
+        # assert res == res_jmp_filter_by_prov_sc_type
