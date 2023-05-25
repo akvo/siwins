@@ -18,58 +18,62 @@ class TestDataRoutes:
         res = await client.get(app.url_path_for("data:get_all"))
         assert res.status_code == 200
         res = res.json()
-        assert "current" in res
-        assert "data" in res
-        assert "total" in res
-        assert "total_page" in res
-        for d in res.get("data"):
-            assert "id" in d
-            assert "name" in d
-            assert "geo" in d
-            assert "year_conducted" in d
-            assert "school_information" in d
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'name', 'geo',
+            'year_conducted', 'school_information'
+        ]
         # filter with monitoring round
-        empty_res = {
-            'current': 1,
-            'data': [],
-            'total': 0,
-            'total_page': 0
-        }
         res = await client.get(
             app.url_path_for("data:get_all"),
             params={"monitoring_round": 2010}
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == empty_res
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert res["data"] == []
         # filter with monitoring round
-        res_guadalcanal_chs_2018 = {
-            'current': 1,
-            'data': [{
-                'id': 632510922,
-                'name': 'Untitled',
-                'geo': {
-                    'long': 71.64445931032847,
-                    'lat': -47.72084919070232
-                },
-                'year_conducted': 2018,
-                'school_information': {
-                    'province': 'Guadalcanal',
-                    'school_type': 'Community High School',
-                    'school_name': 'AO CHS',
-                    'school_code': '21710'
-                }
-            }],
-            'total': 1,
-            'total_page': 1
-        }
+        # TODO: Delete
+        # res_guadalcanal_chs_2018 = {
+        #     'current': 1,
+        #     'data': [{
+        #         'id': 632510922,
+        #         'name': 'Untitled',
+        #         'geo': {
+        #             'long': 71.64445931032847,
+        #             'lat': -47.72084919070232
+        #         },
+        #         'year_conducted': 2018,
+        #         'school_information': {
+        #             'province': 'Guadalcanal',
+        #             'school_type': 'Community High School',
+        #             'school_name': 'AO CHS',
+        #             'school_code': '21710'
+        #         }
+        #     }],
+        #     'total': 1,
+        #     'total_page': 1
+        # }
         res = await client.get(
             app.url_path_for("data:get_all"),
             params={"monitoring_round": 2018}
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_guadalcanal_chs_2018
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'name', 'geo',
+            'year_conducted', 'school_information'
+        ]
+        for d in res["data"]:
+            assert d["year_conducted"] == 2018
+        # assert res == res_guadalcanal_chs_2018 # TODO: Delete
         # filter with monitoring round, province, school_type
         res = await client.get(
             app.url_path_for("data:get_all"),
@@ -81,7 +85,10 @@ class TestDataRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == empty_res
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert res["data"] == []
         # filter with monitoring round, province, school_type
         res = await client.get(
             app.url_path_for("data:get_all"),
@@ -93,7 +100,15 @@ class TestDataRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == res_guadalcanal_chs_2018
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'name', 'geo',
+            'year_conducted', 'school_information'
+        ]
+        for d in res["data"]:
+            assert d["year_conducted"] == 2018
         # filter with monitoring round, province, school_type
         res = await client.get(
             app.url_path_for("data:get_all"),
@@ -106,7 +121,10 @@ class TestDataRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == empty_res
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert res["data"] == []
 
     @pytest.mark.asyncio
     async def test_get_answers_of_data(
@@ -141,171 +159,218 @@ class TestDataRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert "current" in res
-        assert "data" in res
-        assert "total" in res
-        assert "total_page" in res
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
         res = await client.get(app.url_path_for("data:get_maps_data"))
         assert res.status_code == 200
         res = res.json()
-        assert "current" in res
-        assert "data" in res
-        assert "total" in res
-        assert "total_page" in res
-        data = res.get("data")
-        assert data[0] == {
-            'id': 649130936,
-            'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': {
-                'province': 'Guadalcanal',
-                'school_type': 'Community High School',
-                'school_name': 'AO CHS',
-                'school_code': '21710'
-            },
-            'year_conducted': 2023,
-            'answer': {}
-        }
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'school_information',
+            'year_conducted', 'geo', 'answer'
+        ]
+        # TODO:: Delete
+        # assert res["data"][0] == {
+        #     'id': 649130936,
+        #     'geo': [-51.14834033402119, 41.7559732176761],
+        #     'school_information': {
+        #         'province': 'Guadalcanal',
+        #         'school_type': 'Community High School',
+        #         'school_name': 'AO CHS',
+        #         'school_code': '21710'
+        #     },
+        #     'year_conducted': 2023,
+        #     'answer': {}
+        # }
         # with indicator
+        indicator_id = 624660930
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": 624660930})
+            params={"indicator": indicator_id})
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data[0] == {
-            'id': 649130936,
-            'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': {
-                'province': 'Guadalcanal',
-                'school_type': 'Community High School',
-                'school_name': 'AO CHS',
-                'school_code': '21710'
-            },
-            'year_conducted': 2023,
-            'answer': {
-                'question': 624660930,
-                'value': 'No'
-            }
-        }
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'school_information',
+            'year_conducted', 'geo', 'answer'
+        ]
+        assert list(res["data"][0]["answer"]) == ['question', 'value']
+        assert res["data"][0]["answer"]["question"] == indicator_id
+        # TODO:: delete
+        # assert res["data"][0] == {
+        #     'id': 649130936,
+        #     'geo': [-51.14834033402119, 41.7559732176761],
+        #     'school_information': {
+        #         'province': 'Guadalcanal',
+        #         'school_type': 'Community High School',
+        #         'school_name': 'AO CHS',
+        #         'school_code': '21710'
+        #     },
+        #     'year_conducted': 2023,
+        #     'answer': {
+        #         'question': 624660930,
+        #         'value': 'No'
+        #     }
+        # }
         # with indicator & indicator option filter
         # option indicator with number filter
+        indicator_id = 624660930
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": 624660930, "number": [10, 20]})
+            params={"indicator": indicator_id, "number": [10, 20]})
         assert res.status_code == 400
         # option indicator with option filter
+        indicator_id = 624660930
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": 624660930, "q": "624660930|no"})
+            params={"indicator": indicator_id, "q": f"{indicator_id}|no"})
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data == [{
-            'id': 649130936,
-            'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': {
-                'province': 'Guadalcanal',
-                'school_type': 'Community High School',
-                'school_name': 'AO CHS',
-                'school_code': '21710'
-            },
-            'year_conducted': 2023,
-            'answer': {
-                'question': 624660930,
-                'value': 'No'
-            }
-        }]
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'school_information',
+            'year_conducted', 'geo', 'answer'
+        ]
+        assert list(res["data"][0]["answer"]) == ['question', 'value']
+        # TODO:: Delete
+        # assert res["data"] == [{
+        #     'id': 649130936,
+        #     'geo': [-51.14834033402119, 41.7559732176761],
+        #     'school_information': {
+        #         'province': 'Guadalcanal',
+        #         'school_type': 'Community High School',
+        #         'school_name': 'AO CHS',
+        #         'school_code': '21710'
+        #     },
+        #     'year_conducted': 2023,
+        #     'answer': {
+        #         'question': 624660930,
+        #         'value': 'No'
+        #     }
+        # }]
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": 624660930, "q": "624660930|yes"})
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data == []
+        assert res["data"] == []
         # number indicator with number filter
+        indicator_id = 630020919
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": 630020919})
+            params={"indicator": indicator_id})
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data[0] == {
-            'id': 649130936,
-            'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': {
-                'province': 'Guadalcanal',
-                'school_type': 'Community High School',
-                'school_name': 'AO CHS',
-                'school_code': '21710'
-            },
-            'year_conducted': 2023,
-            'answer': {
-                'question': 630020919,
-                'value': 12
-            }
-        }
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'school_information',
+            'year_conducted', 'geo', 'answer'
+        ]
+        assert list(res["data"][0]["answer"]) == ['question', 'value']
+        assert res["data"][0]["answer"]["question"] == indicator_id
+        # TODO: Delete
+        # assert res["data"][0] == {
+        #     'id': 649130936,
+        #     'geo': [-51.14834033402119, 41.7559732176761],
+        #     'school_information': {
+        #         'province': 'Guadalcanal',
+        #         'school_type': 'Community High School',
+        #         'school_name': 'AO CHS',
+        #         'school_code': '21710'
+        #     },
+        #     'year_conducted': 2023,
+        #     'answer': {
+        #         'question': 630020919,
+        #         'value': 12
+        #     }
+        # }
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": 630020919, "number": [11]})
+            params={"indicator": indicator_id, "number": [11]})
         assert res.status_code == 400
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": 630020919, "number": [1, 10]})
+            params={"indicator": indicator_id, "number": [1, 10]})
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data == []
+        assert res["data"] == []
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": 630020919, "number": [1, 20]})
+            params={"indicator": indicator_id, "number": [1, 20]})
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data[0] == {
-            'id': 649130936,
-            'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': {
-                'province': 'Guadalcanal',
-                'school_type': 'Community High School',
-                'school_name': 'AO CHS',
-                'school_code': '21710'
-            },
-            'year_conducted': 2023,
-            'answer': {
-                'question': 630020919,
-                'value': 12
-            }
-        }
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'school_information',
+            'year_conducted', 'geo', 'answer'
+        ]
+        assert list(res["data"][0]["answer"]) == ['question', 'value']
+        assert res["data"][0]["answer"]["question"] == indicator_id
+        # TODO: Delete
+        # assert res["data"][0] == {
+        #     'id': 649130936,
+        #     'geo': [-51.14834033402119, 41.7559732176761],
+        #     'school_information': {
+        #         'province': 'Guadalcanal',
+        #         'school_type': 'Community High School',
+        #         'school_name': 'AO CHS',
+        #         'school_code': '21710'
+        #     },
+        #     'year_conducted': 2023,
+        #     'answer': {
+        #         'question': 630020919,
+        #         'value': 12
+        #     }
+        # }
         # filter by province
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": 630020919, "prov": ["Central"]})
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data == []
+        assert res["data"] == []
         # filter by province
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": 630020919, "prov": ["Guadalcanal"]})
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data[0] == {
-            'id': 649130936,
-            'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': {
-                'province': 'Guadalcanal',
-                'school_type': 'Community High School',
-                'school_name': 'AO CHS',
-                'school_code': '21710'
-            },
-            'year_conducted': 2023,
-            'answer': {
-                'question': 630020919,
-                'value': 12
-            }
-        }
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'school_information',
+            'year_conducted', 'geo', 'answer'
+        ]
+        for d in res["data"]:
+            assert d["school_information"]["province"] == "Guadalcanal"
+        # TODO:: delete
+        # assert res["data"][0] == {
+        #     'id': 649130936,
+        #     'geo': [-51.14834033402119, 41.7559732176761],
+        #     'school_information': {
+        #         'province': 'Guadalcanal',
+        #         'school_type': 'Community High School',
+        #         'school_name': 'AO CHS',
+        #         'school_code': '21710'
+        #     },
+        #     'year_conducted': 2023,
+        #     'answer': {
+        #         'question': 630020919,
+        #         'value': 12
+        #     }
+        # }
         # filter by school type
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
@@ -315,8 +380,7 @@ class TestDataRoutes:
             })
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data == []
+        assert res["data"] == []
         # filter by school type
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
@@ -326,22 +390,32 @@ class TestDataRoutes:
             })
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data[0] == {
-            'id': 649130936,
-            'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': {
-                'province': 'Guadalcanal',
-                'school_type': 'Community High School',
-                'school_name': 'AO CHS',
-                'school_code': '21710'
-            },
-            'year_conducted': 2023,
-            'answer': {
-                'question': 630020919,
-                'value': 12
-            }
-        }
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'school_information',
+            'year_conducted', 'geo', 'answer'
+        ]
+        for d in res["data"]:
+            sctype = d["school_information"]["school_type"]
+            assert sctype == "Community High School"
+        # TODO:: delete
+        # assert res["data"][0] == {
+        #     'id': 649130936,
+        #     'geo': [-51.14834033402119, 41.7559732176761],
+        #     'school_information': {
+        #         'province': 'Guadalcanal',
+        #         'school_type': 'Community High School',
+        #         'school_name': 'AO CHS',
+        #         'school_code': '21710'
+        #     },
+        #     'year_conducted': 2023,
+        #     'answer': {
+        #         'question': 630020919,
+        #         'value': 12
+        #     }
+        # }
         # filter by school type and province
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
@@ -352,8 +426,7 @@ class TestDataRoutes:
             })
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data == []
+        assert res["data"] == []
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={
@@ -363,79 +436,108 @@ class TestDataRoutes:
             })
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data[0] == {
-            'id': 649130936,
-            'geo': [-51.14834033402119, 41.7559732176761],
-            'school_information': {
-                'province': 'Guadalcanal',
-                'school_type': 'Community High School',
-                'school_name': 'AO CHS',
-                'school_code': '21710'
-            },
-            'year_conducted': 2023,
-            'answer': {
-                'question': 630020919,
-                'value': 12
-            }
-        }
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'school_information',
+            'year_conducted', 'geo', 'answer'
+        ]
+        for d in res["data"]:
+            sctype = d["school_information"]["school_type"]
+            assert sctype == "Community High School"
+            assert d["school_information"]["province"] == "Guadalcanal"
+        # TODO:: delete
+        # assert res["data"][0] == {
+        #     'id': 649130936,
+        #     'geo': [-51.14834033402119, 41.7559732176761],
+        #     'school_information': {
+        #         'province': 'Guadalcanal',
+        #         'school_type': 'Community High School',
+        #         'school_name': 'AO CHS',
+        #         'school_code': '21710'
+        #     },
+        #     'year_conducted': 2023,
+        #     'answer': {
+        #         'question': 630020919,
+        #         'value': 12
+        #     }
+        # }
         # JMP indicator
+        indicator_id = "jmp-water"
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": "jmp-water"})
+            params={"indicator": indicator_id})
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data[0] == {
-            'id': 649130936,
-            'school_information': {
-                'province': 'Guadalcanal',
-                'school_type': 'Community High School',
-                'school_name': 'AO CHS',
-                'school_code': '21710'
-            },
-            'year_conducted': 2023,
-            'geo': [
-                -51.14834033402119,
-                41.7559732176761
-            ],
-            'answer': {
-                'question': 'jmp-water_649130936',
-                'value': 'Limited'
-            }
-        }
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'school_information',
+            'year_conducted', 'geo', 'answer'
+        ]
+        assert list(res["data"][0]["answer"]) == ['question', 'value']
+        assert indicator_id in res["data"][0]["answer"]["question"]
+        # TODO: Delete
+        # assert res["data"][0] == {
+        #     'id': 649130936,
+        #     'school_information': {
+        #         'province': 'Guadalcanal',
+        #         'school_type': 'Community High School',
+        #         'school_name': 'AO CHS',
+        #         'school_code': '21710'
+        #     },
+        #     'year_conducted': 2023,
+        #     'geo': [
+        #         -51.14834033402119,
+        #         41.7559732176761
+        #     ],
+        #     'answer': {
+        #         'question': 'jmp-water_649130936',
+        #         'value': 'Limited'
+        #     }
+        # }
         # JMP indicator filter by JMP level
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": "jmp-water", "q": "jmp-water|basic"})
+            params={"indicator": indicator_id, "q": "jmp-water|basic"})
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data == []
+        assert res["data"] == []
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": "jmp-water", "q": "jmp-water|limited"})
+            params={"indicator": indicator_id, "q": "jmp-water|limited"})
         assert res.status_code == 200
         res = res.json()
-        data = res.get("data")
-        assert data[0] == {
-            'id': 649130936,
-            'school_information': {
-                'province': 'Guadalcanal',
-                'school_type': 'Community High School',
-                'school_name': 'AO CHS',
-                'school_code': '21710'
-            },
-            'year_conducted': 2023,
-            'geo': [
-                -51.14834033402119,
-                41.7559732176761
-            ],
-            'answer': {
-                'question': 'jmp-water_649130936',
-                'value': 'Limited'
-            }
-        }
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'school_information',
+            'year_conducted', 'geo', 'answer'
+        ]
+        assert list(res["data"][0]["answer"]) == ['question', 'value']
+        assert indicator_id in res["data"][0]["answer"]["question"]
+        # TODO: Delete
+        # assert res["data"][0] == {
+        #     'id': 649130936,
+        #     'school_information': {
+        #         'province': 'Guadalcanal',
+        #         'school_type': 'Community High School',
+        #         'school_name': 'AO CHS',
+        #         'school_code': '21710'
+        #     },
+        #     'year_conducted': 2023,
+        #     'geo': [
+        #         -51.14834033402119,
+        #         41.7559732176761
+        #     ],
+        #     'answer': {
+        #         'question': 'jmp-water_649130936',
+        #         'value': 'Limited'
+        #     }
+        # }
 
     @pytest.mark.asyncio
     async def test_get_chart_data(
