@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Select, Row, Col, Space, Button, Card, Alert } from "antd";
+import { Select, Row, Col, Space, Button, Alert } from "antd";
 import {
   CloseCircleFilled,
   CheckCircleFilled,
@@ -12,6 +12,7 @@ const hints = window.hintjson;
 const jmpHints = window.jmphintjson;
 
 const IndicatorDropdown = ({
+  loading,
   indicatorQuestion,
   handleOnChangeQuestionDropdown,
   selectedQuestion,
@@ -51,10 +52,14 @@ const IndicatorDropdown = ({
             options={indicatorDropdownOptions}
             onChange={(val) => handleOnChangeQuestionDropdown(val)}
             value={selectedQuestion?.id || []}
+            disabled={loading}
           />
           {!isEmpty(selectedQuestion) && (
-            <div className="options-container">
+            <div
+              className={`options-container ${selectedQuestion?.type || ""}`}
+            >
               <RenderQuestionOption
+                loading={loading}
                 selectedQuestion={selectedQuestion}
                 handleOnChangeQuestionOption={handleOnChangeQuestionOption}
                 selectedOption={selectedOption}
@@ -70,6 +75,7 @@ const IndicatorDropdown = ({
 };
 
 const RenderQuestionOption = ({
+  loading,
   selectedQuestion,
   handleOnChangeQuestionOption,
   selectedOption,
@@ -103,6 +109,7 @@ const RenderQuestionOption = ({
           setValue("");
           setShowInfo(false);
         }}
+        disabled={loading}
       >
         <div>
           {selectedOption.includes(opt.name) ? (
@@ -121,48 +128,48 @@ const RenderQuestionOption = ({
     return (
       <Row>
         <Col className="chart-card" span={24}>
-          <Card>
-            <Chart
-              height={350}
-              excelFile={"title"}
-              type={"BAR"}
-              data={option.map((v) => ({
-                name: v.value,
-                value: v.count,
-                count: v.count,
-                color: "#70CFAD",
-              }))}
-              wrapper={false}
-              horizontal={false}
-              loading={false}
-              dataZoom={[
-                {
-                  type: "inside",
-                  realtime: false,
-                  start: barChartValues.startValue,
-                  end: barChartValues.endValue,
-                },
-                {
-                  type: "slider",
-                  realtime: false,
-                  start: barChartValues.startValue,
-                  end: barChartValues.endValue,
-                },
-              ]}
-              grid={{
-                top: 80,
-                bottom: 80,
-                left: 40,
-                right: 20,
-                show: true,
-                containLabel: true,
-                label: {
-                  color: "#222",
-                },
-              }}
-              setValues={setValues}
-            />
-          </Card>
+          <Chart
+            height={350}
+            excelFile={selectedQuestion?.name || "title"}
+            type={"LINE"}
+            data={option.map((v) => ({
+              name: v.value,
+              value: v.count,
+              count: v.count,
+              color: "#70CFAD",
+            }))}
+            wrapper={false}
+            horizontal={false}
+            loading={loading}
+            dataZoom={[
+              {
+                type: "inside",
+                realtime: false,
+                startValue: barChartValues.startValue,
+                endValue: barChartValues.endValue,
+                rangeMode: ["value"],
+              },
+              {
+                type: "slider",
+                realtime: false,
+                startValue: barChartValues.startValue,
+                endValue: barChartValues.endValue,
+                rangeMode: ["value"],
+              },
+            ]}
+            grid={{
+              top: 70,
+              bottom: 80,
+              left: 45,
+              right: 30,
+              show: true,
+              containLabel: true,
+              label: {
+                color: "#222",
+              },
+            }}
+            setValues={setValues}
+          />
         </Col>
       </Row>
     );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Col, Card } from "antd";
 import ReactECharts from "echarts-for-react";
-import { Bar, BarStack, Pie } from "./options";
+import { Bar, BarStack, Pie, Line } from "./options";
 
 export const generateOptions = (
   { type, data, chartTitle, excelFile },
@@ -30,6 +30,18 @@ export const generateOptions = (
       );
     case "PIE":
       return Pie(data, chartTitle, extra, series, showRoseChart, legend);
+    case "LINE":
+      return Line(
+        data,
+        chartTitle,
+        excelFile,
+        extra,
+        legend,
+        horizontal,
+        grid,
+        dataZoom,
+        showPercent
+      );
     default:
       return Bar(
         data,
@@ -129,17 +141,15 @@ const Chart = ({
   };
 
   const dataZoomFunc = useCallback(() => {
-    const echartsInstance = echartsReactRef.getEchartsInstance();
-    const startValue = echartsInstance.getOption().dataZoom[0].startValue;
-    const start = echartsInstance.getOption().dataZoom[0].start;
-    const end = echartsInstance.getOption().dataZoom[0].end;
-    const endValue = echartsInstance.getOption().dataZoom[0].endValue;
-    setValues({
-      startValue: startValue,
-      endValue: endValue,
-      start: start,
-      end: end,
-    });
+    if (setValues) {
+      const echartsInstance = echartsReactRef.getEchartsInstance();
+      const startValue = echartsInstance.getOption().dataZoom[0].startValue;
+      const endValue = echartsInstance.getOption().dataZoom[0].endValue;
+      setValues({
+        startValue: startValue,
+        endValue: endValue,
+      });
+    }
   }, [echartsReactRef, setValues]);
 
   useEffect(() => {

@@ -19,6 +19,9 @@
       }
       .options-container {
         padding: 20px 0px 0px;
+        &.number {
+          padding: 0;
+        }
         .ant-space {
           width: 100%;
           .ant-space-item {
