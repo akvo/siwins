@@ -80,7 +80,7 @@ const RenderQuestionOption = ({
   handleOnChangeQuestionOption,
   selectedOption,
   setValues,
-  // barChartValues,
+  barChartValues,
 }) => {
   const [showInfo, setShowInfo] = useState(false);
   const [value, setValue] = useState("");
@@ -141,23 +141,25 @@ const RenderQuestionOption = ({
             wrapper={false}
             horizontal={false}
             loading={loading}
-            // dataZoom={[
-            //   {
-            //     type: "inside",
-            //     realtime: false,
-            //     start: barChartValues.startValue,
-            //     end: barChartValues.endValue,
-            //   },
-            //   {
-            //     type: "slider",
-            //     realtime: false,
-            //     start: barChartValues.startValue,
-            //     end: barChartValues.endValue,
-            //   },
-            // ]}
+            dataZoom={[
+              {
+                type: "inside",
+                realtime: false,
+                startValue: barChartValues.startValue,
+                endValue: barChartValues.endValue,
+                rangeMode: ["value"],
+              },
+              {
+                type: "slider",
+                realtime: false,
+                startValue: barChartValues.startValue,
+                endValue: barChartValues.endValue,
+                rangeMode: ["value"],
+              },
+            ]}
             grid={{
               top: 70,
-              bottom: 45,
+              bottom: 80,
               left: 45,
               right: 30,
               show: true,

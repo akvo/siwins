@@ -34,6 +34,12 @@ const defPagination = {
   totalPage: 0,
 };
 const mapFilterConfig = window.mapFilterConfig;
+const barChartDefValues = {
+  startValue: 0,
+  endValue: 0,
+  minNumber: 0,
+  maxNumber: 0,
+};
 
 const Map = ({ searchValue }) => {
   // use tile layer from config
@@ -51,10 +57,6 @@ const Map = ({ searchValue }) => {
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
   const [roseChartValues, setRoseChartValues] = useState([]);
-  const barChartDefValues = {
-    startValue: 0,
-    endValue: 100,
-  };
   const [barChartValues, setBarChartValues] = useState(barChartDefValues);
   const [selectedDatapoint, setSelectedDatapoint] = useState({});
   const [pagination, setPagination] = useState({});
@@ -146,10 +148,10 @@ const Map = ({ searchValue }) => {
     }
     const { type, option } = selectedQuestion;
     if (type === "number") {
-      const { startValue, endValue } = barChartValues;
+      const { minNumber, maxNumber } = barChartValues;
       return data.filter((d) => {
         const { value } = d.answer;
-        if (value >= startValue && value <= endValue) {
+        if (value >= minNumber && value <= maxNumber) {
           return d;
         }
       });
@@ -207,10 +209,16 @@ const Map = ({ searchValue }) => {
   // Indicator filter functions
   const handleOnChangeQuestionDropdown = (id) => {
     setSelectedOption([]);
-    setBarChartValues(barChartDefValues);
     updateGlobalState([], "option");
     updateGlobalState([], "number");
     const filterQuestion = indicatorQuestions.find((q) => q.id === id);
+    if (filterQuestion?.type === "number") {
+      const numbers = filterQuestion?.number?.map((x) => x.value);
+      setBarChartValues({
+        ...barChartDefValues,
+        endValue: numbers?.length ? numbers.length - 1 : 0,
+      });
+    }
     setSelectedQuestion(filterQuestion);
   };
 
@@ -247,30 +255,35 @@ const Map = ({ searchValue }) => {
     });
   };
 
-  const filterIndicatorOption = (array) => {
-    const value = selectedQuestion?.option
-      .filter((item) => !array?.includes(item.name))
-      .map((filterValue) => `${selectedQuestion.id}|${filterValue.name}`);
-    updateGlobalState(value, "option");
-  };
+  // # disable update global state and network call
+  // const filterIndicatorOption = (array) => {
+  //   const value = selectedQuestion?.option
+  //     .filter((item) => !array?.includes(item.name))
+  //     .map((filterValue) => `${selectedQuestion.id}|${filterValue.name}`);
+  //   updateGlobalState(value, "option");
+  // };
 
   const setValuesOfNumber = (val) => {
-    const value = [
-      selectedQuestion.number[val.startValue]?.value,
-      selectedQuestion.number[val.endValue]?.value,
-    ];
     setBarChartValues({
-      startValue: val.start,
-      endValue: val.end,
+      ...barChartValues,
+      startValue: val.startValue,
+      endValue: val.endValue,
+      minNumber: selectedQuestion.number[val.startValue]?.value,
+      maxNumber: selectedQuestion.number[val.endValue]?.value,
     });
-    updateGlobalState(value, "number");
+    // # disable update global state and network call
+    // const value = [
+    //   selectedQuestion.number[val.startValue]?.value,
+    //   selectedQuestion.number[val.endValue]?.value,
+    // ];
+    // updateGlobalState(value, "number");
   };
 
   const chartClick = (p) => {
     if (selectedRoseChartValue === p) {
       setSelectedRoseChartValue(p);
       setSelectedOption([]);
-      filterIndicatorOption([]);
+      // filterIndicatorOption([]);
       return;
     }
     setSelectedRoseChartValue(p);
@@ -279,11 +292,11 @@ const Map = ({ searchValue }) => {
         ?.filter((e) => e.name !== p)
         .map((item) => item.name)
     );
-    filterIndicatorOption(
-      selectedQuestion?.option
-        ?.filter((e) => e.name !== p)
-        .map((item) => item.name)
-    );
+    // filterIndicatorOption(
+    //   selectedQuestion?.option
+    //     ?.filter((e) => e.name !== p)
+    //     .map((item) => item.name)
+    // );
   };
 
   return (

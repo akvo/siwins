@@ -37,8 +37,9 @@ export const generateOptions = (
         excelFile,
         extra,
         legend,
-        grid,
         horizontal,
+        grid,
+        dataZoom,
         showPercent
       );
     default:
@@ -140,17 +141,15 @@ const Chart = ({
   };
 
   const dataZoomFunc = useCallback(() => {
-    const echartsInstance = echartsReactRef.getEchartsInstance();
-    const startValue = echartsInstance.getOption().dataZoom[0].startValue;
-    const start = echartsInstance.getOption().dataZoom[0].start;
-    const end = echartsInstance.getOption().dataZoom[0].end;
-    const endValue = echartsInstance.getOption().dataZoom[0].endValue;
-    setValues({
-      startValue: startValue,
-      endValue: endValue,
-      start: start,
-      end: end,
-    });
+    if (setValues) {
+      const echartsInstance = echartsReactRef.getEchartsInstance();
+      const startValue = echartsInstance.getOption().dataZoom[0].startValue;
+      const endValue = echartsInstance.getOption().dataZoom[0].endValue;
+      setValues({
+        startValue: startValue,
+        endValue: endValue,
+      });
+    }
   }, [echartsReactRef, setValues]);
 
   useEffect(() => {

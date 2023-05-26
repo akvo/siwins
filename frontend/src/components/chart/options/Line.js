@@ -19,8 +19,9 @@ const Line = (
   excelFile,
   extra = {},
   legend = {},
-  grid = {},
   horizontal = false,
+  grid = {},
+  dataZoom = [],
   showPercent = true,
   sampling = "lttb",
   seriesLabel = false
@@ -113,6 +114,7 @@ const Line = (
       name: xAxisTitle || "",
       nameTextStyle: { ...TextStyle },
     },
+    dataZoom: isEmpty(dataZoom) ? false : dataZoom,
     series: [
       {
         data: data.map((v, vi) => ({
