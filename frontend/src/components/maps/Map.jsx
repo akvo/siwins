@@ -30,7 +30,7 @@ const defZoom = 7;
 const defCenter = window.mapConfig.center;
 const defPagination = {
   page: 1,
-  perPage: 250,
+  perPage: 100,
   totalPage: 0,
 };
 const mapFilterConfig = window.mapFilterConfig;
@@ -56,7 +56,6 @@ const Map = ({ searchValue }) => {
   const [selectedRoseChartValue, setSelectedRoseChartValue] = useState("");
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState([]);
-  const [roseChartValues, setRoseChartValues] = useState([]);
   const [barChartValues, setBarChartValues] = useState(barChartDefValues);
   const [selectedDatapoint, setSelectedDatapoint] = useState({});
   const [pagination, setPagination] = useState({});
@@ -180,7 +179,7 @@ const Map = ({ searchValue }) => {
     });
   }, [filteredData]);
 
-  useEffect(() => {
+  const roseChartValues = useMemo(() => {
     if (["option", "jmp"].includes(selectedQuestion.type)) {
       let results = Object.values(
         mapData.reduce((obj, item) => {
@@ -202,8 +201,9 @@ const Map = ({ searchValue }) => {
           count: results.find((v) => v.name === item.name)?.count || 0,
         };
       });
-      setRoseChartValues(results);
+      return results;
     }
+    return [];
   }, [mapData]);
 
   // Indicator filter functions
