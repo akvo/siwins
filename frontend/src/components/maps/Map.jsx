@@ -303,6 +303,7 @@ const Map = ({ searchValue }) => {
         )}
         <div className="map-container">
           <IndicatorDropdown
+            loading={loading}
             indicatorQuestion={indicatorQuestions}
             handleOnChangeQuestionDropdown={handleOnChangeQuestionDropdown}
             selectedQuestion={selectedQuestion}

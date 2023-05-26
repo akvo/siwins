@@ -4,8 +4,6 @@ import {
   TextStyle,
   backgroundColor,
   Icons,
-  AxisLabelFormatter,
-  AxisShortLabelFormatter,
   Title,
   axisTitle,
   DataView,
@@ -13,7 +11,7 @@ import {
   NoData,
   downloadToExcel,
 } from "./common";
-import { sortBy, isEmpty, sumBy, uniqBy, flatten } from "lodash";
+import { sortBy, isEmpty, sumBy } from "lodash";
 
 const Line = (
   data,
@@ -24,11 +22,13 @@ const Line = (
   grid = {},
   horizontal = false,
   showPercent = true,
-  sampling = "lttb"
+  sampling = "lttb",
+  seriesLabel = false
 ) => {
   if (isEmpty(data) || !data) {
     return NoData;
   }
+  const showTitle = !isEmpty(chartTitle);
   // Custom Axis Title
   const { xAxisTitle, yAxisTitle } = axisTitle(extra);
   if (showPercent) {
@@ -41,7 +41,7 @@ const Line = (
     ...Color,
     title: {
       ...Title,
-      show: !isEmpty(chartTitle),
+      show: showTitle,
       text: !horizontal ? chartTitle?.title : "",
       subtext: chartTitle?.subTitle,
     },
@@ -59,7 +59,13 @@ const Line = (
     tooltip: {
       show: true,
       trigger: "item",
-      // formatter: '<div class="no-border">{b}</div>',
+      formatter: function (x) {
+        const data = x?.data;
+        const value = showPercent
+          ? `${data?.value}% (${data?.count})`
+          : data?.value;
+        return `<div class="no-border">${data?.name}: ${value}</div>`;
+      },
       padding: 5,
       backgroundColor: "#f2f2f2",
       ...TextStyle,
@@ -69,7 +75,7 @@ const Line = (
       showTitle: true,
       orient: "horizontal",
       right: 30,
-      top: 20,
+      top: showTitle ? 20 : 0,
       feature: {
         saveAsImage: {
           type: "jpg",
@@ -100,33 +106,12 @@ const Line = (
       type: "value",
       name: yAxisTitle || "",
       nameTextStyle: { ...TextStyle },
-      nameLocation: "middle",
-      nameGap: 50,
-      axisLabel: {
-        ...TextStyle,
-        color: "#9292ab",
-      },
     },
     [horizontal ? "yAxis" : "xAxis"]: {
       type: "category",
       data: labels,
       name: xAxisTitle || "",
       nameTextStyle: { ...TextStyle },
-      nameLocation: "middle",
-      nameGap: 50,
-      axisLabel: {
-        width: horizontal ? 90 : "auto",
-        overflow: horizontal ? "break" : "none",
-        interval: 0,
-        ...TextStyle,
-        color: "#4b4b4e",
-        formatter: horizontal
-          ? AxisShortLabelFormatter?.formatter
-          : AxisLabelFormatter?.formatter,
-      },
-      axisTick: {
-        alignWithLabel: true,
-      },
     },
     series: [
       {
@@ -138,11 +123,14 @@ const Line = (
         })),
         type: "line",
         sampling: sampling || false,
-        label: {
-          colorBy: "data",
-          show: true,
-          ...TextStyle,
-        },
+        smooth: true,
+        label: seriesLabel
+          ? {
+              colorBy: "data",
+              show: true,
+              ...TextStyle,
+            }
+          : false,
       },
     ],
     ...Color,
