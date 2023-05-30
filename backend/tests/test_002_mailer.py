@@ -11,8 +11,8 @@ class TestMailer():
     @pytest.mark.asyncio
     async def test_email_data(self, session: Session) -> None:
         recipients = [{
-            "Email": "test@test.com",
-            "Name": "Test User"
+            "Email": "support@akvo.org",
+            "Name": "Akvo Support"
         }]
         email = Email(
             recipients=recipients,
