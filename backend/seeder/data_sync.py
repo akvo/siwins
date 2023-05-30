@@ -113,6 +113,7 @@ def data_sync(
     formInstances = changes.get("formInstanceChanged")
     formInstances.sort(key=lambda fi: fi["createdAt"], reverse=False)
     for fi in formInstances:
+        # data point loop
         form = crud_form.get_form_by_id(session=session, id=fi.get("formId"))
         if not form:
             continue
@@ -123,6 +124,7 @@ def data_sync(
         geoVal = None
         year_conducted = None
         school_information = None
+        is_error = False  # found incorrect data then skip seed/sync
 
         # check if monitoring datapoint exist
         # form.registration form None by default
@@ -136,6 +138,7 @@ def data_sync(
         updated_data = crud_data.get_data_by_id(session=session, id=data_id)
         # fetching answers value into answer model
         for key, value in fi.get("responses").items():
+            # response / answer loop
             for val in value:
                 for kval, aval in val.items():
                     # info: kval = question id
@@ -148,14 +151,17 @@ def data_sync(
                         print(f"{kval}: 404 not found")
                         continue
                     # check for incorrect monitoring round
+                    monitoring_answer = 0
                     if qid == QuestionConfig.year_conducted.value:
                         monitoring_answer = int(aval[0].get("text"))
-                        if monitoring_answer > MONITORING_ROUND:
-                            error.append({
-                                "instance_id": data_id,
-                                "answer": monitoring_answer,
-                                "type": "incorrect_monitoring_round"
-                            })
+                    if monitoring_answer > MONITORING_ROUND:
+                        error.append({
+                            "instance_id": data_id,
+                            "answer": monitoring_answer,
+                            "type": "incorrect_monitoring_round"
+                        })
+                        is_error = True
+                        continue
                     # EOL check for incorrect monitoring round
                     if question.type == QuestionType.geo:
                         geoVal = [aval.get("lat"), aval.get("long")]
@@ -296,6 +302,10 @@ def data_sync(
                                 school_information_qid == qid:
                             school_information = answer.options
                         # EOL custom
+
+        if is_error:
+            # skip seed/sync when error
+            continue
 
         # check for current datapoint
         current_datapoint = True
