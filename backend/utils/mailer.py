@@ -10,7 +10,6 @@ from utils.i18n import EmailText
 from typing_extensions import TypedDict
 from datetime import datetime
 from source.main_config import ERROR_PATH
-from utils.storage import StorageFolder, upload
 
 mjkey = os.environ['MAILJET_APIKEY']
 mjsecret = os.environ['MAILJET_SECRET']
@@ -43,7 +42,7 @@ def format_attachment(file):
         return None
     return {
         "ContentType": ftype,
-        "Filename": file.split("/")[2],
+        "Filename": file.split("/")[-1],
         "content": base64.b64encode(open(file, "rb").read()).decode('UTF-8')
     }
 
@@ -63,9 +62,6 @@ def send_error_email(error: List, filename: Optional[str] = None):
     )
     email.send
     # end of email
-    storage_folder = StorageFolder.error.value
-    error_file = upload(error_file, storage_folder, public=True)
-    return error_file
 
 
 class Recipients(TypedDict):
