@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Modal,
   Spin,
@@ -102,20 +102,24 @@ const AnswerTabContent = ({
   year,
   history,
 }) => {
-  const currentChartValues =
-    render === "chart"
-      ? value.map((v) => ({
-          ...v,
-          year: year,
-          history: history,
-          stack: [v],
-          value: v.total,
-          name: v.level,
-        }))
-      : [];
   const [chartValues, setChartValues] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const currentChartValues = useMemo(() => {
+    if (render !== "chart") {
+      return {};
+    }
+    const res = value.map((v) => ({
+      ...v,
+      year: year,
+      history: history,
+      stack: [v],
+      value: v.total,
+      name: v.level,
+    }));
+    return res;
+  }, [render, value, history, year]);
 
   useEffect(() => {
     if (showHistory && isEmpty(chartValues)) {
