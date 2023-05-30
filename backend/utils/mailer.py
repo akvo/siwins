@@ -48,12 +48,13 @@ def format_attachment(file):
     }
 
 
-def send_error_email(error: List):
+def send_error_email(error: List, filename: Optional[str] = None):
     today = datetime.today().strftime("%y%m%d")
     error_list = pd.DataFrame(error)
     error_list = error_list[list(
         filter(lambda x: x != "error", list(error_list)))]
-    error_file = f"{ERROR_PATH}/error-{today}.csv"
+    fname = "error" if not filename else filename
+    error_file = f"{ERROR_PATH}/{fname}-{today}.csv"
     error_list = error_list.to_csv(error_file, index=False)
     # error email
     email = Email(

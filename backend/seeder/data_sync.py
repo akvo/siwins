@@ -372,5 +372,5 @@ def data_sync(
     if not error:
         return None
     # send error after sync completed
-    send_error_email(error=error)
+    send_error_email(error=error, filename="error-sync")
     return error
