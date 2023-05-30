@@ -15,8 +15,10 @@ from models.answer import Answer
 from models.history import History, HistoryDict
 from models.data import Data
 from typing import List
-from source.main_config import MONITORING_FORM
-from source.main_config import QuestionConfig
+from source.main_config import (
+    MONITORING_FORM, QuestionConfig,
+    MONITORING_ROUND
+)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -89,10 +91,8 @@ def data_sync(token: dict, session: Session, sync_data: dict):
     deleted_items = changes.get("formInstanceDeleted")
     if len(deleted_items):
         deleted_data_sync(session=session, data=deleted_items)
+    # next sync URL
     next_sync_url = sync_data.get("nextSyncUrl")
-    # save next sync URL
-    if next_sync_url:
-        crud_sync.add_sync(session=session, url=next_sync_url)
     # manage deleted datapoint
     if changes.get("dataPointDeleted"):
         deleted_data_ids = [
@@ -139,6 +139,13 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                     if not question:
                         print(f"{kval}: 404 not found")
                         continue
+                    # check for incorrect monitoring round
+                    if qid == QuestionConfig.year_conducted.value:
+                        monitoring_answer = int(aval[0].get("text"))
+                        print(qid, monitoring_answer)
+                        if monitoring_answer > MONITORING_ROUND:
+                            print("AAAAAAAAAAAAAAAAAAAAAAAAAA")
+                    # EOL check for incorrect monitoring round
                     if question.type == QuestionType.geo:
                         geoVal = [aval.get("lat"), aval.get("long")]
                     # create answer
@@ -328,6 +335,9 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             print(f"Sync | Update Datapoint: {updated.id}")
             continue
     print("------------------------------------------")
+    # save next sync URL # TODO:: Move this after finish sync the data
+    if next_sync_url:
+        crud_sync.add_sync(session=session, url=next_sync_url)
     # call next sync URL
     if TESTING:
         return True

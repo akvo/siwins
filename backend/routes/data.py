@@ -335,7 +335,7 @@ def get_data_detail_popup_by_data_id(
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND, detail="Data not found"
         )
-    # get history data
+    # get history data for JMP calculation
     history_data = get_history_data_by_school(
         session=session,
         schools=data.school_information,
