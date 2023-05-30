@@ -35,6 +35,7 @@ To use the Mailjet Email API, you need to create a Mailjet account, then retriev
 ```
 export MAILJET_SECRET="string"
 export MAILJET_APIKEY="string"
+export NOTIFICATION_RECIPIENTS="email1,email2"
 ```
 
 #### 2. Start the App

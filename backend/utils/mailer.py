@@ -13,6 +13,7 @@ from source.main_config import ERROR_PATH
 
 mjkey = os.environ['MAILJET_APIKEY']
 mjsecret = os.environ['MAILJET_SECRET']
+notification_recepients = os.environ['NOTIFICATION_RECIPIENTS']
 
 mailjet = Client(auth=(mjkey, mjsecret))
 loader = FileSystemLoader('.')
@@ -92,10 +93,10 @@ class Email:
 
     @property
     def data(self):
+        recipients = notification_recepients.split(",")
         recipients = [{
-            "Name": "galih",
-            "Email": "galih@akvo.org"
-        }]
+            "Email": email
+        } for email in recipients]
         type = self.type.value
         body = type["body"]
         if self.body:

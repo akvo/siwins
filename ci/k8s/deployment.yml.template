@@ -62,13 +62,18 @@ spec:
             - name: MAILJET_APIKEY
               valueFrom:
                 secretKeyRef:
-                  name: ${INSTANCE_NAME}
+                  name: siwins
                   key: mailjet-apikey
             - name: MAILJET_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: ${INSTANCE_NAME}
+                  name: siwins
                   key: mailjet-secret
+            - name: NOTIFICATION_RECIPIENTS
+              valueFrom:
+                secretKeyRef:
+                  name: siwins
+                  key: notification-recipients
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /secrets/credentials.json
           volumeMounts:

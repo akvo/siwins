@@ -31,6 +31,7 @@ services:
       - SKIP_MIGRATION=yes
       - MAILJET_SECRET=notset
       - MAILJET_APIKEY=notset
+      - NOTIFICATION_RECIPIENTS=notset
     depends_on:
       db:
         condition: service_healthy

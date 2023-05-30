@@ -14,6 +14,7 @@ services:
       - SKIP_MIGRATION=yes
       - MAILJET_SECRET=notset
       - MAILJET_APIKEY=notset
+      - NOTIFICATION_RECIPIENTS=notset
     image: eu.gcr.io/akvo-lumen/siwins/backend:latest
     network_mode: service:mainnetwork
     restart: always

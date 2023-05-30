@@ -22,4 +22,4 @@ class TestMailer():
         assert data["Recipients"] == recipients
         assert data["FromEmail"] == "noreply@akvo.org"
         assert data["Subject"] == "Seed/Sync Error Found"
-        # assert email.send is True
+        assert email.send is True

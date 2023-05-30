@@ -32,6 +32,7 @@ services:
       - AUTH0_PWD=$AUTH0_PWD
       - MAILJET_SECRET=${MAILJET_SECRET}
       - MAILJET_APIKEY=${MAILJET_APIKEY}
+      - NOTIFICATION_RECIPIENTS={$NOTIFICATION_RECIPIENTS}
     depends_on:
       db:
         condition: service_healthy
