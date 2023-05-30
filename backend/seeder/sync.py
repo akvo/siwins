@@ -20,7 +20,11 @@ if last_sync_url:
     sync_data = flow_auth.get_data(url=last_sync_url.url, token=token)
 
 if sync_data:
-    data_sync(token=token, session=session, sync_data=sync_data)
+    errors = data_sync(
+        token=token,
+        session=session,
+        sync_data=sync_data,
+    )
     # refresh materialized view
     refresh_materialized_data()
 

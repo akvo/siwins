@@ -21,10 +21,7 @@ def get_email_template(
     session: Session = Depends(get_session)
 ):
     # need to add recipients
-    email = Email(
-        recipients=[{"Name": "galih", "Email": "galih@akvo.org"}],
-        type=type
-    )
+    email = Email(type=type)
     if send:
         email.send
     return email.data["Html-part"]

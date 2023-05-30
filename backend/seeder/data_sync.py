@@ -19,11 +19,15 @@ from source.main_config import (
     MONITORING_FORM, QuestionConfig,
     MONITORING_ROUND
 )
+from utils.mailer import send_error_email
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 year_conducted_qid = QuestionConfig.year_conducted.value
 school_information_qid = QuestionConfig.school_information.value
+
+# Error
+error = []
 
 
 def delete_current_data_monitoring(
@@ -31,7 +35,7 @@ def delete_current_data_monitoring(
     data: int,
     lh: List[HistoryDict],
 ) -> None:
-    errors = []
+    delete_error = []
     """
     get the last history as a replacement for current data monitoring
     """
@@ -42,10 +46,10 @@ def delete_current_data_monitoring(
                     session=session, data=data, history=history
                 )
         except exc.IntegrityError:
-            errors.push(history)
+            delete_error.push(history)
     session.commit()
-    if len(errors):
-        for err in errors:
+    if len(delete_error):
+        for err in delete_error:
             print(f"Error | Delete Datapoint History: {err.id}")
     else:
         print(f"Success | Delete Datapoint: {data}")
@@ -82,7 +86,11 @@ def deleted_data_sync(session: Session, data: list) -> None:
                     print(f"Success| Delete Datapoint: {dp.id}")
 
 
-def data_sync(token: dict, session: Session, sync_data: dict):
+def data_sync(
+    token: dict,
+    session: Session,
+    sync_data: dict
+):
     TESTING = os.environ.get("TESTING")
     # TODO:: Support other changes from FLOW API
     print("------------------------------------------")
@@ -142,9 +150,12 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                     # check for incorrect monitoring round
                     if qid == QuestionConfig.year_conducted.value:
                         monitoring_answer = int(aval[0].get("text"))
-                        print(qid, monitoring_answer)
                         if monitoring_answer > MONITORING_ROUND:
-                            print("AAAAAAAAAAAAAAAAAAAAAAAAAA")
+                            error.append({
+                                "instance_id": data_id,
+                                "answer": monitoring_answer,
+                                "type": "incorrect_monitoring_round"
+                            })
                     # EOL check for incorrect monitoring round
                     if question.type == QuestionType.geo:
                         geoVal = [aval.get("lat"), aval.get("long")]
@@ -300,7 +311,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
         if not updated_data and not datapoint_exist or answers:
             # add new datapoint
             data = crud_data.add_data(
-                id=fi.get("id"),
+                id=data_id,
                 session=session,
                 datapoint_id=datapoint_id,
                 identifier=fi.get("identifier"),
@@ -335,12 +346,21 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             print(f"Sync | Update Datapoint: {updated.id}")
             continue
     print("------------------------------------------")
-    # save next sync URL # TODO:: Move this after finish sync the data
+    # save next sync URL
     if next_sync_url:
         crud_sync.add_sync(session=session, url=next_sync_url)
     # call next sync URL
-    if TESTING:
-        return True
-    sync_data = flow_auth.get_data(url=next_sync_url, token=token)
+    sync_data = []
+    if not TESTING:
+        sync_data = flow_auth.get_data(url=next_sync_url, token=token)
     if sync_data:
-        data_sync(token=token, session=session, sync_data=sync_data)
+        data_sync(
+            token=token,
+            session=session,
+            sync_data=sync_data,
+        )
+    if not error:
+        return None
+    # send error after sync completed
+    send_error_email(error=error)
+    return error

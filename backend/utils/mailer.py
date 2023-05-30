@@ -1,12 +1,16 @@
 import os
-from bs4 import BeautifulSoup
 import enum
+import base64
+import pandas as pd
+from bs4 import BeautifulSoup
 from typing import List, Optional
 from mailjet_rest import Client
 from jinja2 import Environment, FileSystemLoader
-import base64
 from utils.i18n import EmailText
 from typing_extensions import TypedDict
+from datetime import datetime
+from source.main_config import ERROR_PATH
+from utils.storage import StorageFolder, upload
 
 mjkey = os.environ['MAILJET_APIKEY']
 mjsecret = os.environ['MAILJET_SECRET']
@@ -44,20 +48,39 @@ def format_attachment(file):
     }
 
 
+def send_error_email(error: List):
+    today = datetime.today().strftime("%y%m%d")
+    error_list = pd.DataFrame(error)
+    error_list = error_list[list(
+        filter(lambda x: x != "error", list(error_list)))]
+    error_file = f"{ERROR_PATH}/error-{today}.csv"
+    error_list = error_list.to_csv(error_file, index=False)
+    # error email
+    email = Email(
+        type=MailTypeEnum.error,
+        attachment=error_file
+    )
+    email.send
+    # end of email
+    storage_folder = StorageFolder.error.value
+    error_file = upload(error_file, storage_folder, public=True)
+    return error_file
+
+
 class Recipients(TypedDict):
     Email: str
     Name: str
 
 
 class MailTypeEnum(enum.Enum):
-    incorrect_monitoring_round = "incorrect_monitoring_round"
+    error = "error"
 
 
 class Email:
     def __init__(
         self,
-        recipients: List[Recipients],
         type: MailTypeEnum,
+        recipients: Optional[List[Recipients]] = None,
         bcc: Optional[List[Recipients]] = None,
         attachment: Optional[str] = None,
         context: Optional[str] = None,
@@ -72,10 +95,16 @@ class Email:
 
     @property
     def data(self):
+        recipients = [{
+            "Name": "galih",
+            "Email": "galih@akvo.org"
+        }]
         type = self.type.value
         body = type["body"]
         if self.body:
             body = self.body
+        if self.recipients:
+            recipients = self.recipients
         html = html_template.render(
             logo="",
             instance_name="instance",
@@ -91,7 +120,7 @@ class Email:
             "Subject": type["subject"],
             "Html-part": html,
             "Text-part": html_to_text(html),
-            "Recipients": self.recipients,
+            "Recipients": recipients,
         }
         if self.bcc:
             payload.update({"Bcc": self.bcc})

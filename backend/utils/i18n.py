@@ -2,14 +2,14 @@ import enum
 
 
 class EmailText(enum.Enum):
-    incorrect_monitoring_round = {
-        "title": "Incorrect Monitoring Round",
-        "subject": "Incorrect Monitoring Round",
+    error = {
+        "title": "Seed/Sync Error",
+        "subject": "Seed/Sync Error Found",
         "body": "",
         "message": '''
             <div style="color: #000;">
-                Incorrect monitoring round value found.
-                Please see the attachment.
+                Error found while seed/sync data from Flow API.
+                Please take a look into the attachment for the details.
             </div>
         ''',
     }

@@ -16,10 +16,10 @@ class TestMailer():
         }]
         email = Email(
             recipients=recipients,
-            type=MailTypeEnum.incorrect_monitoring_round
+            type=MailTypeEnum.error
         )
         data = email.data
         assert data["Recipients"] == recipients
         assert data["FromEmail"] == "noreply@akvo.org"
-        assert data["Subject"] == "Incorrect Monitoring Round"
+        assert data["Subject"] == "Seed/Sync Error Found"
         assert email.send is True
