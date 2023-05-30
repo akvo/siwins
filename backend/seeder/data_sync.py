@@ -20,6 +20,7 @@ from source.main_config import (
     MONITORING_ROUND
 )
 from utils.mailer import send_error_email
+from utils.i18n import ValidationText
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -155,10 +156,11 @@ def data_sync(
                     if qid == QuestionConfig.year_conducted.value:
                         monitoring_answer = int(aval[0].get("text"))
                     if monitoring_answer > MONITORING_ROUND:
+                        desc = ValidationText.incorrect_monitoring_round.value
                         error.append({
                             "instance_id": data_id,
                             "answer": monitoring_answer,
-                            "type": "incorrect_monitoring_round"
+                            "type": desc
                         })
                         is_error = True
                         continue
@@ -297,11 +299,29 @@ def data_sync(
 
                         # custom
                         if year_conducted_qid and year_conducted_qid == qid:
-                            year_conducted = answer.options[0]
+                            year_conducted = int(answer.options[0])
                         if school_information_qid and \
                                 school_information_qid == qid:
                             school_information = answer.options
                         # EOL custom
+
+        # check datapoint with same school and monitoring round
+        check_same_school_and_monitoring = None
+        if not updated_data and year_conducted:
+            check_same_school_and_monitoring = crud_data.get_data_by_school(
+                session=session,
+                schools=school_information,
+                year_conducted=year_conducted)
+        if check_same_school_and_monitoring:
+            school_answer = "|".join(school_information)
+            desc = ValidationText.school_monitoring_exist.value
+            error.append({
+                "instance_id": data_id,
+                "answer": f"{school_answer} - {year_conducted}",
+                "description": desc
+            })
+            is_error = True
+        # EOL check datapoint with same school and monitoring round
 
         if is_error:
             # skip seed/sync when error
