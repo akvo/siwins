@@ -1,0 +1,25 @@
+import sys
+import pytest
+from sqlalchemy.orm import Session
+from utils.mailer import Email, MailTypeEnum
+
+pytestmark = pytest.mark.asyncio
+sys.path.append("..")
+
+
+class TestMailer():
+    @pytest.mark.asyncio
+    async def test_email_data(self, session: Session) -> None:
+        recipients = [{
+            "Email": "test@test.com",
+            "Name": "Test User"
+        }]
+        email = Email(
+            recipients=recipients,
+            type=MailTypeEnum.incorrect_monitoring_round
+        )
+        data = email.data
+        assert data["Recipients"] == recipients
+        assert data["FromEmail"] == "noreply@akvo.org"
+        assert data["Subject"] == "Incorrect Monitoring Round"
+        assert email.send is True

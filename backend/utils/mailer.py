@@ -50,7 +50,7 @@ class Recipients(TypedDict):
 
 
 class MailTypeEnum(enum.Enum):
-    test = "test"
+    incorrect_monitoring_round = "incorrect_monitoring_round"
 
 
 class Email:

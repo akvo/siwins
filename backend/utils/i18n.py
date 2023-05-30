@@ -1,18 +1,15 @@
 import enum
 
 
-class ValidationText(enum.Enum):
-    header_name_missing = "Header name is missing"
-
-
 class EmailText(enum.Enum):
-    test = {
-        "title": "Data Validation Success",
-        "subject": "Data Validation",
-        "body": "filename",
+    incorrect_monitoring_round = {
+        "title": "Incorrect Monitoring Round",
+        "subject": "Incorrect Monitoring Round",
+        "body": "",
         "message": '''
-                  <div style="color: #11A840;">
-                      Data Validation have passed successfully!
-                  </div>
-                  ''',
+            <div style="color: #000;">
+                Incorrect monitoring round value found.
+                Please see the attachment.
+            </div>
+        ''',
     }
