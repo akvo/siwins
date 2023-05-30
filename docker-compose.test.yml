@@ -29,8 +29,8 @@ services:
       - AUTH0_USER=$AUTH0_USER
       - AUTH0_PWD=$AUTH0_PWD
       - SKIP_MIGRATION=yes
-      - MAILJET_SECRET=$MAILJET_SECRET
-      - MAILJET_APIKEY=$MAILJET_APIKEY
+      - MAILJET_SECRET=notset
+      - MAILJET_APIKEY=notset
     depends_on:
       db:
         condition: service_healthy
