@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from typing import Optional
 from itertools import groupby
 from fastapi import Depends, Request
 from fastapi import APIRouter, HTTPException
@@ -20,6 +21,7 @@ from db.crud_province_view import (
     get_province_number_answer
 )
 from utils.functions import extract_school_information
+from utils.helper import MathOperation
 from source.main_config import QuestionConfig
 
 
@@ -38,6 +40,7 @@ def get_answer_history(
     req: Request,
     data_id: int,
     question_id: int,
+    aggregate: Optional[MathOperation] = MathOperation.average,
     session: Session = Depends(get_session)
 ):
     # fetch current data
@@ -109,6 +112,7 @@ def get_answer_history(
         national_count_sum = sum(
             [p["count"] for p in find_national_answers]
         )
+        national_value_avg = national_value_sum / national_count_sum
         # generate province data
         find_province_answers = list(filter(
             lambda x: (
@@ -123,18 +127,29 @@ def get_answer_history(
         prov_count_sum = sum(
             [p["count"] for p in find_province_answers]
         )
+        prov_value_avg = prov_value_sum / prov_count_sum
+        # provide value by aggregate param
+        national_value = national_value_avg
+        prov_value = prov_value_avg
+        if aggregate.value == MathOperation.sum.value:
+            national_value = national_value_sum
+            prov_value = prov_value_sum
+        # eol provide value by aggregate param
         temp_numb = [{
             "level": f"{current_school_name} - {current_school_code}",
             "total": da["value"],
-            "count": 1
+            "count": 1,
+            "value": da["value"]
         }, {
             "level": current_province,
             "total": prov_value_sum,
-            "count": prov_count_sum
+            "count": prov_count_sum,
+            "value": prov_value
         }, {
             "level": "National",
             "total": national_value_sum,
-            "count": national_count_sum
+            "count": national_count_sum,
+            "value": national_value
         }]
         da["render"] = "chart"
         da["value"] = temp_numb

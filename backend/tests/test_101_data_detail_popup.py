@@ -56,15 +56,18 @@ class TestDataDetailRoutes:
             'value': [{
                 'level': 'AO CHS - 21710',
                 'total': 12.0,
-                'count': 1
+                'count': 1,
+                'value': 12.0,
             }, {
                 'level': 'Guadalcanal',
                 'total': 12.0,
-                'count': 1
+                'count': 1,
+                'value': 12.0,
             }, {
                 'level': 'National',
                 'total': 12.0,
-                'count': 1
+                'count': 1,
+                'value': 12.0,
             }],
             'render': 'chart'
         }]
