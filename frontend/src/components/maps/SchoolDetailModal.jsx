@@ -110,23 +110,15 @@ const AnswerTabContent = ({
     if (render !== "chart") {
       return {};
     }
-    const res = value
-      .map((v, vi) => {
-        // show avg for prov and national
-        const avg = v.total / v.count;
-        return {
-          ...v,
-          total: vi > 0 ? avg : v.total,
-        };
-      })
-      .map((v) => ({
+    const res = value.map((v, vi) => {
+      return {
         ...v,
         stack: [v],
         year: year,
         history: history,
-        value: v.total,
         name: v.level,
-      }));
+      };
+    });
     return res;
   }, [render, value, history, year]);
 
@@ -140,23 +132,15 @@ const AnswerTabContent = ({
           const { data } = res;
           const transform = data
             .map((d) => {
-              return d.value
-                .map((v, vi) => {
-                  // show avg for prov and national
-                  const avg = v.total / v.count;
-                  return {
-                    ...v,
-                    total: vi > 0 ? avg : v.total,
-                  };
-                })
-                .map((v) => ({
+              return d.value.map((v, vi) => {
+                return {
                   ...v,
                   stack: [v],
                   year: d.year,
                   history: d.history,
-                  value: v.total,
                   name: v.level,
-                }));
+                };
+              });
             })
             .flat();
           setChartValues(transform);
