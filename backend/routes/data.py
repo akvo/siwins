@@ -40,6 +40,7 @@ from middleware import (
     check_jmp_query, check_indicator_param
 )
 from utils.functions import extract_school_information
+from utils.helper import MathOperation
 
 security = HTTPBearer()
 data_route = APIRouter()
@@ -327,10 +328,12 @@ def get_data_detail_for_chart(
 def get_data_detail_popup_by_data_id(
     req: Request,
     data_id: int,
+    aggregate: Optional[MathOperation] = MathOperation.average,
     session: Session = Depends(get_session),
 ):
     # get data
     data = get_data_by_id(session=session, id=data_id)
+    current = data.current
     if not data:
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND, detail="Data not found"
@@ -390,7 +393,7 @@ def get_data_detail_popup_by_data_id(
     prov_numb_answers = get_province_number_answer(
         session=session,
         question_ids=number_qids,
-        current=True)
+        current=current)
     prov_numb_answers = [p.serialize for p in prov_numb_answers]
     for da in data["answer"]:
         del da["attributes"]
@@ -424,6 +427,7 @@ def get_data_detail_popup_by_data_id(
         national_count_sum = sum(
             [p["count"] for p in find_national_answers]
         )
+        national_value_avg = national_value_sum / national_count_sum
         # generate province data
         find_province_answers = list(filter(
             lambda x: (
@@ -438,18 +442,29 @@ def get_data_detail_popup_by_data_id(
         prov_count_sum = sum(
             [p["count"] for p in find_province_answers]
         )
+        prov_value_avg = prov_value_sum / prov_count_sum
+        # provide value by aggregate param
+        national_value = national_value_avg
+        prov_value = prov_value_avg
+        if aggregate.value == MathOperation.sum.value:
+            national_value = national_value_sum
+            prov_value = prov_value_sum
+        # eol provide value by aggregate param
         temp_numb = [{
             "level": f"{current_school_name} - {current_school_code}",
             "total": da["value"],
-            "count": 1
+            "count": 1,
+            "value": da["value"]
         }, {
             "level": current_province,
             "total": prov_value_sum,
-            "count": prov_count_sum
+            "count": prov_count_sum,
+            "value": prov_value
         }, {
             "level": "National",
             "total": national_value_sum,
-            "count": national_count_sum
+            "count": national_count_sum,
+            "value": national_value
         }]
         da["render"] = "chart"
         da["value"] = temp_numb

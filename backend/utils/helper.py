@@ -1,5 +1,6 @@
 import re
 import uuid
+import enum
 from datetime import datetime
 from source.main_config import LOG_PATH
 
@@ -34,3 +35,8 @@ class HText(str):
         self.obj = [string] if "|" not in string else string.split("|")
         self.clean = "|".join([tr(o) for o in self.obj])
         self.hasnum = contain_numbers(string)
+
+
+class MathOperation(enum.Enum):
+    average = "average"
+    sum = "sum"
