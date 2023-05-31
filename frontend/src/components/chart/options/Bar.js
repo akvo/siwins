@@ -25,6 +25,7 @@ const Bar = (
   grid = {},
   dataZoom,
   history,
+  reduceHistoryValue = true,
   showPercent = true
 ) => {
   if (isEmpty(data) || !data) {
@@ -67,12 +68,16 @@ const Bar = (
       return {
         ...item,
         data: item.data.map((d) => {
-          return {
-            ...d,
-            value: +(
+          let value = d.value;
+          if (reduceHistoryValue) {
+            value = +(
               (d.value / item.data.reduce((a, c) => a + c.value, 0)) *
               100
-            ).toFixed(2),
+            ).toFixed(2);
+          }
+          return {
+            ...d,
+            value: value,
           };
         }),
       };

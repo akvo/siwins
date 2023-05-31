@@ -15,7 +15,8 @@ export const generateOptions = (
   dataZoom,
   history,
   showPercent,
-  showRoseChart
+  showRoseChart,
+  reduceHistoryValue
 ) => {
   switch (type) {
     case "BARSTACK":
@@ -53,7 +54,8 @@ export const generateOptions = (
         grid,
         dataZoom,
         history,
-        showPercent
+        showPercent,
+        reduceHistoryValue
       );
   }
 };
@@ -101,6 +103,7 @@ const Chart = ({
   setValues,
   showPercent = true,
   showRoseChart = false,
+  reduceHistoryValue = true,
 }) => {
   const [echartsReactRef, setEchartsReactRef] = useState();
   if (transform) {
@@ -130,7 +133,8 @@ const Chart = ({
     dataZoom,
     history,
     showPercent,
-    showRoseChart
+    showRoseChart,
+    reduceHistoryValue
   );
   const onEvents = {
     click: (e) => {
