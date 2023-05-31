@@ -15,13 +15,20 @@ from models.answer import Answer
 from models.history import History, HistoryDict
 from models.data import Data
 from typing import List
-from source.main_config import MONITORING_FORM
-from source.main_config import QuestionConfig
+from source.main_config import (
+    MONITORING_FORM, QuestionConfig,
+    MONITORING_ROUND
+)
+from utils.mailer import send_error_email
+from utils.i18n import ValidationText
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 year_conducted_qid = QuestionConfig.year_conducted.value
 school_information_qid = QuestionConfig.school_information.value
+
+# Error
+error = []
 
 
 def delete_current_data_monitoring(
@@ -29,7 +36,7 @@ def delete_current_data_monitoring(
     data: int,
     lh: List[HistoryDict],
 ) -> None:
-    errors = []
+    delete_error = []
     """
     get the last history as a replacement for current data monitoring
     """
@@ -40,10 +47,10 @@ def delete_current_data_monitoring(
                     session=session, data=data, history=history
                 )
         except exc.IntegrityError:
-            errors.push(history)
+            delete_error.push(history)
     session.commit()
-    if len(errors):
-        for err in errors:
+    if len(delete_error):
+        for err in delete_error:
             print(f"Error | Delete Datapoint History: {err.id}")
     else:
         print(f"Success | Delete Datapoint: {data}")
@@ -80,7 +87,11 @@ def deleted_data_sync(session: Session, data: list) -> None:
                     print(f"Success| Delete Datapoint: {dp.id}")
 
 
-def data_sync(token: dict, session: Session, sync_data: dict):
+def data_sync(
+    token: dict,
+    session: Session,
+    sync_data: dict
+):
     TESTING = os.environ.get("TESTING")
     # TODO:: Support other changes from FLOW API
     print("------------------------------------------")
@@ -89,10 +100,8 @@ def data_sync(token: dict, session: Session, sync_data: dict):
     deleted_items = changes.get("formInstanceDeleted")
     if len(deleted_items):
         deleted_data_sync(session=session, data=deleted_items)
+    # next sync URL
     next_sync_url = sync_data.get("nextSyncUrl")
-    # save next sync URL
-    if next_sync_url:
-        crud_sync.add_sync(session=session, url=next_sync_url)
     # manage deleted datapoint
     if changes.get("dataPointDeleted"):
         deleted_data_ids = [
@@ -105,6 +114,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
     formInstances = changes.get("formInstanceChanged")
     formInstances.sort(key=lambda fi: fi["createdAt"], reverse=False)
     for fi in formInstances:
+        # data point loop
         form = crud_form.get_form_by_id(session=session, id=fi.get("formId"))
         if not form:
             continue
@@ -115,6 +125,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
         geoVal = None
         year_conducted = None
         school_information = None
+        is_error = False  # found incorrect data then skip seed/sync
 
         # check if monitoring datapoint exist
         # form.registration form None by default
@@ -128,6 +139,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
         updated_data = crud_data.get_data_by_id(session=session, id=data_id)
         # fetching answers value into answer model
         for key, value in fi.get("responses").items():
+            # response / answer loop
             for val in value:
                 for kval, aval in val.items():
                     # info: kval = question id
@@ -139,6 +151,20 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                     if not question:
                         print(f"{kval}: 404 not found")
                         continue
+                    # check for incorrect monitoring round
+                    monitoring_answer = 0
+                    if qid == QuestionConfig.year_conducted.value:
+                        monitoring_answer = int(aval[0].get("text"))
+                    if monitoring_answer > MONITORING_ROUND:
+                        desc = ValidationText.incorrect_monitoring_round.value
+                        error.append({
+                            "instance_id": data_id,
+                            "answer": monitoring_answer,
+                            "type": desc
+                        })
+                        is_error = True
+                        continue
+                    # EOL check for incorrect monitoring round
                     if question.type == QuestionType.geo:
                         geoVal = [aval.get("lat"), aval.get("long")]
                     # create answer
@@ -273,11 +299,33 @@ def data_sync(token: dict, session: Session, sync_data: dict):
 
                         # custom
                         if year_conducted_qid and year_conducted_qid == qid:
-                            year_conducted = answer.options[0]
+                            year_conducted = int(answer.options[0])
                         if school_information_qid and \
                                 school_information_qid == qid:
                             school_information = answer.options
                         # EOL custom
+
+        # check datapoint with same school and monitoring round
+        check_same_school_and_monitoring = None
+        if not updated_data and year_conducted:
+            check_same_school_and_monitoring = crud_data.get_data_by_school(
+                session=session,
+                schools=school_information,
+                year_conducted=year_conducted)
+        if check_same_school_and_monitoring:
+            school_answer = "|".join(school_information)
+            desc = ValidationText.school_monitoring_exist.value
+            error.append({
+                "instance_id": data_id,
+                "answer": f"{school_answer} - {year_conducted}",
+                "description": desc
+            })
+            is_error = True
+        # EOL check datapoint with same school and monitoring round
+
+        if is_error:
+            # skip seed/sync when error
+            continue
 
         # check for current datapoint
         current_datapoint = True
@@ -293,7 +341,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
         if not updated_data and not datapoint_exist or answers:
             # add new datapoint
             data = crud_data.add_data(
-                id=fi.get("id"),
+                id=data_id,
                 session=session,
                 datapoint_id=datapoint_id,
                 identifier=fi.get("identifier"),
@@ -328,9 +376,21 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             print(f"Sync | Update Datapoint: {updated.id}")
             continue
     print("------------------------------------------")
+    # save next sync URL
+    if next_sync_url:
+        crud_sync.add_sync(session=session, url=next_sync_url)
     # call next sync URL
-    if TESTING:
-        return True
-    sync_data = flow_auth.get_data(url=next_sync_url, token=token)
+    sync_data = []
+    if not TESTING:
+        sync_data = flow_auth.get_data(url=next_sync_url, token=token)
     if sync_data:
-        data_sync(token=token, session=session, sync_data=sync_data)
+        data_sync(
+            token=token,
+            session=session,
+            sync_data=sync_data,
+        )
+    if not error:
+        return None
+    # send error after sync completed
+    send_error_email(error=error, filename="error-sync")
+    return error

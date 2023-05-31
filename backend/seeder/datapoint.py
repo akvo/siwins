@@ -13,14 +13,21 @@ from models.answer import Answer
 from models.history import History
 from models.form import Form
 import flow.auth as flow_auth
-from source.main_config import DATAPOINT_PATH, MONITORING_FORM
-from source.main_config import QuestionConfig
+from source.main_config import (
+    DATAPOINT_PATH, MONITORING_FORM,
+    QuestionConfig, MONITORING_ROUND
+)
+from utils.mailer import send_error_email
+from utils.i18n import ValidationText
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 year_conducted_qid = QuestionConfig.year_conducted.value
 school_information_qid = QuestionConfig.school_information.value
+
+# Error
+error = []
 
 
 def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
@@ -38,12 +45,15 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
         geoVal = None
         year_conducted = None
         school_information = None
+        is_error = False  # found incorrect data then skip seed/sync
+
         # check if first monitoring datapoint exist
         datapoint_exist = False
         if monitoring and MONITORING_FORM:
             datapoint_exist = crud_data.get_data_by_identifier(
                 session=session, identifier=fi.get("identifier"), form=form_id
             )
+
         # fetching answers value into answer model
         for key, value in fi.get("responses").items():
             for val in value:
@@ -57,6 +67,20 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                     if not question:
                         # print(f"{kval}: 404 not found")
                         continue
+                    # check for incorrect monitoring round
+                    monitoring_answer = 0
+                    if qid == QuestionConfig.year_conducted.value:
+                        monitoring_answer = int(aval[0].get("text"))
+                    if monitoring_answer > MONITORING_ROUND:
+                        desc = ValidationText.incorrect_monitoring_round.value
+                        error.append({
+                            "instance_id": data_id,
+                            "answer": monitoring_answer,
+                            "description": desc
+                        })
+                        is_error = True
+                        continue
+                    # EOL check for incorrect monitoring round
                     if question.type == QuestionType.geo or question.meta_geo:
                         geoVal = [aval.get("lat"), aval.get("long")]
                     answer = Answer(
@@ -109,11 +133,33 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
 
                     # custom
                     if year_conducted_qid and year_conducted_qid == qid:
-                        year_conducted = answer.options[0]
+                        year_conducted = int(answer.options[0])
                     if school_information_qid and \
                             school_information_qid == qid:
                         school_information = answer.options
                     # EOL custom
+
+        # check datapoint with same school and monitoring round
+        check_same_school_and_monitoring = None
+        if year_conducted:
+            check_same_school_and_monitoring = crud_data.get_data_by_school(
+                session=session,
+                schools=school_information,
+                year_conducted=year_conducted)
+        if check_same_school_and_monitoring:
+            school_answer = "|".join(school_information)
+            desc = ValidationText.school_monitoring_exist.value
+            error.append({
+                "instance_id": data_id,
+                "answer": f"{school_answer} - {year_conducted}",
+                "description": desc
+            })
+            is_error = True
+        # EOL check datapoint with same school and monitoring round
+
+        if is_error:
+            # skip seed/sync when error
+            continue
 
         # check for current datapoint
         current_datapoint = True
@@ -150,6 +196,9 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
         data = flow_auth.get_data(url=nextPageUrl, token=token)
         if len(data.get("formInstances")):
             seed_datapoint(data=data)
+    if error:
+        # send error after sync completed
+        send_error_email(error=error, filename="error-seed")
     print("------------------------------------------")
     print(f"Datapoints for {form_id}: seed complete")
     print("------------------------------------------")

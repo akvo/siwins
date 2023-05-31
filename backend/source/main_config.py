@@ -23,11 +23,15 @@ TESTING_CASCADE_FILE = "cascade-654850917-v1.sqlite"
 # MONITORING_FORM value to True
 MONITORING_FORM = False
 
+# to handle incorrect monitoring round data
+MONITORING_ROUND = 2023
+
 TMP_PATH = "./tmp"
 FAKE_STORAGE_PATH = f"{TMP_PATH}/fake-storage"
 LOG_PATH = f"{TMP_PATH}/log"
 DOWNLOAD_PATH = f"{TMP_PATH}/download"
 TEST_PATH = f"{TMP_PATH}/test"
+ERROR_PATH = f"{TMP_PATH}/error"
 
 
 class QuestionConfig(enum.Enum):

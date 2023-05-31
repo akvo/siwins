@@ -18,6 +18,26 @@ export AUTH0_USER="string"
 export AUTH0_PWD="string"
 ```
 
+##### Storage Service
+
+When running the test, any upload and download activities will not uploaded directly as Storage object (offered by Google Cloud). It stored inside **./backend/tmp/fake-storage**
+
+Environment Setup:
+
+```
+export GOOGLE_APPLICATION_CREDENTIALS=path_to_service_account.json
+```
+
+##### Email Service
+
+To use the Mailjet Email API, you need to create a Mailjet account, then retrieve your API and Secret keys. They will be used for seed/sync notification purposes.
+
+```
+export MAILJET_SECRET="string"
+export MAILJET_APIKEY="string"
+export NOTIFICATION_RECIPIENTS="email1,email2"
+```
+
 #### 2. Start the App
 
 Now you have all the required environment ready, then run the App using:

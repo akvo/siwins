@@ -11,6 +11,7 @@ bucket_name = "siwins"
 class StorageFolder(enum.Enum):
     download = "download"
     test = "test"
+    error = "error"
 
 
 def upload(file: str, folder: str, filename: str = None, public: bool = False):

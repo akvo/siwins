@@ -27,6 +27,12 @@ services:
       - ./backend:/app:delegated
     environment:
       - DATABASE_URL=postgresql://siwins:password@db:5432/siwins
+      - AUTH0_CLIENT=$AUTH0_CLIENT
+      - AUTH0_USER=$AUTH0_USER
+      - AUTH0_PWD=$AUTH0_PWD
+      - MAILJET_SECRET=${MAILJET_SECRET}
+      - MAILJET_APIKEY=${MAILJET_APIKEY}
+      - NOTIFICATION_RECIPIENTS={$NOTIFICATION_RECIPIENTS}
     depends_on:
       db:
         condition: service_healthy
