@@ -110,7 +110,7 @@ const AnswerTabContent = ({
     if (render !== "chart") {
       return {};
     }
-    const res = value.map((v, vi) => {
+    const res = value.map((v) => {
       return {
         ...v,
         stack: [v],
@@ -132,7 +132,7 @@ const AnswerTabContent = ({
           const { data } = res;
           const transform = data
             .map((d) => {
-              return d.value.map((v, vi) => {
+              return d.value.map((v) => {
                 return {
                   ...v,
                   stack: [v],
