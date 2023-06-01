@@ -11,14 +11,15 @@ from db.crud_jmp import (
     get_jmp_config
 )
 from db.crud_question_group import get_question_group_by_id
+from db.crud_data import get_all_data
 from db.connection import get_session
 from models.question import (
     QuestionFormattedWithAttributes, QuestionAttributes,
     QuestionType
 )
 from models.answer import Answer
-from models.history import History
-from source.main_config import JMPCategoriesConfig
+from models.data import Data
+from source.main_config import ResponseGrouperCustomConfig
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -53,7 +54,7 @@ def get(
             name_id = name.split(" ")
             name_id = "_".join(name_id).lower()
             # get jmp categories group
-            jmp_categories_config = JMPCategoriesConfig[name_id].value
+            jmp_categories_config = ResponseGrouperCustomConfig[name_id].value
             jmp_group = jmp_categories_config.get("question_group") or None
             jmp_group_name = "JMP Indicator"
             jmp_group_order = 0
@@ -98,12 +99,18 @@ def get(
             if q.type != QuestionType.number:
                 continue
             number_qids.append(q.id)
+        # only number answers from current True datapoints
+        current_data_ids = get_all_data(
+            session=session,
+            columns=[Data.id],
+            current=True
+        )
+        current_data_ids = [c.id for c in current_data_ids]
         answers = session.query(Answer).filter(
-            Answer.question.in_(number_qids)).all()
-        histories = session.query(History).filter(
-            History.question.in_(number_qids)).all()
+            Answer.data.in_(current_data_ids)
+        ).filter(Answer.question.in_(number_qids)).all()
         answer_values = {}
-        for a in answers + histories:
+        for a in answers:
             key = a.question
             if key not in answer_values:
                 answer_values.update({key: [a.value]})
@@ -115,7 +122,9 @@ def get(
         question.sort(key=lambda x: (x.get("qg_order"), x.get("q_oder")))
         for q in question:
             key = q.get('id')
-            # nadd umber value to question
+            if q.get("type") != "number":
+                continue
+            # add umber value to question
             numbers = []
             numb_val = answer_values.get(int(key)) or []
             count_numb = {x: numb_val.count(x) for x in numb_val}

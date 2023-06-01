@@ -148,6 +148,10 @@ const Map = ({ searchValue }) => {
     const { type, option } = selectedQuestion;
     if (type === "number") {
       const { minNumber, maxNumber } = barChartValues;
+      if (!maxNumber && minNumber === maxNumber) {
+        // do not filter when first load
+        return data;
+      }
       return data.filter((d) => {
         const { value } = d.answer;
         if (value >= minNumber && value <= maxNumber) {
