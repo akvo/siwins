@@ -129,8 +129,8 @@ def get_answer_history(
         )
         prov_value_avg = prov_value_sum / prov_count_sum
         # provide value by aggregate param
-        national_value = national_value_avg
-        prov_value = prov_value_avg
+        national_value = round(national_value_avg, 2)
+        prov_value = round(prov_value_avg, 2)
         if aggregate.value == MathOperation.sum.value:
             national_value = national_value_sum
             prov_value = prov_value_sum
