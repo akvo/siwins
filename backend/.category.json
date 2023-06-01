@@ -306,5 +306,41 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Toilet Category",
+    "form": 647170919,
+    "labels": [
+      {
+        "name": "Improved",
+        "order": 1,
+        "color": "#51B453"
+      },
+      {
+        "name": "Unimproved",
+        "order": 2,
+        "color": "#FEBC11"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Improved",
+        "questions": [
+          {
+            "id": 649140928,
+            "text": "What type of student toilets/latrines are at the school? (check one - most common)",
+            "options": [
+              "Flush toilet",
+              "Pour flush toilet",
+              "Pit toilet with slab",
+              "Composting toilet"
+            ],
+            "else": {
+              "name": "Unimproved"
+            }
+          }
+        ]
+      }
+    ]
   }
 ]
