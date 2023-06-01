@@ -62,3 +62,18 @@ class CascadeNames(enum.Enum):
         "school_name": "School Name",
         "school_code": "School Code"
     }
+
+
+class JMPCategoriesConfig(enum.Enum):
+    water = {
+        "question_group": None
+    }
+    sanitation = {
+        "question_group": None
+    }
+    hygiene = {
+        "question_group": None
+    }
+    toilet_category = {
+        "question_group": 7
+    }
