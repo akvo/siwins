@@ -50,6 +50,7 @@ const Dashboard = () => {
     });
   };
 
+  // jmp chart data
   useEffect(() => {
     const chartList = chartConfig
       .find((item) => item.component === "JMP-CHARTS")
@@ -73,6 +74,22 @@ const Dashboard = () => {
       setPageLoading(false);
     });
   }, [advanceSearchValue, provinceFilterValue]);
+
+  // generic bar chart
+  useEffect(() => {
+    if (!selectedIndicator) {
+      setBarChartData([]);
+    }
+    let url = `chart/generic-bar/${selectedIndicator}`;
+    url = generateAdvanceFilterURL(advanceSearchValue, url);
+    url = generateFilterURL(provinceFilterValue, url);
+    api
+      .get(url)
+      .then((res) => {
+        setBarChartData(res.data);
+      })
+      .catch((e) => console.error(e));
+  }, [selectedIndicator, advanceSearchValue, provinceFilterValue]);
 
   const renderColumn = (cfg, index) => {
     return (
@@ -99,17 +116,6 @@ const Dashboard = () => {
     setSelectedIndicator(val);
     const find = barChartQuestions.find((f) => f.id === val);
     setChartTitle(find?.display_name ? find?.display_name : find?.name);
-    if (val) {
-      const url = `chart/generic-bar/${val}`;
-      api
-        .get(url)
-        .then((res) => {
-          setBarChartData(res.data);
-        })
-        .catch((e) => console.error(e));
-    } else {
-      setBarChartData([]);
-    }
   };
 
   return (
