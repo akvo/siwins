@@ -198,6 +198,9 @@ def get_maps(
     if "jmp" in str(indicator):
         # get JMP status
         jmp_name = indicator.split("-")[1]
+        if "_" in jmp_name:
+            jmp_name = jmp_name.split("_")
+            jmp_name = " ".join(jmp_name)
         jmp_levels = get_jmp_school_detail_popup(
             session=session, data_ids=data_ids,
             name=jmp_name, raw=True)

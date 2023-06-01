@@ -10,11 +10,15 @@ from db.crud_question import (
 from db.crud_jmp import (
     get_jmp_config
 )
+from db.crud_question_group import get_question_group_by_id
 from db.connection import get_session
-from models.question import QuestionFormattedWithAttributes
-from models.question import QuestionAttributes, QuestionType
+from models.question import (
+    QuestionFormattedWithAttributes, QuestionAttributes,
+    QuestionType
+)
 from models.answer import Answer
 from models.history import History
+from source.main_config import JMPCategoriesConfig
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -34,28 +38,57 @@ def get(
     attribute: Optional[QuestionAttributes] = None,
     session: Session = Depends(get_session)
 ):
+    jmp_categories = []
     questions = []
     # collect all question / with attributes
     if not attribute:
         question = get_question(session=session)
         question = [q.formatted_with_attributes for q in question]
     if attribute == QuestionAttributes.indicator:
+        # add jmp categories into indicator questions
         jmp_configs = get_jmp_config()
-        for jc in jmp_configs:
+        for jci, jc in enumerate(jmp_configs):
             name = jc.get("name")
             labels = jc.get("labels")
+            name_id = name.split(" ")
+            name_id = "_".join(name_id).lower()
+            # get jmp categories group
+            jmp_categories_config = JMPCategoriesConfig[name_id].value
+            jmp_group = jmp_categories_config.get("question_group") or None
+            jmp_group_name = "JMP Indicator"
+            jmp_group_order = 0
+            if jmp_group:
+                # get question group name
+                group = get_question_group_by_id(
+                    session=session, id=jmp_group
+                )
+                group = group.only_name
+                jmp_group_name = (
+                    group["name"]
+                    if group else jmp_group_name
+                )
+                jmp_group_order = (
+                    group["order"]
+                    if group else jmp_group_name
+                )
             for lbi, lb in enumerate(labels):
                 lb["order"] = lbi + 1
                 lb["description"] = None
-            questions.append({
-                "id": f"jmp-{name.lower() if name else lbi}",
-                "group": "JMP Indicator",
+            # generate jmp categories to show as indicator
+            jmp_categories.append({
+                "id": f"jmp-{name_id if name else jci}",
+                "group": jmp_group_name,
                 "name": name,
                 "type": "jmp",
                 "attributes": ["indicator"],
                 "option": labels,
-                "number": []
+                "number": [],
+                "qg_order": jmp_group_order,
+                "q_order": 0 if jmp_group else jci
             })
+        # EOL add jmp categories into indicator questions
+    # append jmp categories into questions
+    questions += jmp_categories
     if attribute:
         question = get_question_by_attributes(
             session=session, attribute=attribute.value)
@@ -90,4 +123,8 @@ def get(
                 numbers.append({"value": val, "count": count})
             numbers.sort(key=lambda x: x.get('value'))
             q['number'] = numbers
-    return questions + question
+    # concat jmp categories indicator with question
+    res = questions + question
+    # reorder after concat
+    res.sort(key=lambda x: (x.get("qg_order"), x.get("q_oder")))
+    return res
