@@ -132,6 +132,7 @@ const Bar = (
               option: e,
               horizontal: horizontal,
               suffix: showPercent ? "%" : "",
+              showPercent: showPercent,
             }),
         },
         myDownload: {
@@ -139,7 +140,8 @@ const Bar = (
           title: "Download Excel",
           icon: Icons.download,
           onclick: (e) => {
-            downloadToExcel(e, excelFile);
+            const suffix = showPercent ? "%" : "";
+            downloadToExcel(e, excelFile, chartTitle, suffix, showPercent);
           },
         },
       },

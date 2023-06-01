@@ -186,7 +186,14 @@ const getDataLineColumns = (series, data, category) => {
 };
 
 export const optionToContent = (
-  { series, xAxis, option, category = "category", suffix = "" },
+  {
+    series,
+    xAxis,
+    option,
+    category = "category",
+    suffix = "",
+    showPercent = false,
+  },
   chartType = "NORMAL"
 ) => {
   const { columns, data } =
@@ -208,8 +215,15 @@ export const optionToContent = (
   data.map((d) => {
     table += `<tr>`;
     columns.map((s) => {
+      const showCount = !isNaN(d?.count) && showPercent && s === "value";
       table += `<td class="ant-table-cell">`;
+      if (showCount) {
+        table += `${d.count} (`;
+      }
       table += s === "value" ? `${d[s]}${suffix}` : upperFirst(d[s]);
+      if (showCount) {
+        table += `)`;
+      }
       table += `</td">`;
     });
     table += `</tr>`;
@@ -222,6 +236,8 @@ export const downloadToExcel = (
   { option, category = "category" },
   excelFile = "",
   chartTitle = "",
+  suffix = "",
+  showPercent = false,
   chartType = "NORMAL"
 ) => {
   const title = excelFile.length
@@ -247,7 +263,16 @@ export const downloadToExcel = (
     dataIndex: x,
   }));
 
-  const dataSource = data.map((x) =>
+  // add showCount and percent suffix
+  const transformData = data.map((d) => {
+    const showCount = !isNaN(d?.count) && showPercent;
+    return {
+      ...d,
+      value: showCount ? `${d.count} (${d.value}${suffix})` : d.value,
+    };
+  });
+
+  const dataSource = transformData.map((x) =>
     columns.reduce(
       (prev, current) => ({ ...prev, [current]: upperFirst(x[current]) }),
       {}
