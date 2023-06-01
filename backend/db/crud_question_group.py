@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from sqlalchemy.orm import Session
 from models.question_group import QuestionGroup, QuestionGroupDict
 # from sqlalchemy import and_
@@ -43,6 +43,15 @@ def add_question_group(
     session.flush()
     session.refresh(question_group)
     return question_group
+
+
+def get_question_group_by_id(
+    session: Session,
+    id: int,
+    columns: Optional[List] = None
+):
+    columns = columns if columns else [QuestionGroup]
+    return session.query(*columns).filter(QuestionGroup.id == id).first()
 
 
 # def update_question_group(
