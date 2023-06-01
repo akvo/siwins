@@ -348,6 +348,13 @@ def get_data_detail_popup_by_data_id(
         year_conducted=data.year_conducted)
     # get JMP status
     configs = get_jmp_config()
+    # jmp category
+    category_type_jmp = list(filter(
+        lambda x: x["category_type"] == "jmp",
+        configs
+    ))
+    category_type_jmp = [c["name"].lower() for c in category_type_jmp]
+    #
     jmp_levels = []
     histories = [data.get_data_id_and_year_conducted]
     histories += [hd.get_data_id_and_year_conducted for hd in history_data]
@@ -356,6 +363,9 @@ def get_data_detail_popup_by_data_id(
             session=session, data_ids=[h.get('id')])
         for lev in jmp_check:
             category = lev.get('category')
+            # skip if response grouper not in JMP category
+            if category.lower() not in category_type_jmp:
+                continue
             level = lev.get('options')[0].get('name')
             labels = get_jmp_labels(configs=configs, name=category)
             find_label = next(

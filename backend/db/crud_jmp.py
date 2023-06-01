@@ -12,7 +12,10 @@ from AkvoResponseGrouper.utils import (
     group_by_category_output,
 )
 from models.data import Data
-from source.main_config import CascadeLevels, SchoolInformationEnum
+from source.main_config import (
+    CascadeLevels, SchoolInformationEnum,
+    ResponseGrouperCustomConfig
+)
 
 province_enum = SchoolInformationEnum.province.value
 province_level = CascadeLevels.school_information.value[province_enum]
@@ -124,12 +127,25 @@ def get_jmp_overview(
         return data
 
 
-def get_jmp_config() -> list:
+def get_jmp_config():
     try:
         with open("./.category.json", "r") as categories:
             json_config = json.load(categories)
     except Exception:
         json_config = []
+    # generate name_id from category name
+    for jc in json_config:
+        # add custom name
+        name = jc.get("name")
+        name_id = name.split(" ")
+        name_id = "_".join(name_id).lower()
+        jc["name_id"] = name_id
+        # add question group
+        custom_config = ResponseGrouperCustomConfig[name_id].value
+        jc["question_group"] = custom_config.get(
+            "question_group") or None
+        jc["category_type"] = custom_config.get(
+            "category_type") or None
     configs = json_config
     return configs
 

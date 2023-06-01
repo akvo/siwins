@@ -19,7 +19,6 @@ from models.question import (
 )
 from models.answer import Answer
 from models.data import Data
-from source.main_config import ResponseGrouperCustomConfig
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -51,12 +50,11 @@ def get(
         for jci, jc in enumerate(jmp_configs):
             name = jc.get("name")
             labels = jc.get("labels")
-            name_id = name.split(" ")
-            name_id = "_".join(name_id).lower()
-            # get jmp categories group
-            jmp_categories_config = ResponseGrouperCustomConfig[name_id].value
-            jmp_group = jmp_categories_config.get("question_group") or None
-            jmp_group_name = "JMP Indicator"
+            name_id = jc.get("name_id")
+            jmp_group = jc.get("question_group")
+            category_type = jc.get("category_type")
+            jmp_group_name = "JMP Indicator" \
+                if category_type == "jmp" else "Untitled Group"
             jmp_group_order = 0
             if jmp_group:
                 # get question group name

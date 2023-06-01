@@ -64,16 +64,20 @@ class CascadeNames(enum.Enum):
     }
 
 
-class JMPCategoriesConfig(enum.Enum):
+class ResponseGrouperCustomConfig(enum.Enum):
     water = {
-        "question_group": None
+        "question_group": None,
+        "category_type": "jmp"
     }
     sanitation = {
-        "question_group": None
+        "question_group": None,
+        "category_type": "jmp"
     }
     hygiene = {
-        "question_group": None
+        "question_group": None,
+        "category_type": "jmp"
     }
     toilet_category = {
-        "question_group": 7
+        "question_group": 7,
+        "category_type": None
     }
