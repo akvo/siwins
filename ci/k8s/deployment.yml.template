@@ -81,16 +81,6 @@ spec:
               mountPath: /secrets/credentials.json
               subPath: siwins-service-account.json
               readOnly: true
-          readinessProbe:
-            httpGet:
-              path: /health-check
-              port: 5000
-            initialDelaySeconds: 30
-          livenessProbe:
-            httpGet:
-              path: /health-check
-              port: 5000
-            initialDelaySeconds: 30
           resources:
             requests:
               cpu: "100m"
