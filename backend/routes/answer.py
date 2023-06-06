@@ -112,7 +112,10 @@ def get_answer_history(
         national_count_sum = sum(
             [p["count"] for p in find_national_answers]
         )
-        national_value_avg = national_value_sum / national_count_sum
+        national_value_avg = (
+            national_value_sum / national_count_sum
+            if national_count_sum else 0
+        )
         # generate province data
         find_province_answers = list(filter(
             lambda x: (
@@ -127,7 +130,10 @@ def get_answer_history(
         prov_count_sum = sum(
             [p["count"] for p in find_province_answers]
         )
-        prov_value_avg = prov_value_sum / prov_count_sum
+        prov_value_avg = (
+            prov_value_sum / prov_count_sum
+            if prov_count_sum else 0
+        )
         # provide value by aggregate param
         national_value = round(national_value_avg, 2)
         prov_value = round(prov_value_avg, 2)
