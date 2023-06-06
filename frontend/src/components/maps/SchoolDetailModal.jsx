@@ -331,6 +331,7 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
       footer={null}
       width="900px"
       onCancel={() => setSelectedDatapoint({})}
+      destroyOnClose={true}
     >
       <div className="school-detail-modal-body">
         {loading ? (
