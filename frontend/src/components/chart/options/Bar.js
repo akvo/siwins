@@ -43,12 +43,13 @@ const Bar = (
   if (history) {
     result = [
       ...data
-        .reduce((c, { year, name, value, color }) => {
+        .reduce((c, { year, name, value, color, count }) => {
           if (!c.has(year)) {
             c.set(year, { year, name: year, type: "bar", data: [] });
           }
           c.get(year).data.push({
             name: name,
+            count: count,
             value: value,
             itemStyle: {
               color: color,
@@ -107,9 +108,12 @@ const Bar = (
     tooltip: {
       show: true,
       trigger: "item",
-      // formatter: '<div class="no-border">{b}</div>',
       padding: 5,
       backgroundColor: "#f2f2f2",
+      formatter: (s) => {
+        const val = showPercent ? `${s.data.count} (${s.value}%)` : s.value;
+        return `${s.marker} <b>${s.name}</b>:       ${val}`;
+      },
       ...TextStyle,
     },
     toolbox: {

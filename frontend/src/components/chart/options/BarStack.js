@@ -22,14 +22,18 @@ const tableFormatter = (e) => {
     e?.length || 1
   }>${e[0]?.axisValueLabel || "-"}</th></tr></thead><tbody>`;
   e.map((eI) => {
+    const data = eI.data;
     table += "<tr>";
     table += '<td style="width: 18px;">' + eI.marker + "</td>";
     table += '<td><span style="font-weight:500;">';
     table += upperFirst(eI.seriesName);
-    table += `(${eI.data?.year})`;
+    table += ` (${eI.data?.year})`;
     table += "</span></td>";
     table += '<td style="width: 80px; text-align: right; font-weight: 500;">';
     table += eI.value + "%";
+    if (!isNaN(data?.count)) {
+      table += ` (${data.count})`;
+    }
     table += "</td>";
     table += "</tr>";
   });
@@ -64,10 +68,13 @@ const BarStack = (
   const series = stacked.map((s) => {
     const temp = data.map((d) => {
       const vals = d.stack?.filter((c) => c.name === s.name);
+      const findStack = d.stack?.find(
+        (c) => c.name === s.name && c.year === s.year
+      );
       return {
         name: d.name,
-        value: d.stack?.find((c) => c.name === s.name && c.year === s.year)
-          ?.value,
+        value: findStack?.value,
+        count: findStack?.count || 0,
         year: s.year ? s.year : "",
         itemStyle: {
           color: vals[0]?.color || s.color,
@@ -148,14 +155,19 @@ const BarStack = (
         dataView: {
           ...DataView,
           optionToContent: (e) =>
-            optionToContent({ option: e, horizontal: horizontal }),
+            optionToContent({
+              option: e,
+              horizontal: horizontal,
+              suffix: "%",
+              showPercent: true,
+            }),
         },
         myDownload: {
           show: true,
           title: "Download Excel",
           icon: Icons.download,
           onclick: (e) => {
-            downloadToExcel(e, excelFile);
+            downloadToExcel(e, excelFile, false, "%", true);
           },
         },
       },

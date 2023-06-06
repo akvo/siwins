@@ -70,6 +70,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
                 code: null,
                 translations: null,
                 value: c.percent,
+                count: c.count,
                 year: item.year,
               };
             });

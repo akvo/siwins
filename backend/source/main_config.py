@@ -81,3 +81,7 @@ class ResponseGrouperCustomConfig(enum.Enum):
         "question_group": 7,
         "category_type": None
     }
+
+    @classmethod
+    def to_dict(cls):
+        return [{**member.value, 'name': member.name} for member in cls]

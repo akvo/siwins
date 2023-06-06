@@ -145,21 +145,27 @@ export const Icons = {
 
 const defaultColumns = ["name", "value"];
 
-const getDataColumns = (option, category) => {
+const getDataColumns = (option, category, suffix, showPercent) => {
   const { series, xAxis, yAxis } = option;
   let columns = defaultColumns;
   let data = series?.[0]?.data;
   if (!data) {
-    return "NO Data";
+    return "No Data";
   }
   if (series?.[0]?.stack) {
     data = xAxis?.[0]?.data || yAxis?.[0]?.data;
     data = data?.map((x, xi) => {
       return series.reduce(
         (prev, current) => {
+          const count = current.data[xi]?.count;
+          const name = `${current.name}(${current.stack})`;
+          let val = current.data[xi].value;
+          if (showPercent && !isNaN(count)) {
+            val = `${val}${suffix} (${count})`;
+          }
           return {
             ...prev,
-            [`${current.name}(${current.stack})`]: current.data[xi].value,
+            [name]: val,
           };
         },
         { [category]: x }
@@ -199,7 +205,7 @@ export const optionToContent = (
   const { columns, data } =
     chartType === "LINE"
       ? getDataLineColumns(series, xAxis?.[0]?.data || [], category)
-      : getDataColumns(option, category);
+      : getDataColumns(option, category, suffix, showPercent);
 
   let table = `<div class="ant-table ant-table-small ant-table-bordered ant-table-fixed-header ant-table-fixed-column data-view">`;
   table += `<div class="ant-table-container">`;
@@ -255,7 +261,7 @@ export const downloadToExcel = (
           option.xAxis?.[0]?.data || [],
           category
         )
-      : getDataColumns(option, category);
+      : getDataColumns(option, category, suffix, showPercent);
 
   const tableColumns = columns.map((x) => ({
     title: x,
