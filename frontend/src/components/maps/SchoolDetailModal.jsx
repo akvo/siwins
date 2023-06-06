@@ -105,6 +105,7 @@ const AnswerTabContent = ({
   const [chartValues, setChartValues] = useState([]); //history
   const [showHistory, setShowHistory] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isHistoryLoaded, setIsHistoryLoaded] = useState(false);
 
   const currentChartValues = useMemo(() => {
     if (render !== "chart") {
@@ -123,7 +124,7 @@ const AnswerTabContent = ({
   }, [render, value, history, year]);
 
   useEffect(() => {
-    if (showHistory && isEmpty(chartValues)) {
+    if (showHistory && !isHistoryLoaded) {
       setLoading(true);
       const url = `answer/history/${dataId}?question_id=${question_id}`;
       api
@@ -144,13 +145,14 @@ const AnswerTabContent = ({
             })
             .flat();
           setChartValues(transform);
+          setIsHistoryLoaded(true);
         })
         .catch((e) => console.error(e))
         .finally(() => {
           setLoading(false);
         });
     }
-  }, [showHistory, chartValues, dataId, question_id]);
+  }, [showHistory, isHistoryLoaded, dataId, question_id]);
 
   const handleOnChangeSwitch = (val) => {
     setShowHistory(val ? question_id : false);
