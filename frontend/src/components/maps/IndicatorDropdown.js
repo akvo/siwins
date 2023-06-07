@@ -79,8 +79,8 @@ const RenderQuestionOption = ({
   selectedQuestion,
   handleOnChangeQuestionOption,
   selectedOption,
-  setValues,
-  barChartValues,
+  // setValues,
+  // barChartValues,
 }) => {
   const [showInfo, setShowInfo] = useState(false);
   const [value, setValue] = useState("");
@@ -141,25 +141,26 @@ const RenderQuestionOption = ({
             wrapper={false}
             horizontal={false}
             loading={loading}
-            dataZoom={[
-              {
-                type: "inside",
-                realtime: false,
-                startValue: barChartValues.startValue,
-                endValue: barChartValues.endValue,
-                rangeMode: ["value"],
-              },
-              {
-                type: "slider",
-                realtime: false,
-                startValue: barChartValues.startValue,
-                endValue: barChartValues.endValue,
-                rangeMode: ["value"],
-              },
-            ]}
+            // dataZoom={[
+            //   {
+            //     type: "inside",
+            //     realtime: false,
+            //     startValue: barChartValues.startValue,
+            //     endValue: barChartValues.endValue,
+            //     rangeMode: ["value"],
+            //   },
+            //   {
+            //     type: "slider",
+            //     realtime: false,
+            //     startValue: barChartValues.startValue,
+            //     endValue: barChartValues.endValue,
+            //     rangeMode: ["value"],
+            //   },
+            // ]}
+            // setValues={setValues}
             grid={{
               top: 70,
-              bottom: 100,
+              bottom: 60,
               left: 50,
               right: 30,
               show: true,
@@ -168,7 +169,6 @@ const RenderQuestionOption = ({
                 color: "#222",
               },
             }}
-            setValues={setValues}
             extra={{
               axisTitle: {
                 x: selectedQuestion?.name || "",
