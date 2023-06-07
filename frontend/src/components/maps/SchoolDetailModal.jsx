@@ -123,6 +123,13 @@ const AnswerTabContent = ({
     return res;
   }, [render, value, history, year]);
 
+  const chartData = useMemo(() => {
+    if (showHistory) {
+      return [...chartValues, ...currentChartValues];
+    }
+    return currentChartValues;
+  }, [showHistory, currentChartValues, chartValues]);
+
   useEffect(() => {
     if (showHistory && !isHistoryLoaded) {
       setLoading(true);
@@ -199,11 +206,7 @@ const AnswerTabContent = ({
           excelFile={question_name}
           type={"BAR"}
           dataZoom={false}
-          data={
-            showHistory
-              ? [...currentChartValues, ...chartValues]
-              : currentChartValues
-          }
+          data={chartData}
           wrapper={false}
           horizontal={false}
           showPercent={false}
