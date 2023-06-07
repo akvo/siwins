@@ -159,8 +159,8 @@ const RenderQuestionOption = ({
             ]}
             grid={{
               top: 70,
-              bottom: 80,
-              left: 45,
+              bottom: 100,
+              left: 50,
               right: 30,
               show: true,
               containLabel: true,
@@ -169,6 +169,12 @@ const RenderQuestionOption = ({
               },
             }}
             setValues={setValues}
+            extra={{
+              axisTitle: {
+                x: selectedQuestion?.name || "",
+                y: "# of Schools",
+              },
+            }}
           />
         </Col>
       </Row>

@@ -106,13 +106,25 @@ const Line = (
     [horizontal ? "xAxis" : "yAxis"]: {
       type: "value",
       name: yAxisTitle || "",
-      nameTextStyle: { ...TextStyle },
+      nameTextStyle: { ...TextStyle, fontWeight: "normal" },
+      nameLocation: "middle",
+      nameGap: 30,
+      axisLabel: {
+        ...TextStyle,
+        fontWeight: "normal",
+      },
     },
     [horizontal ? "yAxis" : "xAxis"]: {
       type: "category",
       data: labels,
       name: xAxisTitle || "",
-      nameTextStyle: { ...TextStyle },
+      nameTextStyle: { ...TextStyle, fontWeight: "normal" },
+      nameLocation: "middle",
+      nameGap: 35,
+      axisLabel: {
+        ...TextStyle,
+        fontWeight: "normal",
+      },
     },
     dataZoom: isEmpty(dataZoom) ? false : dataZoom,
     series: [
