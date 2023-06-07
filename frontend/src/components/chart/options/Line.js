@@ -65,7 +65,7 @@ const Line = (
         const value = showPercent
           ? `${data?.value}% (${data?.count})`
           : data?.value;
-        return `<div class="no-border">${data?.name}: ${value}</div>`;
+        return `<div class="no-border">${x.marker} ${data?.name}: ${value}</div>`;
       },
       padding: 5,
       backgroundColor: "#f2f2f2",

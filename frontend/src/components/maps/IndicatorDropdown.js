@@ -175,6 +175,10 @@ const RenderQuestionOption = ({
                 y: "# of Schools",
               },
             }}
+            // callbacks={{
+            //   onClick: (e) => setValues({ startValue: e, endValue: e }),
+            // }}
+            showPercent={false}
           />
         </Col>
       </Row>

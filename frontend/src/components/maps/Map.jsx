@@ -272,6 +272,8 @@ const Map = ({ searchValue }) => {
       ...barChartValues,
       startValue: val.startValue,
       endValue: val.endValue,
+      // minNumber: val.startValue,
+      // maxNumber: val.endValue,
       minNumber: selectedQuestion.number[val.startValue]?.value,
       maxNumber: selectedQuestion.number[val.endValue]?.value,
     });
