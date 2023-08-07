@@ -21,8 +21,6 @@ from source.main_config import CLASS_PATH, TOPO_JSON_PATH, FRONTEND_CONFIG_PATH
 TOPO_JSON = open(TOPO_JSON_PATH).read()
 GEO_CONFIG = GeoLevels[CLASS_PATH].value
 MAP_CENTER = GeoCenter[CLASS_PATH].value
-CHART_CONFIG = f"{FRONTEND_CONFIG_PATH}/charts.js"
-CHART_CONFIG = jsmin(open(CHART_CONFIG).read())
 HINT_CONFIG = f"{FRONTEND_CONFIG_PATH}/indicator-hint.json"
 JMP_HINT_CONFIG = f"{FRONTEND_CONFIG_PATH}/jmp-hint.json"
 JMP_CONFIG = f"{FRONTEND_CONFIG_PATH}/dashboard.json"
@@ -56,7 +54,6 @@ MINJS = jsmin(
             DASHBOARD_JSON,
             ";",
             MAP_FILTER_CONFIG,
-            CHART_CONFIG,
         ]
     )
 )
