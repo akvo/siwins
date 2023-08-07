@@ -150,7 +150,6 @@ res_sync_answers = [
     {"question": 630020920, "value": "No"},
     {"question": 630020919, "value": 12.0},
 ]
-
 res_sync_data = [
     {
         "id": 649130936,

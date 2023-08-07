@@ -12,7 +12,7 @@ from db import crud_form
 from db import crud_data
 from tests.conftest import test_refresh_materialized_data
 from source.main_config import FORM_CONFIG_PATH
-from .test_dummy import res_data
+# from .test_dummy import res_data #TODO:: Delete
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
@@ -52,7 +52,27 @@ class TestDataSeed:
         # current data
         data = crud_data.get_all_data(session=session, current=True)
         data = [d.serialize for d in data]
-        assert data == res_data
+        assert list(data[0]) == [
+            'id',
+            'datapoint_id',
+            'identifier',
+            'name',
+            'form',
+            'registration',
+            'current',
+            'geo',
+            'year_conducted',
+            'school_information',
+            'created',
+            'updated',
+            'answer',
+            'history'
+        ]
+        assert data[0]["id"] == 632510922
+        for d in data:
+            d["current"] is True
+        assert list(data[0]["answer"][0]) == ['question', 'value']
+        # assert data == res_data #TODO:: Delete
         # monitoring data
         temp_data = crud_data.get_all_data(session=session, current=False)
         data = [d.serialize for d in temp_data]

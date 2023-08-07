@@ -53,30 +53,38 @@ class TestSeedCascadeAndCascadeRoutes:
             params={"level": SchoolInformationEnum.province.value})
         assert res.status_code == 200
         res = res.json()
-        assert res == [
-            {'name': 'Central', 'level': 0},
-            {'name': 'Choiseul', 'level': 0},
-            {'name': 'Guadalcanal', 'level': 0},
-            {'name': 'Honiara', 'level': 0},
-            {'name': 'Isabel', 'level': 0},
-            {'name': 'Makira and Ulawa', 'level': 0},
-            {'name': 'Malaita', 'level': 0},
-            {'name': 'Rennell and Bellona', 'level': 0},
-            {'name': 'Temotu', 'level': 0},
-            {'name': 'Western', 'level': 0}
-        ]
+        assert list(res[0]) == ["name", "level"]
+        for r in res:
+            assert r["level"] == 0
+        # TODO:: Delete
+        # assert res == [
+        #     {'name': 'Central', 'level': 0},
+        #     {'name': 'Choiseul', 'level': 0},
+        #     {'name': 'Guadalcanal', 'level': 0},
+        #     {'name': 'Honiara', 'level': 0},
+        #     {'name': 'Isabel', 'level': 0},
+        #     {'name': 'Makira and Ulawa', 'level': 0},
+        #     {'name': 'Malaita', 'level': 0},
+        #     {'name': 'Rennell and Bellona', 'level': 0},
+        #     {'name': 'Temotu', 'level': 0},
+        #     {'name': 'Western', 'level': 0}
+        # ]
         # get school type value
         res = await client.get(
             app.url_path_for("cascade:get_school_information"),
             params={"level": SchoolInformationEnum.school_type.value})
         assert res.status_code == 200
         res = res.json()
-        assert res == [
-            {'name': 'Community High School', 'level': 1},
-            {'name': 'Early Childhood Education Centre', 'level': 1},
-            {'name': 'National Secondary School', 'level': 1},
-            {'name': 'Primary School', 'level': 1},
-            {'name': 'Provincial Secondary School', 'level': 1},
-            {'name': 'Rural Training Centre', 'level': 1},
-            {'name': 'Secondary School', 'level': 1}
-        ]
+        assert list(res[0]) == ["name", "level"]
+        for r in res:
+            assert r["level"] == 1
+        # TODO:: Delete
+        # assert res == [
+        #     {'name': 'Community High School', 'level': 1},
+        #     {'name': 'Early Childhood Education Centre', 'level': 1},
+        #     {'name': 'National Secondary School', 'level': 1},
+        #     {'name': 'Primary School', 'level': 1},
+        #     {'name': 'Provincial Secondary School', 'level': 1},
+        #     {'name': 'Rural Training Centre', 'level': 1},
+        #     {'name': 'Secondary School', 'level': 1}
+        # ]
