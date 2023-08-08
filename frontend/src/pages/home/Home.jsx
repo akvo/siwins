@@ -29,7 +29,7 @@ const Home = () => {
     )?.chartList;
     setChartList(chartList);
 
-    // check indexed DB first
+    // ** fetch data from indexed DB first
     ds.getSource(dsKey).then((cachedData) => {
       if (!cachedData) {
         const apiCall = chartList?.map((chart) => {
