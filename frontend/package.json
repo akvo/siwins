@@ -54,7 +54,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint --config .eslintrc.json src --ext .js,.jsx",
     "lint:ci": "eslint --config .eslintrc.prod.json src --ext .js,.jsx",
-    "prettier": "prettier --check src"
+    "prettier": "prettier --check src",
+    "prettier-write": "prettier --write src"
   },
   "eslintConfig": {
     "extends": [

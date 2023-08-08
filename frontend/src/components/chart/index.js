@@ -104,6 +104,7 @@ const Chart = ({
   showPercent = true,
   showRoseChart = false,
   reduceHistoryValue = true,
+  disableEvent = false,
 }) => {
   const [echartsReactRef, setEchartsReactRef] = useState();
   if (transform) {
@@ -138,7 +139,7 @@ const Chart = ({
   );
   const onEvents = {
     click: (e) => {
-      if (callbacks?.onClick) {
+      if (callbacks?.onClick && !disableEvent) {
         callbacks.onClick(e.data?.name ? e.data?.name : e.data?.cbParam);
       }
     },

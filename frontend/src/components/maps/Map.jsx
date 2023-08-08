@@ -1,5 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import "./style.scss";
 import "leaflet/dist/leaflet.css";
 import {
@@ -125,21 +131,34 @@ const Map = ({ searchValue }) => {
     return tempURL;
   }, [pagination]);
 
-  useEffect(() => {
+  const fetchData = useCallback(async () => {
     if (!isEmpty(apiCalls)) {
-      sequentialPromise(apiCalls)
-        .then((res) => {
-          const paginatedData = res.map((item) => item.data).flat();
-          const dataTemp = paginatedData.map((pd) => pd.data).flat();
-          setData(dataTemp);
-        })
-        .finally(() => {
-          setTimeout(() => {
-            setLoading(false);
-          }, 1000);
-        });
+      for (const promise of apiCalls) {
+        const res = await promise;
+        const dataTemp = res?.data?.data || [];
+        setData([...data, ...dataTemp]);
+      }
     }
   }, [apiCalls]);
+
+  useEffect(() => {
+    fetchData().finally(() => {
+      setLoading(false);
+    });
+    // TODO:: Delete
+    // Sequential promise
+    // sequentialPromise(apiCalls)
+    //   .then((res) => {
+    //     const paginatedData = res.map((item) => item.data).flat();
+    //     const dataTemp = paginatedData.map((pd) => pd.data).flat();
+    //     setData(dataTemp);
+    //   })
+    //   .finally(() => {
+    //     setTimeout(() => {
+    //       setLoading(false);
+    //     }, 1000);
+    //   });
+  }, [fetchData]);
 
   const filteredData = useMemo(() => {
     if (isEmpty(data)) {
@@ -308,6 +327,7 @@ const Map = ({ searchValue }) => {
   return (
     <>
       <div id="map-view">
+        {/* TODO:: DELETE */}
         {loading && (
           <div className="map-loading">
             <Spin
@@ -354,7 +374,8 @@ const Map = ({ searchValue }) => {
                     grid={{
                       top: 90,
                     }}
-                    loading={loading}
+                    // loading={loading}
+                    disableEvent={loading}
                   />
                 </Card>
               </div>
@@ -386,15 +407,15 @@ const Map = ({ searchValue }) => {
               data={geojson}
             />
             <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon}>
-              {!loading && (
-                <Markers
-                  zoom={defZoom}
-                  selectedQuestion={selectedQuestion}
-                  searchValue={searchValue}
-                  mapData={mapData}
-                  setSelectedDatapoint={setSelectedDatapoint}
-                />
-              )}
+              {/* TODO:: DELETE {!loading && ( */}
+              <Markers
+                zoom={defZoom}
+                selectedQuestion={selectedQuestion}
+                searchValue={searchValue}
+                mapData={mapData}
+                setSelectedDatapoint={setSelectedDatapoint}
+              />
+              {/* )} */}
             </MarkerClusterGroup>
           </MapContainer>
         </div>
