@@ -114,7 +114,7 @@ def get_paginated_data(
     "/data/maps-init",
     response_model=InitMapDataResponse,
     name="data:init_maps_data",
-    summary="get maps data",
+    summary="get initial maps data",
     tags=["Data"],
 )
 def get_maps_init(

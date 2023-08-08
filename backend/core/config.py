@@ -13,6 +13,7 @@ from routes.charts import charts_route
 from routes.answer import answer_route
 from routes.option import option_route
 from routes.file import file_route
+from routes.sync import sync_route
 from templates.main import template_route
 from AkvoResponseGrouper.routes import collection_route
 from source.geoconfig import GeoLevels, GeoCenter
@@ -101,6 +102,7 @@ app.include_router(charts_route)
 app.include_router(answer_route)
 app.include_router(file_route)
 app.include_router(template_route)
+app.include_router(sync_route)
 
 
 @lru_cache()

@@ -1,6 +1,7 @@
 # Please don't use **kwargs
 # Keep the code clean and CLEAR
 
+from urllib.parse import urlparse, parse_qs
 from typing_extensions import TypedDict
 from pydantic import BaseModel
 from sqlalchemy import Column
@@ -30,6 +31,14 @@ class Sync(Base):
             "id": self.id,
             "url": self.url,
         }
+
+    @property
+    def get_cursor(self):
+        url = self.url
+        parsed_url = urlparse(url)
+        query_params = parse_qs(parsed_url.query)
+        cursor_value = query_params.get("cursor", [None])[0]
+        return cursor_value
 
 
 class SyncBase(BaseModel):
