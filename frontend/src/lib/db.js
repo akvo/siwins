@@ -26,10 +26,10 @@ const checkDB = () =>
       console.error(e);
     });
 
-const truncateTables = () => {
-  db.sources.clear();
-  db.maps.clear();
-  db.dashboards.clear();
+const truncateTables = async () => {
+  await db.sources.clear();
+  await db.maps.clear();
+  await db.dashboards.clear();
 };
 
 const getSource = async (endpoint) => {
