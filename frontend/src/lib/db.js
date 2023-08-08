@@ -5,7 +5,7 @@ const db = new Dexie(dbName);
 
 db.version(1).stores({
   sync: "++id, cursor",
-  sources: "++endpoint, data",
+  sources: "++endpoint, data", // store resources of dropdown data
 });
 
 const checkDB = () =>
@@ -26,6 +26,9 @@ const checkDB = () =>
 
 const getSource = async (endpoint) => {
   const res = await db.sources.get({ endpoint });
+  if (!res) {
+    return null;
+  }
   return {
     ...res,
     data: JSON.parse(res.data),

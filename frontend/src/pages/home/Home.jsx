@@ -21,7 +21,7 @@ const Home = () => {
   const [chartList, setChartList] = useState([]);
 
   useEffect(() => {
-    const dsKey = "home/chart/bar?name=overview-charts";
+    const dsKey = "/home/chart/bar?name=overview-charts";
     setLoading(true);
 
     const chartList = chartConfig.find(
@@ -31,7 +31,7 @@ const Home = () => {
 
     // check indexed DB first
     ds.getSource(dsKey).then((cachedData) => {
-      if (!cachedData?.endpoint) {
+      if (!cachedData) {
         const apiCall = chartList?.map((chart) => {
           const url = `chart/bar?name=${chart?.path}`;
           return api.get(url);

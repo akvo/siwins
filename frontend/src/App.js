@@ -13,25 +13,29 @@ const App = () => {
     // #TODO:: Fetch cursor here (Replace with correct value)
     ds.saveCursor({ cursor: 456 });
     //
-    const url = `chart/number_of_school`;
+    const url = `/chart/number_of_school`;
     // check indexed DB first
-    ds.getSource(url).then((cachedData) => {
-      if (!cachedData?.endpoint) {
-        api
-          .get(url)
-          .then((res) => {
-            ds.saveSource({ endpoint: url, data: res.data });
-            UIState.update((s) => {
-              s.schoolTotal = res?.data?.total;
-            });
-          })
-          .catch((e) => console.error(e));
-      } else {
-        UIState.update((s) => {
-          s.schoolTotal = cachedData.data.total;
-        });
-      }
-    });
+    ds.getSource(url)
+      .then((cachedData) => {
+        if (!cachedData) {
+          api
+            .get(url)
+            .then((res) => {
+              ds.saveSource({ endpoint: url, data: res.data });
+              UIState.update((s) => {
+                s.schoolTotal = res?.data?.total;
+              });
+            })
+            .catch((e) => console.error(e));
+        } else {
+          UIState.update((s) => {
+            s.schoolTotal = cachedData.data.total;
+          });
+        }
+      })
+      .catch((e) => {
+        console.error("[Failed fetch indexed DB sources table]", e);
+      });
   }, []);
 
   return (
