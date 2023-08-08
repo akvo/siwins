@@ -30,7 +30,7 @@ import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
 import { isEmpty, intersection } from "lodash";
 import { LoadingOutlined } from "@ant-design/icons";
-import { sequentialPromise } from "../../util/utils";
+// import { sequentialPromise } from "../../util/utils";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
