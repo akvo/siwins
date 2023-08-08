@@ -14,6 +14,7 @@ const App = () => {
     ds.saveCursor({ cursor: 456 });
     //
     const url = `chart/number_of_school`;
+    // check indexed DB first
     ds.getSource(url).then((cachedData) => {
       if (!cachedData?.endpoint) {
         api
