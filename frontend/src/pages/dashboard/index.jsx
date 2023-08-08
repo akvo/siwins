@@ -17,7 +17,7 @@ import Maps from "./Maps";
 import Dashboard from "./Dashboard";
 import ManageData from "./ManageData";
 import { UIState } from "../../state/ui";
-import { api } from "../../lib";
+import { api, ds } from "../../lib";
 
 const menuItems = [
   { label: "Maps", link: "/dashboard/maps", icon: <MapsIcon />, key: "1" },
@@ -30,36 +30,89 @@ const menuItems = [
   },
 ];
 
+const dropdownResourceURL = [
+  "/question?attribute=indicator",
+  "/question?attribute=advance_filter",
+  "/question?attribute=generic_bar_chart",
+  "/cascade/school_information?level=province",
+  "/cascade/school_information?level=school_type",
+];
+
 const DashboardView = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(true);
+  const [fetchFromAPI, setFetchFromAPI] = useState(false);
   const { schoolTotal } = UIState.useState((s) => s);
 
   useEffect(() => {
-    Promise.all([
-      api.get("/question?attribute=indicator"),
-      api.get("/question?attribute=advance_filter"),
-      api.get("/question?attribute=generic_bar_chart"),
-      api.get("/cascade/school_information?level=province"),
-      api.get("/cascade/school_information?level=school_type"),
-    ]).then((res) => {
-      const [
-        indicatorQuestions,
-        advanceFilterQuestions,
-        generic_bar_chart,
-        province,
-        school_type,
-      ] = res;
-      UIState.update((s) => {
-        s.indicatorQuestions = indicatorQuestions?.data;
-        s.advanceFilterQuestions = advanceFilterQuestions?.data;
-        s.barChartQuestions = generic_bar_chart?.data;
-        s.provinceValues = province?.data;
-        s.schoolTypeValues = school_type?.data;
-      });
+    // ** fetch dropdown sources from indexed DB first
+    const dsApiCalls = dropdownResourceURL.map((url) => ds.getSource(url));
+    Promise.all(dsApiCalls).then((cachedData) => {
+      const nullInsideRes = cachedData.filter((x) => !x)?.length;
+      if (nullInsideRes) {
+        setFetchFromAPI(true);
+      } else {
+        const [
+          indicatorQuestions,
+          advanceFilterQuestions,
+          generic_bar_chart,
+          province,
+          school_type,
+        ] = cachedData;
+        UIState.update((s) => {
+          s.indicatorQuestions = indicatorQuestions?.data;
+          s.advanceFilterQuestions = advanceFilterQuestions?.data;
+          s.barChartQuestions = generic_bar_chart?.data;
+          s.provinceValues = province?.data;
+          s.schoolTypeValues = school_type?.data;
+        });
+      }
     });
   }, []);
+
+  useEffect(() => {
+    // ** fetch from API if indexed DB not defined
+    if (fetchFromAPI) {
+      const apiCalls = dropdownResourceURL.map((url) => api.get(url));
+      Promise.all(apiCalls).then((res) => {
+        const [
+          indicatorQuestions,
+          advanceFilterQuestions,
+          generic_bar_chart,
+          province,
+          school_type,
+        ] = res;
+        // save to indexed DB
+        ds.saveSource({
+          endpoint: indicatorQuestions.config.url,
+          data: indicatorQuestions.data,
+        });
+        ds.saveSource({
+          endpoint: advanceFilterQuestions.config.url,
+          data: advanceFilterQuestions.data,
+        });
+        ds.saveSource({
+          endpoint: generic_bar_chart.config.url,
+          data: generic_bar_chart.data,
+        });
+        ds.saveSource({ endpoint: province.config.url, data: province.data });
+        ds.saveSource({
+          endpoint: school_type.config.url,
+          data: school_type.data,
+        });
+        //
+        UIState.update((s) => {
+          s.indicatorQuestions = indicatorQuestions?.data;
+          s.advanceFilterQuestions = advanceFilterQuestions?.data;
+          s.barChartQuestions = generic_bar_chart?.data;
+          s.provinceValues = province?.data;
+          s.schoolTypeValues = school_type?.data;
+        });
+        setFetchFromAPI(false);
+      });
+    }
+  }, [fetchFromAPI]);
 
   const handleOnClickMenu = ({ key }) => {
     const link = menuItems.find((x) => x.key === key)?.link;

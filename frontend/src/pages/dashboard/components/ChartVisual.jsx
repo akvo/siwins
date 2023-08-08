@@ -3,7 +3,7 @@ import { Row, Col, Card, Switch, Space, Popover } from "antd";
 import { Chart } from "../../../components";
 import { get } from "lodash";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { api } from "../../../lib";
+import { api, ds } from "../../../lib";
 import {
   generateAdvanceFilterURL,
   generateFilterURL,
@@ -32,9 +32,20 @@ const ChartVisual = ({ chartConfig, loading }) => {
       (async () => {
         const queryUrlPrefix = url.includes("?") ? "&" : "?";
         url = `${url}${queryUrlPrefix}history=${showHistory}`;
-        const res = await api.get(url);
-        setLoading(false);
-        setHistoryData(res?.data?.data);
+        ds.getDashboard(url)
+          .then(async (cachedData) => {
+            if (!cachedData) {
+              await api.get(url).then((res) => {
+                ds.saveDashboard({ endpoint: url, data: res.data });
+                setHistoryData(res?.data?.data);
+              });
+            } else {
+              setHistoryData(cachedData.data.data);
+            }
+          })
+          .finally(() => {
+            setLoading(false);
+          });
       })();
     }
   }, [showHistory, path, setLoading, advanceSearchValue, provinceFilterValue]);

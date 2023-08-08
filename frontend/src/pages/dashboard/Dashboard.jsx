@@ -1,16 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Row, Col, Select, Breadcrumb } from "antd";
-import { api } from "../../lib";
+import { api, ds } from "../../lib";
 import { UIState } from "../../state/ui";
 import ChartVisual from "./components/ChartVisual";
 import { Chart } from "../../components";
 import AdvanceFilter from "../../components/filter";
-import {
-  generateAdvanceFilterURL,
-  generateFilterURL,
-  sequentialPromise,
-} from "../../util/utils";
+import { generateAdvanceFilterURL, generateFilterURL } from "../../util/utils";
 import { Link } from "react-router-dom";
 import { orderBy } from "lodash";
 
@@ -63,15 +59,30 @@ const Dashboard = () => {
         ?.chartList
     );
     setPageLoading(true);
-    const apiCall = chartList?.map((chart) => {
-      let url = `chart/jmp-data/${chart?.path}`;
+    chartList?.forEach((chart) => {
+      let url = `/chart/jmp-data/${chart?.path}`;
       url = generateAdvanceFilterURL(advanceSearchValue, url);
       url = generateFilterURL(provinceFilterValue, url);
-      return api.get(url);
-    });
-    sequentialPromise(apiCall).then((res) => {
-      setData(res);
-      setPageLoading(false);
+      // ** fetch data from indexed DB first
+      ds.getDashboard(url)
+        .then(async (cachedData) => {
+          if (!cachedData) {
+            await api
+              .get(url)
+              .then((res) => {
+                ds.saveDashboard({ endpoint: url, data: res });
+                setData((prevData) => [...prevData, res]);
+              })
+              .catch((e) => {
+                console.error("[Error fetch JMP chart data]", e);
+              });
+          } else {
+            setData((prevData) => [...prevData, cachedData.data]);
+          }
+        })
+        .finally(() => {
+          setPageLoading(false);
+        });
     });
   }, [advanceSearchValue, provinceFilterValue]);
 
@@ -79,16 +90,27 @@ const Dashboard = () => {
   useEffect(() => {
     if (!selectedIndicator) {
       setBarChartData([]);
+      return;
     }
-    let url = `chart/generic-bar/${selectedIndicator}`;
+    let url = `/chart/generic-bar/${selectedIndicator}`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
     url = generateFilterURL(provinceFilterValue, url);
-    api
-      .get(url)
-      .then((res) => {
-        setBarChartData(res.data);
-      })
-      .catch((e) => console.error(e));
+    // ** fetch data from indexed DB first
+    ds.getDashboard(url).then((cachedData) => {
+      if (!cachedData) {
+        api
+          .get(url)
+          .then((res) => {
+            ds.saveDashboard({ endpoint: url, data: res.data });
+            setBarChartData(res.data);
+          })
+          .catch((e) =>
+            console.error("[Error fetch Generic Bar chart data]", e)
+          );
+      } else {
+        setBarChartData(cachedData.data);
+      }
+    });
   }, [selectedIndicator, advanceSearchValue, provinceFilterValue]);
 
   const renderColumn = (cfg, index) => {

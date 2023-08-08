@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./style.scss";
 import { Col, Row, Button, Image, Card, Statistic } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
-import { api } from "../../lib";
+import { api, ds } from "../../lib";
 import { Chart } from "../../components";
 import CountUp from "react-countup";
 import { UIState } from "../../state/ui";
@@ -21,20 +21,31 @@ const Home = () => {
   const [chartList, setChartList] = useState([]);
 
   useEffect(() => {
+    const dsKey = "/home/chart/bar?name=overview-charts";
     setLoading(true);
+
     const chartList = chartConfig.find(
       (item) => item.component === "OVERVIEW-CHARTS"
     )?.chartList;
     setChartList(chartList);
 
-    const apiCall = chartList?.map((chart) => {
-      const url = `chart/bar?name=${chart?.path}`;
-      return api.get(url);
-    });
-    sequentialPromise(apiCall).then((res) => {
-      const dataTemp = res.map((r) => r.data).flat();
-      setData(dataTemp);
-      setLoading(false);
+    // ** fetch data from indexed DB first
+    ds.getSource(dsKey).then((cachedData) => {
+      if (!cachedData) {
+        const apiCall = chartList?.map((chart) => {
+          const url = `chart/bar?name=${chart?.path}`;
+          return api.get(url);
+        });
+        sequentialPromise(apiCall).then((res) => {
+          const dataTemp = res.map((r) => r.data).flat();
+          ds.saveSource({ endpoint: dsKey, data: dataTemp });
+          setData(dataTemp);
+          setLoading(false);
+        });
+      } else {
+        setData(cachedData.data);
+        setLoading(false);
+      }
     });
   }, []);
 
