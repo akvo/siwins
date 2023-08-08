@@ -79,16 +79,17 @@ const Dashboard = () => {
   useEffect(() => {
     if (!selectedIndicator) {
       setBarChartData([]);
+    } else {
+      let url = `chart/generic-bar/${selectedIndicator}`;
+      url = generateAdvanceFilterURL(advanceSearchValue, url);
+      url = generateFilterURL(provinceFilterValue, url);
+      api
+        .get(url)
+        .then((res) => {
+          setBarChartData(res.data);
+        })
+        .catch((e) => console.error(e));
     }
-    let url = `chart/generic-bar/${selectedIndicator}`;
-    url = generateAdvanceFilterURL(advanceSearchValue, url);
-    url = generateFilterURL(provinceFilterValue, url);
-    api
-      .get(url)
-      .then((res) => {
-        setBarChartData(res.data);
-      })
-      .catch((e) => console.error(e));
   }, [selectedIndicator, advanceSearchValue, provinceFilterValue]);
 
   const renderColumn = (cfg, index) => {
