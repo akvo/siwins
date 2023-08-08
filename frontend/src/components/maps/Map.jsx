@@ -93,6 +93,7 @@ const Map = ({ searchValue }) => {
   useEffect(() => {
     if (endpointURL) {
       // get page size
+      setData([]);
       setLoading(true);
       const { page, perPage } = defPagination;
       const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
@@ -136,7 +137,7 @@ const Map = ({ searchValue }) => {
       for (const promise of apiCalls) {
         const res = await promise;
         const dataTemp = res?.data?.data || [];
-        setData([...data, ...dataTemp]);
+        setData((prevData) => [...prevData, ...dataTemp]);
       }
     }
   }, [apiCalls]);
@@ -457,12 +458,12 @@ const Markers = ({
 
   return mapData
     .filter((d) => d.geo)
-    .map((d) => {
+    .map((d, di) => {
       const { id, geo, answer, school_information, year_conducted } = d;
       const isHovered = id === hovered;
       return (
         <Marker
-          key={id}
+          key={`marker-${id}-${di}`}
           position={geo}
           answerValue={answer}
           selectedQuestion={selectedQuestion}
