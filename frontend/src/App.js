@@ -4,21 +4,33 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { Layout } from "./components";
 import { Home, DashboardView, ErrorPage } from "./pages";
 import { UIState } from "./state/ui";
-import { api } from "./lib";
+import { api, ds } from "./lib";
 
 const App = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // #TODO:: Fetch cursor here (Replace with correct value)
+    ds.saveCursor({ cursor: 456 });
+    //
     const url = `chart/number_of_school`;
-    api
-      .get(url)
-      .then((res) => {
+    ds.getSource(url).then((cachedData) => {
+      if (!cachedData?.endpoint) {
+        api
+          .get(url)
+          .then((res) => {
+            ds.saveSource({ endpoint: url, data: res.data });
+            UIState.update((s) => {
+              s.schoolTotal = res?.data?.total;
+            });
+          })
+          .catch((e) => console.error(e));
+      } else {
         UIState.update((s) => {
-          s.schoolTotal = res?.data?.total;
+          s.schoolTotal = cachedData.data.total;
         });
-      })
-      .catch((e) => console.error(e));
+      }
+    });
   }, []);
 
   return (
