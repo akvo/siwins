@@ -30,7 +30,8 @@ from AkvoResponseGrouper.utils import (
 )
 from models.data import (
     MapDataResponse, ChartDataDetail,
-    DataDetailPopup, DataResponse
+    DataDetailPopup, DataResponse,
+    InitMapDataResponse
 )
 from models.answer import Answer
 from models.question import QuestionType
@@ -107,6 +108,70 @@ def get_paginated_data(
         "total": count,
         "total_page": total_page,
     }
+
+
+@data_route.get(
+    "/data/maps-init",
+    response_model=InitMapDataResponse,
+    name="data:init_maps_data",
+    summary="get maps data",
+    tags=["Data"],
+)
+def get_maps_init(
+    req: Request,
+    page: int = 1,
+    perpage: int = 100,
+    page_only: Optional[bool] = False,
+    session: Session = Depends(get_session),
+):
+    # get the data
+    page_data = get_all_data(
+        session=session,
+        current=True,
+        skip=(perpage * (page - 1)),
+        perpage=perpage
+    )
+    # handle pagination
+    count = page_data.get("count")
+    if not count:
+        return {
+            "current": page,
+            "data": [],
+            "total": count,
+            "total_page": 0,
+        }
+    total_page = ceil(count / perpage) if count > 0 else 0
+    if total_page < page:
+        return {
+            "current": page,
+            "data": [],
+            "total": count,
+            "total_page": total_page,
+        }
+    if page_only:
+        return {
+            "current": page,
+            "data": [],
+            "total": count,
+            "total_page": total_page,
+        }
+    # data
+    data = page_data.get("data") or []
+    data = [d.init_maps for d in data]
+    # transform data
+    for d in data:
+        d["school_information"] = extract_school_information(
+            school_information=d["school_information"], to_object=True)
+    res = {
+        "current": page,
+        "data": data,
+        "total": count,
+        "total_page": total_page,
+    }
+    return Response(
+        content=orjson.dumps(res),
+        media_type="application/json"
+    )
 
 
 @data_route.get(
@@ -214,8 +279,9 @@ def get_maps(
         ))
     # transform data
     for d in data:
-        d["school_information"] = extract_school_information(
-            school_information=d["school_information"], to_object=True)
+        # TODO:: DELETE commented code
+        # d["school_information"] = extract_school_information(
+        #     school_information=d["school_information"], to_object=True)
         d["jmp_filter"] = None
         data_id = str(d.get('identifier'))
         if "jmp" not in str(indicator):

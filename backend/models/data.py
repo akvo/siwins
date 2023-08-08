@@ -63,15 +63,30 @@ class DataResponse(BaseModel):
 
 class MapsData(BaseModel):
     id: int
-    school_information: dict
-    year_conducted: int
-    geo: List[float]
+    # TODO:: DELETE commented code
+    # school_information: dict
+    # year_conducted: int
+    # geo: List[float]
     answer: Union[AnswerDict, dict]
 
 
 class MapDataResponse(BaseModel):
     current: int
     data: List[MapsData]
+    total: int
+    total_page: int
+
+
+class InitMapsData(BaseModel):
+    id: int
+    school_information: dict
+    year_conducted: int
+    geo: List[float]
+
+
+class InitMapDataResponse(BaseModel):
+    current: int
+    data: List[InitMapsData]
     total: int
     total_page: int
 
@@ -207,10 +222,20 @@ class Data(Base):
         return {
             "id": self.id,
             "identifier": self.identifier,
+            # TODO:: DELETE commented code
+            # "school_information": self.school_information,
+            # "year_conducted": self.year_conducted,
+            # "geo": self.geo,
+            "answer": {}
+        }
+
+    @property
+    def init_maps(self):
+        return {
+            "id": self.id,
             "school_information": self.school_information,
             "year_conducted": self.year_conducted,
             "geo": self.geo,
-            "answer": {}
         }
 
     # only used in test case
