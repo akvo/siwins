@@ -274,7 +274,7 @@ const Map = ({ searchValue }) => {
         return [];
       }
       return remapDataWithInitData.filter(
-        (d) => !selectedOption.includes(d.answer.value)
+        (d) => !selectedOption.includes(d.answer)
       );
     }
     return remapDataWithInitData;
@@ -299,14 +299,13 @@ const Map = ({ searchValue }) => {
     if (["option", "jmp"].includes(selectedQuestion.type)) {
       let results = Object.values(
         mapData.reduce((obj, item) => {
-          obj[item.answer.value] = obj[item.answer.value] || {
-            name: item.answer.value,
-            color: selectedQuestion?.option?.find(
-              (f) => f.name === item.answer.value
-            )?.color,
+          obj[item.answer] = obj[item.answer] || {
+            name: item.answer,
+            color: selectedQuestion?.option?.find((f) => f.name === item.answer)
+              ?.color,
             count: 0,
           };
-          obj[item.answer.value].count++;
+          obj[item.answer].count++;
           return obj;
         }, {})
       );
@@ -561,7 +560,7 @@ const Markers = ({
               className: "custom-marker",
               iconSize: [32, 32],
               html: `<span style="background-color:${
-                selectedQuestion?.option?.find((f) => f.name === answer?.value)
+                selectedQuestion?.option?.find((f) => f.name === answer)
                   ?.color || "#2EA745"
               }; border:${isHovered ? "2px solid #fff" : ""};"/>`,
             })
@@ -618,9 +617,9 @@ const createClusterCustomIcon = (cluster) => {
     .getAllChildMarkers()
     .map((item) => {
       return {
-        ...item?.options?.answerValue,
+        value: item?.options?.answerValue,
         color: item?.options?.selectedQuestion?.option?.find(
-          (f) => f.name === item?.options?.answerValue?.value
+          (f) => f.name === item?.options?.answerValue
         )?.color,
       };
     })
