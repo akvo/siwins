@@ -1,4 +1,5 @@
 import Dexie from "dexie";
+import LZString from "lz-string";
 
 const dbName = "siwins";
 const db = new Dexie(dbName);
@@ -9,6 +10,12 @@ db.version(1).stores({
   maps: "++endpoint, data", // store data of maps page
   dashboards: "++endpoint, data", // store data of dashboard page
 });
+
+const compressData = (data) => LZString.compressToBase64(JSON.stringify(data));
+// const compressData = (data) => JSON.stringify(data);
+const decompressData = (data) =>
+  JSON.parse(LZString.decompressFromBase64(data));
+// const decompressData = (data) => JSON.parse(data);
 
 const checkDB = () =>
   Dexie.exists(dbName)
@@ -26,10 +33,15 @@ const checkDB = () =>
       console.error(e);
     });
 
-const truncateTables = () => {
-  db.sources.clear();
-  db.maps.clear();
-  db.dashboards.clear();
+const getBrowserStorageSize = async () => {
+  const res = await navigator.storage.estimate();
+  return res;
+};
+
+const truncateTables = async () => {
+  await db.sources.clear();
+  await db.maps.clear();
+  await db.dashboards.clear();
 };
 
 const getSource = async (endpoint) => {
@@ -39,12 +51,12 @@ const getSource = async (endpoint) => {
   }
   return {
     ...res,
-    data: JSON.parse(res.data),
+    data: decompressData(res.data),
   };
 };
 
 const saveSource = ({ endpoint, data }) => {
-  return db.sources.put({ endpoint, data: JSON.stringify(data) });
+  return db.sources.put({ endpoint, data: compressData(data) });
 };
 
 const getMap = async (endpoint) => {
@@ -54,12 +66,12 @@ const getMap = async (endpoint) => {
   }
   return {
     ...res,
-    data: JSON.parse(res.data),
+    data: decompressData(res.data),
   };
 };
 
 const saveMap = ({ endpoint, data }) => {
-  return db.maps.put({ endpoint, data: JSON.stringify(data) });
+  return db.maps.put({ endpoint, data: compressData(data) });
 };
 
 const getDashboard = async (endpoint) => {
@@ -69,16 +81,17 @@ const getDashboard = async (endpoint) => {
   }
   return {
     ...res,
-    data: JSON.parse(res.data),
+    data: decompressData(res.data),
   };
 };
 
 const saveDashboard = ({ endpoint, data }) => {
-  return db.dashboards.put({ endpoint, data: JSON.stringify(data) });
+  return db.dashboards.put({ endpoint, data: compressData(data) });
 };
 
 const ds = {
   checkDB,
+  getBrowserStorageSize,
   truncateTables,
   getSource,
   saveSource,

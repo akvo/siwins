@@ -6,13 +6,40 @@ import { Home, DashboardView, ErrorPage } from "./pages";
 import { UIState } from "./state/ui";
 import { api, ds } from "./lib";
 
+const formatDateToYYYYMM = (date) => {
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const year = date.getFullYear();
+  return `${year}${month}`;
+};
+
+const now = new Date();
+const cursorTemp = formatDateToYYYYMM(now);
+
 const App = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // #TODO:: Fetch cursor here (Replace with correct value)
-    ds.saveCursor({ cursor: 456 });
-    //
+    // ** check sync cursor to indexed DB
+    api
+      .get("/cursor")
+      .then((res) => {
+        return res.data;
+      })
+      .then((serverCursor) => {
+        ds.getCursor().then(async (res) => {
+          const cachedCursor = res?.cursor;
+          if (serverCursor !== cachedCursor) {
+            await ds.truncateTables();
+            ds.saveCursor({ cursor: serverCursor || cursorTemp });
+          }
+        });
+      })
+      .catch((e) => {
+        console.error("[Failed fetch cursor]", e);
+      });
+  }, []);
+
+  useEffect(() => {
     const url = `/chart/number_of_school`;
     // check indexed DB first
     ds.getSource(url)

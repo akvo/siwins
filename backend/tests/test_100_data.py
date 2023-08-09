@@ -149,6 +149,30 @@ class TestDataRoutes:
                 assert "value" in c
 
     @pytest.mark.asyncio
+    async def test_get_init_maps_data(
+        self, app: FastAPI, session: Session, client: AsyncClient
+    ) -> None:
+        res = await client.get(
+            app.url_path_for("data:init_maps_data"),
+            params={"page_only": True}
+        )
+        assert res.status_code == 200
+        res = res.json()
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        # load all data
+        res = await client.get(app.url_path_for("data:init_maps_data"))
+        assert res.status_code == 200
+        res = res.json()
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == [
+            'id', 'school_information', 'year_conducted', 'geo'
+        ]
+
+    @pytest.mark.asyncio
     async def test_get_maps_data(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
@@ -168,10 +192,7 @@ class TestDataRoutes:
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == [
-            'id', 'school_information',
-            'year_conducted', 'geo', 'answer'
-        ]
+        assert list(res["data"][0]) == ['id', 'answer']
         # TODO:: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -195,12 +216,7 @@ class TestDataRoutes:
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == [
-            'id', 'school_information',
-            'year_conducted', 'geo', 'answer'
-        ]
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
-        assert res["data"][0]["answer"]["question"] == indicator_id
+        assert list(res["data"][0]) == ['id', 'answer']
         # TODO:: delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -234,11 +250,7 @@ class TestDataRoutes:
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == [
-            'id', 'school_information',
-            'year_conducted', 'geo', 'answer'
-        ]
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
+        assert list(res["data"][0]) == ['id', 'answer']
         # TODO:: Delete
         # assert res["data"] == [{
         #     'id': 649130936,
@@ -271,12 +283,7 @@ class TestDataRoutes:
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == [
-            'id', 'school_information',
-            'year_conducted', 'geo', 'answer'
-        ]
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
-        assert res["data"][0]["answer"]["question"] == indicator_id
+        assert list(res["data"][0]) == ['id', 'answer']
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -311,12 +318,7 @@ class TestDataRoutes:
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == [
-            'id', 'school_information',
-            'year_conducted', 'geo', 'answer'
-        ]
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
-        assert res["data"][0]["answer"]["question"] == indicator_id
+        assert list(res["data"][0]) == ['id', 'answer']
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -349,12 +351,7 @@ class TestDataRoutes:
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == [
-            'id', 'school_information',
-            'year_conducted', 'geo', 'answer'
-        ]
-        for d in res["data"]:
-            assert d["school_information"]["province"] == "Guadalcanal"
+        assert list(res["data"][0]) == ['id', 'answer']
         # TODO:: delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -393,13 +390,7 @@ class TestDataRoutes:
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == [
-            'id', 'school_information',
-            'year_conducted', 'geo', 'answer'
-        ]
-        for d in res["data"]:
-            sctype = d["school_information"]["school_type"]
-            assert sctype == "Community High School"
+        assert list(res["data"][0]) == ['id', 'answer']
         # TODO:: delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -439,14 +430,7 @@ class TestDataRoutes:
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == [
-            'id', 'school_information',
-            'year_conducted', 'geo', 'answer'
-        ]
-        for d in res["data"]:
-            sctype = d["school_information"]["school_type"]
-            assert sctype == "Community High School"
-            assert d["school_information"]["province"] == "Guadalcanal"
+        assert list(res["data"][0]) == ['id', 'answer']
         # TODO:: delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -473,12 +457,7 @@ class TestDataRoutes:
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == [
-            'id', 'school_information',
-            'year_conducted', 'geo', 'answer'
-        ]
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
-        assert indicator_id in res["data"][0]["answer"]["question"]
+        assert list(res["data"][0]) == ['id', 'answer']
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -513,12 +492,7 @@ class TestDataRoutes:
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == [
-            'id', 'school_information',
-            'year_conducted', 'geo', 'answer'
-        ]
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
-        assert indicator_id in res["data"][0]["answer"]["question"]
+        assert list(res["data"][0]) == ['id', 'answer']
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,

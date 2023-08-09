@@ -20,7 +20,7 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
 import { geojson, tileOSM } from "../../util/geo-util";
-import { api } from "../../lib";
+import { api, ds } from "../../lib";
 import { generateAdvanceFilterURL, generateFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
@@ -28,9 +28,8 @@ import SchoolDetailModal from "./SchoolDetailModal";
 import { Chart } from "..";
 import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
-import { isEmpty, intersection } from "lodash";
+import { isEmpty, intersection, uniqBy } from "lodash";
 import { LoadingOutlined } from "@ant-design/icons";
-// import { sequentialPromise } from "../../util/utils";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -66,6 +65,9 @@ const Map = ({ searchValue }) => {
   const [selectedDatapoint, setSelectedDatapoint] = useState({});
   const [pagination, setPagination] = useState({});
 
+  const [initMapPagination, setInitMapPagination] = useState({});
+  const [initMapData, setInitMapData] = useState([]);
+
   useEffect(() => {
     const findQ = indicatorQuestions.find(
       (q) => q.id === mapFilterConfig?.defaultIndicator
@@ -75,10 +77,84 @@ const Map = ({ searchValue }) => {
     }
   }, [indicatorQuestions]);
 
+  // ** Init maps data
+  useEffect(() => {
+    setLoading(true);
+    const { page, perPage } = defPagination;
+    const url = `/data/maps-init?page_only=true&page=${page}&perpage=${perPage}`;
+    // ** fetch data from indexed DB first
+    ds.getMap(url).then((cachedData) => {
+      if (!cachedData) {
+        api
+          .get(url)
+          .then((res) => {
+            const { current, total_page } = res.data;
+            ds.saveMap({ endpoint: url, data: res.data });
+            setInitMapPagination({
+              ...defPagination,
+              page: current,
+              totalPage: total_page,
+            });
+          })
+          .catch((e) => {
+            console.error("Unable to fetch page size", e);
+          });
+      } else {
+        const { current, total_page } = cachedData.data;
+        setInitMapPagination({
+          ...defPagination,
+          page: current,
+          totalPage: total_page,
+        });
+      }
+    });
+  }, []);
+
+  // ** Init maps data
+  const fetchInitMapData = useCallback(async () => {
+    if (isEmpty(initMapPagination)) {
+      return;
+    }
+    const { page, totalPage, perPage } = initMapPagination;
+    const url = "/data/maps-init";
+    let curr = page;
+    while (curr <= totalPage) {
+      // pagination
+      const pageURL = `${url}?page=${curr}&perpage=${perPage}`;
+      // ** fetch data from indexed DB first
+      await ds.getMap(pageURL).then(async (cachedData) => {
+        if (!cachedData) {
+          const res = await api.get(pageURL);
+          const dataTemp = res?.data?.data || [];
+          ds.saveMap({ endpoint: pageURL, data: dataTemp });
+          setInitMapData((prevData) =>
+            uniqBy([...prevData, ...dataTemp], "id")
+          );
+        } else {
+          const dataTemp = cachedData?.data || [];
+          setTimeout(() => {
+            setInitMapData((prevData) =>
+              uniqBy([...prevData, ...dataTemp], "id")
+            );
+          }, 100);
+        }
+      });
+      curr += 1;
+    }
+  }, [initMapPagination]);
+
+  // ** Init maps data
+  useEffect(() => {
+    fetchInitMapData();
+  }, [fetchInitMapData]);
+
+  // ** Filtered data
   const endpointURL = useMemo(() => {
     if (isEmpty(selectedQuestion)) {
       return null;
     }
+    setData([]);
+    setPagination(defPagination);
     let url = `data/maps`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
     const urlParams = new URLSearchParams(url);
@@ -90,89 +166,100 @@ const Map = ({ searchValue }) => {
     return url;
   }, [advanceSearchValue, selectedQuestion, provinceFilterValue]);
 
+  // ** Filtered data
   useEffect(() => {
     if (endpointURL) {
       // get page size
-      setData([]);
       setLoading(true);
       const { page, perPage } = defPagination;
       const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
-      api
-        .get(
-          `${endpointURL}${queryUrlPrefix}page_only=true&page=${page}&perpage=${perPage}`
-        )
-        .then((res) => {
-          const { current, total_page } = res.data;
+      const url = `${endpointURL}${queryUrlPrefix}page_only=true&page=${page}&perpage=${perPage}`;
+      // ** fetch data from indexed DB first
+      ds.getMap(url).then((cachedData) => {
+        if (!cachedData) {
+          api
+            .get(url)
+            .then((res) => {
+              const { current, total_page } = res.data;
+              ds.saveMap({ endpoint: url, data: res.data });
+              setPagination({
+                ...defPagination,
+                page: current,
+                totalPage: total_page,
+              });
+            })
+            .catch((e) => {
+              console.error("Unable to fetch page size", e);
+            });
+        } else {
+          const { current, total_page } = cachedData.data;
           setPagination({
             ...defPagination,
             page: current,
             totalPage: total_page,
           });
-        })
-        .catch((e) => {
-          console.error("Unable to fetch page size", e);
-        });
+        }
+      });
     }
   }, [defPagination, endpointURL]);
 
-  const apiCalls = useMemo(() => {
+  // ** Filtered data
+  const fetchData = useCallback(async () => {
     if (isEmpty(pagination) || !endpointURL) {
-      return [];
+      return;
     }
-    const tempURL = [];
     const { page, totalPage, perPage } = pagination;
     let curr = page;
     while (curr <= totalPage) {
       // pagination
       const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
       const pageURL = `${endpointURL}${queryUrlPrefix}page=${curr}&perpage=${perPage}`;
-      tempURL.push(api.get(pageURL));
+      // ** fetch data from indexed DB first
+      await ds.getMap(pageURL).then(async (cachedData) => {
+        if (!cachedData) {
+          const res = await api.get(pageURL);
+          const dataTemp = res?.data?.data || [];
+          ds.saveMap({ endpoint: pageURL, data: dataTemp });
+          setData((prevData) => uniqBy([...prevData, ...dataTemp], "id"));
+        } else {
+          const dataTemp = cachedData?.data || [];
+          setTimeout(() => {
+            setData((prevData) => uniqBy([...prevData, ...dataTemp], "id"));
+          }, 100);
+        }
+      });
       curr += 1;
     }
-    return tempURL;
-  }, [pagination]);
+  }, [pagination, endpointURL]);
 
-  const fetchData = useCallback(async () => {
-    if (!isEmpty(apiCalls)) {
-      for (const promise of apiCalls) {
-        const res = await promise;
-        const dataTemp = res?.data?.data || [];
-        setData((prevData) => [...prevData, ...dataTemp]);
-      }
-    }
-  }, [apiCalls]);
-
+  // ** Filtered data
   useEffect(() => {
     fetchData().finally(() => {
       setLoading(false);
     });
-    // TODO:: Delete
-    // Sequential promise
-    // sequentialPromise(apiCalls)
-    //   .then((res) => {
-    //     const paginatedData = res.map((item) => item.data).flat();
-    //     const dataTemp = paginatedData.map((pd) => pd.data).flat();
-    //     setData(dataTemp);
-    //   })
-    //   .finally(() => {
-    //     setTimeout(() => {
-    //       setLoading(false);
-    //     }, 1000);
-    //   });
   }, [fetchData]);
 
+  // ** Filtered data
   const filteredData = useMemo(() => {
     if (isEmpty(data)) {
       return [];
     }
+    let remapDataWithInitData = data.map((d) => {
+      const findInitData = initMapData.find((imd) => imd.id === d.id);
+      return {
+        ...d,
+        ...findInitData,
+      };
+    });
+    remapDataWithInitData = uniqBy(remapDataWithInitData, "id");
     const { type, option } = selectedQuestion;
     if (type === "number") {
       const { minNumber, maxNumber } = barChartValues;
       if (!maxNumber && minNumber === maxNumber) {
         // do not filter when first load
-        return data;
+        return remapDataWithInitData;
       }
-      return data.filter((d) => {
+      return remapDataWithInitData.filter((d) => {
         const { value } = d.answer;
         if (value >= minNumber && value <= maxNumber) {
           return d;
@@ -186,14 +273,19 @@ const Map = ({ searchValue }) => {
       if (allOptionSelected) {
         return [];
       }
-      return data.filter((d) => !selectedOption.includes(d.answer.value));
+      return remapDataWithInitData.filter(
+        (d) => !selectedOption.includes(d.answer)
+      );
     }
-    return data;
-  }, [selectedQuestion, selectedOption, data, barChartValues]);
+    return remapDataWithInitData;
+  }, [selectedQuestion, selectedOption, barChartValues, data, initMapData]);
 
   useEffect(() => {
     UIState.update((s) => {
       s.mapData = filteredData.map((d) => {
+        if (!d?.school_information) {
+          return d;
+        }
         const school_information_array = Object.values(d.school_information);
         return {
           ...d,
@@ -207,14 +299,13 @@ const Map = ({ searchValue }) => {
     if (["option", "jmp"].includes(selectedQuestion.type)) {
       let results = Object.values(
         mapData.reduce((obj, item) => {
-          obj[item.answer.value] = obj[item.answer.value] || {
-            name: item.answer.value,
-            color: selectedQuestion?.option?.find(
-              (f) => f.name === item.answer.value
-            )?.color,
+          obj[item.answer] = obj[item.answer] || {
+            name: item.answer,
+            color: selectedQuestion?.option?.find((f) => f.name === item.answer)
+              ?.color,
             count: 0,
           };
-          obj[item.answer.value].count++;
+          obj[item.answer].count++;
           return obj;
         }, {})
       );
@@ -328,7 +419,6 @@ const Map = ({ searchValue }) => {
   return (
     <>
       <div id="map-view">
-        {/* TODO:: DELETE */}
         {loading && (
           <div className="map-loading">
             <Spin
@@ -408,7 +498,6 @@ const Map = ({ searchValue }) => {
               data={geojson}
             />
             <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon}>
-              {/* TODO:: DELETE {!loading && ( */}
               <Markers
                 zoom={defZoom}
                 selectedQuestion={selectedQuestion}
@@ -416,7 +505,6 @@ const Map = ({ searchValue }) => {
                 mapData={mapData}
                 setSelectedDatapoint={setSelectedDatapoint}
               />
-              {/* )} */}
             </MarkerClusterGroup>
           </MapContainer>
         </div>
@@ -472,7 +560,7 @@ const Markers = ({
               className: "custom-marker",
               iconSize: [32, 32],
               html: `<span style="background-color:${
-                selectedQuestion?.option?.find((f) => f.name === answer?.value)
+                selectedQuestion?.option?.find((f) => f.name === answer)
                   ?.color || "#2EA745"
               }; border:${isHovered ? "2px solid #fff" : ""};"/>`,
             })
@@ -529,9 +617,9 @@ const createClusterCustomIcon = (cluster) => {
     .getAllChildMarkers()
     .map((item) => {
       return {
-        ...item?.options?.answerValue,
+        value: item?.options?.answerValue,
         color: item?.options?.selectedQuestion?.option?.find(
-          (f) => f.name === item?.options?.answerValue?.value
+          (f) => f.name === item?.options?.answerValue
         )?.color,
       };
     })

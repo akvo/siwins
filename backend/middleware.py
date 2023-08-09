@@ -84,7 +84,5 @@ def check_indicator_query(
         ] if answers else []
         for a in answers:
             key = a.get('identifier')
-            del a['data']
-            del a['identifier']
-            answer_temp.update({key: a})
+            answer_temp.update({key: a.get('value')})
     return answer_data_ids, answer_temp
