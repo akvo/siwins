@@ -1,3 +1,4 @@
+import subprocess
 from sqlalchemy import text
 from db.connection import engine
 from typing import List, Optional
@@ -20,6 +21,9 @@ def refresh_materialized_view_query():
 
 
 def refresh_materialized_data():
+    command = "akvo-responsegrouper --config ./source/category.json"
+    subprocess.check_output(command, shell=True, text=True)
+
     query = refresh_materialized_view_query()
     engine.execute(query)
 
