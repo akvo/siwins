@@ -1,4 +1,3 @@
-// #TODO:: Implement indexed DB here
 import React, { useEffect, useState, useMemo } from "react";
 import {
   Modal,
@@ -15,7 +14,7 @@ import {
 } from "antd";
 import { HomeOutlined, CameraOutlined } from "@ant-design/icons";
 import { isEmpty, groupBy, orderBy } from "lodash";
-import { api } from "../../lib";
+import { api, ds } from "../../lib";
 import { Chart } from "..";
 
 const MainTabContent = ({
@@ -135,30 +134,39 @@ const AnswerTabContent = ({
     if (showHistory && !isHistoryLoaded) {
       setLoading(true);
       const url = `answer/history/${dataId}?question_id=${question_id}`;
-      api
-        .get(url)
-        .then((res) => {
-          const { data } = res;
-          const transform = data
-            .map((d) => {
-              return d.value.map((v) => {
-                return {
-                  ...v,
-                  stack: [v],
-                  year: d.year,
-                  history: d.history,
-                  name: v.level,
-                };
-              });
+      ds.getMap(url).then((cachedData) => {
+        if (!cachedData) {
+          api
+            .get(url)
+            .then((res) => {
+              const { data } = res;
+              const transform = data
+                .map((d) => {
+                  return d.value.map((v) => {
+                    return {
+                      ...v,
+                      stack: [v],
+                      year: d.year,
+                      history: d.history,
+                      name: v.level,
+                    };
+                  });
+                })
+                .flat();
+              ds.saveMap({ endpoint: url, data: transform });
+              setChartValues(transform);
+              setIsHistoryLoaded(true);
             })
-            .flat();
-          setChartValues(transform);
+            .catch((e) => console.error(e))
+            .finally(() => {
+              setLoading(false);
+            });
+        } else {
+          setChartValues(cachedData.data);
           setIsHistoryLoaded(true);
-        })
-        .catch((e) => console.error(e))
-        .finally(() => {
           setLoading(false);
-        });
+        }
+      });
     }
   }, [showHistory, isHistoryLoaded, dataId, question_id]);
 
@@ -280,54 +288,69 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
       const code = school_information?.school_code;
       setTitle(`${name} (${code})`);
       const url = `data/${id}`;
-      api
-        .get(url)
-        .then((res) => {
-          const { data } = res;
-          // main information
-          const main = [
-            {
-              key: "main",
-              label: <HomeOutlined />,
-              children: <MainTabContent {...data} />,
-            },
-          ];
-          // group of answer
-          const transform = data?.answer.map((a, ai) => {
-            const isImage = a.group.toLowerCase() === "images";
-            const label = isImage ? <CameraOutlined /> : a.group;
-            if (isImage) {
-              return {
-                key: `school-detail-tab-${data?.id}-${ai}`,
-                label: label,
-                children: <ImageContent {...a} />,
-              };
-            }
-            return {
-              key: `school-detail-tab-${data?.id}-${ai}`,
-              label: label,
-              children: (
-                <Row align="middle" justify="space-between" gutter={[8, 8]}>
-                  {a.child.map((c, ci) => (
-                    <Col
-                      span={24}
-                      key={`answer-tab-content-${data.id}-${ai}-${ci}`}
-                      className="school-description"
-                    >
-                      <AnswerTabContent dataId={data.id} {...c} />
-                      <Divider />
-                    </Col>
-                  ))}
-                </Row>
-              ),
-            };
-          });
-          setTabItems([...main, ...transform]);
-        })
-        .catch((e) => console.error(e))
-        .finally(() => setLoading(false));
+      ds.getMap(url).then((cachedData) => {
+        if (!cachedData) {
+          api
+            .get(url)
+            .then((res) => {
+              ds.saveMap({ endpoint: url, data: res.data });
+              setTabItems(res.data);
+            })
+            .catch((e) => console.error(e))
+            .finally(() => setLoading(false));
+        } else {
+          setTabItems(cachedData.data);
+          setLoading(false);
+        }
+      });
     }
   }, [selectedDatapoint]);
+
+  const tabItemComponent = useMemo(() => {
+    if (isEmpty(tabItems)) {
+      return [];
+    }
+    const data = tabItems;
+    // main information
+    const main = [
+      {
+        key: "main",
+        label: <HomeOutlined />,
+        children: <MainTabContent {...data} />,
+      },
+    ];
+    // group of answer
+    const transform = data?.answer.map((a, ai) => {
+      const isImage = a.group.toLowerCase() === "images";
+      const label = isImage ? <CameraOutlined /> : a.group;
+      if (isImage) {
+        return {
+          key: `school-detail-tab-${data?.id}-${ai}`,
+          label: label,
+          children: <ImageContent {...a} />,
+        };
+      }
+      return {
+        key: `school-detail-tab-${data?.id}-${ai}`,
+        label: label,
+        children: (
+          <Row align="middle" justify="space-between" gutter={[8, 8]}>
+            {a.child.map((c, ci) => (
+              <Col
+                span={24}
+                key={`answer-tab-content-${data.id}-${ai}-${ci}`}
+                className="school-description"
+              >
+                <AnswerTabContent dataId={data.id} {...c} />
+                <Divider />
+              </Col>
+            ))}
+          </Row>
+        ),
+      };
+    });
+    return [...main, ...transform];
+  }, [tabItems]);
 
   return (
     <Modal
@@ -345,7 +368,7 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
             <Spin />
           </div>
         ) : (
-          <Tabs items={tabItems} />
+          <Tabs items={tabItemComponent} />
         )}
       </div>
     </Modal>
