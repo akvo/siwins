@@ -66,6 +66,9 @@ const Map = ({ searchValue }) => {
   const [selectedDatapoint, setSelectedDatapoint] = useState({});
   const [pagination, setPagination] = useState({});
 
+  const [initMapPagination, setInitMapPagination] = useState({});
+  const [initMapData, setInitMapData] = useState([]);
+
   useEffect(() => {
     const findQ = indicatorQuestions.find(
       (q) => q.id === mapFilterConfig?.defaultIndicator
@@ -75,10 +78,55 @@ const Map = ({ searchValue }) => {
     }
   }, [indicatorQuestions]);
 
+  // ** Init maps data
+  useEffect(() => {
+    const { page, perPage } = defPagination;
+    const url = "/data/maps-init";
+    api
+      .get(`${url}?page_only=true&page=${page}&perpage=${perPage}`)
+      .then((res) => {
+        const { current, total_page } = res.data;
+        setInitMapPagination({
+          ...defPagination,
+          page: current,
+          totalPage: total_page,
+        });
+      })
+      .catch((e) => {
+        console.error("Unable to fetch page size", e);
+      });
+  }, []);
+
+  // ** Init maps data
+  const fetchInitMapData = useCallback(async () => {
+    if (isEmpty(initMapPagination)) {
+      return;
+    }
+    const { page, totalPage, perPage } = initMapPagination;
+    const url = "/data/maps-init";
+    let curr = page;
+    while (curr <= totalPage) {
+      // pagination
+      const pageURL = `${url}?page=${curr}&perpage=${perPage}`;
+      const res = await api.get(pageURL);
+      const dataTemp = res?.data?.data || [];
+      setInitMapData((prevData) => [...prevData, ...dataTemp]);
+      curr += 1;
+    }
+  }, [initMapPagination]);
+
+  // ** Init maps data
+  useEffect(() => {
+    fetchInitMapData();
+  }, [fetchInitMapData]);
+
+  // ** Filtered data
   const endpointURL = useMemo(() => {
     if (isEmpty(selectedQuestion)) {
       return null;
     }
+    setData([]);
+    setPagination(defPagination);
     let url = `data/maps`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
     const urlParams = new URLSearchParams(url);
@@ -90,10 +138,10 @@ const Map = ({ searchValue }) => {
     return url;
   }, [advanceSearchValue, selectedQuestion, provinceFilterValue]);
 
+  // ** Filtered data
   useEffect(() => {
     if (endpointURL) {
       // get page size
-      setData([]);
       setLoading(true);
       const { page, perPage } = defPagination;
       const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
@@ -115,64 +163,51 @@ const Map = ({ searchValue }) => {
     }
   }, [defPagination, endpointURL]);
 
-  const apiCalls = useMemo(() => {
+  // ** Filtered data
+  const fetchData = useCallback(async () => {
     if (isEmpty(pagination) || !endpointURL) {
-      return [];
+      return;
     }
-    const tempURL = [];
     const { page, totalPage, perPage } = pagination;
     let curr = page;
     while (curr <= totalPage) {
       // pagination
       const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
       const pageURL = `${endpointURL}${queryUrlPrefix}page=${curr}&perpage=${perPage}`;
-      tempURL.push(api.get(pageURL));
+      const res = await api.get(pageURL);
+      const dataTemp = res?.data?.data || [];
+      setData((prevData) => [...prevData, ...dataTemp]);
       curr += 1;
     }
-    return tempURL;
-  }, [pagination]);
+  }, [pagination, endpointURL]);
 
-  const fetchData = useCallback(async () => {
-    if (!isEmpty(apiCalls)) {
-      for (const promise of apiCalls) {
-        const res = await promise;
-        const dataTemp = res?.data?.data || [];
-        setData((prevData) => [...prevData, ...dataTemp]);
-      }
-    }
-  }, [apiCalls]);
-
+  // ** Filtered data
   useEffect(() => {
     fetchData().finally(() => {
       setLoading(false);
     });
-    // TODO:: Delete
-    // Sequential promise
-    // sequentialPromise(apiCalls)
-    //   .then((res) => {
-    //     const paginatedData = res.map((item) => item.data).flat();
-    //     const dataTemp = paginatedData.map((pd) => pd.data).flat();
-    //     setData(dataTemp);
-    //   })
-    //   .finally(() => {
-    //     setTimeout(() => {
-    //       setLoading(false);
-    //     }, 1000);
-    //   });
   }, [fetchData]);
 
+  // ** Filtered data
   const filteredData = useMemo(() => {
     if (isEmpty(data)) {
       return [];
     }
+    const remapDataWithInitData = data.map((d) => {
+      const findInitData = initMapData.find((imd) => imd.id === d.id);
+      return {
+        ...d,
+        ...findInitData,
+      };
+    });
     const { type, option } = selectedQuestion;
     if (type === "number") {
       const { minNumber, maxNumber } = barChartValues;
       if (!maxNumber && minNumber === maxNumber) {
         // do not filter when first load
-        return data;
+        return remapDataWithInitData;
       }
-      return data.filter((d) => {
+      return remapDataWithInitData.filter((d) => {
         const { value } = d.answer;
         if (value >= minNumber && value <= maxNumber) {
           return d;
@@ -186,10 +221,12 @@ const Map = ({ searchValue }) => {
       if (allOptionSelected) {
         return [];
       }
-      return data.filter((d) => !selectedOption.includes(d.answer.value));
+      return remapDataWithInitData.filter(
+        (d) => !selectedOption.includes(d.answer.value)
+      );
     }
-    return data;
-  }, [selectedQuestion, selectedOption, data, barChartValues]);
+    return remapDataWithInitData;
+  }, [selectedQuestion, selectedOption, barChartValues, data, initMapData]);
 
   useEffect(() => {
     UIState.update((s) => {
