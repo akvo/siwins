@@ -285,7 +285,7 @@ def get_maps(
         d["jmp_filter"] = None
         data_id = str(d.get('identifier'))
         if "jmp" not in str(indicator):
-            d["answer"] = answer_temp.get(data_id) or {}
+            d["answer"] = answer_temp.get(data_id) or None
         if "jmp" in str(indicator):
             # JMP indicator answer
             find_jmp = next(
@@ -302,10 +302,7 @@ def get_maps(
             jmp_res = group_by_category_output(data=dt)
             level = jmp_res[0].get('options')[0].get('name')
             d["jmp_filter"] = f"{jmp_name}|{level}"
-            d["answer"] = {
-                "question": f"{indicator}_{d['id']}",
-                "value": level
-            }
+            d["answer"] = level
     # JMP filter: filter data by jmp filter value in jmp_query
     if "jmp" in str(indicator) and jmp_query:
         data = list(filter(

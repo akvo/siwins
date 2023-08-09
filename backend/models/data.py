@@ -63,11 +63,10 @@ class DataResponse(BaseModel):
 
 class MapsData(BaseModel):
     id: int
-    # TODO:: DELETE commented code
-    # school_information: dict
-    # year_conducted: int
-    # geo: List[float]
-    answer: Union[AnswerDict, dict]
+    # ** REMEMBER TO UPDATE if answer value updated
+    answer: Union[
+        int, float, str, bool, dict, List[str], List[int], List[float], None
+    ]
 
 
 class MapDataResponse(BaseModel):

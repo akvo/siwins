@@ -217,8 +217,6 @@ class TestDataRoutes:
             'current', 'data', 'total', 'total_page'
         ]
         assert list(res["data"][0]) == ['id', 'answer']
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
-        assert res["data"][0]["answer"]["question"] == indicator_id
         # TODO:: delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -253,7 +251,6 @@ class TestDataRoutes:
             'current', 'data', 'total', 'total_page'
         ]
         assert list(res["data"][0]) == ['id', 'answer']
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
         # TODO:: Delete
         # assert res["data"] == [{
         #     'id': 649130936,
@@ -287,8 +284,6 @@ class TestDataRoutes:
             'current', 'data', 'total', 'total_page'
         ]
         assert list(res["data"][0]) == ['id', 'answer']
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
-        assert res["data"][0]["answer"]["question"] == indicator_id
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -324,8 +319,6 @@ class TestDataRoutes:
             'current', 'data', 'total', 'total_page'
         ]
         assert list(res["data"][0]) == ['id', 'answer']
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
-        assert res["data"][0]["answer"]["question"] == indicator_id
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -465,8 +458,6 @@ class TestDataRoutes:
             'current', 'data', 'total', 'total_page'
         ]
         assert list(res["data"][0]) == ['id', 'answer']
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
-        assert indicator_id in res["data"][0]["answer"]["question"]
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -502,8 +493,6 @@ class TestDataRoutes:
             'current', 'data', 'total', 'total_page'
         ]
         assert list(res["data"][0]) == ['id', 'answer']
-        assert list(res["data"][0]["answer"]) == ['question', 'value']
-        assert indicator_id in res["data"][0]["answer"]["question"]
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
