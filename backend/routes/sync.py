@@ -1,7 +1,5 @@
-from http import HTTPStatus
 from fastapi import (
-    Depends, Request, APIRouter,
-    HTTPException
+    Depends, Request, APIRouter
 )
 from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
@@ -24,7 +22,5 @@ def get_sync_cursor(
 ):
     res = get_last_sync(session=session)
     if not res:
-        raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail="Sync not found"
-        )
+        return None
     return res.get_cursor

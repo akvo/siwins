@@ -16,6 +16,11 @@ class TestSyncRoutes:
     async def test_get_sync_cursor(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
+        res = await client.get(app.url_path_for("sync:get_cursor"))
+        assert res.status_code == 200
+        res = res.json()
+        assert res is None
+
         cursor = "2635395"
         url = "https://api-auth0.akvo.org/flow/orgs/sig/sync"
         url += f"?next=true&cursor={cursor}"
