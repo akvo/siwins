@@ -20,7 +20,7 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
 import { geojson, tileOSM } from "../../util/geo-util";
-import { api } from "../../lib";
+import { api, ds } from "../../lib";
 import { generateAdvanceFilterURL, generateFilterURL } from "../../util/utils";
 import { UIState } from "../../state/ui";
 import IndicatorDropdown from "./IndicatorDropdown";
@@ -79,21 +79,35 @@ const Map = ({ searchValue }) => {
 
   // ** Init maps data
   useEffect(() => {
+    setLoading(true);
     const { page, perPage } = defPagination;
-    const url = "/data/maps-init";
-    api
-      .get(`${url}?page_only=true&page=${page}&perpage=${perPage}`)
-      .then((res) => {
-        const { current, total_page } = res.data;
+    const url = `/data/maps-init?page_only=true&page=${page}&perpage=${perPage}`;
+    // ** fetch data from indexed DB first
+    ds.getMap(url).then((cachedData) => {
+      if (!cachedData) {
+        api
+          .get(url)
+          .then((res) => {
+            const { current, total_page } = res.data;
+            ds.saveMap({ endpoint: url, data: res.data });
+            setInitMapPagination({
+              ...defPagination,
+              page: current,
+              totalPage: total_page,
+            });
+          })
+          .catch((e) => {
+            console.error("Unable to fetch page size", e);
+          });
+      } else {
+        const { current, total_page } = cachedData.data;
         setInitMapPagination({
           ...defPagination,
           page: current,
           totalPage: total_page,
         });
-      })
-      .catch((e) => {
-        console.error("Unable to fetch page size", e);
-      });
+      }
+    });
   }, []);
 
   // ** Init maps data
@@ -101,16 +115,30 @@ const Map = ({ searchValue }) => {
     if (isEmpty(initMapPagination)) {
       return;
     }
-    setLoading(true);
     const { page, totalPage, perPage } = initMapPagination;
     const url = "/data/maps-init";
     let curr = page;
     while (curr <= totalPage) {
       // pagination
       const pageURL = `${url}?page=${curr}&perpage=${perPage}`;
-      const res = await api.get(pageURL);
-      const dataTemp = res?.data?.data || [];
-      setInitMapData((prevData) => uniqBy([...prevData, ...dataTemp], "id"));
+      // ** fetch data from indexed DB first
+      await ds.getMap(pageURL).then(async (cachedData) => {
+        if (!cachedData) {
+          const res = await api.get(pageURL);
+          const dataTemp = res?.data?.data || [];
+          ds.saveMap({ endpoint: pageURL, data: dataTemp });
+          setInitMapData((prevData) =>
+            uniqBy([...prevData, ...dataTemp], "id")
+          );
+        } else {
+          const dataTemp = cachedData?.data || [];
+          setTimeout(() => {
+            setInitMapData((prevData) =>
+              uniqBy([...prevData, ...dataTemp], "id")
+            );
+          }, 100);
+        }
+      });
       curr += 1;
     }
   }, [initMapPagination]);
@@ -142,23 +170,36 @@ const Map = ({ searchValue }) => {
   useEffect(() => {
     if (endpointURL) {
       // get page size
+      setLoading(true);
       const { page, perPage } = defPagination;
       const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
-      api
-        .get(
-          `${endpointURL}${queryUrlPrefix}page_only=true&page=${page}&perpage=${perPage}`
-        )
-        .then((res) => {
-          const { current, total_page } = res.data;
+      const url = `${endpointURL}${queryUrlPrefix}page_only=true&page=${page}&perpage=${perPage}`;
+      // ** fetch data from indexed DB first
+      ds.getMap(url).then((cachedData) => {
+        if (!cachedData) {
+          api
+            .get(url)
+            .then((res) => {
+              const { current, total_page } = res.data;
+              ds.saveMap({ endpoint: url, data: res.data });
+              setPagination({
+                ...defPagination,
+                page: current,
+                totalPage: total_page,
+              });
+            })
+            .catch((e) => {
+              console.error("Unable to fetch page size", e);
+            });
+        } else {
+          const { current, total_page } = cachedData.data;
           setPagination({
             ...defPagination,
             page: current,
             totalPage: total_page,
           });
-        })
-        .catch((e) => {
-          console.error("Unable to fetch page size", e);
-        });
+        }
+      });
     }
   }, [defPagination, endpointURL]);
 
@@ -167,16 +208,26 @@ const Map = ({ searchValue }) => {
     if (isEmpty(pagination) || !endpointURL) {
       return;
     }
-    setLoading(true);
     const { page, totalPage, perPage } = pagination;
     let curr = page;
     while (curr <= totalPage) {
       // pagination
       const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
       const pageURL = `${endpointURL}${queryUrlPrefix}page=${curr}&perpage=${perPage}`;
-      const res = await api.get(pageURL);
-      const dataTemp = res?.data?.data || [];
-      setData((prevData) => uniqBy([...prevData, ...dataTemp], "id"));
+      // ** fetch data from indexed DB first
+      await ds.getMap(pageURL).then(async (cachedData) => {
+        if (!cachedData) {
+          const res = await api.get(pageURL);
+          const dataTemp = res?.data?.data || [];
+          ds.saveMap({ endpoint: pageURL, data: dataTemp });
+          setData((prevData) => uniqBy([...prevData, ...dataTemp], "id"));
+        } else {
+          const dataTemp = cachedData?.data || [];
+          setTimeout(() => {
+            setData((prevData) => uniqBy([...prevData, ...dataTemp], "id"));
+          }, 100);
+        }
+      });
       curr += 1;
     }
   }, [pagination, endpointURL]);
