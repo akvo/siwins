@@ -6,6 +6,15 @@ import { Home, DashboardView, ErrorPage } from "./pages";
 import { UIState } from "./state/ui";
 import { api, ds } from "./lib";
 
+const formatDateToYYYYMM = (date) => {
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const year = date.getFullYear();
+  return `${year}${month}`;
+};
+
+const now = new Date();
+const cursorTemp = formatDateToYYYYMM(now);
+
 const App = () => {
   const location = useLocation();
 
@@ -21,7 +30,7 @@ const App = () => {
           const cachedCursor = res?.cursor;
           if (serverCursor !== cachedCursor) {
             await ds.truncateTables();
-            ds.saveCursor({ cursor: serverCursor });
+            ds.saveCursor({ cursor: serverCursor || cursorTemp });
           }
         });
       })
