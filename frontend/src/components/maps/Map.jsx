@@ -28,9 +28,8 @@ import SchoolDetailModal from "./SchoolDetailModal";
 import { Chart } from "..";
 import { Card, Spin, Button, Space } from "antd";
 import Draggable from "react-draggable";
-import { isEmpty, intersection } from "lodash";
+import { isEmpty, intersection, uniqBy } from "lodash";
 import { LoadingOutlined } from "@ant-design/icons";
-// import { sequentialPromise } from "../../util/utils";
 
 const defZoom = 7;
 const defCenter = window.mapConfig.center;
@@ -102,6 +101,7 @@ const Map = ({ searchValue }) => {
     if (isEmpty(initMapPagination)) {
       return;
     }
+    setLoading(true);
     const { page, totalPage, perPage } = initMapPagination;
     const url = "/data/maps-init";
     let curr = page;
@@ -110,7 +110,7 @@ const Map = ({ searchValue }) => {
       const pageURL = `${url}?page=${curr}&perpage=${perPage}`;
       const res = await api.get(pageURL);
       const dataTemp = res?.data?.data || [];
-      setInitMapData((prevData) => [...prevData, ...dataTemp]);
+      setInitMapData((prevData) => uniqBy([...prevData, ...dataTemp], "id"));
       curr += 1;
     }
   }, [initMapPagination]);
@@ -142,7 +142,6 @@ const Map = ({ searchValue }) => {
   useEffect(() => {
     if (endpointURL) {
       // get page size
-      setLoading(true);
       const { page, perPage } = defPagination;
       const queryUrlPrefix = endpointURL.includes("?") ? "&" : "?";
       api
@@ -168,6 +167,7 @@ const Map = ({ searchValue }) => {
     if (isEmpty(pagination) || !endpointURL) {
       return;
     }
+    setLoading(true);
     const { page, totalPage, perPage } = pagination;
     let curr = page;
     while (curr <= totalPage) {
@@ -176,7 +176,7 @@ const Map = ({ searchValue }) => {
       const pageURL = `${endpointURL}${queryUrlPrefix}page=${curr}&perpage=${perPage}`;
       const res = await api.get(pageURL);
       const dataTemp = res?.data?.data || [];
-      setData((prevData) => [...prevData, ...dataTemp]);
+      setData((prevData) => uniqBy([...prevData, ...dataTemp], "id"));
       curr += 1;
     }
   }, [pagination, endpointURL]);
@@ -193,13 +193,14 @@ const Map = ({ searchValue }) => {
     if (isEmpty(data)) {
       return [];
     }
-    const remapDataWithInitData = data.map((d) => {
+    let remapDataWithInitData = data.map((d) => {
       const findInitData = initMapData.find((imd) => imd.id === d.id);
       return {
         ...d,
         ...findInitData,
       };
     });
+    remapDataWithInitData = uniqBy(remapDataWithInitData, "id");
     const { type, option } = selectedQuestion;
     if (type === "number") {
       const { minNumber, maxNumber } = barChartValues;
@@ -231,6 +232,9 @@ const Map = ({ searchValue }) => {
   useEffect(() => {
     UIState.update((s) => {
       s.mapData = filteredData.map((d) => {
+        if (!d?.school_information) {
+          return d;
+        }
         const school_information_array = Object.values(d.school_information);
         return {
           ...d,
@@ -365,7 +369,6 @@ const Map = ({ searchValue }) => {
   return (
     <>
       <div id="map-view">
-        {/* TODO:: DELETE */}
         {loading && (
           <div className="map-loading">
             <Spin
@@ -445,7 +448,6 @@ const Map = ({ searchValue }) => {
               data={geojson}
             />
             <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon}>
-              {/* TODO:: DELETE {!loading && ( */}
               <Markers
                 zoom={defZoom}
                 selectedQuestion={selectedQuestion}
@@ -453,7 +455,6 @@ const Map = ({ searchValue }) => {
                 mapData={mapData}
                 setSelectedDatapoint={setSelectedDatapoint}
               />
-              {/* )} */}
             </MarkerClusterGroup>
           </MapContainer>
         </div>
