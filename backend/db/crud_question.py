@@ -1,6 +1,7 @@
 from typing import List, Optional
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import false
 from models.question_group import QuestionGroup
 from models.question import (
     Question,
@@ -61,7 +62,8 @@ def add_question(
     required: Optional[bool] = True,
     dependency: Optional[List[dict]] = None,
     attributes: Optional[List[str]] = None,
-    display_name: Optional[str] = None
+    display_name: Optional[str] = None,
+    personal_data: Optional[bool] = False
 ) -> QuestionBase:
     last_question = get_last_question(
         session=session, form=form, question_group=question_group
@@ -78,7 +80,8 @@ def add_question(
         required=required,
         dependency=dependency,
         attributes=attributes,
-        display_name=display_name
+        display_name=display_name,
+        personal_data=personal_data
     )
     if option:
         for oi, o in enumerate(option):
@@ -185,9 +188,13 @@ def get_question_name(session: Session, ids: List[int]) -> dict:
 
 
 def get_excel_headers(session: Session) -> List[str]:
-    questions = (session.query(Question).join(
-        QuestionGroup).order_by(
-            QuestionGroup.order, Question.order))
+    questions = (session.query(Question).filter(
+        Question.personal_data == false()
+    ).join(
+        QuestionGroup
+    ).order_by(
+        QuestionGroup.order, Question.order
+    ))
     return [q.to_excel_header for q in questions]
 
 

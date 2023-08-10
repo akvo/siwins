@@ -19,6 +19,7 @@ flow_api_url = f"https://api-auth0.akvo.org/flow/orgs/{instance}"
 data_url = f"{flow_api_url}/form_instances?survey_id=#survey#&form_id=#form#"
 init_sync_url = f"{flow_api_url}/sync?initial=true"
 
+# TODO:: change url to webform?
 tc_api_url = "https://tech-consultancy.akvo.org/akvo-flow-web-api"
 form_definition_url = f"{tc_api_url}/{instance}/#form#/update"
 cascade_url = f"{tc_api_url}/cascade/{instance}/#source#/#id#"

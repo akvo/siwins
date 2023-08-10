@@ -434,7 +434,7 @@ def get_data_detail_popup_by_data_id(
             find_label = next(
                 (
                     x for x in labels
-                    if x["name"].lower() == level.lower()
+                    if level and x["name"].lower() == level.lower()
                 ),
                 None
             )

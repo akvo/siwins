@@ -170,7 +170,7 @@ def get_answer_history(
     summary="get data answers by data id",
     tags=["Answer"]
 )
-def get_data_answers_history(
+def get_data_answer_detail(
     req: Request,
     data_id: int,
     session: Session = Depends(get_session)
@@ -197,6 +197,10 @@ def get_data_answers_history(
             qname = da["question_name"]
             qtype = da["type"]
             value = da["value"]
+            # don't include PII answer
+            personal_data = da["personal_data"]
+            if personal_data:
+                continue
             if qid == QuestionConfig.school_information.value:
                 qtype = "school_information"
                 value = extract_school_information(

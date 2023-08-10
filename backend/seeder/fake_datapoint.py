@@ -159,10 +159,13 @@ def seed_fake_datapoint(
             if q.dependency:
                 current_dependency = q.dependency[0]
                 cd_question = int(current_dependency['question'])
-                cd_answer = current_dependency['answer-value'].lower()
+                if "answer_value" in current_dependency:
+                    cd_answer = current_dependency['answer-value']
+                if "answerValue" in current_dependency:
+                    cd_answer = current_dependency['answerValue']
                 # check answer
                 dependency_answer = current_answers.get(
-                    cd_question).lower() if current_answers.get(
+                    cd_question) if current_answers.get(
                         cd_question) else None
                 if dependency_answer != cd_answer:
                     # don't answer the question

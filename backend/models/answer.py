@@ -185,7 +185,8 @@ class Answer(Base):
             "question_id": self.question,
             "q_order": qdetail.order,
             "question_name": qdetail.name,
-            "type": qdetail.type.value
+            "type": qdetail.type.value,
+            "personal_data": qdetail.personal_data
         }
         answer = append_value(self, answer)
         return answer
