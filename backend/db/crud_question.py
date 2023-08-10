@@ -1,6 +1,7 @@
 from typing import List, Optional
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import false
 from models.question_group import QuestionGroup
 from models.question import (
     Question,
@@ -187,9 +188,13 @@ def get_question_name(session: Session, ids: List[int]) -> dict:
 
 
 def get_excel_headers(session: Session) -> List[str]:
-    questions = (session.query(Question).join(
-        QuestionGroup).order_by(
-            QuestionGroup.order, Question.order))
+    questions = (session.query(Question).filter(
+        Question.personal_data == false()
+    ).join(
+        QuestionGroup
+    ).order_by(
+        QuestionGroup.order, Question.order
+    ))
     return [q.to_excel_header for q in questions]
 
 
