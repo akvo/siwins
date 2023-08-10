@@ -33,7 +33,16 @@ for qgi, qg in enumerate(new_qg):
             q["attributes"] = find_prev_q["attributes"]
         if "displayName" in find_prev_q:
             q["displayName"] = find_prev_q["displayName"]
-        # end of remap
+        # eol of remap
+
+        # remap qid in dependency
+        if "dependency" in q:
+            for d in q["dependency"]:
+                dqid = d["question"]
+                if "Q" in dqid:
+                    dqid = dqid[1:]
+                d["question"] = dqid
+        # eol remap qid in dependency
 
 new_json["questionGroup"] = new_qg
 
