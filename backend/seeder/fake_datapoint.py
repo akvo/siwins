@@ -220,7 +220,8 @@ def seed_fake_datapoint(
                     session=session, question=q.id
                 )
                 fa = random.choice(options)
-                current_answer_value = "|".join([fa.name])
+                # current_answer_value = "|".join([fa.name])
+                current_answer_value = [fa.name]
                 answer.options = [fa.name]
                 if q.meta:
                     names.append(
