@@ -104,7 +104,8 @@ def form_seeder(session: Session, forms: List[dict]):
                     dependency=dependency,
                     option=options,
                     attributes=attributes,
-                    display_name=display_name
+                    display_name=display_name,
+                    personal_data=q.get("personalData") or False
                 )
                 # print(f"{i}.{question.name}")
         print("------------------------------------------")

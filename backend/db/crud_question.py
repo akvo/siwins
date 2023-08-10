@@ -61,7 +61,8 @@ def add_question(
     required: Optional[bool] = True,
     dependency: Optional[List[dict]] = None,
     attributes: Optional[List[str]] = None,
-    display_name: Optional[str] = None
+    display_name: Optional[str] = None,
+    personal_data: Optional[bool] = False
 ) -> QuestionBase:
     last_question = get_last_question(
         session=session, form=form, question_group=question_group
@@ -78,7 +79,8 @@ def add_question(
         required=required,
         dependency=dependency,
         attributes=attributes,
-        display_name=display_name
+        display_name=display_name,
+        personal_data=personal_data
     )
     if option:
         for oi, o in enumerate(option):
