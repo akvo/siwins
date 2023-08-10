@@ -92,13 +92,10 @@ def get_bar_charts(
         for o in r.get("options"):
             o["color"] = None
         for label in labels:
-            find_count = next(
-                (
-                    x for x in r.get('options')
-                    if x["name"].lower() == label.get('name').lower()
-                ),
-                None
-            )
+            find_count = next((
+                x for x in r.get('options')
+                if x["name"] and x["name"].lower() == label.get('name').lower()
+            ), None)
             label["count"] = find_count.get("count") \
                 if find_count else 0
             temp.append(label)
