@@ -61,6 +61,9 @@ def form_seeder(session: Session, forms: List[dict]):
             if isinstance(questions, dict):
                 questions = [questions]
             for i, q in enumerate(questions):
+                qid = q.get("id") if "id" in q else None
+                if "Q" in qid:
+                    qid = qid[1:]
                 meta_geo = q.get("localeLocationFlag")
                 # handle question type
                 type = q.get("type")
@@ -78,8 +81,10 @@ def form_seeder(session: Session, forms: List[dict]):
                         if allowMultiple else type
                 # EOL handle question type
                 dependency = None
-                if "dependency" in q:
+                if "dependency" in q and isinstance(q["dependency"], dict):
                     dependency = [q["dependency"]]
+                if "dependency" in q and isinstance(q["dependency"], list):
+                    dependency = q["dependency"]
                 attributes = None
                 if "attributes" in q:
                     attributes = q["attributes"]
@@ -93,7 +98,7 @@ def form_seeder(session: Session, forms: List[dict]):
                 crud_question.add_question(
                     session=session,
                     name=q.get("text"),
-                    id=q.get("id") if "id" in q else None,
+                    id=qid,
                     form=form.id,
                     question_group=question_group.id,
                     type=type,
