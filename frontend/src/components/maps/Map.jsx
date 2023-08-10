@@ -115,6 +115,7 @@ const Map = ({ searchValue }) => {
     if (isEmpty(initMapPagination)) {
       return;
     }
+    setLoading(true);
     const { page, totalPage, perPage } = initMapPagination;
     const url = "/data/maps-init";
     let curr = page;
@@ -208,6 +209,7 @@ const Map = ({ searchValue }) => {
     if (isEmpty(pagination) || !endpointURL) {
       return;
     }
+    setLoading(true);
     const { page, totalPage, perPage } = pagination;
     let curr = page;
     while (curr <= totalPage) {
