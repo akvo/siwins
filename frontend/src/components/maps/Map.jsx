@@ -154,7 +154,6 @@ const Map = ({ searchValue }) => {
     if (isEmpty(selectedQuestion)) {
       return null;
     }
-    setData([]);
     setPagination(defPagination);
     let url = `data/maps`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
@@ -325,6 +324,7 @@ const Map = ({ searchValue }) => {
 
   // Indicator filter functions
   const handleOnChangeQuestionDropdown = (id) => {
+    setData([]);
     setSelectedOption([]);
     updateGlobalState([], "option");
     updateGlobalState([], "number");
