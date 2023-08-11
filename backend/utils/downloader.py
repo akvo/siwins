@@ -4,17 +4,24 @@ from sqlalchemy import desc
 from sqlalchemy.orm import Session
 from db.crud_data import get_all_data
 from db.crud_question import get_excel_headers
+from db.crud_jmp import get_jmp_config
 from models.data_answer import DataAnswer
 from utils.helper import HText
 from models.data import Data
+from typing import Optional
+from AkvoResponseGrouper.models import Category
+from AkvoResponseGrouper.utils import transform_categories_to_df
 
 
-def rearange_columns(col_names: list):
+def rearange_columns(
+    col_names: list,
+    computed_column_names: Optional[list] = []
+):
     col_question = list(filter(lambda x: HText(x).hasnum, col_names))
-    col_names = [
+    columns = [
         "id", "identifier", "created_at", "datapoint_name", "geolocation"
-    ] + col_question
-    return col_names
+    ] + computed_column_names + col_question
+    return columns
 
 
 def generate_download_data(session: Session, jobs: dict, file: str):
@@ -25,6 +32,10 @@ def generate_download_data(session: Session, jobs: dict, file: str):
     if info.get("province"):
         province_name = info.get("province") or []
         province_name = ", ".join(province_name)
+    # jmp configs
+    configs = get_jmp_config()
+    computed_column_names = [cf["name"] for cf in configs]
+    # query data
     filtered_data = get_all_data(
         session=session,
         columns=[Data.id],
@@ -35,24 +46,46 @@ def generate_download_data(session: Session, jobs: dict, file: str):
         data_ids=info.get("data_ids"),
     )
     filtered_data_ids = [d.id for d in filtered_data]
+    # fetch ar-category view
+    computed_data = session.query(Category).filter(
+        Category.data.in_(filtered_data_ids)
+    ).all()
+    computed_data = [cd.serialize for cd in computed_data]
+    computed_data_df = transform_categories_to_df(categories=computed_data)
     # fetch data from data answer view
     data = session.query(DataAnswer).filter(
         DataAnswer.id.in_(filtered_data_ids)
     ).order_by(desc(DataAnswer.created)).all()
     data = [d.to_data_frame for d in data]
+    # remap data with computed values
+    for d in data:
+        for ccn in computed_column_names:
+            find_computed_value = computed_data_df[(
+                computed_data_df["data"] == d["id"]) & (
+                    computed_data_df["name"] == ccn
+            )]
+            category = "-"
+            if not find_computed_value.empty:
+                category = find_computed_value["category"].iloc[0]
+            d[ccn] = category
     # generate file
     df = pd.DataFrame(data)
     questions = get_excel_headers(session=session)
     for q in questions:
         if q not in list(df):
             df[q] = ""
-    col_names = rearange_columns(questions)
+    col_names = rearange_columns(
+        col_names=questions,
+        computed_column_names=computed_column_names
+    )
     df = df[col_names]
     # rename columns, remove question id
     df = df.rename(columns=(
         lambda col: col.split("|")[1].strip()
         if "|" in col else col
     ))
+    # Drop the 'id' column
+    df = df.drop(columns=['id'])
     # eol remove question id
     writer = pd.ExcelWriter(file, engine='xlsxwriter')
     df.to_excel(writer, sheet_name='data', index=False)
