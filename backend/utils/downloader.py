@@ -4,9 +4,7 @@ from sqlalchemy import desc
 from sqlalchemy.orm import Session
 from db.crud_data import get_all_data
 from db.crud_question import get_excel_headers
-from db.crud_jmp import (
-    get_jmp_config
-)
+from db.crud_jmp import get_jmp_config
 from models.data_answer import DataAnswer
 from utils.helper import HText
 from models.data import Data
@@ -86,6 +84,8 @@ def generate_download_data(session: Session, jobs: dict, file: str):
         lambda col: col.split("|")[1].strip()
         if "|" in col else col
     ))
+    # Drop the 'id' column
+    df = df.drop(columns=['id'])
     # eol remove question id
     writer = pd.ExcelWriter(file, engine='xlsxwriter')
     df.to_excel(writer, sheet_name='data', index=False)
