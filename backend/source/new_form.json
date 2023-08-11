@@ -16,7 +16,7 @@
             "altText": [],
             "text": ""
           },
-          "id": "Q654960929",
+          "id": "Q596240919",
           "mandatory": true,
           "order": 1,
           "text": "Which year was the survey conducted?",
@@ -34,6 +34,21 @@
                 "altText": [],
                 "value": "2023",
                 "text": "2023"
+              },
+              {
+                "altText": [],
+                "value": "2024",
+                "text": "2024"
+              },
+              {
+                "altText": [],
+                "value": "2025",
+                "text": "2025"
+              },
+              {
+                "altText": [],
+                "value": "2026",
+                "text": "2026"
               }
             ]
           }
@@ -41,7 +56,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q654960925",
+          "id": "Q636240917",
           "mandatory": true,
           "order": 2,
           "text": "What is the name of the person collecting the data/conducting the survey?",
@@ -50,16 +65,16 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q654960928",
+          "id": "Q596120917",
           "mandatory": true,
           "order": 3,
-          "text": "What is his/her position in the school?",
+          "text": "What is his/her designation/position/authority?",
           "type": "free"
         },
         {
-          "localeNameFlag": false,
+          "localeNameFlag": true,
           "altText": [],
-          "id": "Q654960930",
+          "id": "Q624570917",
           "mandatory": true,
           "order": 4,
           "text": "What is the name of the person being interviewed?",
@@ -68,7 +83,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q654960926",
+          "id": "Q599740918",
           "mandatory": true,
           "order": 5,
           "text": "What is his/her position in the school?",
@@ -77,7 +92,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q654960927",
+          "id": "Q649040917",
           "mandatory": true,
           "order": 6,
           "text": "What is the contact number of the person being interviewed ? (Mobile or Landline)",
@@ -86,8 +101,7 @@
             "allowDecimal": false,
             "signed": false,
             "validationType": "numeric"
-          },
-          "personalData": true
+          }
         }
       ],
       "repeatable": false
@@ -97,10 +111,10 @@
       "heading": "School Information",
       "question": [
         {
-          "localeNameFlag": false,
+          "localeNameFlag": true,
           "altText": [],
           "cascadeResource": "cascade-654850917-v1.sqlite",
-          "id": "Q638730933",
+          "id": "Q634200919",
           "levels": {
             "level": [
               {
@@ -129,7 +143,7 @@
             "altText": [],
             "text": ""
           },
-          "id": "Q624670929",
+          "id": "Q599740919",
           "mandatory": false,
           "order": 2,
           "text": "Please write the school name if not available on the list above:",
@@ -142,7 +156,7 @@
             "altText": [],
             "text": ""
           },
-          "id": "Q624670932",
+          "id": "Q624560919",
           "mandatory": false,
           "order": 3,
           "text": "Please write the school registration number if not available/different from the list above:",
@@ -151,7 +165,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730931",
+          "id": "Q634280919",
           "mandatory": true,
           "order": 4,
           "text": "School Category:",
@@ -176,7 +190,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624670927",
+          "id": "Q647020917",
           "mandatory": true,
           "order": 5,
           "text": "Type of School:",
@@ -216,7 +230,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730936",
+          "id": "Q652860917",
           "mandatory": true,
           "order": 6,
           "text": "GPS Coordinates:",
@@ -227,9 +241,9 @@
           "altText": [],
           "help": {
             "altText": [],
-            "text": "Record the number of hours the school is in operation on a normal working day"
+            "text": "Record the number of hours the school is in operation on a normal working day. For boarding school, total hours means: Study time + extracurricular"
           },
-          "id": "Q624670926",
+          "id": "Q624560920",
           "mandatory": true,
           "order": 7,
           "text": "What are the schools hours of operation?",
@@ -243,7 +257,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624670928",
+          "id": "Q638510920",
           "mandatory": true,
           "order": 8,
           "text": "How many classrooms does the school have?",
@@ -261,7 +275,7 @@
             "altText": [],
             "text": "Check the attendance registers and record the total roll strength for girls"
           },
-          "id": "Q624670935",
+          "id": "Q629900920",
           "mandatory": true,
           "order": 9,
           "text": "How many girls attend this school?",
@@ -279,7 +293,7 @@
             "altText": [],
             "text": "Check the attendance registers and record the total roll strength for boys"
           },
-          "id": "Q624670930",
+          "id": "Q638490919",
           "mandatory": true,
           "order": 10,
           "text": "How many boys attend this school?",
@@ -297,7 +311,7 @@
             "altText": [],
             "text": "Check updated school records"
           },
-          "id": "Q638730934",
+          "id": "Q642180924",
           "mandatory": true,
           "order": 11,
           "text": "How many female teachers teach in the school?",
@@ -310,7 +324,7 @@
             "altText": [],
             "text": "Check updated school records"
           },
-          "id": "Q638730935",
+          "id": "Q640540918",
           "mandatory": true,
           "order": 12,
           "text": "How many male teachers teach in this school?",
@@ -328,7 +342,7 @@
             "altText": [],
             "text": "Check updated school records"
           },
-          "id": "Q638730932",
+          "id": "Q638520918",
           "mandatory": true,
           "order": 13,
           "text": "How many female non - teaching staff  in this school?",
@@ -346,7 +360,7 @@
             "altText": [],
             "text": "Check updated school records"
           },
-          "id": "Q624670934",
+          "id": "Q629900921",
           "mandatory": true,
           "order": 14,
           "text": "How many male non-teaching staff n this school?",
@@ -360,30 +374,38 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730937",
+          "help": {
+            "altText": [],
+            "text": "In CHS school type, if there are two leaders in the school, please put the name of both leaders"
+          },
+          "id": "Q624570918",
           "mandatory": true,
           "order": 15,
-          "text": "What is the name of the Head Teacher of this school?",
+          "text": "What is the name of the Head Teacher / Headmaster / Principal of this school?",
           "type": "free"
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730930",
+          "help": {
+            "altText": [],
+            "text": "If there is a separate numbers for head master and principals, please put both contact numbers"
+          },
+          "id": "Q599750919",
           "mandatory": true,
           "order": 16,
-          "text": "What is the Landline phone number of the school:",
+          "text": "What is the school contact number?",
           "type": "free",
           "validationRule": {
             "allowDecimal": false,
-            "signed": false,
+            "signed": true,
             "validationType": "numeric"
           }
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624670933",
+          "id": "Q629900923",
           "mandatory": true,
           "order": 17,
           "text": "Type of Power Supply at the School?",
@@ -423,7 +445,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624670931",
+          "id": "Q636230919",
           "mandatory": true,
           "order": 18,
           "text": "What is the schools main source of power?",
@@ -432,7 +454,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730929",
+          "id": "Q634200920",
           "mandatory": true,
           "order": 19,
           "text": "Status of the  the schools main source of power at time of survey?",
@@ -442,7 +464,7 @@
               "answerValue": [
                 "Mains Electricity"
               ],
-              "question": "Q624670933"
+              "question": "Q629900923"
             }
           ],
           "options": {
@@ -482,10 +504,10 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q640620926",
+          "id": "Q654800917",
           "mandatory": true,
           "order": 1,
-          "text": "What is the primary / main source of drinking water for the school?",
+          "text": "What is the primary / main point of drinking water for the school?",
           "type": "option",
           "options": {
             "allowOther": false,
@@ -542,10 +564,10 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q640620927",
+          "id": "Q650890920",
           "mandatory": true,
           "order": 2,
-          "text": "Where is the primary water source located?",
+          "text": "Where is the primary water point located?",
           "type": "option",
           "options": {
             "allowOther": false,
@@ -586,10 +608,10 @@
             "altText": [],
             "text": ""
           },
-          "id": "Q640620928",
+          "id": "Q632240923",
           "mandatory": true,
           "order": 3,
-          "text": "What is the distance of the off-school grounds water source (meters)?",
+          "text": "What is the distance of the off-school grounds water point (meters)?",
           "type": "option",
           "options": {
             "allowOther": false,
@@ -626,10 +648,10 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q640620929",
+          "id": "Q645440917",
           "mandatory": true,
           "order": 4,
-          "text": "Is the primary water source also shared with the communities around the school?",
+          "text": "Is the primary water point also shared with the communities around the school?",
           "type": "option",
           "options": {
             "allowOther": false,
@@ -663,10 +685,10 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624660928",
+          "id": "Q643140928",
           "mandatory": true,
           "order": 1,
-          "text": "Was drinking water available from the primary/main source on the day of the survey?",
+          "text": "Was drinking water available from the primary/main point on the day of the survey?",
           "type": "option",
           "options": {
             "allowOther": false,
@@ -693,10 +715,10 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624660930",
+          "id": "Q622560918",
           "mandatory": true,
           "order": 2,
-          "text": "In the previous two weeks, was drinking water from the main source available at the school throughout each school day?",
+          "text": "In the previous two weeks, was drinking water from the main point available at the school throughout each school day?",
           "type": "option",
           "options": {
             "allowOther": false,
@@ -723,27 +745,61 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624660929",
+          "id": "Q649040918",
           "mandatory": true,
           "order": 3,
-          "text": "If water is available, please take a picture of the source?",
+          "text": "If water is available, please take a picture of the water point:",
           "type": "photo",
           "dependency": [
             {
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q624660930"
+              "question": "Q622560918"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624660927",
-          "mandatory": true,
+          "id": "Q688010937",
+          "mandatory": false,
           "order": 4,
-          "text": "Is drinking water from the main source typically available throughout the school year?",
+          "text": "If water is available, please take a picture of the water point (second picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q622560918"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q661970927",
+          "mandatory": false,
+          "order": 5,
+          "text": "If water is available, please take a picture of the water point (third picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q622560918"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q642000918",
+          "mandatory": true,
+          "order": 6,
+          "text": "Is drinking water from the main point typically available throughout the school year?",
           "type": "option",
           "options": {
             "allowOther": false,
@@ -782,7 +838,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q630020922",
+          "id": "Q641970922",
           "mandatory": true,
           "order": 1,
           "text": "Is drinking water accessible to those with limited mobility or vision?",
@@ -803,11 +859,6 @@
               },
               {
                 "altText": [],
-                "value": "There are no children with disability",
-                "text": "There are no children with disability"
-              },
-              {
-                "altText": [],
                 "value": "Don't know/can't say",
                 "text": "Don't know/can't say"
               }
@@ -817,26 +868,60 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q630020921",
+          "id": "Q649040919",
           "mandatory": true,
           "order": 2,
-          "text": "If yes, please take a picture of the access to the water source to those with limited mobility/ vision?",
+          "text": "If yes, please take a picture of the access to the water point to those with limited mobility/ vision?",
           "type": "photo",
           "dependency": [
             {
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q630020922"
+              "question": "Q641970922"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q630020920",
-          "mandatory": true,
+          "id": "Q695021173",
+          "mandatory": false,
           "order": 3,
+          "text": "If yes, please take a picture of the access to the water point to those with limited mobility/ vision (second picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q641970922"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q695001102",
+          "mandatory": false,
+          "order": 4,
+          "text": "If yes, please take a picture of the access to the water point to those with limited mobility/ vision (third picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q641970922"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q629900927",
+          "mandatory": true,
+          "order": 5,
           "text": "Is drinking water accessible to the smallest children at the school?",
           "type": "option",
           "options": {
@@ -864,26 +949,60 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q630020918",
+          "id": "Q638510924",
           "mandatory": true,
-          "order": 4,
-          "text": "If yes, please take a picture of the access to the water source for the smallest children at the school?",
+          "order": 6,
+          "text": "If yes, please take a picture of the access to the water point for the smallest children at the school?",
           "type": "photo",
           "dependency": [
             {
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q630020920"
+              "question": "Q629900927"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q630020919",
+          "id": "Q648680942",
+          "mandatory": false,
+          "order": 7,
+          "text": "If yes, please take a picture of the access to the water point for the smallest children at the school (second picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q629900927"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q692980948",
+          "mandatory": false,
+          "order": 8,
+          "text": "If yes, please take a picture of the access to the water point for the smallest children at the school (third picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q629900927"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q624590921",
           "mandatory": true,
-          "order": 5,
+          "order": 9,
           "text": "How many drinking water points (e.g. piped taps, water fountains, jugs, water coolers, and buckets with taps, as well as protected wells or rainwater tanks) are at the school? (Insert number)",
           "type": "free",
           "validationRule": {
@@ -902,10 +1021,10 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624680925",
+          "id": "Q629900947",
           "mandatory": true,
           "order": 1,
-          "text": "Has the water from the school primary water source been tested for quality checks in the last 12 months?",
+          "text": "Has the water from the school primary water point been tested for quality checks in the last 12 months?",
           "type": "option",
           "options": {
             "allowOther": false,
@@ -932,13 +1051,21 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624680923",
+          "id": "Q642190917",
           "mandatory": true,
           "order": 2,
-          "text": "What parameters were tested for quality in the last 12 months?",
+          "text": "What parameters were tested for quality in the last 12 months? (Tick all that applicable)",
           "type": "option",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q629900947"
+            }
+          ],
           "options": {
-            "allowOther": true,
+            "allowOther": false,
             "allowMultiple": true,
             "option": [
               {
@@ -958,8 +1085,8 @@
               },
               {
                 "altText": [],
-                "value": "Any other (specify)",
-                "text": "Any other (specify)"
+                "value": "Other",
+                "text": "Other"
               },
               {
                 "altText": [],
@@ -972,21 +1099,38 @@
         {
           "localeNameFlag": false,
           "altText": [],
+          "id": "Q677421026",
+          "mandatory": true,
+          "order": 3,
+          "text": "If other water quality test, please specify:",
+          "type": "free",
+          "dependency": [
+            {
+              "answerValue": [
+                "Other"
+              ],
+              "question": "Q642190917"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
           "help": {
             "altText": [],
             "text": "Check the water quality report"
           },
-          "id": "Q624680926",
+          "id": "Q634270919",
           "mandatory": true,
-          "order": 3,
-          "text": "Is the school’s main water source compliant with national standards for drinking water for E-Coli?",
+          "order": 4,
+          "text": "Is the school’s main water point compliant with national standards for drinking water for E-Coli?",
           "type": "option",
           "dependency": [
             {
               "answerValue": [
                 "E-Coli"
               ],
-              "question": "Q624680923"
+              "question": "Q642190917"
             }
           ],
           "options": {
@@ -1018,17 +1162,17 @@
             "altText": [],
             "text": "Check the water quality report"
           },
-          "id": "Q624680924",
+          "id": "Q632250922",
           "mandatory": false,
-          "order": 4,
-          "text": "Is the school’s main water source compliant with national standards for drinking water for Arsenic?",
+          "order": 5,
+          "text": "Is the school’s main water point compliant with national standards for drinking water for Arsenic?",
           "type": "option",
           "dependency": [
             {
               "answerValue": [
                 "Arsenic"
               ],
-              "question": "Q624680923"
+              "question": "Q642190917"
             }
           ],
           "options": {
@@ -1060,17 +1204,17 @@
             "altText": [],
             "text": "Check the water quality report"
           },
-          "id": "Q624680922",
+          "id": "Q634200940",
           "mandatory": false,
-          "order": 5,
-          "text": "Is the school’s main water source compliant with national standards for drinking water for Lead?",
+          "order": 6,
+          "text": "Is the school’s main water point compliant with national standards for drinking water for Lead?",
           "type": "option",
           "dependency": [
             {
               "answerValue": [
                 "Lead"
               ],
-              "question": "Q624680923"
+              "question": "Q642190917"
             }
           ],
           "options": {
@@ -1102,17 +1246,17 @@
             "altText": [],
             "text": "Check the water quality report"
           },
-          "id": "Q624680927",
+          "id": "Q649030946",
           "mandatory": false,
-          "order": 6,
-          "text": "Is the school’s main water source compliant with national standards for drinking water for Other (specify)?",
+          "order": 7,
+          "text": "Is the school’s main water point compliant with national standards for drinking water for Other (specify)?",
           "type": "option",
           "dependency": [
             {
               "answerValue": [
-                "Any other (specify)"
+                "Other"
               ],
-              "question": "Q624680923"
+              "question": "Q642190917"
             }
           ],
           "options": {
@@ -1140,10 +1284,10 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624680928",
+          "id": "Q629900934",
           "mandatory": true,
-          "order": 7,
-          "text": "Does the school do anything (treatment) to the water from the main source to make it safe to drink?",
+          "order": 8,
+          "text": "Does the school do anything (treatment) to the water from the main point to make it safe to drink?",
           "type": "option",
           "options": {
             "allowOther": false,
@@ -1170,9 +1314,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624680919",
+          "id": "Q636230924",
           "mandatory": true,
-          "order": 8,
+          "order": 9,
           "text": "If treated, what sort of treatment is conducted?",
           "type": "option",
           "dependency": [
@@ -1180,11 +1324,11 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q624680928"
+              "question": "Q629900934"
             }
           ],
           "options": {
-            "allowOther": true,
+            "allowOther": false,
             "allowMultiple": false,
             "option": [
               {
@@ -1223,9 +1367,26 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624680920",
+          "id": "Q688051059",
           "mandatory": true,
-          "order": 9,
+          "order": 10,
+          "text": "If other sort of treatment, please specify:",
+          "type": "free",
+          "dependency": [
+            {
+              "answerValue": [
+                "Other, please specify"
+              ],
+              "question": "Q636230924"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q634190924",
+          "mandatory": true,
+          "order": 11,
           "text": "How often is treatment done?",
           "type": "option",
           "dependency": [
@@ -1238,7 +1399,7 @@
                 "Ultraviolet disinfection",
                 "Other, please specify"
               ],
-              "question": "Q624680919"
+              "question": "Q636230924"
             }
           ],
           "options": {
@@ -1275,17 +1436,17 @@
             "altText": [],
             "text": ""
           },
-          "id": "Q624680921",
+          "id": "Q624570922",
           "mandatory": true,
-          "order": 10,
-          "text": "Is the school’s main water source compliant with national standards for drinking water?",
+          "order": 12,
+          "text": "Is the school’s main water point compliant with national standards for drinking water?",
           "type": "option",
           "dependency": [
             {
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q624680926"
+              "question": "Q634270919"
             }
           ],
           "options": {
@@ -1320,7 +1481,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q649140920",
+          "id": "Q650890921",
           "mandatory": true,
           "order": 1,
           "text": "Does the school have toilets?",
@@ -1345,7 +1506,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q592240932",
+          "id": "Q634220920",
           "mandatory": true,
           "order": 2,
           "text": "If no, where do children go to defecate?",
@@ -1355,11 +1516,11 @@
               "answerValue": [
                 "No"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
-            "allowOther": true,
+            "allowOther": false,
             "allowMultiple": true,
             "option": [
               {
@@ -1398,9 +1559,26 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q649140928",
+          "id": "Q660191041",
           "mandatory": true,
           "order": 3,
+          "text": "If children go to other place to defecate, please specify:",
+          "type": "free",
+          "dependency": [
+            {
+              "answerValue": [
+                "Other, please specify:"
+              ],
+              "question": "Q634220920"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q650910918",
+          "mandatory": true,
+          "order": 4,
           "text": "What type of student toilets/latrines are at the school? (check one - most common)",
           "type": "option",
           "dependency": [
@@ -1408,7 +1586,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -1449,11 +1627,6 @@
                 "altText": [],
                 "value": "Composting toilet",
                 "text": "Composting toilet"
-              },
-              {
-                "altText": [],
-                "value": "Sea/Bush/River",
-                "text": "Sea/Bush/River"
               }
             ]
           }
@@ -1461,9 +1634,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q592240937",
+          "id": "Q641980920",
           "mandatory": true,
-          "order": 4,
+          "order": 5,
           "text": "Of these, which is the main toilet that is used by the school?",
           "type": "option",
           "dependency": [
@@ -1471,7 +1644,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -1524,9 +1697,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q592240931",
+          "id": "Q634220921",
           "mandatory": true,
-          "order": 5,
+          "order": 6,
           "text": "If pour flush or flush toilet, where does the water come from?",
           "type": "option",
           "dependency": [
@@ -1535,7 +1708,7 @@
                 "Flush toilet",
                 "Pour flush toilet"
               ],
-              "question": "Q649140928"
+              "question": "Q650910918"
             }
           ],
           "options": {
@@ -1568,9 +1741,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q592240934",
+          "id": "Q599880918",
           "mandatory": true,
-          "order": 6,
+          "order": 7,
           "text": "How many student toilets / latrines are currently usable (available, functional, private)? (insert number of holes / seats stances)",
           "type": "free",
           "dependency": [
@@ -1578,7 +1751,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "validationRule": {
@@ -1590,9 +1763,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q592240929",
+          "id": "Q652860921",
           "mandatory": true,
-          "order": 7,
+          "order": 8,
           "text": "Are the toilets/latrines separate for girls and boys?",
           "type": "option",
           "dependency": [
@@ -1600,7 +1773,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -1628,9 +1801,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q592240928",
+          "id": "Q650910919",
           "mandatory": true,
-          "order": 8,
+          "order": 9,
           "text": "If separated, how many toilets are available for girls?",
           "type": "free",
           "dependency": [
@@ -1638,7 +1811,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q592240929"
+              "question": "Q652860921"
             }
           ],
           "validationRule": {
@@ -1650,9 +1823,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q649140921",
+          "id": "Q652850922",
           "mandatory": true,
-          "order": 9,
+          "order": 10,
           "text": "How many girl toilets / latrines are currently usable (available, functional, private)? (insert number of holes / seats stances)",
           "type": "free",
           "dependency": [
@@ -1660,7 +1833,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q592240929"
+              "question": "Q652860921"
             }
           ],
           "validationRule": {
@@ -1672,9 +1845,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q649140923",
+          "id": "Q650910920",
           "mandatory": true,
-          "order": 10,
+          "order": 11,
           "text": "If separated, how many toilets are available for boys?",
           "type": "free",
           "dependency": [
@@ -1682,7 +1855,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q592240929"
+              "question": "Q652860921"
             }
           ],
           "validationRule": {
@@ -1694,9 +1867,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q592240936",
+          "id": "Q634430922",
           "mandatory": true,
-          "order": 11,
+          "order": 12,
           "text": "How many boys toilets / latrines are currently usable (available, functional, private)? (insert number of holes / seats stances)",
           "type": "free",
           "dependency": [
@@ -1704,7 +1877,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q592240929"
+              "question": "Q652860921"
             }
           ],
           "validationRule": {
@@ -1716,9 +1889,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q592240933",
+          "id": "Q634200923",
           "mandatory": true,
-          "order": 12,
+          "order": 13,
           "text": "Where are the student toilets located?",
           "type": "option",
           "dependency": [
@@ -1726,7 +1899,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -1747,6 +1920,11 @@
                 "altText": [],
                 "value": "Other (behind school- not visible from the school building- in the bush)",
                 "text": "Other (behind school- not visible from the school building- in the bush)"
+              },
+              {
+                "altText": [],
+                "value": "Attached to dormitory buildings",
+                "text": "Attached to dormitory buildings"
               }
             ]
           }
@@ -1754,9 +1932,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q649140925",
+          "id": "Q640530922",
           "mandatory": true,
-          "order": 13,
+          "order": 14,
           "text": "Please take a picture of boys toilet:",
           "type": "photo",
           "dependency": [
@@ -1764,16 +1942,50 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q592240929"
+              "question": "Q652860921"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q592240935",
+          "id": "Q688020926",
+          "mandatory": false,
+          "order": 15,
+          "text": "Please take a picture of boys toilet (second picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q652860921"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q680131109",
+          "mandatory": false,
+          "order": 16,
+          "text": "Please take a picture of boys toilet (third picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q652860921"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q592240917",
           "mandatory": true,
-          "order": 14,
+          "order": 17,
           "text": "Please take a picture of girls toilets:",
           "type": "photo",
           "dependency": [
@@ -1781,16 +1993,50 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q592240929"
+              "question": "Q652860921"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q649140919",
+          "id": "Q685801132",
+          "mandatory": false,
+          "order": 18,
+          "text": "Please take a picture of girls toilets (second picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q652860921"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q692990922",
+          "mandatory": false,
+          "order": 19,
+          "text": "Please take a picture of girls toilets (third picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q652860921"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q649030927",
           "mandatory": true,
-          "order": 15,
+          "order": 20,
           "text": "How many teachers toilets / latrines are currently usable (available, functional, private)? (insert number of holes / seats stances) Insert number",
           "type": "free",
           "dependency": [
@@ -1798,7 +2044,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "validationRule": {
@@ -1810,9 +2056,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q592240930",
+          "id": "Q632220925",
           "mandatory": true,
-          "order": 16,
+          "order": 21,
           "text": "Are the toilets/latrines separate for female  and male teachers?",
           "type": "option",
           "dependency": [
@@ -1820,7 +2066,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -1843,9 +2089,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q642160929",
+          "id": "Q649030928",
           "mandatory": true,
-          "order": 17,
+          "order": 22,
           "text": "If yes, how many toilets are available for male teachers?",
           "type": "free",
           "dependency": [
@@ -1853,7 +2099,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q592240930"
+              "question": "Q632220925"
             }
           ],
           "validationRule": {
@@ -1865,9 +2111,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q649140922",
+          "id": "Q599740924",
           "mandatory": true,
-          "order": 18,
+          "order": 23,
           "text": "Number of toilets/latrines that are usable (available, functional, private) for male teachers:",
           "type": "free",
           "dependency": [
@@ -1875,7 +2121,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q592240930"
+              "question": "Q632220925"
             }
           ],
           "validationRule": {
@@ -1887,9 +2133,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q649140927",
+          "id": "Q620770921",
           "mandatory": true,
-          "order": 19,
+          "order": 24,
           "text": "If yes, how many toilets are available for female teachers?",
           "type": "free",
           "dependency": [
@@ -1897,7 +2143,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q592240930"
+              "question": "Q632220925"
             }
           ],
           "validationRule": {
@@ -1909,9 +2155,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q649140926",
+          "id": "Q654970925",
           "mandatory": true,
-          "order": 20,
+          "order": 25,
           "text": "Number of toilets/latrines that are usable (available, functional, private) for female teachers:",
           "type": "free",
           "dependency": [
@@ -1919,7 +2165,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q592240930"
+              "question": "Q632220925"
             }
           ],
           "validationRule": {
@@ -1931,9 +2177,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q649140924",
+          "id": "Q624560926",
           "mandatory": true,
-          "order": 21,
+          "order": 26,
           "text": "Where are the teachers toilets located?",
           "type": "option",
           "dependency": [
@@ -1941,7 +2187,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -1976,7 +2222,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q618370927",
+          "id": "Q638510927",
           "mandatory": true,
           "order": 1,
           "text": "How many times per week are the student toilets cleaned?",
@@ -1986,7 +2232,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -2023,7 +2269,7 @@
             "altText": [],
             "text": "Clean: all toilets do not have a strong smell or significant numbers of flies or mosquitos, and there is no visible faeces on the floor, walls, seat (or pan) or around the facility.                                                                                                                           Somewhat clean: there is some smell and/or some sign of faecal matter in some of the toilets. \nNot clean: there is a strong smell and/or presence of faecal matter in most toilets."
           },
-          "id": "Q618370928",
+          "id": "Q645440921",
           "mandatory": true,
           "order": 2,
           "text": "In general, how clean are the student toilets?",
@@ -2033,7 +2279,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -2068,7 +2314,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q643200923",
+          "id": "Q634230917",
           "mandatory": true,
           "order": 1,
           "text": "Is there at least one usable toilet/latrine that is accessible to the smallest children at the school?",
@@ -2078,7 +2324,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -2101,7 +2347,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q643200921",
+          "id": "Q596140923",
           "mandatory": true,
           "order": 2,
           "text": "Please take a photo of the toilets that are accessible to small children:",
@@ -2111,16 +2357,50 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q643200923"
+              "question": "Q634230917"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q643200920",
-          "mandatory": true,
+          "id": "Q692990923",
+          "mandatory": false,
           "order": 3,
+          "text": "Please take a photo of the toilets that are accessible to small children (second picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q634230917"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q692990924",
+          "mandatory": false,
+          "order": 4,
+          "text": "Please take a photo of the toilets that are accessible to small children (third picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q634230917"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q634220925",
+          "mandatory": true,
+          "order": 5,
           "text": "Is there at least one usable toilet/latrine that is accessible to those with limited mobility or vision?",
           "type": "option",
           "dependency": [
@@ -2128,7 +2408,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -2151,9 +2431,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q643200922",
+          "id": "Q634200926",
           "mandatory": true,
-          "order": 4,
+          "order": 6,
           "text": "Please take a photo of the toilets that are accessible to children with limited mobility:",
           "type": "photo",
           "dependency": [
@@ -2161,7 +2441,41 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q643200920"
+              "question": "Q634220925"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q671561114",
+          "mandatory": false,
+          "order": 7,
+          "text": "Please take a photo of the toilets that are accessible to children with limited mobility (second picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q634220925"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q687961122",
+          "mandatory": false,
+          "order": 8,
+          "text": "Please take a photo of the toilets that are accessible to children with limited mobility (third picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q634220925"
             }
           ]
         }
@@ -2175,7 +2489,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q650950934",
+          "id": "Q652850926",
           "mandatory": true,
           "order": 1,
           "text": "When are students permitted to use the school toilets/latrines?",
@@ -2185,7 +2499,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -2220,7 +2534,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730940",
+          "id": "Q599750924",
           "mandatory": true,
           "order": 1,
           "text": "Are culturally appropriate anal cleansing materials currently available to all students?",
@@ -2230,7 +2544,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -2258,7 +2572,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730941",
+          "id": "Q636250923",
           "mandatory": true,
           "order": 2,
           "text": "Is there currently functional lighting in the student toilets?",
@@ -2268,7 +2582,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -2300,10 +2614,10 @@
             "altText": [],
             "text": ""
           },
-          "id": "Q638730942",
+          "id": "Q620790921",
           "mandatory": true,
           "order": 3,
-          "text": "Are latrines or septic tanks emptied (or latrines safely covered) when they fill up?",
+          "text": "Is the waste from the toilet disposed properly?",
           "type": "option",
           "dependency": [
             {
@@ -2314,7 +2628,7 @@
                 "Pit toilet without slab",
                 "Composting toilet"
               ],
-              "question": "Q649140928"
+              "question": "Q650910918"
             }
           ],
           "options": {
@@ -2323,13 +2637,18 @@
             "option": [
               {
                 "altText": [],
-                "value": "Yes",
-                "text": "Yes"
+                "value": "Yes, the toilet is connected to a sewer",
+                "text": "Yes, the toilet is connected to a sewer"
               },
               {
                 "altText": [],
-                "value": "No",
-                "text": "No"
+                "value": "The tank is emptied when full",
+                "text": "The tank is emptied when full"
+              },
+              {
+                "altText": [],
+                "value": "No, there is no proper disposal",
+                "text": "No, there is no proper disposal"
               }
             ]
           }
@@ -2344,7 +2663,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638770930",
+          "id": "Q650900919",
           "mandatory": true,
           "order": 1,
           "text": "Are there hand washing facilities at the school?",
@@ -2374,7 +2693,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638770929",
+          "id": "Q650910923",
           "mandatory": true,
           "order": 2,
           "text": "If yes, please take a photo of the hand washing facility?",
@@ -2384,16 +2703,50 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638770930"
+              "question": "Q650900919"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638770927",
-          "mandatory": true,
+          "id": "Q677380949",
+          "mandatory": false,
           "order": 3,
+          "text": "If yes, please take a photo of the hand washing facility (second picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q650900919"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q691351102",
+          "mandatory": false,
+          "order": 4,
+          "text": "If yes, please take a photo of the hand washing facility (third picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q650900919"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q634210924",
+          "mandatory": true,
+          "order": 5,
           "text": "If yes, what type of facility is there?",
           "type": "option",
           "dependency": [
@@ -2401,7 +2754,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638770930"
+              "question": "Q650900919"
             }
           ],
           "options": {
@@ -2439,9 +2792,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638770926",
+          "id": "Q650910924",
           "mandatory": true,
-          "order": 4,
+          "order": 6,
           "text": "Are both soap and water currently available at the handwashing facilities?",
           "type": "option",
           "dependency": [
@@ -2449,7 +2802,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638770930"
+              "question": "Q650900919"
             }
           ],
           "options": {
@@ -2482,9 +2835,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638770928",
+          "id": "Q622560920",
           "mandatory": true,
-          "order": 5,
+          "order": 7,
           "text": "Where does the water for the hand washing facility come from?",
           "type": "option",
           "dependency": [
@@ -2492,7 +2845,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638770930"
+              "question": "Q650900919"
             }
           ],
           "options": {
@@ -2532,7 +2885,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624670937",
+          "id": "Q620780920",
           "mandatory": true,
           "order": 1,
           "text": "Are there handwashing facilities accessible to those with limited mobility or vision?",
@@ -2542,7 +2895,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638770930"
+              "question": "Q650900919"
             }
           ],
           "options": {
@@ -2570,7 +2923,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624670938",
+          "id": "Q649040931",
           "mandatory": true,
           "order": 2,
           "text": "Are there handwashing facilities accessible to the smallest children at the school?",
@@ -2580,7 +2933,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638770930"
+              "question": "Q650900919"
             }
           ],
           "options": {
@@ -2608,22 +2961,22 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q624670939",
+          "id": "Q636230930",
           "mandatory": true,
           "order": 3,
-          "text": "Do students wash their hands in group daily hand washing activities?",
+          "text": "Do students wash their hands in group hand washing activities?",
           "type": "option",
           "dependency": [
             {
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638770930"
+              "question": "Q650900919"
             }
           ],
           "options": {
             "allowOther": false,
-            "allowMultiple": false,
+            "allowMultiple": true,
             "option": [
               {
                 "altText": [],
@@ -2647,6 +3000,51 @@
               }
             ]
           }
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q693140984",
+          "mandatory": true,
+          "order": 4,
+          "text": "Is the group handwashing done daily?",
+          "type": "option",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes- before meal/lunch",
+                "Yes- after reces",
+                "Yes- before break"
+              ],
+              "question": "Q636230930"
+            }
+          ],
+          "options": {
+            "allowOther": false,
+            "allowMultiple": false,
+            "option": [
+              {
+                "altText": [],
+                "value": "Always",
+                "text": "Always"
+              },
+              {
+                "altText": [],
+                "value": "Sometimes",
+                "text": "Sometimes"
+              },
+              {
+                "altText": [],
+                "value": "Never",
+                "text": "Never"
+              },
+              {
+                "altText": [],
+                "value": "Don't know / can't say",
+                "text": "Don't know / can't say"
+              }
+            ]
+          }
         }
       ],
       "repeatable": false
@@ -2658,7 +3056,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q636430934",
+          "id": "Q618330925",
           "mandatory": true,
           "order": 1,
           "text": "Where are handwashing facilities with water and soap located at the school? (mark all that apply)",
@@ -2668,7 +3066,7 @@
               "answerValue": [
                 "Yes, water and soap"
               ],
-              "question": "Q638770926"
+              "question": "Q650910924"
             }
           ],
           "options": {
@@ -2711,7 +3109,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q636430933",
+          "id": "Q634170926",
           "mandatory": true,
           "order": 2,
           "text": "How many handwashing facilities are located at the school? (insert number of taps)",
@@ -2721,7 +3119,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638770930"
+              "question": "Q650900919"
             }
           ],
           "validationRule": {
@@ -2733,7 +3131,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q636430935",
+          "id": "Q620790922",
           "mandatory": true,
           "order": 3,
           "text": "How many handwashing facilities with water and soap are located at the school? (insert number of taps)",
@@ -2743,7 +3141,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638770930"
+              "question": "Q650900919"
             }
           ],
           "validationRule": {
@@ -2762,7 +3160,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q642230925",
+          "id": "Q596130922",
           "mandatory": true,
           "order": 1,
           "text": "How many times per week are group handwashing activities conducted for all students?",
@@ -2790,6 +3188,11 @@
                 "altText": [],
                 "value": "Less than once per week",
                 "text": "Less than once per week"
+              },
+              {
+                "altText": [],
+                "value": "No group hand-washing activities",
+                "text": "No group hand-washing activities"
               }
             ]
           }
@@ -2804,11 +3207,19 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638790937",
+          "id": "Q640540929",
           "mandatory": true,
           "order": 1,
           "text": "Are water and soap available in a private space for girls to manage menstrual hygiene?",
           "type": "option",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q650890921"
+            }
+          ],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
@@ -2839,7 +3250,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638790935",
+          "id": "Q652860928",
           "mandatory": true,
           "order": 2,
           "text": "Are there covered bins for disposal of menstrual materials in the toilets used by women and girls?",
@@ -2849,7 +3260,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -2877,11 +3288,36 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638790936",
+          "id": "Q674171180",
           "mandatory": true,
           "order": 3,
+          "text": "Please take the picture of covered bins for disposal of menstrual materials:",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q652860928"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q650940918",
+          "mandatory": true,
+          "order": 4,
           "text": "Are there disposal mechanisms for menstrual hygiene waste at the school?",
           "type": "option",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q650890921"
+            }
+          ],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
@@ -2907,14 +3343,14 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638790933",
+          "id": "Q649030935",
           "mandatory": true,
-          "order": 4,
+          "order": 5,
           "text": "Which of the following provisions for Menstrual Hygiene Management (MHM) are available at the school?",
           "type": "option",
           "options": {
             "allowOther": false,
-            "allowMultiple": false,
+            "allowMultiple": true,
             "option": [
               {
                 "altText": [],
@@ -2930,6 +3366,11 @@
                 "altText": [],
                 "value": "MHM education( Should be institutionalized (i.e. regularly taught in class or through a regular school program) to be considered as a response for this question. )",
                 "text": "MHM education( Should be institutionalized (i.e. regularly taught in class or through a regular school program) to be considered as a response for this question. )"
+              },
+              {
+                "altText": [],
+                "value": "Not available",
+                "text": "Not available"
               }
             ]
           }
@@ -2937,9 +3378,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638790932",
+          "id": "Q636250924",
           "mandatory": true,
-          "order": 5,
+          "order": 6,
           "text": "Have any staff members been trained on menstruation education?",
           "type": "option",
           "options": {
@@ -2962,9 +3403,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638790938",
+          "id": "Q638500930",
           "mandatory": true,
-          "order": 6,
+          "order": 7,
           "text": "Are menstrual materials (e.g. pads) available on premises?",
           "type": "option",
           "options": {
@@ -2985,6 +3426,11 @@
                 "altText": [],
                 "value": "Yes, to borrow",
                 "text": "Yes, to borrow"
+              },
+              {
+                "altText": [],
+                "value": "Not available",
+                "text": "Not available"
               }
             ]
           }
@@ -2992,9 +3438,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638790934",
+          "id": "Q649040935",
           "mandatory": true,
-          "order": 7,
+          "order": 8,
           "text": "Is there a toilet with facilities to manage menstruation that is accessible to persons with limited mobility?",
           "type": "option",
           "dependency": [
@@ -3002,7 +3448,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -3032,7 +3478,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q655000927",
+          "id": "Q634200930",
           "mandatory": true,
           "order": 1,
           "text": "How many bathing areas are available? Insert number",
@@ -3042,7 +3488,7 @@
               "answerValue": [
                 "Boarding School"
               ],
-              "question": "Q638730931"
+              "question": "Q634280919"
             }
           ],
           "validationRule": {
@@ -3054,17 +3500,17 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q655000924",
+          "id": "Q636230932",
           "mandatory": true,
           "order": 2,
-          "text": "Are there separate facilities or times for students and residential staff to bathe?",
+          "text": "Are there separate facilities for students and residential staff to bathe?",
           "type": "option",
           "dependency": [
             {
               "answerValue": [
                 "Boarding School"
               ],
-              "question": "Q638730931"
+              "question": "Q634280919"
             }
           ],
           "options": {
@@ -3087,7 +3533,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q655000925",
+          "id": "Q634170928",
           "mandatory": true,
           "order": 3,
           "text": "Is there at least one bathing area that is accessible for females with limited mobility and a separate one for males with limited mobility?",
@@ -3097,7 +3543,7 @@
               "answerValue": [
                 "Boarding School"
               ],
-              "question": "Q638730931"
+              "question": "Q634280919"
             }
           ],
           "options": {
@@ -3120,7 +3566,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q655000926",
+          "id": "Q641990922",
           "mandatory": true,
           "order": 4,
           "text": "Is there hot water available in the student bathing areas?",
@@ -3130,7 +3576,7 @@
               "answerValue": [
                 "Boarding School"
               ],
-              "question": "Q638730931"
+              "question": "Q634280919"
             }
           ],
           "options": {
@@ -3154,6 +3600,44 @@
               }
             ]
           }
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q683700960",
+          "mandatory": true,
+          "order": 5,
+          "text": "Is laundry facility available in the boarding school?",
+          "type": "option",
+          "dependency": [
+            {
+              "answerValue": [
+                "Boarding School"
+              ],
+              "question": "Q634280919"
+            }
+          ],
+          "options": {
+            "allowOther": false,
+            "allowMultiple": false,
+            "option": [
+              {
+                "altText": [],
+                "value": "Yes",
+                "text": "Yes"
+              },
+              {
+                "altText": [],
+                "value": "No",
+                "text": "No"
+              },
+              {
+                "altText": [],
+                "value": "Don't know / can't say",
+                "text": "Don't know / can't say"
+              }
+            ]
+          }
         }
       ],
       "repeatable": false
@@ -3165,7 +3649,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q634450928",
+          "id": "Q620790924",
           "mandatory": true,
           "order": 1,
           "text": "Does the school have an active School WASH Committee as outlined in the Technical Manual Tool Kit/National Standards?",
@@ -3195,7 +3679,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730953",
+          "id": "Q624560933",
           "mandatory": true,
           "order": 2,
           "text": "Does the WASH Committee have a Terms of Reference as outlined in the Technical Manual Tool Kit/National Standards?",
@@ -3205,7 +3689,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q634450928"
+              "question": "Q620790924"
             }
           ],
           "options": {
@@ -3233,7 +3717,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730948",
+          "id": "Q647020932",
           "mandatory": true,
           "order": 3,
           "text": "Does the WASH Committee have a budgeted School WASH Plan (inclusive of a routine operation and maintenance plan and an improvement plan)?",
@@ -3243,7 +3727,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q634450928"
+              "question": "Q620790924"
             }
           ],
           "options": {
@@ -3271,7 +3755,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q634450929",
+          "id": "Q634220929",
           "mandatory": true,
           "order": 4,
           "text": "Is there a maintenance master role that is defined for WASH activities?",
@@ -3301,7 +3785,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730944",
+          "id": "Q596150918",
           "mandatory": true,
           "order": 5,
           "text": "Does the school have and support a student WASH Club, with Terms of Reference?",
@@ -3335,7 +3819,7 @@
             "altText": [],
             "text": "Please check the record"
           },
-          "id": "Q638730951",
+          "id": "Q638510930",
           "mandatory": true,
           "order": 6,
           "text": "Does the school keep records to demonstrate that the WASH plan is being implemented?",
@@ -3365,7 +3849,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q634450922",
+          "id": "Q638490927",
           "mandatory": true,
           "order": 7,
           "text": "Is there a school WASH Improvement plan or any plan?",
@@ -3395,7 +3879,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q634450925",
+          "id": "Q640550921",
           "mandatory": true,
           "order": 8,
           "text": "If yes, please take a photo of the document?",
@@ -3405,16 +3889,50 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q634450922"
+              "question": "Q638490927"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730952",
-          "mandatory": true,
+          "id": "Q677401118",
+          "mandatory": false,
           "order": 9,
+          "text": "If yes, please take a photo of the document (second picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q638490927"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q681550941",
+          "mandatory": false,
+          "order": 10,
+          "text": "If yes, please take a photo of the document (third picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q638490927"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q620780924",
+          "mandatory": true,
+          "order": 11,
           "text": "Does the plan include WASH (repair, maintenance of toilets, water, soap)?",
           "type": "option",
           "dependency": [
@@ -3422,7 +3940,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q634450922"
+              "question": "Q638490927"
             }
           ],
           "options": {
@@ -3450,9 +3968,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q634450926",
+          "id": "Q618330930",
           "mandatory": true,
-          "order": 10,
+          "order": 12,
           "text": "If yes, please take a photo of the page that contains the WASH aspects?",
           "type": "photo",
           "dependency": [
@@ -3460,16 +3978,50 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638730952"
+              "question": "Q620780924"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730946",
+          "id": "Q675551140",
+          "mandatory": false,
+          "order": 13,
+          "text": "If yes, please take a photo of the page that contains the WASH aspects (second picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q620780924"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q688020928",
+          "mandatory": false,
+          "order": 14,
+          "text": "If yes, please take a photo of the page that contains the WASH aspects (third picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q620780924"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q654810920",
           "mandatory": true,
-          "order": 11,
+          "order": 15,
           "text": "Is there a cleaning schedule for the toilet facilities?",
           "type": "option",
           "dependency": [
@@ -3477,7 +4029,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q649140920"
+              "question": "Q650890921"
             }
           ],
           "options": {
@@ -3493,6 +4045,11 @@
                 "altText": [],
                 "value": "No",
                 "text": "No"
+              },
+              {
+                "altText": [],
+                "value": "Don't know/can't say",
+                "text": "Don't know/can't say"
               }
             ]
           }
@@ -3500,9 +4057,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730947",
+          "id": "Q596150919",
           "mandatory": true,
-          "order": 12,
+          "order": 16,
           "text": "If yes, please take a photo of the cleaning schedule?",
           "type": "photo",
           "dependency": [
@@ -3510,16 +4067,50 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638730946"
+              "question": "Q654810920"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q634450921",
+          "id": "Q692990925",
+          "mandatory": false,
+          "order": 17,
+          "text": "If yes, please take a photo of the cleaning schedule (second picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q654810920"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q688041051",
+          "mandatory": false,
+          "order": 18,
+          "text": "If yes, please take a photo of the cleaning schedule (third picture):",
+          "type": "photo",
+          "dependency": [
+            {
+              "answerValue": [
+                "Yes"
+              ],
+              "question": "Q654810920"
+            }
+          ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q641980931",
           "mandatory": true,
-          "order": 13,
+          "order": 19,
           "text": "If yes, who cleans the toilets?",
           "type": "option",
           "dependency": [
@@ -3527,7 +4118,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638730946"
+              "question": "Q654810920"
             }
           ],
           "options": {
@@ -3565,9 +4156,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q634450923",
+          "id": "Q596150921",
           "mandatory": true,
-          "order": 14,
+          "order": 20,
           "text": "If yes, when does the cleaning happen?",
           "type": "option",
           "dependency": [
@@ -3575,12 +4166,12 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638730946"
+              "question": "Q654810920"
             }
           ],
           "options": {
             "allowOther": false,
-            "allowMultiple": false,
+            "allowMultiple": true,
             "option": [
               {
                 "altText": [],
@@ -3608,9 +4199,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q634450930",
+          "id": "Q641970927",
           "mandatory": true,
-          "order": 15,
+          "order": 21,
           "text": "Does the school receive government grants annually?",
           "type": "option",
           "options": {
@@ -3638,9 +4229,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730945",
+          "id": "Q618330932",
           "mandatory": true,
-          "order": 16,
+          "order": 22,
           "text": "If yes, how much money does the schools receive from the government annually?",
           "type": "free",
           "dependency": [
@@ -3648,16 +4239,16 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q634450930"
+              "question": "Q641970927"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730949",
+          "id": "Q645440930",
           "mandatory": true,
-          "order": 17,
+          "order": 23,
           "text": "How much money has been spent so far this year on cleaning, repairing, and making water and soap available at school?",
           "type": "free",
           "dependency": [
@@ -3665,33 +4256,33 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q634450930"
+              "question": "Q641970927"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q634450924",
+          "id": "Q632300918",
           "mandatory": true,
-          "order": 18,
-          "text": "How much did you spend last year on operating, repairing and maintaining toilets, water supply supply and hand washing facilities?",
+          "order": 24,
+          "text": "How much did you spend last year on operating, repairing and maintaining toilets, water supply and hand washing facilities?",
           "type": "free",
           "dependency": [
             {
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q634450930"
+              "question": "Q641970927"
             }
           ]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q638730950",
+          "id": "Q636230934",
           "mandatory": true,
-          "order": 19,
+          "order": 25,
           "text": "Did the school get any support from the community?",
           "type": "option",
           "options": {
@@ -3719,9 +4310,9 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "id": "Q634450927",
+          "id": "Q640540933",
           "mandatory": true,
-          "order": 20,
+          "order": 26,
           "text": "If yes, what kind of support was received from the community?",
           "type": "option",
           "dependency": [
@@ -3729,7 +4320,7 @@
               "answerValue": [
                 "Yes"
               ],
-              "question": "Q638730950"
+              "question": "Q636230934"
             }
           ],
           "options": {
@@ -3773,8 +4364,8 @@
       "repeatable": false
     }
   ],
-  "surveyGroupId": 632440925,
-  "surveyGroupName": "WASH in School copy",
-  "surveyId": 647170919,
-  "version": 2
+  "surveyGroupId": 632220917,
+  "surveyGroupName": "WASH in School",
+  "surveyId": 634200917,
+  "version": 18
 }
