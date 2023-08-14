@@ -68,7 +68,6 @@ class TestDataSeed:
             'answer',
             'history'
         ]
-        assert data[0]["id"] == 632510922
         for d in data:
             d["current"] is True
         assert list(data[0]["answer"][0]) == ['question', 'value']

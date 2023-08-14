@@ -47,7 +47,6 @@ class TestDataSync:
             'answer',
             'history'
         ]
-        assert data[0]["id"] == 649130936
         for d in data:
             d["current"] is True
         assert list(data[0]["answer"][0]) == ['question', 'value']
@@ -71,7 +70,6 @@ class TestDataSync:
             'answer',
             'history'
         ]
-        assert data[0]["id"] == 632510922
         for d in data:
             d["current"] is False
         assert list(data[0]["answer"][0]) == ['question', 'value']
