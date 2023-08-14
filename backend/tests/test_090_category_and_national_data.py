@@ -187,7 +187,7 @@ class TestMigrationCategoryAndNationalData:
         res = await client.get(
             app.url_path_for(
                 "charts:get_national_charts_by_question",
-                question=638730937
+                question=624670934
             )
         )
         assert res.status_code == 404
@@ -195,7 +195,7 @@ class TestMigrationCategoryAndNationalData:
         res = await client.get(
             app.url_path_for(
                 "charts:get_national_charts_by_question",
-                question=624670928
+                question=638510920
             )
         )
         assert res.status_code == 200
@@ -205,7 +205,7 @@ class TestMigrationCategoryAndNationalData:
         res = await client.get(
             app.url_path_for(
                 "charts:get_national_charts_by_question",
-                question=624670933
+                question=629900923
             )
         )
         assert res.status_code == 200

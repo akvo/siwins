@@ -3,6 +3,8 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
+from models.data import Data
+from models.question import Question, QuestionType
 # from tests.test_school_detail_popup_dump import (
 #     res_school_detail_popup
 # ) # TODO:: Delete
@@ -16,8 +18,9 @@ class TestDataDetailRoutes:
     async def test_get_data_detail(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
+        data = session.query(Data).first()
         res = await client.get(
-            app.url_path_for("data:get_data_detail", data_id=649130936))
+            app.url_path_for("data:get_data_detail", data_id=data.id))
         assert res.status_code == 200
         res = res.json()
         assert list(res) == [
@@ -45,6 +48,12 @@ class TestDataDetailRoutes:
     async def test_get_answer_history(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
+        data = session.query(Data).first()
+        questions = session.query(Question)
+        option_question = questions.filter(
+            Question.type == QuestionType.option).first()
+        number_question = questions.filter(
+            Question.type == QuestionType.number).first()
         # no datapoint
         res = await client.get(
             app.url_path_for("answer:get_history", data_id=12345),
@@ -52,25 +61,25 @@ class TestDataDetailRoutes:
         assert res.status_code == 404
         # no question
         res = await client.get(
-            app.url_path_for("answer:get_history", data_id=649130936),
+            app.url_path_for("answer:get_history", data_id=data.id),
             params={'question_id': 12345})
         assert res.status_code == 404
         # option question
         res = await client.get(
-            app.url_path_for("answer:get_history", data_id=649130936),
-            params={'question_id': 640620926})
+            app.url_path_for("answer:get_history", data_id=data.id),
+            params={'question_id': option_question.id})
         assert res.status_code == 404
         # correct data
         res = await client.get(
-            app.url_path_for("answer:get_history", data_id=649130936),
-            params={'question_id': 624670928})
+            app.url_path_for("answer:get_history", data_id=data.id),
+            params={'question_id': number_question.id})
         assert res.status_code == 200
         res = res.json()
         assert list(res[0]) == [
             'question_id', 'question_name', 'type',
             'history', 'year', 'value', 'render'
         ]
-        assert res[0]["history"] is True
+        assert res[0]["history"] is False
         assert list(res[0]["value"][0]) == [
             'level', 'total', 'count', 'value'
         ]

@@ -4,6 +4,8 @@ from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
 from db import crud_data
+from models.data import Data
+from models.question import Question, QuestionType, QuestionAttributes
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
@@ -134,8 +136,10 @@ class TestDataRoutes:
             app.url_path_for("answer:get_data_answers", data_id=1234)
         )
         assert res.status_code == 404
+        # get data
+        data = session.query(Data).first()
         res = await client.get(
-            app.url_path_for("answer:get_data_answers", data_id=649130936)
+            app.url_path_for("answer:get_data_answers", data_id=data.id)
         )
         assert res.status_code == 200
         res = res.json()
@@ -207,10 +211,20 @@ class TestDataRoutes:
         #     'answer': {}
         # }
         # with indicator
-        indicator_id = 624660930
+
+        indicator_question = session.query(Question).filter(
+            Question.attributes.contains([QuestionAttributes.indicator.value])
+        )
+        indicator_option = indicator_question.filter(
+            Question.type == QuestionType.option
+        ).first()
+        indicator_number = indicator_question.filter(
+            Question.type == QuestionType.number
+        ).first()
+
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id})
+            params={"indicator": indicator_option.id})
         assert res.status_code == 200
         res = res.json()
         assert list(res) == [
@@ -235,13 +249,12 @@ class TestDataRoutes:
         # }
         # with indicator & indicator option filter
         # option indicator with number filter
-        indicator_id = 624660930
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id, "number": [10, 20]})
+            params={"indicator": indicator_option.id, "number": [10, 20]})
         assert res.status_code == 400
         # option indicator with option filter
-        indicator_id = 624660930
+        indicator_id = indicator_option.id
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": indicator_id, "q": f"{indicator_id}|no"})
@@ -269,12 +282,15 @@ class TestDataRoutes:
         # }]
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": 624660930, "q": "624660930|yes"})
+            params={"indicator": indicator_id, "q": f"{indicator_id}|yes"})
         assert res.status_code == 200
         res = res.json()
-        assert res["data"] == []
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == ['id', 'answer']
         # number indicator with number filter
-        indicator_id = 630020919
+        indicator_id = indicator_number.id
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": indicator_id})
@@ -309,7 +325,10 @@ class TestDataRoutes:
             params={"indicator": indicator_id, "number": [1, 10]})
         assert res.status_code == 200
         res = res.json()
-        assert res["data"] == []
+        assert list(res) == [
+            'current', 'data', 'total', 'total_page'
+        ]
+        assert list(res["data"][0]) == ['id', 'answer']
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": indicator_id, "number": [1, 20]})
@@ -338,14 +357,14 @@ class TestDataRoutes:
         # filter by province
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": 630020919, "prov": ["Central"]})
+            params={"indicator": indicator_option.id, "prov": ["Central"]})
         assert res.status_code == 200
         res = res.json()
-        assert res["data"] == []
+        assert list(res["data"][0]) == ['id', 'answer']
         # filter by province
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": 630020919, "prov": ["Guadalcanal"]})
+            params={"indicator": indicator_option.id, "prov": ["Guadalcanal"]})
         assert res.status_code == 200
         res = res.json()
         assert list(res) == [
@@ -372,17 +391,17 @@ class TestDataRoutes:
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={
-                "indicator": 630020919,
+                "indicator": indicator_option.id,
                 "sctype": ["Primary School"]
             })
         assert res.status_code == 200
         res = res.json()
-        assert res["data"] == []
+        assert list(res["data"][0]) == ['id', 'answer']
         # filter by school type
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={
-                "indicator": 630020919,
+                "indicator": indicator_option.id,
                 "sctype": ["Community High School"]
             })
         assert res.status_code == 200
@@ -411,17 +430,17 @@ class TestDataRoutes:
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={
-                "indicator": 630020919,
+                "indicator": indicator_option.id,
                 "prov": ["Central"],
                 "sctype": ["Community High School"]
             })
         assert res.status_code == 200
         res = res.json()
-        assert res["data"] == []
+        assert list(res["data"][0]) == ['id', 'answer']
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={
-                "indicator": 630020919,
+                "indicator": indicator_option.id,
                 "prov": ["Guadalcanal"],
                 "sctype": ["Community High School"]
             })
@@ -483,7 +502,7 @@ class TestDataRoutes:
             params={"indicator": indicator_id, "q": "jmp-water|basic"})
         assert res.status_code == 200
         res = res.json()
-        assert res["data"] == []
+        assert list(res["data"][0]) == ['id', 'answer']
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": indicator_id, "q": "jmp-water|limited"})
