@@ -34,7 +34,11 @@ def generate_download_data(session: Session, jobs: dict, file: str):
         province_name = ", ".join(province_name)
     # jmp configs
     configs = get_jmp_config()
-    computed_column_names = [cf["name"] for cf in configs]
+    # ** Use JMP display name instead of name
+    computed_column_names = [
+        cf["display_name"] if "display_name" in cf
+        else cf["name"] for cf in configs
+    ]
     # query data
     filtered_data = get_all_data(
         session=session,

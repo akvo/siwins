@@ -1,6 +1,7 @@
 [
   {
     "name": "Water",
+    "display_name": "Service level for Drinking Water",
     "form": 647170919,
     "labels": [
       {
@@ -124,6 +125,7 @@
   },
   {
     "name": "Sanitation",
+    "display_name": "Service level for Sanitation",
     "form": 647170919,
     "labels": [
       {
@@ -244,6 +246,7 @@
   },
   {
     "name": "Hygiene",
+    "display_name": "Service level for Hygiene",
     "form": 647170919,
     "labels": [
       {
