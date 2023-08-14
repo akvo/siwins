@@ -63,15 +63,18 @@ def generate_download_data(session: Session, jobs: dict, file: str):
     data = [d.to_data_frame for d in data]
     # remap data with computed values
     for d in data:
-        for ccn in computed_column_names:
+        for ccn in configs:
+            name = ccn["name"]
+            display_name = ccn["display_name"] \
+                if "display_name" in ccn else name
             find_computed_value = computed_data_df[(
                 computed_data_df["data"] == d["id"]) & (
-                    computed_data_df["name"] == ccn
+                    computed_data_df["name"] == name
             )]
             category = "-"
             if not find_computed_value.empty:
                 category = find_computed_value["category"].iloc[0]
-            d[ccn] = category
+            d[display_name] = category
     # generate file
     df = pd.DataFrame(data)
     questions = get_excel_headers(session=session)
