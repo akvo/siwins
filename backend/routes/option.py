@@ -5,6 +5,7 @@ from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
 from db.connection import get_session
 from db.crud_option import get_option_year_conducted
+from source.main_config import MONITORING_ROUND
 
 
 security = HTTPBearer()
@@ -27,5 +28,8 @@ def get_option_monitoring_round(
     if not options:
         return []
     options = [int(o.name) for o in options]
+    options = list(filter(
+        lambda x: (x <= MONITORING_ROUND), options
+    ))
     options.sort()
     return options

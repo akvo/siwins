@@ -18,7 +18,7 @@ from seeder.fake_history import generate_fake_history
 from db.truncator import truncate_datapoint
 from utils.functions import refresh_materialized_data
 from source.main_config import CLASS_PATH, TOPO_JSON_PATH, \
-    ADMINISTRATION_PATH, MONITORING_FORM
+    ADMINISTRATION_PATH, MONITORING_FORM, MONITORING_ROUND
 from source.main_config import QuestionConfig, CascadeLevels
 
 start_time = time.process_time()
@@ -72,6 +72,9 @@ if question and question.type in [
         session=session, question=question.id)
     year_conducted_value = [int(v.name) for v in year_conducted_value]
     year_conducted_value = list(set(year_conducted_value))  # ordering, unique
+    year_conducted_value = list(filter(
+        lambda x: (x <= MONITORING_ROUND), year_conducted_value
+    ))
 # support other type?
 
 # school information cascade

@@ -18,4 +18,4 @@ class TestOptionRoutes:
         )
         assert res.status_code == 200
         res = res.json()
-        assert res == [2018, 2023, 2024, 2025, 2026]
+        assert res == [2018, 2023]
