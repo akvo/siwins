@@ -464,7 +464,7 @@
           "order": 18,
           "text": "What is the schools main source of power?",
           "type": "free",
-          "displayName": "Main sourceo or power"
+          "displayName": "Main source or power"
         },
         {
           "localeNameFlag": false,
@@ -3089,7 +3089,7 @@
             "indicator",
             "school_detail_popup"
           ],
-          "displayName": "Frequency of weekly handwashing activitie"
+          "displayName": "Frequency of weekly handwashing activities"
         }
       ],
       "repeatable": false
