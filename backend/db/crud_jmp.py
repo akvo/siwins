@@ -137,6 +137,9 @@ def get_jmp_config():
     for jc in json_config:
         # add custom name
         name = jc.get("name")
+        # ** Use JMP display name instead of name
+        # ** (to change all JMP naming on routes)
+        # name = jc["display_name"] if "display_name" in jc else jc["name"]
         name_id = name.split(" ")
         name_id = "_".join(name_id).lower()
         jc["name_id"] = name_id

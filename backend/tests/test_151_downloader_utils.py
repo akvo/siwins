@@ -22,7 +22,10 @@ class TestDownloaderUtil:
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         configs = get_jmp_config()
-        computed_column_names = [cf["name"] for cf in configs]
+        computed_column_names = computed_column_names = [
+            cf["display_name"] if "display_name" in cf
+            else cf["name"] for cf in configs
+        ]
         out_file = "testing_generate_download_file"
         job = {
             'id': 2,

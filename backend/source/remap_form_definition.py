@@ -55,6 +55,19 @@ for qgi, qg in enumerate(new_qg):
                 d["question"] = dqid
         # eol remap qid in dependency
 
+        # remap options
+        if "options" in q and "options" in find_prev_q:
+            for opt in q["options"]["option"]:
+                find_prev_opt = list(filter(
+                    lambda obj: obj["text"] == opt["text"],
+                    find_prev_q["options"]["option"]
+                ))[0]
+                if find_prev_opt and "color" in find_prev_opt:
+                    opt["color"] = find_prev_opt["color"]
+                if find_prev_opt and "description" in find_prev_opt:
+                    opt["description"] = find_prev_opt["description"]
+        # eol remap options
+
 new_json["questionGroup"] = new_qg
 
 with open("./source/remapped_form.json", 'w') as json_file:

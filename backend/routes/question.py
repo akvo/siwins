@@ -48,7 +48,8 @@ def get(
         # add jmp categories into indicator questions
         jmp_configs = get_jmp_config()
         for jci, jc in enumerate(jmp_configs):
-            name = jc.get("name")
+            # ** Use JMP display name instead of name
+            name = jc["display_name"] if "display_name" in jc else jc["name"]
             labels = jc.get("labels")
             name_id = jc.get("name_id")
             jmp_group = jc.get("question_group")

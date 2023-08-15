@@ -59,7 +59,7 @@ class TestQuestionRoutes:
         assert res[:3] == [{
             'id': 'jmp-water',
             'group': 'JMP Indicator',
-            'name': 'Water',
+            'name': 'Service level for Drinking Water',
             'type': 'jmp',
             'attributes': ['indicator'],
             'option': [{
@@ -87,7 +87,7 @@ class TestQuestionRoutes:
         }, {
             'id': 'jmp-sanitation',
             'group': 'JMP Indicator',
-            'name': 'Sanitation',
+            'name': 'Service level for Sanitation',
             'type': 'jmp',
             'attributes': ['indicator'],
             'option': [{
@@ -110,7 +110,7 @@ class TestQuestionRoutes:
         }, {
             'id': 'jmp-hygiene',
             'group': 'JMP Indicator',
-            'name': 'Hygiene',
+            'name': 'Service level for Hygiene',
             'type': 'jmp',
             'attributes': ['indicator'],
             'option': [{

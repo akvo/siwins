@@ -6,6 +6,7 @@ import "./style.scss";
 import { ReactComponent as MapsIcon } from "../../images/icons/maps.svg";
 import { ReactComponent as DashboardIcon } from "../../images/icons/dashboard.svg";
 import { ReactComponent as DocIcon } from "../../images/icons/db.svg";
+import JMPDocIcon from "../../images/icons/jmp-doc.png";
 import {
   Routes,
   Route,
@@ -16,6 +17,7 @@ import {
 import Maps from "./Maps";
 import Dashboard from "./Dashboard";
 import ManageData from "./ManageData";
+import JMPDocumentation from "./JMPDocumentation";
 import { UIState } from "../../state/ui";
 import { api, ds } from "../../lib";
 
@@ -26,6 +28,12 @@ const menuItems = [
     label: "Database",
     link: "/dashboard/database",
     icon: <DocIcon />,
+    key: "3",
+  },
+  {
+    label: "JMP Documentation",
+    link: "/dashboard/jmp-documentation",
+    icon: <img src={JMPDocIcon} height={35} />,
     key: "4",
   },
 ];
@@ -176,6 +184,7 @@ const DashboardView = () => {
             <Route exact path="/" element={<Dashboard />} />
             <Route path="/maps" element={<Maps />} />
             <Route path="/database" element={<ManageData />} />
+            <Route path="/jmp-documentation" element={<JMPDocumentation />} />
           </Routes>
         </Content>
       </Layout>
