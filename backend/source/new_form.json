@@ -60,7 +60,8 @@
           "mandatory": true,
           "order": 2,
           "text": "What is the name of the person collecting the data/conducting the survey?",
-          "type": "free"
+          "type": "free",
+          "personalData": true
         },
         {
           "localeNameFlag": false,
@@ -78,7 +79,8 @@
           "mandatory": true,
           "order": 4,
           "text": "What is the name of the person being interviewed?",
-          "type": "free"
+          "type": "free",
+          "personalData": true
         },
         {
           "localeNameFlag": false,
@@ -101,7 +103,8 @@
             "allowDecimal": false,
             "signed": false,
             "validationType": "numeric"
-          }
+          },
+          "personalData": true
         }
       ],
       "repeatable": false
@@ -139,15 +142,48 @@
         {
           "localeNameFlag": false,
           "altText": [],
+          "id": "Q706490917",
+          "mandatory": true,
+          "order": 2,
+          "text": "Was the school name/code available in the above list?",
+          "type": "option",
+          "options": {
+            "allowOther": false,
+            "allowMultiple": false,
+            "option": [
+              {
+                "altText": [],
+                "value": "Yes",
+                "text": "Yes"
+              },
+              {
+                "altText": [],
+                "value": "No",
+                "text": "No"
+              }
+            ]
+          }
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
           "help": {
             "altText": [],
             "text": ""
           },
           "id": "Q599740919",
-          "mandatory": false,
-          "order": 2,
+          "mandatory": true,
+          "order": 3,
           "text": "Please write the school name if not available on the list above:",
-          "type": "free"
+          "type": "free",
+          "dependency": [
+            {
+              "answerValue": [
+                "No"
+              ],
+              "question": "Q706490917"
+            }
+          ]
         },
         {
           "localeNameFlag": false,
@@ -157,17 +193,30 @@
             "text": ""
           },
           "id": "Q624560919",
-          "mandatory": false,
-          "order": 3,
+          "mandatory": true,
+          "order": 4,
           "text": "Please write the school registration number if not available/different from the list above:",
-          "type": "free"
+          "type": "free",
+          "dependency": [
+            {
+              "answerValue": [
+                "No"
+              ],
+              "question": "Q706490917"
+            }
+          ],
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
         },
         {
           "localeNameFlag": false,
           "altText": [],
           "id": "Q634280919",
           "mandatory": true,
-          "order": 4,
+          "order": 5,
           "text": "School Category:",
           "type": "option",
           "options": {
@@ -192,7 +241,7 @@
           "altText": [],
           "id": "Q647020917",
           "mandatory": true,
-          "order": 5,
+          "order": 6,
           "text": "Type of School:",
           "type": "option",
           "options": {
@@ -232,7 +281,7 @@
           "altText": [],
           "id": "Q652860917",
           "mandatory": true,
-          "order": 6,
+          "order": 7,
           "text": "GPS Coordinates:",
           "type": "geo"
         },
@@ -245,7 +294,7 @@
           },
           "id": "Q624560920",
           "mandatory": true,
-          "order": 7,
+          "order": 8,
           "text": "What are the schools hours of operation?",
           "type": "free",
           "validationRule": {
@@ -259,7 +308,7 @@
           "altText": [],
           "id": "Q638510920",
           "mandatory": true,
-          "order": 8,
+          "order": 9,
           "text": "How many classrooms does the school have?",
           "type": "free",
           "validationRule": {
@@ -277,7 +326,7 @@
           },
           "id": "Q629900920",
           "mandatory": true,
-          "order": 9,
+          "order": 10,
           "text": "How many girls attend this school?",
           "type": "free",
           "validationRule": {
@@ -295,7 +344,7 @@
           },
           "id": "Q638490919",
           "mandatory": true,
-          "order": 10,
+          "order": 11,
           "text": "How many boys attend this school?",
           "type": "free",
           "validationRule": {
@@ -313,7 +362,7 @@
           },
           "id": "Q642180924",
           "mandatory": true,
-          "order": 11,
+          "order": 12,
           "text": "How many female teachers teach in the school?",
           "type": "free"
         },
@@ -326,7 +375,7 @@
           },
           "id": "Q640540918",
           "mandatory": true,
-          "order": 12,
+          "order": 13,
           "text": "How many male teachers teach in this school?",
           "type": "free",
           "validationRule": {
@@ -344,7 +393,7 @@
           },
           "id": "Q638520918",
           "mandatory": true,
-          "order": 13,
+          "order": 14,
           "text": "How many female non - teaching staff  in this school?",
           "type": "free",
           "validationRule": {
@@ -362,7 +411,7 @@
           },
           "id": "Q629900921",
           "mandatory": true,
-          "order": 14,
+          "order": 15,
           "text": "How many male non-teaching staff n this school?",
           "type": "free",
           "validationRule": {
@@ -380,9 +429,10 @@
           },
           "id": "Q624570918",
           "mandatory": true,
-          "order": 15,
+          "order": 16,
           "text": "What is the name of the Head Teacher / Headmaster / Principal of this school?",
-          "type": "free"
+          "type": "free",
+          "personalData": true
         },
         {
           "localeNameFlag": false,
@@ -393,7 +443,7 @@
           },
           "id": "Q599750919",
           "mandatory": true,
-          "order": 16,
+          "order": 17,
           "text": "What is the school contact number?",
           "type": "free",
           "validationRule": {
@@ -407,7 +457,7 @@
           "altText": [],
           "id": "Q629900923",
           "mandatory": true,
-          "order": 17,
+          "order": 18,
           "text": "Type of Power Supply at the School?",
           "type": "option",
           "options": {
@@ -447,7 +497,7 @@
           "altText": [],
           "id": "Q636230919",
           "mandatory": true,
-          "order": 18,
+          "order": 19,
           "text": "What is the schools main source of power?",
           "type": "free"
         },
@@ -456,7 +506,7 @@
           "altText": [],
           "id": "Q634200920",
           "mandatory": true,
-          "order": 19,
+          "order": 20,
           "text": "Status of the  the schools main source of power at time of survey?",
           "type": "option",
           "dependency": [
@@ -4367,5 +4417,5 @@
   "surveyGroupId": 632220917,
   "surveyGroupName": "WASH in School",
   "surveyId": 634200917,
-  "version": 18
+  "version": 21
 }
