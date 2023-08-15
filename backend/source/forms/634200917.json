@@ -786,17 +786,23 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text": "Yes",
+                "color": "#2EA745",
+                "description": "Example of Yes info text"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text": "No",
+                "color": "#DC3545",
+                "description": "Example No of info text"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text": "Don't know/can't say",
+                "color": "#666666",
+                "description": "Example of Don't know/can't say info text"
               }
             ]
           },
