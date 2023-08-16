@@ -29,11 +29,19 @@ prepare_deployment () {
 
     sed -e "s/\${CI_COMMIT}/${CI_COMMIT}/g;" \
         ci/k8s/deployment.yml.template > ci/k8s/deployment.yml
+
+    sed -e "s/\${CI_COMMIT}/${CI_COMMIT}/g;" \
+        ci/k8s/siwins-data-sync.yml.template > ci/k8s/siwins-data-sync.yml
 }
 
 apply_deployment () {
     kubectl apply -f ci/k8s/deployment.yml
     kubectl apply -f ci/k8s/service.yml
+}
+
+apply_jobs () {
+    gcloud container clusters get-credentials production
+    kubectl apply -f ci/k8s/siwins-data-sync.yml
 }
 
 auth
@@ -47,3 +55,5 @@ prepare_deployment
 apply_deployment
 
 ci/k8s/wait-for-k8s-deployment-to-be-ready.sh
+
+apply_jobs

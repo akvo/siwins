@@ -1,0 +1,66 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: siwins-jobs-data-sync
+spec:
+  schedule: "0 0 * * *"
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  jobTemplate:
+    metadata:
+      labels:
+        cronjob: siwins-jobs-data-sync
+    spec:
+      backoffLimit: 3
+      activeDeadlineSeconds: 900 # Fail job if it takes more than 15 mins
+      template:
+        metadata:
+          labels:
+            cronjob: siwins-jobs-data-sync
+        spec:
+          containers:
+          - name: siwins-jobs-data-sync
+            image: eu.gcr.io/akvo-lumen/siwins/backend:${CI_COMMIT}
+            command: ["/bin/bash", "-c"]
+            args:
+              - echo Running Data Sync
+                ./sync.sh
+            env:
+              - name: DATABASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: siwins
+                    key: database-url
+              - name: AUTH0_PWD
+                valueFrom:
+                  secretKeyRef:
+                    name: siwins
+                    key: auth0-pwd
+              - name: AUTH0_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: siwins
+                    key: auth0-user
+              - name: AUTH0_CLIENT
+                valueFrom:
+                  secretKeyRef:
+                    name: siwins
+                    key: auth0-client
+              - name: MAILJET_APIKEY
+                valueFrom:
+                  secretKeyRef:
+                    name: siwins
+                    key: mailjet-apikey
+              - name: MAILJET_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: siwins
+                    key: mailjet-secret
+              - name: NOTIFICATION_RECIPIENTS
+                valueFrom:
+                  secretKeyRef:
+                    name: siwins
+                    key: notification-recipients
+          restartPolicy: Never
