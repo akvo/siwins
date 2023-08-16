@@ -1,26 +1,27 @@
-apiVersion: batch/v1beta1
+---
+apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: jobs-siwins-data-sync
+  name: siwins-jobs-data-sync
 spec:
-  schedule: "30 19 * * *"
+  schedule: "0 0 * * *"
   concurrencyPolicy: Allow
   failedJobsHistoryLimit: 5
   successfulJobsHistoryLimit: 5
   jobTemplate:
     metadata:
       labels:
-        cronjob: jobs-siwins-data-sync
+        cronjob: siwins-jobs-data-sync
     spec:
       backoffLimit: 3
       activeDeadlineSeconds: 900 # Fail job if it takes more than 15 mins
       template:
         metadata:
           labels:
-            cronjob: jobs-siwins-data-sync
+            cronjob: siwins-jobs-data-sync
         spec:
           containers:
-          - name: jobs-siwins-data-sync
+          - name: siwins-jobs-data-sync
             image: eu.gcr.io/akvo-lumen/siwins/backend:${CI_COMMIT}
             command: ["/bin/bash", "-c"]
             args:
