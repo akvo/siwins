@@ -25,8 +25,8 @@ spec:
             image: eu.gcr.io/akvo-lumen/siwins/backend:${CI_COMMIT}
             command: ["/bin/bash", "-c"]
             args:
-              - echo Running Data Sync
-                ./sync.sh
+              - echo Running Data Sync;
+                ./sync.sh;
             env:
               - name: DATABASE_URL
                 valueFrom:
