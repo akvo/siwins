@@ -231,7 +231,7 @@ const Dashboard = () => {
                         wrapper={false}
                         horizontal={false}
                         showPercent={true}
-                        title={`This chart shows the distribution of  {question|${chartTitle}}`}
+                        title={`This chart shows the distribution of   {question|${chartTitle}}`}
                         extra={{
                           axisTitle: {
                             x: [chartTitle || null],

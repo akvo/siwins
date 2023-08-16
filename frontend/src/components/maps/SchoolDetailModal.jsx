@@ -16,6 +16,7 @@ import { HomeOutlined, CameraOutlined } from "@ant-design/icons";
 import { isEmpty, groupBy, orderBy } from "lodash";
 import { api, ds } from "../../lib";
 import { Chart } from "..";
+import { ResizableBox } from "react-resizable";
 
 const MainTabContent = ({
   id,
@@ -280,6 +281,12 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
   const [loading, setLoading] = useState(true);
   const [tabItems, setTabItems] = useState([]);
 
+  const defModalSize = { width: 900, height: 575 };
+  const windowSize = {
+    width: window.innerWidth - 100,
+    height: window.innerHeight - 100,
+  };
+
   useEffect(() => {
     if (!isEmpty(selectedDatapoint)) {
       const { id, school_information } = selectedDatapoint;
@@ -358,19 +365,30 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
       open={!isEmpty(selectedDatapoint)}
       centered
       footer={null}
-      width="900px"
+      mask={false}
+      width="min-content"
+      style={{ pointerEvents: "all" }}
+      wrapProps={{ style: { pointerEvents: "none" } }}
       onCancel={() => setSelectedDatapoint({})}
       destroyOnClose={true}
     >
-      <div className="school-detail-modal-body">
-        {loading ? (
-          <div className="loading-wrapper">
-            <Spin />
-          </div>
-        ) : (
-          <Tabs items={tabItemComponent} />
-        )}
-      </div>
+      <ResizableBox
+        width={defModalSize.width}
+        height={defModalSize.height}
+        minConstraints={[defModalSize.width, defModalSize.height]}
+        maxConstraints={[windowSize.width, windowSize.height]}
+        // onResize={handleOnResize}
+      >
+        <div className="school-detail-modal-body">
+          {loading ? (
+            <div className="loading-wrapper">
+              <Spin />
+            </div>
+          ) : (
+            <Tabs items={tabItemComponent} />
+          )}
+        </div>
+      </ResizableBox>
     </Modal>
   );
 };
