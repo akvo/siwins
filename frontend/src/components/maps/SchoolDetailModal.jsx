@@ -16,7 +16,7 @@ import { HomeOutlined, CameraOutlined } from "@ant-design/icons";
 import { isEmpty, groupBy, orderBy } from "lodash";
 import { api, ds } from "../../lib";
 import { Chart } from "..";
-import { ResizableBox } from "react-resizable";
+import { Resizable } from "react-resizable";
 
 const MainTabContent = ({
   id,
@@ -286,6 +286,7 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
     width: window.innerWidth - 100,
     height: window.innerHeight - 100,
   };
+  const [modalSize, setModalSize] = useState(defModalSize);
 
   useEffect(() => {
     if (!isEmpty(selectedDatapoint)) {
@@ -312,6 +313,37 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
       });
     }
   }, [selectedDatapoint]);
+
+  const handleOnCancelModal = () => {
+    setModalSize(defModalSize);
+    setSelectedDatapoint({});
+  };
+
+  const handleOnResize = (event, { size }) => {
+    if (!event.isTrusted) {
+      return;
+    }
+    const { width, height } = size;
+    const { width: defWidth, height: defHeight } = defModalSize;
+    const { width: windowWidth, height: windowHeight } = windowSize;
+
+    let newWidth = width;
+    if (width <= defWidth) {
+      newWidth = defWidth;
+    }
+    if (width >= windowWidth) {
+      newWidth = windowWidth;
+    }
+
+    let newHeight = height;
+    if (height <= defHeight) {
+      newHeight = defHeight;
+    }
+    if (height >= windowHeight) {
+      newHeight = windowHeight;
+    }
+    setModalSize({ width: newWidth, height: newHeight });
+  };
 
   const tabItemComponent = useMemo(() => {
     if (isEmpty(tabItems)) {
@@ -341,7 +373,15 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
         key: `school-detail-tab-${data?.id}-${ai}`,
         label: label,
         children: (
-          <Row align="middle" justify="space-between" gutter={[8, 8]}>
+          <Row
+            align="middle"
+            justify="space-between"
+            gutter={[8, 8]}
+            style={{
+              height: `${modalSize.height - 125}px`,
+              width: `${modalSize.width - 55}px`,
+            }}
+          >
             {a.child.map((c, ci) => (
               <Col
                 span={24}
@@ -357,7 +397,7 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
       };
     });
     return [...main, ...transform];
-  }, [tabItems]);
+  }, [tabItems, modalSize]);
 
   return (
     <Modal
@@ -369,17 +409,21 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
       width="min-content"
       style={{ pointerEvents: "all" }}
       wrapProps={{ style: { pointerEvents: "none" } }}
-      onCancel={() => setSelectedDatapoint({})}
+      onCancel={handleOnCancelModal}
       destroyOnClose={true}
     >
-      <ResizableBox
-        width={defModalSize.width}
-        height={defModalSize.height}
-        minConstraints={[defModalSize.width, defModalSize.height]}
-        maxConstraints={[windowSize.width, windowSize.height]}
-        // onResize={handleOnResize}
+      <Resizable
+        width={modalSize.width}
+        height={modalSize.height}
+        onResize={handleOnResize}
       >
-        <div className="school-detail-modal-body">
+        <div
+          className="school-detail-modal-body"
+          style={{
+            height: `${modalSize.height}px`,
+            width: `${modalSize.width}px`,
+          }}
+        >
           {loading ? (
             <div className="loading-wrapper">
               <Spin />
@@ -388,7 +432,7 @@ const SchoolDetailModal = ({ selectedDatapoint, setSelectedDatapoint }) => {
             <Tabs items={tabItemComponent} />
           )}
         </div>
-      </ResizableBox>
+      </Resizable>
     </Modal>
   );
 };
