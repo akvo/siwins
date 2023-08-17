@@ -4,7 +4,8 @@
 alembic upgrade head
 # fi
 
-CATEGORIES="./source/category.json"
+INSTANCE="${SIWINS_INSTANCE}"
+CATEGORIES="./source/"${INSTANCE}"/category.json"
 
 if [ -f "${CATEGORIES}" ]; then
   echo "${CATEGORIES} exists"

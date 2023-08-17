@@ -10,6 +10,7 @@ from AkvoResponseGrouper.views import (
     get_categories,
     refresh_view,
 )
+from source.main import INSTANCE_NAME
 
 pytestmark = pytest.mark.asyncio
 sys.path.append("..")
@@ -20,7 +21,9 @@ class TestMigrationCategoryAndNationalData:
     async def test_if_views_is_successfully_added(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
-        schema = generate_schema(file_config="./source/category.json")
+        schema = generate_schema(
+            file_config=f"./source/{INSTANCE_NAME}/category.json"
+        )
         session.execute(text(schema))
         # check if .category.json was created
         assert exists("./.category.json") is True
