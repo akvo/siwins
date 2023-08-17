@@ -8,7 +8,11 @@ from db import crud_form
 from db import crud_question_group
 from db import crud_question
 from models.question import QuestionType
-from source.main_config import FORM_PATH
+
+from source.main import main_config
+
+FORM_PATH = main_config.FORM_PATH
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

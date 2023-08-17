@@ -12,10 +12,13 @@ from AkvoResponseGrouper.utils import (
     group_by_category_output,
 )
 from models.data import Data
-from source.main_config import (
-    CascadeLevels, SchoolInformationEnum,
-    ResponseGrouperCustomConfig
-)
+
+from source.main import main_config
+
+SchoolInformationEnum = main_config.SchoolInformationEnum
+CascadeLevels = main_config.CascadeLevels
+ResponseGrouperCustomConfig = main_config.ResponseGrouperCustomConfig
+
 
 province_enum = SchoolInformationEnum.province.value
 province_level = CascadeLevels.school_information.value[province_enum]

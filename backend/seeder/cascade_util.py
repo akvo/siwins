@@ -7,7 +7,12 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from db import crud_cascade
 from models.cascade import Cascade
-from source.main_config import CASCADE_PATH, TESTING_CASCADE_FILE
+
+from source.main import main_config
+
+CASCADE_PATH = main_config.CASCADE_PATH
+TESTING_CASCADE_FILE = main_config.CASCADE_PATH
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TESTING = os.environ.get("TESTING")

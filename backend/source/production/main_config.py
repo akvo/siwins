@@ -5,7 +5,7 @@ import enum
 FLOW_INSTANCE = "sig"
 CLASS_PATH = "solomon_island"
 
-SOURCE_PATH = "./source"
+SOURCE_PATH = "./source/production"
 TOPO_JSON_PATH = f"{SOURCE_PATH}/solomon-island-topojson.json"
 FRONTEND_CONFIG_PATH = f"{SOURCE_PATH}/config"
 

@@ -5,8 +5,14 @@ from db.truncator import truncate
 from db.crud_administration import add_administration
 from models.administration import Administration
 from db.connection import SessionLocal
-from source.geoconfig import GeoLevels
-from source.main_config import CLASS_PATH, TOPO_JSON_PATH, ADMINISTRATION_PATH
+
+from source.main import main_config, geoconfig
+
+GeoLevels = geoconfig.GeoLevels
+CLASS_PATH = main_config.CLASS_PATH
+TOPO_JSON_PATH = main_config.TOPO_JSON
+ADMINISTRATION_PATH = main_config.ADMINISTRATION_PATH
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 session = SessionLocal()

@@ -22,7 +22,9 @@ from db.crud_province_view import (
 )
 from utils.functions import extract_school_information
 from utils.helper import MathOperation
-from source.main_config import QuestionConfig
+from source.main import main_config
+
+QuestionConfig = main_config.QuestionConfig
 
 
 security = HTTPBearer()

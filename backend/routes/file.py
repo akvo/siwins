@@ -22,7 +22,10 @@ from db.crud_jobs import (
 )
 from models.jobs import JobsBase, JobStatus, JOB_STATUS_TEXT
 from middleware import check_query
-from source.main_config import DOWNLOAD_PATH
+
+from source.main import main_config
+
+DOWNLOAD_PATH = main_config.DOWNLOAD_PATH
 
 
 out_file_path = "./tmp/"

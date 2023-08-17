@@ -5,4 +5,7 @@ python -m seeder.form_seed
 python -m seeder.cascade
 python -m seeder.fake_datapoint 50
 
-akvo-responsegrouper --config ./source/category.json
+INSTANCE="$SIWINS_INSTANCE"
+CATEGORIES="./source/"${INSTANCE}"/category.json"
+
+akvo-responsegrouper --config "${CATEGORIES}"

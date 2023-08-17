@@ -15,6 +15,7 @@ services:
       - MAILJET_SECRET=notset
       - MAILJET_APIKEY=notset
       - NOTIFICATION_RECIPIENTS=notset
+      - SIWINS_INSTANCE=test
     image: eu.gcr.io/akvo-lumen/siwins/backend:latest
     network_mode: service:mainnetwork
     restart: always

@@ -16,8 +16,16 @@ from routes.file import file_route
 from routes.sync import sync_route
 from templates.main import template_route
 from AkvoResponseGrouper.routes import collection_route
-from source.geoconfig import GeoLevels, GeoCenter
-from source.main_config import CLASS_PATH, TOPO_JSON_PATH, FRONTEND_CONFIG_PATH
+
+from source.main import main_config, geoconfig
+
+GeoLevels = geoconfig.GeoLevels
+GeoCenter = geoconfig.GeoCenter
+
+CLASS_PATH = main_config.CLASS_PATH
+TOPO_JSON_PATH = main_config.TOPO_JSON_PATH
+FRONTEND_CONFIG_PATH = main_config.FRONTEND_CONFIG_PATH
+
 
 TOPO_JSON = open(TOPO_JSON_PATH).read()
 GEO_CONFIG = GeoLevels[CLASS_PATH].value

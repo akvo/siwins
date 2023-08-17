@@ -6,10 +6,15 @@ from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
 from seeder.cascade_util import seed_cascade
-from source.main_config import QuestionConfig, CascadeLevels, \
-    SchoolInformationEnum
-from source.main_config import FORM_CONFIG_PATH
 from db import crud_cascade
+
+from source.main import main_config
+
+QuestionConfig = main_config.QuestionConfig
+CascadeLevels = main_config.CascadeLevels
+SchoolInformationEnum = main_config.SchoolInformationEnum
+FORM_CONFIG_PATH = main_config.FORM_CONFIG_PATH
+
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio

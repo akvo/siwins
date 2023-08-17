@@ -11,8 +11,11 @@ from db import crud_sync
 from db import crud_form
 from db import crud_data
 from tests.conftest import test_refresh_materialized_data
-from source.main_config import FORM_CONFIG_PATH
 # from .test_dummy import res_data #TODO:: Delete
+
+from source.main import main_config
+FORM_CONFIG_PATH = main_config.FORM_CONFIG_PATH
+
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
