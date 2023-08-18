@@ -10,7 +10,7 @@ from source.main import main_config, geoconfig
 
 GeoLevels = geoconfig.GeoLevels
 CLASS_PATH = main_config.CLASS_PATH
-TOPO_JSON_PATH = main_config.TOPO_JSON
+TOPO_JSON_PATH = main_config.TOPO_JSON_PATH
 ADMINISTRATION_PATH = main_config.ADMINISTRATION_PATH
 
 

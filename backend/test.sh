@@ -8,6 +8,7 @@ alembic upgrade head
 
 INSTANCE="$SIWINS_INSTANCE"
 CATEGORIES="./source/"${INSTANCE}"/category.json"
+echo "${CATEGORIES} exists"
 
 echo "Migrating DB From AkvoResponseGrouper Dependency"
 akvo-responsegrouper --config "${CATEGORIES}"

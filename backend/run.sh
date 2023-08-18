@@ -9,8 +9,8 @@ CATEGORIES="./source/"${INSTANCE}"/category.json"
 
 if [ -f "${CATEGORIES}" ]; then
   echo "${CATEGORIES} exists"
-	akvo-responsegrouper --config ${CATEGORIES}
-	echo "done"
+	# akvo-responsegrouper --config ${CATEGORIES}
+	# echo "done"
 fi
 
 gunicorn main:app \
