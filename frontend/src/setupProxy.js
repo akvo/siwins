@@ -11,16 +11,18 @@ module.exports = function (app) {
       },
     })
   );
-  app.use(
-    ["/config.js"],
-    createProxyMiddleware({
-      target: "http://localhost:5000",
-      changeOrigin: true,
-      pathRewrite: {
-        "^/api": "/",
-      },
-    })
-  );
+
+  // app.use(
+  //   ["/config.js"],
+  //   createProxyMiddleware({
+  //     target: "http://localhost:5000",
+  //     changeOrigin: true,
+  //     pathRewrite: {
+  //       "^/api": "/",
+  //     },
+  //   })
+  // );
+
   // app.use(
   //   ['/worker'],
   //   createProxyMiddleware({
