@@ -2,7 +2,7 @@
   {
     "name": "Water",
     "display_name": "Service level for Drinking Water",
-    "form": 634200917,
+    "form": 647170919,
     "labels": [
       {
         "name": "Safely Managed",
@@ -30,8 +30,8 @@
         "name": "Safely Managed",
         "questions": [
           {
-            "id": 642190917,
-            "text": "What parameters were tested for quality in the last 12 months? (Tick all that applicable)",
+            "id": 624680923,
+            "text": "What parameters were tested for quality in the last 12 months?",
             "options": ["E-Coli"],
             "other": [
               {
@@ -39,13 +39,13 @@
                 "options": [
                   "Arsenic",
                   "Lead",
-                  "Other",
+                  "Any other (specify)",
                   "Don't know/can't say"
                 ],
                 "questions": [
                   {
-                    "id": 654800917,
-                    "text": "What is the primary / main point of drinking water for the school?",
+                    "id": 640620926,
+                    "text": "What is the primary / main source of drinking water for the school?",
                     "options": [
                       "Piped water supply / Tap Stan",
                       "Protected/covered well with pump",
@@ -59,16 +59,16 @@
                     }
                   },
                   {
-                    "id": 645440917,
-                    "text": "Is the primary water point also shared with the communities around the school?",
+                    "id": 640620929,
+                    "text": "Is the primary water source also shared with the communities around the school?",
                     "options": ["No"],
                     "else": {
                       "name": "Limited"
                     }
                   },
                   {
-                    "id": 643140928,
-                    "text": "Was drinking water available from the primary/main point on the day of the survey?",
+                    "id": 624660928,
+                    "text": "Was drinking water available\u00a0from the primary/main source on the day of the survey?",
                     "options": ["Yes"],
                     "other": [
                       {
@@ -85,12 +85,12 @@
               }
             ],
             "else": {
-              "ignore": [634270919, 632250922]
+              "ignore": [624680926, 624680924]
             }
           },
           {
-            "id": 634270919,
-            "text": "Is the school\u2019s main water point compliant with national standards for drinking water for E-Coli?",
+            "id": 624680926,
+            "text": "Is the school\u2019s main water source compliant with national standards for drinking water for E-Coli?",
             "options": ["Yes"],
             "other": [
               {
@@ -101,12 +101,12 @@
             ],
             "else": {
               "name": "Basic",
-              "ignore": [624570922]
+              "ignore": [624680921]
             }
           },
           {
-            "id": 624570922,
-            "text": "Is the school\u2019s main water point compliant with national standards for drinking water?",
+            "id": 624680921,
+            "text": "Is the school\u2019s main water source compliant with national standards for drinking water?",
             "options": ["Yes"],
             "other": [
               {
@@ -126,7 +126,7 @@
   {
     "name": "Sanitation",
     "display_name": "Service level for Sanitation",
-    "form": 634200917,
+    "form": 647170919,
     "labels": [
       {
         "name": "Basic",
@@ -149,19 +149,19 @@
         "name": "Basic",
         "questions": [
           {
-            "id": 650890921,
+            "id": 649140920,
             "text": "Does the school have toilets?",
             "options": ["Yes"],
             "else": {
               "name": "No Service",
               "ignore": [
-                650910918, 599880918, 652860921, 645440921, 634230917,
-                634220925, 652860928, 650940918
+                649140928, 592240934, 592240929, 618370928, 643200923,
+                643200920, 638790935, 638790936
               ]
             }
           },
           {
-            "id": 650910918,
+            "id": 649140928,
             "text": "What type of student toilets/latrines are at the school? (check one - most common)",
             "options": [
               "Flush toilet",
@@ -174,7 +174,7 @@
             }
           },
           {
-            "id": 599880918,
+            "id": 592240934,
             "text": "How many student toilets / latrines are currently usable (available, functional, private)? (insert number of holes / seats stances)",
             "number": {
               "greater_than": 0
@@ -184,7 +184,7 @@
             }
           },
           {
-            "id": 652860921,
+            "id": 592240929,
             "text": "Are the toilets/latrines separate for girls and boys?",
             "options": ["Yes"],
             "else": {
@@ -193,7 +193,7 @@
             }
           },
           {
-            "id": 640540929,
+            "id": 638790937,
             "text": "Are water and soap available in a private space for girls to manage menstrual hygiene?",
             "options": ["Yes, water and soap"],
             "else": {
@@ -201,7 +201,7 @@
             }
           },
           {
-            "id": 652860928,
+            "id": 638790935,
             "text": "Are there covered bins for disposal of menstrual materials in the toilets used by women and girls?",
             "options": ["Yes"],
             "else": {
@@ -209,7 +209,7 @@
             }
           },
           {
-            "id": 650940918,
+            "id": 638790936,
             "text": "Are there disposal mechanisms for menstrual hygiene waste at the school?",
             "options": ["Yes"],
             "else": {
@@ -217,7 +217,7 @@
             }
           },
           {
-            "id": 645440921,
+            "id": 618370928,
             "text": "In general, how clean are the student toilets?",
             "options": ["Clean"],
             "else": {
@@ -225,7 +225,7 @@
             }
           },
           {
-            "id": 634230917,
+            "id": 643200923,
             "text": "Is there at least one usable toilet/latrine that is accessible to the smallest children at the school?",
             "options": ["Yes"],
             "else": {
@@ -233,7 +233,7 @@
             }
           },
           {
-            "id": 634220925,
+            "id": 643200920,
             "text": "Is there at least one usable toilet/latrine that is accessible to those with limited mobility or vision?",
             "options": ["Yes"],
             "else": {
@@ -247,7 +247,7 @@
   {
     "name": "Hygiene",
     "display_name": "Service level for Hygiene",
-    "form": 634200917,
+    "form": 647170919,
     "labels": [
       {
         "name": "Basic",
@@ -270,16 +270,16 @@
         "name": "Basic",
         "questions": [
           {
-            "id": 650900919,
+            "id": 638770930,
             "text": "Are there hand washing facilities at the school?",
             "options": ["Yes"],
             "else": {
               "name": "No Service",
-              "ignore": [634210924, 650910924]
+              "ignore": [638770927, 638770926]
             }
           },
           {
-            "id": 634210924,
+            "id": 638770927,
             "text": "If yes, what type of facility is there?",
             "options": [
               "Sink with tap",
@@ -292,7 +292,7 @@
             }
           },
           {
-            "id": 650910924,
+            "id": 638770926,
             "text": "Are both soap and water currently available at the handwashing facilities?",
             "options": ["Yes, water and soap"],
             "other": [
@@ -312,7 +312,7 @@
   },
   {
     "name": "Toilet Category",
-    "form": 634200917,
+    "form": 647170919,
     "labels": [
       {
         "name": "Improved",
@@ -327,32 +327,20 @@
     ],
     "categories": [
       {
-        "name": "Unimproved",
+        "name": "Improved",
         "questions": [
           {
-            "id": 650890921,
-            "options": ["No"],
-            "other": [
-              {
-                "name": "Improved",
-                "options": ["Yes"],
-                "questions": [
-                  {
-                    "id": 650910918,
-                    "text": "What type of student toilets/latrines are at the school? (check one - most common)",
-                    "options": [
-                      "Flush toilet",
-                      "Pour flush toilet",
-                      "Pit toilet with slab",
-                      "Composting toilet"
-                    ],
-                    "else": {
-                      "name": "Unimproved"
-                    }
-                  }
-                ]
-              }
-            ]
+            "id": 649140928,
+            "text": "What type of student toilets/latrines are at the school? (check one - most common)",
+            "options": [
+              "Flush toilet",
+              "Pour flush toilet",
+              "Pit toilet with slab",
+              "Composting toilet"
+            ],
+            "else": {
+              "name": "Unimproved"
+            }
           }
         ]
       }
