@@ -5,7 +5,7 @@ import enum
 FLOW_INSTANCE = "sig"
 CLASS_PATH = "solomon_island"
 
-SOURCE_PATH = "./source"
+SOURCE_PATH = "./source/test"
 TOPO_JSON_PATH = f"{SOURCE_PATH}/solomon-island-topojson.json"
 FRONTEND_CONFIG_PATH = f"{SOURCE_PATH}/config"
 
@@ -35,8 +35,8 @@ ERROR_PATH = f"{TMP_PATH}/error"
 
 
 class QuestionConfig(enum.Enum):
-    year_conducted = 596240919
-    school_information = 634200919
+    year_conducted = 654960929
+    school_information = 638730933
 
 
 class SchoolInformationEnum(enum.Enum):

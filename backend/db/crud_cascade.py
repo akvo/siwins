@@ -2,9 +2,13 @@ from typing import Optional
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from models.cascade import Cascade, CascadeDict, CascadeSimplified
-from source.main_config import (
-    QuestionConfig, SchoolInformationEnum, CascadeLevels
-)
+
+from source.main import main_config
+
+QuestionConfig = main_config.QuestionConfig
+SchoolInformationEnum = main_config.SchoolInformationEnum
+CascadeLevels = main_config.CascadeLevels
+
 
 school_information_qid = QuestionConfig.school_information.value
 province_enum = SchoolInformationEnum.province.value

@@ -7,9 +7,12 @@ from httpx import AsyncClient
 from sqlalchemy.orm import Session
 from seeder.data_sync import data_sync
 from db import crud_data
-from source.main_config import DATAPOINT_PATH
 from tests.conftest import test_refresh_materialized_data
 # from tests.test_dummy import res_sync_data, res_answers # TODO:: Delete
+
+from source.main import main_config
+DATAPOINT_PATH = main_config.DATAPOINT_PATH
+
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio

@@ -3,7 +3,12 @@ import enum
 import shutil
 from pathlib import Path
 from google.cloud import storage
-from source.main_config import DOWNLOAD_PATH, FAKE_STORAGE_PATH
+
+from source.main import main_config
+
+DOWNLOAD_PATH = main_config.DOWNLOAD_PATH
+FAKE_STORAGE_PATH = main_config.FAKE_STORAGE_PATH
+
 
 bucket_name = "siwins"
 

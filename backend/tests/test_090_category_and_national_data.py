@@ -10,6 +10,9 @@ from AkvoResponseGrouper.views import (
     get_categories,
     refresh_view,
 )
+from models.question import Question, QuestionType
+
+from source.main import INSTANCE_NAME
 
 pytestmark = pytest.mark.asyncio
 sys.path.append("..")
@@ -20,7 +23,9 @@ class TestMigrationCategoryAndNationalData:
     async def test_if_views_is_successfully_added(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
-        schema = generate_schema(file_config="./source/category.json")
+        schema = generate_schema(
+            file_config=f"./source/{INSTANCE_NAME}/category.json"
+        )
         session.execute(text(schema))
         # check if .category.json was created
         assert exists("./.category.json") is True
@@ -175,6 +180,13 @@ class TestMigrationCategoryAndNationalData:
     async def test_get_national_data_by_question(
         self, app: FastAPI, session: Session, client: AsyncClient
     ):
+        questions = session.query(Question)
+        question_text = questions.filter(
+            Question.type == QuestionType.text).first()
+        question_number = questions.filter(
+            Question.type == QuestionType.number).first()
+        question_option = questions.filter(
+            Question.type == QuestionType.option).first()
         # question not found
         res = await client.get(
             app.url_path_for(
@@ -187,7 +199,7 @@ class TestMigrationCategoryAndNationalData:
         res = await client.get(
             app.url_path_for(
                 "charts:get_national_charts_by_question",
-                question=624670934
+                question=question_text.id
             )
         )
         assert res.status_code == 404
@@ -195,7 +207,7 @@ class TestMigrationCategoryAndNationalData:
         res = await client.get(
             app.url_path_for(
                 "charts:get_national_charts_by_question",
-                question=638510920
+                question=question_number.id
             )
         )
         assert res.status_code == 200
@@ -205,7 +217,7 @@ class TestMigrationCategoryAndNationalData:
         res = await client.get(
             app.url_path_for(
                 "charts:get_national_charts_by_question",
-                question=629900923
+                question=question_option.id
             )
         )
         assert res.status_code == 200

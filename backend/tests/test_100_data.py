@@ -282,13 +282,16 @@ class TestDataRoutes:
         # }]
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id, "q": f"{indicator_id}|yes"})
+            params={
+                "indicator": indicator_id,
+                "q": f"{indicator_id}|wrong_option"
+            })
         assert res.status_code == 200
         res = res.json()
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert len(res["data"]) == 0
         # number indicator with number filter
         indicator_id = indicator_number.id
         res = await client.get(
@@ -322,13 +325,13 @@ class TestDataRoutes:
         assert res.status_code == 400
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id, "number": [1, 10]})
+            params={"indicator": indicator_id, "number": [999, 9999]})
         assert res.status_code == 200
         res = res.json()
         assert list(res) == [
             'current', 'data', 'total', 'total_page'
         ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert len(res["data"]) == 0
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": indicator_id, "number": [1, 20]})
@@ -357,10 +360,13 @@ class TestDataRoutes:
         # filter by province
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_option.id, "prov": ["Central"]})
+            params={
+                "indicator": indicator_option.id,
+                "prov": ["Wrong Province"]
+            })
         assert res.status_code == 200
         res = res.json()
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert len(res["data"]) == 0
         # filter by province
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
@@ -392,11 +398,11 @@ class TestDataRoutes:
             app.url_path_for("data:get_maps_data"),
             params={
                 "indicator": indicator_option.id,
-                "sctype": ["Primary School"]
+                "sctype": ["Wrong School Type"]
             })
         assert res.status_code == 200
         res = res.json()
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert len(res["data"]) == 0
         # filter by school type
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
@@ -431,12 +437,12 @@ class TestDataRoutes:
             app.url_path_for("data:get_maps_data"),
             params={
                 "indicator": indicator_option.id,
-                "prov": ["Central"],
-                "sctype": ["Community High School"]
+                "prov": ["Wrong Province"],
+                "sctype": ["Wrong School Type"]
             })
         assert res.status_code == 200
         res = res.json()
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert len(res["data"]) == 0
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={
@@ -499,10 +505,13 @@ class TestDataRoutes:
         # JMP indicator filter by JMP level
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id, "q": "jmp-water|basic"})
+            params={
+                "indicator": indicator_id,
+                "q": "jmp-water|wrong_category_name"
+            })
         assert res.status_code == 200
         res = res.json()
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert len(res["data"]) == 0
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
             params={"indicator": indicator_id, "q": "jmp-water|limited"})

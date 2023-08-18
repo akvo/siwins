@@ -4,10 +4,13 @@ from sqlalchemy.orm import Session
 from utils.storage import (
     upload, delete, check, StorageFolder
 )
-from source.main_config import (
-    TEST_PATH, DOWNLOAD_PATH,
-    FAKE_STORAGE_PATH, LOG_PATH
-)
+
+from source.main import main_config
+
+TEST_PATH = main_config.TEST_PATH
+DOWNLOAD_PATH = main_config.DOWNLOAD_PATH
+FAKE_STORAGE_PATH = main_config.FAKE_STORAGE_PATH
+LOG_PATH = main_config.LOG_PATH
 
 
 def create_test_file():

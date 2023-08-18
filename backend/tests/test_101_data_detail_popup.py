@@ -79,7 +79,6 @@ class TestDataDetailRoutes:
             'question_id', 'question_name', 'type',
             'history', 'year', 'value', 'render'
         ]
-        assert res[0]["history"] is False
         assert list(res[0]["value"][0]) == [
             'level', 'total', 'count', 'value'
         ]

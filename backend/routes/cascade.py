@@ -6,8 +6,13 @@ from sqlalchemy.orm import Session
 from db.connection import get_session
 from models.cascade import CascadeNameAndLevel
 from db import crud_cascade
-from source.main_config import QuestionConfig, \
-    SchoolInformationEnum, CascadeLevels
+
+from source.main import main_config
+
+QuestionConfig = main_config.QuestionConfig
+SchoolInformationEnum = main_config.SchoolInformationEnum
+CascadeLevels = main_config.CascadeLevels
+
 
 security = HTTPBearer()
 cascade_route = APIRouter()

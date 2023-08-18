@@ -5,7 +5,10 @@ from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
 from db.connection import get_session
 from db.crud_option import get_option_year_conducted
-from source.main_config import MONITORING_ROUND
+
+from source.main import main_config
+
+MONITORING_ROUND = main_config.MONITORING_ROUND
 
 
 security = HTTPBearer()

@@ -15,12 +15,15 @@ from models.answer import Answer
 from models.history import History, HistoryDict
 from models.data import Data
 from typing import List
-from source.main_config import (
-    MONITORING_FORM, QuestionConfig,
-    MONITORING_ROUND
-)
 from utils.mailer import send_error_email
 from utils.i18n import ValidationText
+
+from source.main import main_config
+
+MONITORING_FORM = main_config.MONITORING_FORM
+MONITORING_ROUND = main_config.MONITORING_ROUND
+QuestionConfig = main_config.QuestionConfig
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

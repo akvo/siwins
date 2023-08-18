@@ -13,13 +13,23 @@ from models.question import QuestionType
 from models.answer import Answer
 from models.data import Data
 from db.connection import Base, SessionLocal, engine
-from source.geoconfig import GeoLevels
 from seeder.fake_history import generate_fake_history
 from db.truncator import truncate_datapoint
 from utils.functions import refresh_materialized_data
-from source.main_config import CLASS_PATH, TOPO_JSON_PATH, \
-    ADMINISTRATION_PATH, MONITORING_FORM, MONITORING_ROUND
-from source.main_config import QuestionConfig, CascadeLevels
+
+from source.main import main_config, geoconfig
+
+GeoLevels = geoconfig.GeoLevels
+
+CLASS_PATH = main_config.CLASS_PATH
+TOPO_JSON_PATH = main_config.TOPO_JSON_PATH
+ADMINISTRATION_PATH = main_config.ADMINISTRATION_PATH
+MONITORING_FORM = main_config.MONITORING_FORM
+MONITORING_ROUND = main_config.MONITORING_ROUND
+
+QuestionConfig = main_config.QuestionConfig
+CascadeLevels = main_config.CascadeLevels
+
 
 start_time = time.process_time()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

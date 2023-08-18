@@ -9,7 +9,11 @@ from jinja2 import Environment, FileSystemLoader
 from utils.i18n import EmailText
 from typing_extensions import TypedDict
 from datetime import datetime
-from source.main_config import ERROR_PATH
+
+from source.main import main_config
+
+ERROR_PATH = main_config.ERROR_PATH
+
 
 mjkey = os.environ['MAILJET_APIKEY']
 mjsecret = os.environ['MAILJET_SECRET']
