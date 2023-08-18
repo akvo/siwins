@@ -1,6 +1,6 @@
 [
   {
-    "name": "Water",
+    "name": "Service level for Drinking Water",
     "hint": "Proportion of schools (including pre-primary, primary and secondary) with drinking water from an improved water source available at the school on the day of the survey",
     "labels": [
       {
@@ -26,7 +26,7 @@
     ]
   },
   {
-    "name": "Sanitation",
+    "name": "Service level for Sanitation",
     "hint": "Proportion of schools (including pre-primary, primary and secondary) with improved sanitation facilities at the school, which are single-sex and usable",
     "labels": [
       {
@@ -47,7 +47,7 @@
     ]
   },
   {
-    "name": "Hygiene",
+    "name": "Service level for Hygiene",
     "hint": "Proportion of schools (including pre-primary, primary and secondary) with handwashing facilities, which have soap and water available",
     "labels": [
       {
