@@ -2,7 +2,10 @@ import requests as r
 from os import environ
 from time import time
 from typing import Optional
-from source.main_config import FLOW_INSTANCE
+from source.main import main_config
+
+FLOW_INSTANCE = main_config.FLOW_INSTANCE
+
 
 auth_data = {
     "client_id": environ["AUTH0_CLIENT"],

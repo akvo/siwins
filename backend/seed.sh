@@ -4,4 +4,8 @@ python -m seeder.administration
 python -m seeder.seed
 python -m seeder.cascade
 
-akvo-responsegrouper --config ./source/category.json
+
+INSTANCE="$SIWINS_INSTANCE"
+CATEGORIES="./source/"${INSTANCE}"/category.json"
+
+akvo-responsegrouper --config "${CATEGORIES}"

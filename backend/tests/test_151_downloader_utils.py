@@ -6,10 +6,14 @@ from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
 from utils.downloader import generate_download_data
-from source.main_config import DOWNLOAD_PATH
 from db.crud_jmp import get_jmp_config
 from sqlalchemy.sql.expression import true
 from models.question import Question
+
+from source.main import main_config
+
+DOWNLOAD_PATH = main_config.DOWNLOAD_PATH
+
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio

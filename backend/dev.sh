@@ -8,11 +8,12 @@ pip check
 
 alembic upgrade head
 
-CATEGORIES="./source/category.json"
+INSTANCE="${SIWINS_INSTANCE}"
+CATEGORIES="./source/"${INSTANCE}"/category.json"
 
 if [ -f "${CATEGORIES}" ]; then
   echo "${CATEGORIES} exists"
-  akvo-responsegrouper --config ./source/category.json
+  akvo-responsegrouper --config "${CATEGORIES}"
 	echo "done"
 fi
 

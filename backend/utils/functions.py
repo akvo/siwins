@@ -2,10 +2,11 @@ import subprocess
 from sqlalchemy import text
 from db.connection import engine
 from typing import List, Optional
-from source.main_config import (
-    SchoolInformationEnum,
-    CascadeLevels
-)
+
+from source.main import main_config, INSTANCE_NAME
+
+SchoolInformationEnum = main_config.SchoolInformationEnum
+CascadeLevels = main_config.CascadeLevels
 
 
 school_information_cascade = CascadeLevels.school_information.value
@@ -21,7 +22,8 @@ def refresh_materialized_view_query():
 
 
 def refresh_materialized_data():
-    command = "akvo-responsegrouper --config ./source/category.json"
+    categories = f"./source/{INSTANCE_NAME}/category.json"
+    command = f"akvo-responsegrouper --config {categories}"
     subprocess.check_output(command, shell=True, text=True)
 
     query = refresh_materialized_view_query()

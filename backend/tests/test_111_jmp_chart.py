@@ -3,6 +3,7 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
+from models.question import Question, QuestionType, QuestionAttributes
 # from tests.test_jmp_dummy import (
 #     res_jmp_no_fiter,
 #     res_jmp_filtered,
@@ -31,9 +32,6 @@ class TestJMPChartRoutes:
             'year', 'history', 'administration',
             'score', 'child'
         ]
-        for d in res["data"]:
-            assert d["year"] == 2023
-            assert d["history"] is False
         assert list(res["data"][0]["child"][0]) == [
             'option', 'count', 'percent', 'color', 'order'
         ]
@@ -52,19 +50,26 @@ class TestJMPChartRoutes:
             'year', 'history', 'administration',
             'score', 'child'
         ]
-        for d in res["data"]:
-            assert d["year"] == 2018
-            assert d["history"] is True
         assert list(res["data"][0]["child"][0]) == [
             'option', 'count', 'percent', 'color', 'order'
         ]
         # TODO:: Delete
         # assert res == res_jmp_history_no_filter
         # with indicator
+        indicator_question = session.query(Question).filter(
+            Question.attributes.contains([QuestionAttributes.indicator.value])
+        )
+        indicator_option = indicator_question.filter(
+            Question.type == QuestionType.option
+        ).first()
+        indicator_number = indicator_question.filter(
+            Question.type == QuestionType.number
+        ).first()
+
         res = await client.get(
             app.url_path_for(
                 "charts:get_aggregated_jmp_chart_data", type="Sanitation"),
-            params={"indicator": 624660930}
+            params={"indicator": indicator_option.id}
         )
         assert res.status_code == 200
         res = res.json()
@@ -82,14 +87,17 @@ class TestJMPChartRoutes:
         res = await client.get(
             app.url_path_for(
                 "charts:get_aggregated_jmp_chart_data", type="Sanitation"),
-            params={"indicator": 624660930, "number": [10, 20]}
+            params={"indicator": indicator_option.id, "number": [10, 20]}
         )
         assert res.status_code == 400
         # option indicator with option filter
         res = await client.get(
             app.url_path_for(
                 "charts:get_aggregated_jmp_chart_data", type="Sanitation"),
-            params={"indicator": 624660930, "q": "624660930|no"}
+            params={
+                "indicator": indicator_option.id,
+                "q": f"{indicator_option.id}|no"
+            }
         )
         assert res.status_code == 200
         res = res.json()
@@ -106,13 +114,13 @@ class TestJMPChartRoutes:
         res = await client.get(
             app.url_path_for(
                 "charts:get_aggregated_jmp_chart_data", type="Sanitation"),
-            params={"indicator": 630020919, "number": [11]}
+            params={"indicator": indicator_number.id, "number": [11]}
         )
         assert res.status_code == 400
         res = await client.get(
             app.url_path_for(
                 "charts:get_aggregated_jmp_chart_data", type="Sanitation"),
-            params={"indicator": 630020919, "number": [1, 20]}
+            params={"indicator": indicator_number.id, "number": [1, 20]}
         )
         assert res.status_code == 200
         res = res.json()

@@ -2,4 +2,7 @@
 
 python -m seeder.sync
 
-akvo-responsegrouper --config ./source/category.json
+INSTANCE="${SIWINS_INSTANCE}"
+CATEGORIES="./source/"${INSTANCE}"/category.json"
+
+akvo-responsegrouper --config "${CATEGORIES}"

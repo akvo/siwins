@@ -18,6 +18,7 @@ sync_route = APIRouter()
 
 
 def run_force_sync(session: Session, last_sync: dict):
+    TESTING = os.environ.get("TESTING")
     sync_data = None
     next_sync_url = last_sync.get('url')
     token = flow_auth.get_token()
@@ -33,7 +34,8 @@ def run_force_sync(session: Session, last_sync: dict):
             log_filename="sync_force_url_errors",
             log_content=log_content
         )
-        refresh_materialized_data()
+        if not TESTING:
+            refresh_materialized_data()
 
 
 @sync_route.get(

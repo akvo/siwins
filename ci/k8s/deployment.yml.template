@@ -39,6 +39,11 @@ spec:
           ports:
             - containerPort: 5000
           env:
+            - name: SIWINS_INSTANCE
+              valueFrom:
+                secretKeyRef:
+                  name: siwins
+                  key: siwins-instance
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:

@@ -8,6 +8,16 @@ The source folder contains static configurations for the SIWINS backend and fron
 
 ```
 backend/source/
+├── production
+├── test
+└── main.py
+```
+
+The source folder has been divided into two separate directories: `test` and `production`. The system will intelligently choose to load either the `test` or `production` source, depending on the instance name from the environment variable. The process of loading is managed by a file called `main.py`. Both the `test` and `production` sources have same folder structures, as illustrated below.
+
+
+```
+instance_name/
 ├── administration
 │   ├── administration.csv
 │   └── fake-geolocations.csv

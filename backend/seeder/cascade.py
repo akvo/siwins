@@ -2,8 +2,12 @@ import os
 import json
 from db.connection import Base, SessionLocal, engine
 from db.truncator import truncate
-from source.main_config import FORM_CONFIG_PATH
 from seeder.cascade_util import seed_cascade
+
+from source.main import main_config
+
+FORM_CONFIG_PATH = main_config.FORM_CONFIG_PATH
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TESTING = os.environ.get("TESTING")

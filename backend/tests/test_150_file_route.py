@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
 from models.jobs import JobStatus, JOB_STATUS_TEXT
+from models.data import Data
 
 sys.path.append("..")
 pytestmark = pytest.mark.asyncio
@@ -80,10 +81,11 @@ class TestFileRoutes:
             'available': None
         }
         # with data_ids only
+        data = session.query(Data).first()
         res = await client.get(
             app.url_path_for("excel-data:generate"),
             params={
-                "data_ids": [649130936],
+                "data_ids": [data.id],
             }
         )
         assert res.status_code == 200
@@ -95,7 +97,7 @@ class TestFileRoutes:
             'info': {
                 'tags': [],
                 'options': None,
-                'data_ids': ['649130936'],
+                'data_ids': [f"{data.id}"],
                 'province': None,
                 'form_name': 'survey_questions',
                 'school_type': None,

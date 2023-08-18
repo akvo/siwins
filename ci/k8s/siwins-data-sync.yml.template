@@ -28,6 +28,11 @@ spec:
               - echo Running Data Sync;
                 ./sync.sh;
             env:
+              - name: SIWINS_INSTANCE
+                valueFrom:
+                  secretKeyRef:
+                    name: siwins
+                    key: siwins-instance
               - name: DATABASE_URL
                 valueFrom:
                   secretKeyRef:

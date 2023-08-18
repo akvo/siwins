@@ -369,7 +369,7 @@
           "order": "18",
           "text": "What is the schools main source of power?",
           "type": "free",
-          "displayName": "Main sourceo or power"
+          "displayName": "Main source or power"
         },
         {
           "dependency": {
@@ -2165,7 +2165,7 @@
         "text": "How many times per week are group handwashing activities conducted for all students?",
         "type": "option",
         "attributes": ["indicator", "school_detail_popup"],
-        "displayName": "Frequency of weekly handwashing activitie"
+        "displayName": "Frequency of weekly handwashing activities"
       },
       "repeatable": false
     },
@@ -2623,7 +2623,7 @@
           "text": "Is there a school WASH Improvement plan or any plan?",
           "type": "option",
           "attributes": ["school_detail_popup"],
-          "displayName": "Presence of WASH imporvement plan"
+          "displayName": "Presence of WASH improvement plan"
         },
         {
           "dependency": { "answer-value": "Yes", "question": "634450922" },

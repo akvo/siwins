@@ -1,8 +1,10 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from models.option import Option, OptionDict
-from source.main_config import QuestionConfig
 # from models.question import Question
+
+from source.main import main_config
+QuestionConfig = main_config.QuestionConfig
 
 
 year_conducted_qid = QuestionConfig.year_conducted.value

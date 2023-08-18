@@ -5,8 +5,13 @@ set -euo pipefail
 echo "Migrating main schema"
 alembic upgrade head
 
+
+INSTANCE="$SIWINS_INSTANCE"
+CATEGORIES="./source/"${INSTANCE}"/category.json"
+echo "${CATEGORIES} exists"
+
 echo "Migrating DB From AkvoResponseGrouper Dependency"
-akvo-responsegrouper --config ./source/category.json
+akvo-responsegrouper --config "${CATEGORIES}"
 
 echo "Running tests"
 COVERAGE_PROCESS_START=./.coveragerc \

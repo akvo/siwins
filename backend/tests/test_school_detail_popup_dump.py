@@ -92,7 +92,7 @@ school_management = [{
     'value': 'No'
 }, {
     'question_id': 634450922,
-    'question_name': 'Presence of WASH imporvement plan',
+    'question_name': 'Presence of WASH improvement plan',
     'render': 'value',
     'history': False,
     'year': 2023,

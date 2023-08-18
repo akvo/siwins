@@ -6,6 +6,14 @@
 
 #### 1. Environment Setup
 
+##### Instance
+
+This app required a static config to seed and retreieve the data. So, first please provide the instance value like below environment setup (the instance name is "test"):
+
+```
+export SIWINS_INSTANCE="test"
+```
+
 ##### Seed & Sync Auth
 
 This app requires [Akvo Flow API Authentication](https://github.com/akvo/akvo-flow-api/wiki/Akvo-SSO-login) to provides correct credentials when seed or sync form and data points from Akvo FLOW.

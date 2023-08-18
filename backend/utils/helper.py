@@ -2,7 +2,10 @@ import re
 import uuid
 import enum
 from datetime import datetime
-from source.main_config import LOG_PATH
+
+from source.main import main_config
+
+LOG_PATH = main_config.LOG_PATH
 
 
 def get_uuid():

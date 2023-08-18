@@ -3,7 +3,7 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
-from models.question import QuestionAttributes
+from models.question import Question, QuestionType, QuestionAttributes
 
 pytestmark = pytest.mark.asyncio
 sys.path.append("..")
@@ -246,10 +246,22 @@ class TestGenericBarChartRoutes:
     async def test_get_generic_bar_chart_route(
         self, app: FastAPI, session: Session, client: AsyncClient
     ):
+        indicator_question = session.query(Question).filter(
+            Question.attributes.contains([QuestionAttributes.indicator.value])
+        )
+        indicator_option = indicator_question.filter(
+            Question.type == QuestionType.option
+        ).first()
+        second_indicator = indicator_question.filter(
+            Question.type == QuestionType.option).filter(
+                Question.id != indicator_option.id).first()
+        indicator_number = indicator_question.filter(
+            Question.type == QuestionType.number
+        ).first()
         # no filter
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930)
+                "charts:get_generic_chart_data", question=indicator_option.id)
         )
         assert res.status_code == 200
         res = res.json()
@@ -265,7 +277,7 @@ class TestGenericBarChartRoutes:
         # history data
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930),
+                "charts:get_generic_chart_data", question=indicator_option.id),
             params={"history": True}
         )
         assert res.status_code == 200
@@ -282,15 +294,15 @@ class TestGenericBarChartRoutes:
         # with stack = question
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930),
-            params={"stack": 624660930}
+                "charts:get_generic_chart_data", question=indicator_option.id),
+            params={"stack": indicator_option.id}
         )
         assert res.status_code == 406
         # with stack != question
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930),
-            params={"stack": 624660927}
+                "charts:get_generic_chart_data", question=indicator_option.id),
+            params={"stack": second_indicator.id}
         )
         assert res.status_code == 200
         res = res.json()
@@ -309,8 +321,8 @@ class TestGenericBarChartRoutes:
         # show history with stack
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930),
-            params={"stack": 624660927, "history": True}
+                "charts:get_generic_chart_data", question=indicator_option.id),
+            params={"stack": second_indicator.id, "history": True}
         )
         assert res.status_code == 200
         res = res.json()
@@ -329,23 +341,26 @@ class TestGenericBarChartRoutes:
         # with indicator
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930),
-            params={"indicator": 624660930}
+                "charts:get_generic_chart_data", question=indicator_option.id),
+            params={"indicator": indicator_option.id}
         )
         assert res.status_code == 200
         # with indicator & indicator option filter
         # option indicator with number filter
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930),
-            params={"indicator": 624660930, "number": [10, 20]}
+                "charts:get_generic_chart_data", question=indicator_option.id),
+            params={"indicator": indicator_option.id, "number": [10, 20]}
         )
         assert res.status_code == 400
         # option indicator with option filter
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930),
-            params={"indicator": 624660930, "q": "624660930|yes"}
+                "charts:get_generic_chart_data", question=indicator_option.id),
+            params={
+                "indicator": indicator_option.id,
+                "q": f"{indicator_option.id}|yes"
+            }
         )
         assert res.status_code == 200
         res = res.json()
@@ -359,14 +374,14 @@ class TestGenericBarChartRoutes:
         # number indicator with number filter
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930),
-            params={"indicator": 630020919, "number": [11]}
+                "charts:get_generic_chart_data", question=indicator_option.id),
+            params={"indicator": indicator_number.id, "number": [11]}
         )
         assert res.status_code == 400
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930),
-            params={"indicator": 630020919, "number": [1, 20]}
+                "charts:get_generic_chart_data", question=indicator_option.id),
+            params={"indicator": indicator_number.id, "number": [1, 20]}
         )
         assert res.status_code == 200
         res = res.json()
@@ -380,7 +395,7 @@ class TestGenericBarChartRoutes:
         # filter by school type and province
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930),
+                "charts:get_generic_chart_data", question=indicator_option.id),
             params={
                 "prov": ["Guadalcanal"],
                 "sctype": ["Community High School"]
@@ -398,9 +413,9 @@ class TestGenericBarChartRoutes:
         # with stack != question and filter
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=624660930),
+                "charts:get_generic_chart_data", question=indicator_option.id),
             params={
-                "stack": 624660927,
+                "stack": second_indicator.id,
                 "prov": ["Guadalcanal"],
                 "sctype": ["Community High School"]
             }

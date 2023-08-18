@@ -30,6 +30,7 @@ services:
       - MAILJET_SECRET=$MAILJET_SECRET
       - MAILJET_APIKEY=$MAILJET_APIKEY
       - NOTIFICATION_RECIPIENTS=$NOTIFICATION_RECIPIENTS
+      - SIWINS_INSTANCE=$SIWINS_INSTANCE
   frontend:
     volumes:
       - ./docs/build/html:/app/public/documentation:delegated
