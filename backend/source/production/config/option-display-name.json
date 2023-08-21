@@ -1,0 +1,7 @@
+[
+    {"question_id": 622560918, "text": "Don't know/can't say", "displayName": "No data"},
+    {"question_id": 642000918, "text": "Yes (always available)", "displayName": "Always"},
+    {"question_id": 642000918, "text": "Mostly (unavailable \u2264 30 days total)", "displayName": "Mostly"},
+    {"question_id": 642000918, "text": "No (unavailable > 30 days total)", "displayName": "Unavailable"},
+    {"question_id": 642000918, "text": "Don't know/can't say", "displayName": "No data"}
+]
