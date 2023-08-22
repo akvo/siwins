@@ -46,6 +46,46 @@ const dropdownResourceURL = [
   "/cascade/school_information?level=school_type",
 ];
 
+const optionDisplayNameConfig = window?.option_display_name || [];
+
+const remapQuestions = (questions) => {
+  return questions.data.map((question) => {
+    // remap to option display name
+    const findDisplayNameByQuestion = optionDisplayNameConfig.find(
+      (x) => x.question_id === question.id
+    );
+    const remapOptions = question.option.map((opt, opti) => {
+      let remapOpt = opt;
+      if (findDisplayNameByQuestion?.option) {
+        // remap to option display name
+        const findOptionDisplayName = findDisplayNameByQuestion.option.find(
+          (x) => x.text.toLowerCase() === opt.name.toLowerCase()
+        );
+        remapOpt = {
+          ...remapOpt,
+          displayName: findOptionDisplayName?.displayName
+            ? findOptionDisplayName.displayName
+            : null,
+        };
+      }
+      if (!remapOpt?.color) {
+        // remap color
+        const colorTemp = colors.option;
+        const index = opti % colorTemp.length;
+        return {
+          ...remapOpt,
+          color: colorTemp?.[index],
+        };
+      }
+      return remapOpt;
+    });
+    return {
+      ...question,
+      option: remapOptions,
+    };
+  });
+};
+
 const DashboardView = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -91,49 +131,45 @@ const DashboardView = () => {
           province,
           school_type,
         ] = res;
+        // remap with custom config
         const remapIndicatorQuestions = {
           ...indicatorQuestions,
-          data: indicatorQuestions.data.map((question) => {
-            const remapOptions = question.option.map((opt, opti) => {
-              if (!opt?.color) {
-                const colorTemp = colors.option;
-                const index = opti % colorTemp.length;
-                return {
-                  ...opt,
-                  color: colorTemp?.[index],
-                };
-              }
-              return opt;
-            });
-            return {
-              ...question,
-              option: remapOptions,
-            };
-          }),
+          data: remapQuestions(indicatorQuestions),
         };
+        const remapAdvanceFilterQuestions = {
+          ...advanceFilterQuestions,
+          data: remapQuestions(advanceFilterQuestions),
+        };
+        const remapGenericBarChart = {
+          ...generic_bar_chart,
+          data: remapQuestions(generic_bar_chart),
+        };
+        // eol remap with custom config
+
         // save to indexed DB
         ds.saveSource({
           endpoint: remapIndicatorQuestions.config.url,
           data: remapIndicatorQuestions.data,
         });
         ds.saveSource({
-          endpoint: advanceFilterQuestions.config.url,
-          data: advanceFilterQuestions.data,
+          endpoint: remapAdvanceFilterQuestions.config.url,
+          data: remapAdvanceFilterQuestions.data,
         });
         ds.saveSource({
-          endpoint: generic_bar_chart.config.url,
-          data: generic_bar_chart.data,
+          endpoint: remapGenericBarChart.config.url,
+          data: remapGenericBarChart.data,
         });
         ds.saveSource({ endpoint: province.config.url, data: province.data });
         ds.saveSource({
           endpoint: school_type.config.url,
           data: school_type.data,
         });
-        //
+        // eol save to indexed DB
+
         UIState.update((s) => {
           s.indicatorQuestions = remapIndicatorQuestions?.data;
-          s.advanceFilterQuestions = advanceFilterQuestions?.data;
-          s.barChartQuestions = generic_bar_chart?.data;
+          s.advanceFilterQuestions = remapAdvanceFilterQuestions?.data;
+          s.barChartQuestions = remapGenericBarChart?.data;
           s.provinceValues = province?.data;
           s.schoolTypeValues = school_type?.data;
         });
