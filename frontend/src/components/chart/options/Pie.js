@@ -6,8 +6,10 @@ import {
   Icons,
   Title,
   Legend,
+  titleFormatter,
+  isTitleExist,
 } from "./common";
-import { isEmpty, sumBy } from "lodash";
+import sumBy from "lodash/sumBy";
 
 const Pie = (
   data,
@@ -15,8 +17,11 @@ const Pie = (
   extra = {},
   series = {},
   showRoseChart = false,
-  legend
+  legend,
+  grid = {}
 ) => {
+  const noTitle = isTitleExist(chartTitle);
+
   data = !data ? [] : data;
   let labels = [];
   if (data.length > 0) {
@@ -35,9 +40,15 @@ const Pie = (
   const option = {
     title: {
       ...Title,
-      show: !isEmpty(chartTitle),
-      text: chartTitle?.title,
-      subtext: chartTitle?.subTitle,
+      show: !noTitle,
+      text: titleFormatter(chartTitle?.title),
+      subtext: titleFormatter(chartTitle?.subTitle),
+    },
+    grid: {
+      top: grid?.top ? grid.top : 0,
+      bottom: grid?.bottom ? grid.bottom : 0,
+      left: grid?.left ? grid.left : 0,
+      right: grid?.right ? grid.right : 0,
     },
     tooltip: {
       show: true,
@@ -55,7 +66,7 @@ const Pie = (
       showTitle: true,
       orient: "horizontal",
       right: 10,
-      top: 80,
+      top: noTitle ? 50 : 88,
       feature: {
         saveAsImage: {
           type: "jpg",
@@ -92,7 +103,7 @@ const Pie = (
       legend: {
         data: labels,
         ...Legend,
-        top: 30,
+        top: noTitle ? 10 : 50,
         left: "center",
       },
     }),

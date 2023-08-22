@@ -1,4 +1,4 @@
-import { take, upperFirst } from "lodash";
+import { take, upperFirst, isEmpty } from "lodash";
 import { Excel } from "antd-table-saveas-excel";
 
 export const popupFormatter = (params) => {
@@ -29,6 +29,26 @@ export const TextStyle = {
   color: "#000",
   fontSize: 12,
   fontWeight: "bold",
+};
+
+export const isTitleExist = (chartTitle) => {
+  return (
+    isEmpty(chartTitle) ||
+    (isEmpty(chartTitle?.title) && isEmpty(chartTitle?.subTitle))
+  );
+};
+
+export const titleFormatter = (text) => {
+  let formattedTitle = text.split(" ");
+  if (formattedTitle.length > 7) {
+    formattedTitle = formattedTitle.map((p, pi) => {
+      if (pi !== 0 && pi % 7 === 0) {
+        p += "\n";
+      }
+      return p;
+    });
+  }
+  return formattedTitle.join(" ");
 };
 
 export const AxisLabelFormatter = {

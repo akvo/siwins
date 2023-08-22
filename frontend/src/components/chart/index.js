@@ -30,7 +30,7 @@ export const generateOptions = (
         showPercent
       );
     case "PIE":
-      return Pie(data, chartTitle, extra, series, showRoseChart, legend);
+      return Pie(data, chartTitle, extra, series, showRoseChart, legend, grid);
     case "LINE":
       return Line(
         data,
