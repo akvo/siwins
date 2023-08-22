@@ -96,7 +96,9 @@ const RenderQuestionOption = ({
             ? opt.color
             : "#1677ff",
         }}
-        className={`${selectedOption.includes(opt.name) ? "selected" : ""}`}
+        className={`indicator-dropdown-button ${
+          selectedOption.includes(opt.name) ? "selected" : ""
+        }`}
         type="primary"
         onClick={() =>
           handleOnChangeQuestionOption(opt.name, selectedQuestion?.type)

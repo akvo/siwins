@@ -43,6 +43,11 @@
                 padding-right: 0;
                 color: #fff;
               }
+              &.indicator-dropdown-button {
+                div {
+                  white-space: break-spaces;
+                }
+              }
               &.selected {
                 span {
                   color: #fff;
