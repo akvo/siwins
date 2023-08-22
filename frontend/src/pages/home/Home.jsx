@@ -58,7 +58,7 @@ const Home = () => {
             <h3>{cfg?.title}</h3>
           </Row>
           <Chart
-            height={300}
+            height={350}
             type="PIE"
             data={findData?.options}
             wrapper={false}

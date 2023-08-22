@@ -465,7 +465,7 @@ const Map = ({ searchValue }) => {
                     horizontal={false}
                     callbacks={{ onClick: chartClick }}
                     grid={{
-                      top: 90,
+                      top: 115,
                     }}
                     // loading={loading}
                     disableEvent={loading}
