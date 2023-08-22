@@ -30,14 +30,18 @@ FRONTEND_CONFIG_PATH = main_config.FRONTEND_CONFIG_PATH
 TOPO_JSON = open(TOPO_JSON_PATH).read()
 GEO_CONFIG = GeoLevels[CLASS_PATH].value
 MAP_CENTER = GeoCenter[CLASS_PATH].value
+
+MAP_FILTER_CONFIG = f"{FRONTEND_CONFIG_PATH}/maps.js"
 HINT_CONFIG = f"{FRONTEND_CONFIG_PATH}/indicator-hint.json"
 JMP_HINT_CONFIG = f"{FRONTEND_CONFIG_PATH}/jmp-hint.json"
 JMP_CONFIG = f"{FRONTEND_CONFIG_PATH}/dashboard.json"
+OPTION_DISPLAY_NAME_CONFIG = f"{FRONTEND_CONFIG_PATH}/option-display-name.json"
+
+MAP_FILTER_CONFIG = jsmin(open(MAP_FILTER_CONFIG).read())
 HINT_JSON = open(HINT_CONFIG).read()
 JMP_HINT_JSON = open(JMP_HINT_CONFIG).read()
 DASHBOARD_JSON = open(JMP_CONFIG).read()
-MAP_FILTER_CONFIG = f"{FRONTEND_CONFIG_PATH}/maps.js"
-MAP_FILTER_CONFIG = jsmin(open(MAP_FILTER_CONFIG).read())
+OPTION_DISPLAY_NAME_JSON = open(OPTION_DISPLAY_NAME_CONFIG).read()
 
 MINJS = jsmin(
     "".join(
@@ -61,6 +65,9 @@ MINJS = jsmin(
             ";",
             "var dashboardjson=",
             DASHBOARD_JSON,
+            ";",
+            "var option_display_name=",
+            OPTION_DISPLAY_NAME_JSON,
             ";",
             MAP_FILTER_CONFIG,
         ]

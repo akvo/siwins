@@ -156,12 +156,14 @@
               {
                 "altText": [],
                 "value": "Yes",
+                "color":"#33A02C",
                 "text": "Yes"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               }
             ]
           }
@@ -760,17 +762,20 @@
               {
                 "altText": [],
                 "value": "Yes",
+                "color":"#33A02C",
                 "text": "Yes"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -801,17 +806,20 @@
               {
                 "altText": [],
                 "value": "Yes",
+                "color":"#33A02C",
                 "text": "Yes"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -835,22 +843,22 @@
               {
                 "altText": [],
                 "value": "Yes",
+                "color":"#33A02C",
                 "text": "Yes",
-                "color": "#2EA745",
                 "description": "Example of Yes info text"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No",
-                "color": "#DC3545",
+                "text":"No",
+                "color": "#FB9A99",
                 "description": "Example No of info text"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say",
-                "color": "#666666",
+                "text":"Don't know/can't say",
+                "color": "#1F78B4",
                 "description": "Example of Don't know/can't say info text"
               }
             ]
@@ -978,17 +986,20 @@
               {
                 "altText": [],
                 "value": "Yes",
+                "color":"#33A02C",
                 "text": "Yes"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -1065,17 +1076,20 @@
               {
                 "altText": [],
                 "value": "Yes",
+                "color":"#33A02C",
                 "text": "Yes"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -1179,17 +1193,20 @@
               {
                 "altText": [],
                 "value": "Yes",
+                "color":"#33A02C",
                 "text": "Yes"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know",
-                "text": "Don't know"
+                "text": "Don't know",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -1294,17 +1311,20 @@
               {
                 "altText": [],
                 "value": "Yes",
+                "color":"#33A02C",
                 "text": "Yes"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -1340,17 +1360,20 @@
               {
                 "altText": [],
                 "value": "Yes",
+                "color":"#33A02C",
                 "text": "Yes"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -1383,17 +1406,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -1426,17 +1452,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -1457,17 +1486,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -1552,10 +1584,6 @@
               ],
               "question": "636230924"
             }
-          ],
-          "attributes": [
-            "indicator",
-            "school_detail_popup"
           ]
         },
         {
@@ -1637,17 +1665,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know",
-                "text": "Don't know"
+                "text": "Don't know",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -1679,12 +1710,14 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               }
             ]
           },
@@ -1993,17 +2026,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Dont know / Cant say",
-                "text": "Dont know / Cant say"
+                "text": "Dont know / Cant say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -2315,12 +2351,14 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               }
             ]
           },
@@ -2606,12 +2644,14 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               }
             ]
           },
@@ -2619,7 +2659,7 @@
             "indicator",
             "school_detail_popup"
           ],
-          "displayName": "At least one toilet accessible for smallest children"
+          "displayName": "At least one usable toilet accessible for smallest children"
         },
         {
           "localeNameFlag": false,
@@ -2695,12 +2735,14 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               }
             ]
           },
@@ -2708,7 +2750,7 @@
             "indicator",
             "school_detail_popup"
           ],
-          "displayName": "At least one toilet accessible for children with limited mobility"
+          "displayName": "At least one usable toilet accessible for children with limited mobility"
         },
         {
           "localeNameFlag": false,
@@ -2841,17 +2883,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/Can't say",
-                "text": "Don't know/Can't say"
+                "text":"Don't know/Can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -2977,17 +3022,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Dont know / Cant say",
-                "text": "Dont know / Cant say"
+                "text": "Dont know / Cant say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -3223,12 +3271,14 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
@@ -3266,17 +3316,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know",
-                "text": "Don't know"
+                "text": "Don't know",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -3630,17 +3683,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -3690,17 +3746,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -3765,12 +3824,14 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               }
             ]
           },
@@ -3841,12 +3902,14 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               }
             ]
           },
@@ -3887,7 +3950,7 @@
             "indicator",
             "school_detail_popup"
           ],
-          "displayName": "Available bathing areas"
+          "displayName": "Availability of bathing areas"
         },
         {
           "localeNameFlag": false,
@@ -3912,12 +3975,14 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               }
             ]
           },
@@ -3950,12 +4015,14 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               }
             ]
           },
@@ -3963,7 +4030,7 @@
             "indicator",
             "school_detail_popup"
           ],
-          "displayName": "Sex separated bathing facilities"
+          "displayName": "At least one sex separated bathing facility for persons with limited mobility"
         },
         {
           "localeNameFlag": false,
@@ -4031,17 +4098,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know / can't say",
-                "text": "Don't know / can't say"
+                "text": "Don't know / can't say",
+                "color": "#1F78B4"
               }
             ]
           }
@@ -4068,17 +4138,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -4110,17 +4183,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -4152,17 +4228,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -4186,17 +4265,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
-                "text": "Dont know / cant say"
+                "text": "Dont know / cant say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -4220,17 +4302,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
-                "text": "Dont know / cant say"
+                "text": "Dont know / cant say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -4258,17 +4343,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
-                "text": "Dont know / cant say"
+                "text": "Dont know / cant say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -4292,17 +4380,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
-                "text": "Dont know / cant say"
+                "text": "Dont know / cant say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -4385,17 +4476,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -4478,17 +4572,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
-                "text": "Don't know/can't say"
+                "text":"Don't know/can't say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -4662,17 +4759,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
-                "text": "Dont know / cant say"
+                "text": "Dont know / cant say",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -4755,17 +4855,20 @@
               {
                 "altText": [],
                 "value": "Yes",
-                "text": "Yes"
+                "text":"Yes",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "No",
-                "text": "No"
+                "text":"No",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
-                "text": "Dont know / cant say"
+                "text": "Dont know / cant say",
+                "color": "#1F78B4"
               }
             ]
           }

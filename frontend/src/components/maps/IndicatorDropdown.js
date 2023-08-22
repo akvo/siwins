@@ -96,7 +96,9 @@ const RenderQuestionOption = ({
             ? opt.color
             : "#1677ff",
         }}
-        className={`${selectedOption.includes(opt.name) ? "selected" : ""}`}
+        className={`indicator-dropdown-button ${
+          selectedOption.includes(opt.name) ? "selected" : ""
+        }`}
         type="primary"
         onClick={() =>
           handleOnChangeQuestionOption(opt.name, selectedQuestion?.type)
@@ -117,7 +119,10 @@ const RenderQuestionOption = ({
           ) : (
             <CheckCircleFilled />
           )}
-          {opt.name}
+          {
+            // use option from option-display-name config displayName if defined
+            opt?.displayName || opt.name
+          }
         </div>
         <InfoCircleOutlined />
       </Button>

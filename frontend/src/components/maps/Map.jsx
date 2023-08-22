@@ -312,8 +312,7 @@ const Map = ({ searchValue }) => {
       );
       results = selectedQuestion?.option?.map((item) => {
         return {
-          name: item.name,
-          color: item.color,
+          ...item,
           count: results.find((v) => v.name === item.name)?.count || 0,
         };
       });
@@ -454,7 +453,8 @@ const Map = ({ searchValue }) => {
                     excelFile={"title"}
                     type={"PIE"}
                     data={roseChartValues.map((v) => ({
-                      name: v.name,
+                      name: v.displayName || v.name,
+                      optionText: v.name,
                       value: v.count,
                       count: v.count,
                       color: v.color,
@@ -465,7 +465,7 @@ const Map = ({ searchValue }) => {
                     horizontal={false}
                     callbacks={{ onClick: chartClick }}
                     grid={{
-                      top: 90,
+                      top: 115,
                     }}
                     // loading={loading}
                     disableEvent={loading}

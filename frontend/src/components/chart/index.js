@@ -30,7 +30,7 @@ export const generateOptions = (
         showPercent
       );
     case "PIE":
-      return Pie(data, chartTitle, extra, series, showRoseChart, legend);
+      return Pie(data, chartTitle, extra, series, showRoseChart, legend, grid);
     case "LINE":
       return Line(
         data,
@@ -140,7 +140,9 @@ const Chart = ({
   const onEvents = {
     click: (e) => {
       if (callbacks?.onClick && !disableEvent) {
-        callbacks.onClick(e.data?.name ? e.data?.name : e.data?.cbParam);
+        callbacks.onClick(
+          e.data?.optionText || e.data?.name || e.data?.cbParam
+        );
       }
     },
   };

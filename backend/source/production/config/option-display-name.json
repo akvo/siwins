@@ -1,0 +1,300 @@
+[
+  {
+    "question_id": 622560918,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Available every day"
+      },
+      {
+        "text": "No",
+        "displayName": "Available intermittently"
+      },
+      {
+        "text": "Don't know/can't say",
+        "displayName": "No data"
+      }
+    ]
+  },
+  {
+    "question_id": 642000918,
+    "option": [
+      {
+        "text": "Yes (always available)",
+        "displayName": "Always"
+      },
+      {
+        "text": "Mostly (unavailable ≤ 30 days total)",
+        "displayName": "Mostly"
+      },
+      {
+        "text": "No (unavailable > 30 days total)",
+        "displayName": "Unavailable"
+      },
+      {
+        "text": "Don't know/can't say",
+        "displayName": "No data"
+      }
+    ]
+  },
+  {
+    "question_id": 641970922,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Accessible"
+      },
+      {
+        "text": "No",
+        "displayName": "Not Accessible"
+      },
+      {
+        "text": "Don't know/can't say",
+        "displayName": "No data"
+      }
+    ]
+  },
+  {
+    "question_id": 629900927,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Accessible"
+      },
+      {
+        "text": "No",
+        "displayName": "Not Accessible"
+      },
+      {
+        "text": "Don't know/can't say",
+        "displayName": "No data"
+      }
+    ]
+  },
+  {
+    "question_id": 629900934,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Done"
+      },
+      {
+        "text": "No",
+        "displayName": "Not Done"
+      },
+      {
+        "text": "Don't know/can't say",
+        "displayName": "No Data"
+      }
+    ]
+  },
+  {
+    "question_id": 624570922,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Compliant with national water quality standards"
+      },
+      {
+        "text": "No",
+        "displayName": "Not compliant"
+      },
+      {
+        "text": "Don't know",
+        "displayName": "No data"
+      }
+    ]
+  },
+  {
+    "question_id": 634230917,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Present"
+      },
+      {
+        "text": "No",
+        "displayName": "Absent"
+      }
+    ]
+  },
+  {
+    "question_id": 634220925,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Present"
+      },
+      {
+        "text": "No",
+        "displayName": "Absent"
+      }
+    ]
+  },
+  {
+    "question_id": 599750924,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Available"
+      },
+      {
+        "text": "No",
+        "displayName": "Not available"
+      },
+      {
+        "text": "Don't know/Can't say",
+        "displayName": "No data"
+      }
+    ]
+  },
+  {
+    "question_id": 620790921,
+    "option": [
+      {
+        "text": "Yes, the toilet is connected to a sewer",
+        "displayName": null
+      },
+      {
+        "text": "The tank is emptied when full",
+        "displayName": null
+      },
+      {
+        "text": "No, there is no proper disposal",
+        "displayName": null
+      }
+    ]
+  },
+  {
+    "question_id": 620780920,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Accessible"
+      },
+      {
+        "text": "No",
+        "displayName": "Not accessible"
+      },
+      {
+        "text": "There are no children with limited mobility or vision",
+        "displayName": "Not applicable"
+      }
+    ]
+  },
+  {
+    "question_id": 649040931,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Accessible"
+      },
+      {
+        "text": "No",
+        "displayName": "Not accessible"
+      },
+      {
+        "text": "Don't know",
+        "displayName": "No data"
+      }
+    ]
+  },
+  {
+    "question_id": 652860928,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Available"
+      },
+      {
+        "text": "No",
+        "displayName": "Not available"
+      },
+      {
+        "text": "Don't know/can't say",
+        "displayName": "No data"
+      }
+    ]
+  },
+  {
+    "question_id": 650940918,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Available"
+      },
+      {
+        "text": "No",
+        "displayName": "Not available"
+      },
+      {
+        "text": "Don't know/can't say",
+        "displayName": "No data"
+      }
+    ]
+  },
+  {
+    "question_id": 636230932,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Available"
+      },
+      {
+        "text": "No",
+        "displayName": "Not available"
+      }
+    ]
+  },
+  {
+    "question_id": 634170928,
+    "option": [
+      {
+        "text": "Yes",
+        "displayName": "Available"
+      },
+      {
+        "text": "No",
+        "displayName": "Not available"
+      }
+    ]
+  },
+  {
+    "question_id": 641990922,
+    "option": [
+      {
+        "text": "Always",
+        "displayName": "Available"
+      },
+      {
+        "text": "Sometimes",
+        "displayName": "Not available"
+      },
+      {
+        "text": "Never",
+        "displayName": "No data"
+      }
+    ]
+  },
+  {
+    "question_id": 649030935,
+    "option": [
+      {
+        "text": "Bathing areas( private and secure, door and lock and hangers)",
+        "displayName": "Bathing areas"
+      },
+      {
+        "text": "MHM materials (e.g. pads)",
+        "displayName": "MHM materials"
+      },
+      {
+        "text": "MHM education( Should be institutionalized (i.e. regularly taught in class or through a regular school program) to be considered as a response for this question. )",
+        "displayName": "MHM education"
+      },
+      {
+        "text": "Not available",
+        "displayName": "Not available"
+      }
+    ]
+  }
+]
