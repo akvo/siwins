@@ -852,7 +852,6 @@
                 "value": "No",
                 "text":"No",
                 "color": "#FB9A99",
-                
                 "description": "Example No of info text"
               },
               {
@@ -860,7 +859,7 @@
                 "value": "Don't know/can't say",
                 "text":"Don't know/can't say",
                 "color": "#1F78B4",
-                
+
                 "description": "Example of Don't know/can't say info text"
               }
             ]

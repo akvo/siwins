@@ -19,7 +19,7 @@ import Dashboard from "./Dashboard";
 import ManageData from "./ManageData";
 import JMPDocumentation from "./JMPDocumentation";
 import { UIState } from "../../state/ui";
-import { api, ds } from "../../lib";
+import { api, ds, colors } from "../../lib";
 
 const menuItems = [
   { label: "Maps", link: "/dashboard/maps", icon: <MapsIcon />, key: "1" },
@@ -91,10 +91,30 @@ const DashboardView = () => {
           province,
           school_type,
         ] = res;
+        const remapIndicatorQuestions = {
+          ...indicatorQuestions,
+          data: indicatorQuestions.data.map((question) => {
+            const remapOptions = question.option.map((opt, opti) => {
+              if (!opt?.color) {
+                const colorTemp = colors.option;
+                const index = opti % colorTemp.length;
+                return {
+                  ...opt,
+                  color: colorTemp?.[index],
+                };
+              }
+              return opt;
+            });
+            return {
+              ...question,
+              option: remapOptions,
+            };
+          }),
+        };
         // save to indexed DB
         ds.saveSource({
-          endpoint: indicatorQuestions.config.url,
-          data: indicatorQuestions.data,
+          endpoint: remapIndicatorQuestions.config.url,
+          data: remapIndicatorQuestions.data,
         });
         ds.saveSource({
           endpoint: advanceFilterQuestions.config.url,
@@ -111,7 +131,7 @@ const DashboardView = () => {
         });
         //
         UIState.update((s) => {
-          s.indicatorQuestions = indicatorQuestions?.data;
+          s.indicatorQuestions = remapIndicatorQuestions?.data;
           s.advanceFilterQuestions = advanceFilterQuestions?.data;
           s.barChartQuestions = generic_bar_chart?.data;
           s.provinceValues = province?.data;
