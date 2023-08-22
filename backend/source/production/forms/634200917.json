@@ -859,7 +859,6 @@
                 "value": "Don't know/can't say",
                 "text":"Don't know/can't say",
                 "color": "#1F78B4",
-
                 "description": "Example of Don't know/can't say info text"
               }
             ]
@@ -1585,10 +1584,6 @@
               ],
               "question": "636230924"
             }
-          ],
-          "attributes": [
-            "indicator",
-            "school_detail_popup"
           ]
         },
         {
@@ -2664,7 +2659,7 @@
             "indicator",
             "school_detail_popup"
           ],
-          "displayName": "At least one toilet accessible for smallest children"
+          "displayName": "At least one usable toilet accessible for smallest children"
         },
         {
           "localeNameFlag": false,
@@ -2755,7 +2750,7 @@
             "indicator",
             "school_detail_popup"
           ],
-          "displayName": "At least one toilet accessible for children with limited mobility"
+          "displayName": "At least one usable toilet accessible for children with limited mobility"
         },
         {
           "localeNameFlag": false,
@@ -3955,7 +3950,7 @@
             "indicator",
             "school_detail_popup"
           ],
-          "displayName": "Available bathing areas"
+          "displayName": "Availability of bathing areas"
         },
         {
           "localeNameFlag": false,
@@ -4035,7 +4030,7 @@
             "indicator",
             "school_detail_popup"
           ],
-          "displayName": "Sex separated bathing facilities"
+          "displayName": "At least one sex separated bathing facility for persons with limited mobility"
         },
         {
           "localeNameFlag": false,
