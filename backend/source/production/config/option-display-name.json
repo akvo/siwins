@@ -275,5 +275,26 @@
         "displayName": "No data"
       }
     ]
+  },
+  {
+    "question_id": 649030935,
+    "option": [
+      {
+        "text": "Bathing areas( private and secure, door and lock and hangers)",
+        "displayName": "Bathing areas"
+      },
+      {
+        "text": "MHM materials (e.g. pads)",
+        "displayName": "MHM materials"
+      },
+      {
+        "text": "MHM education( Should be institutionalized (i.e. regularly taught in class or through a regular school program) to be considered as a response for this question. )",
+        "displayName": "MHM education"
+      },
+      {
+        "text": "Not available",
+        "displayName": "Not available"
+      }
+    ]
   }
 ]
