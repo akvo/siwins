@@ -117,7 +117,10 @@ const RenderQuestionOption = ({
           ) : (
             <CheckCircleFilled />
           )}
-          {opt.name}
+          {
+            // use option from option-display-name config displayName if defined
+            opt?.displayName || opt.name
+          }
         </div>
         <InfoCircleOutlined />
       </Button>

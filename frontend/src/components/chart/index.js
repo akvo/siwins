@@ -140,7 +140,9 @@ const Chart = ({
   const onEvents = {
     click: (e) => {
       if (callbacks?.onClick && !disableEvent) {
-        callbacks.onClick(e.data?.name ? e.data?.name : e.data?.cbParam);
+        callbacks.onClick(
+          e.data?.optionText || e.data?.name || e.data?.cbParam
+        );
       }
     },
   };
