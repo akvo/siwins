@@ -2833,17 +2833,20 @@
               {
                 "altText": [],
                 "value": "At all times during the school day",
-                "text": "At all times during the school day"
+                "text": "At all times during the school day",
+                "color":"#33A02C"
               },
               {
                 "altText": [],
                 "value": "During specific times during the school day",
-                "text": "During specific times during the school day"
+                "text": "During specific times during the school day",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "There are no toilets available for use at the school",
-                "text": "There are no toilets available for use at the school"
+                "text": "There are no toilets available for use at the school",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -2929,17 +2932,20 @@
               {
                 "altText": [],
                 "value": "All toilets",
-                "text": "All toilets"
+                "text": "All toilets",
+                "color":"#33A02C"
               },
               {
                 "altText": [],
                 "value": "Some toilets",
-                "text": "Some toilets"
+                "text": "Some toilets",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "None",
-                "text": "None"
+                "text": "None",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -2980,17 +2986,20 @@
               {
                 "altText": [],
                 "value": "Yes, the toilet is connected to a sewer",
-                "text": "Yes, the toilet is connected to a sewer"
+                "text": "Yes, the toilet is connected to a sewer",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "The tank is emptied when full",
-                "text": "The tank is emptied when full"
+                "text": "The tank is emptied when full",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "No, there is no proper disposal",
-                "text": "No, there is no proper disposal"
+                "text": "No, there is no proper disposal",
+                "color": "#1F78B4"
               }
             ]
           },
@@ -4055,17 +4064,20 @@
               {
                 "altText": [],
                 "value": "Always",
-                "text": "Always"
+                "text": "Always",
+                "color": "#33A02C"
               },
               {
                 "altText": [],
                 "value": "Sometimes",
-                "text": "Sometimes"
+                "text": "Sometimes",
+                "color": "#FB9A99"
               },
               {
                 "altText": [],
                 "value": "Never",
-                "text": "Never"
+                "text": "Never",
+                "color": "#1F78B4"
               }
             ]
           },
