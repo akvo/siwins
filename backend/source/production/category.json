@@ -155,14 +155,14 @@
             "else": {
               "name": "No Service",
               "ignore": [
-                650910918, 599880918, 652860921, 645440921, 634230917,
+                641980920, 599880918, 652860921, 645440921, 634230917,
                 634220925, 652860928, 650940918
               ]
             }
           },
           {
-            "id": 650910918,
-            "text": "What type of student toilets/latrines are at the school? (check one - most common)",
+            "id": 641980920,
+            "text": "Of these, which is the main toilet that is used by the school?",
             "options": [
               "Flush toilet",
               "Pour flush toilet",
@@ -338,8 +338,8 @@
                 "options": ["Yes"],
                 "questions": [
                   {
-                    "id": 650910918,
-                    "text": "What type of student toilets/latrines are at the school? (check one - most common)",
+                    "id": 641980920,
+                    "text": "Of these, which is the main toilet that is used by the school?",
                     "options": [
                       "Flush toilet",
                       "Pour flush toilet",
