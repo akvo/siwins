@@ -5,11 +5,6 @@
     "form": 634200917,
     "labels": [
       {
-        "name": "Safely Managed",
-        "order": 1,
-        "color": "#0080c6"
-      },
-      {
         "name": "Basic",
         "order": 2,
         "color": "#00b8ec"
@@ -27,96 +22,44 @@
     ],
     "categories": [
       {
-        "name": "Safely Managed",
+        "name": "Basic",
         "questions": [
           {
-            "id": 642190917,
-            "text": "What parameters were tested for quality in the last 12 months? (Tick all that applicable)",
-            "options": ["E-Coli"],
-            "other": [
-              {
-                "name": "Basic",
-                "options": [
-                  "Arsenic",
-                  "Lead",
-                  "Other",
-                  "Don't know/can't say"
-                ],
-                "questions": [
-                  {
-                    "id": 654800917,
-                    "text": "What is the primary / main point of drinking water for the school?",
-                    "options": [
-                      "Piped water supply / Tap Stan",
-                      "Protected/covered well with pump",
-                      "Packaged bottled water",
-                      "Rainwater",
-                      "Tanker truck or cart",
-                      "Water brought by kids from home"
-                    ],
-                    "else": {
-                      "name": "No Service"
-                    }
-                  },
-                  {
-                    "id": 645440917,
-                    "text": "Is the primary water point also shared with the communities around the school?",
-                    "options": ["No"],
-                    "else": {
-                      "name": "Limited"
-                    }
-                  },
-                  {
-                    "id": 643140928,
-                    "text": "Was drinking water available from the primary/main point on the day of the survey?",
-                    "options": ["Yes"],
-                    "other": [
-                      {
-                        "name": "Limited",
-                        "options": ["No"],
-                        "questions": []
-                      }
-                    ],
-                    "else": {
-                      "name": "No Service"
-                    }
-                  }
-                ]
-              }
+            "id": 654800917,
+            "text": "What is the primary / main point of drinking water for the school?",
+            "options": [
+              "Piped water supply / Tap Stan",
+              "Protected/covered well with pump",
+              "Packaged bottled water",
+              "Rainwater",
+              "Tanker truck or cart",
+              "Water brought by kids from home"
             ],
             "else": {
-              "ignore": [634270919, 632250922]
+              "name": "No Service"
             }
           },
           {
-            "id": 634270919,
-            "text": "Is the school\u2019s main water point compliant with national standards for drinking water for E-Coli?",
+            "id": 645440917,
+            "text": "Is the primary water point also shared with the communities around the school?",
+            "options": ["No"],
+            "else": {
+              "name": "Limited"
+            }
+          },
+          {
+            "id": 643140928,
+            "text": "Was drinking water available from the primary/main point on the day of the survey?",
             "options": ["Yes"],
             "other": [
               {
-                "name": "No Service",
-                "options": ["Don't know/can't say"],
+                "name": "Limited",
+                "options": ["No"],
                 "questions": []
               }
             ],
             "else": {
-              "name": "Basic",
-              "ignore": [624570922]
-            }
-          },
-          {
-            "id": 624570922,
-            "text": "Is the school\u2019s main water point compliant with national standards for drinking water?",
-            "options": ["Yes"],
-            "other": [
-              {
-                "name": "No Service",
-                "options": ["Don't know/can't say"],
-                "questions": []
-              }
-            ],
-            "else": {
-              "name": "Basic"
+              "name": "No Service"
             }
           }
         ]
