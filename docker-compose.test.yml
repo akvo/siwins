@@ -32,7 +32,7 @@ services:
       - MAILJET_SECRET=notset
       - MAILJET_APIKEY=notset
       - NOTIFICATION_RECIPIENTS=notset
-      - SIWINS_INSTANCE=test
+      - SIWINS_INSTANCE=production
     depends_on:
       db:
         condition: service_healthy
