@@ -35,6 +35,8 @@ error = []
 
 def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
     TESTING = os.environ.get("TESTING")
+    if TESTING:
+        MONITORING_ROUND = 2023
     form_id = form.id
     # form.registration form None by default
     monitoring = True if form.registration_form else False
@@ -153,6 +155,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
             school_answer = "|".join(school_information)
             desc = ValidationText.school_monitoring_exist.value
             error.append({
+                "form_id": form_id,
                 "instance_id": data_id,
                 "answer": f"{school_answer} - {year_conducted}",
                 "description": desc
@@ -199,9 +202,6 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
         data = flow_auth.get_data(url=nextPageUrl, token=token)
         if len(data.get("formInstances")):
             seed_datapoint(session=session, token=token, data=data, form=form)
-    if error:
-        # send error after sync completed
-        send_error_email(error=error, filename="error-seed")
     print("------------------------------------------")
     print(f"Datapoints for {form_id}: seed complete")
     print("------------------------------------------")
@@ -233,6 +233,10 @@ def datapoint_seeder(session: Session, token: dict, forms: List[dict]):
         seed_datapoint(
             session=session, token=token, data=data, form=check_form
         )
+
+    if error:
+        # send error after sync completed
+        send_error_email(error=error, filename="error-seed")
 
     elapsed_time = time.process_time() - start_time
     elapsed_time = str(timedelta(seconds=elapsed_time)).split(".")[0]

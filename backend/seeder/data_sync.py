@@ -96,6 +96,8 @@ def data_sync(
     sync_data: dict
 ):
     TESTING = os.environ.get("TESTING")
+    if TESTING:
+        MONITORING_ROUND = 2023
     # TODO:: Support other changes from FLOW API
     print("------------------------------------------")
     changes = sync_data.get("changes")
