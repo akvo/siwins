@@ -63,23 +63,18 @@ class TestQuestionRoutes:
             'type': 'jmp',
             'attributes': ['indicator'],
             'option': [{
-                'name': 'Safely Managed',
-                'order': 1,
-                'color': '#0080c6',
-                'description': None
-            }, {
                 'name': 'Basic',
-                'order': 2,
+                'order': 1,
                 'color': '#00b8ec',
                 'description': None
             }, {
                 'name': 'Limited',
-                'order': 3,
+                'order': 2,
                 'color': '#fff176',
                 'description': None
             }, {
                 'name': 'No Service',
-                'order': 4,
+                'order': 3,
                 'color': '#FEBC11',
                 'description': None
             }],
