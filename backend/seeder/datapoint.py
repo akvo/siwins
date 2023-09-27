@@ -35,8 +35,9 @@ error = []
 
 def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
     TESTING = os.environ.get("TESTING")
+    CURRENT_MONITORING_ROUND = MONITORING_ROUND
     if TESTING:
-        MONITORING_ROUND = 2023
+        CURRENT_MONITORING_ROUND = 2023
     form_id = form.id
     # form.registration form None by default
     monitoring = True if form.registration_form else False
@@ -76,7 +77,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                     monitoring_answer = 0
                     if qid == QuestionConfig.year_conducted.value:
                         monitoring_answer = int(aval[0].get("text"))
-                    if monitoring_answer > MONITORING_ROUND:
+                    if monitoring_answer > CURRENT_MONITORING_ROUND:
                         desc = ValidationText.incorrect_monitoring_round.value
                         error.append({
                             "instance_id": data_id,

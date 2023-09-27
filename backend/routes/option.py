@@ -28,14 +28,15 @@ def get_option_monitoring_round(
     req: Request,
     session: Session = Depends(get_session)
 ):
-    if os.environ["TESTING"]:
-        MONITORING_ROUND = 2023
+    CURRENT_MONITORING_ROUND = MONITORING_ROUND
+    if os.environ.get("TESTING"):
+        CURRENT_MONITORING_ROUND = 2023
     options = get_option_year_conducted(session=session)
     if not options:
         return []
     options = [int(o.name) for o in options]
     options = list(filter(
-        lambda x: (x <= MONITORING_ROUND), options
+        lambda x: (x <= CURRENT_MONITORING_ROUND), options
     ))
     options.sort()
     return options

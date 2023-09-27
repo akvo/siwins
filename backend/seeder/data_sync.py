@@ -96,8 +96,9 @@ def data_sync(
     sync_data: dict
 ):
     TESTING = os.environ.get("TESTING")
+    CURRENT_MONITORING_ROUND = MONITORING_ROUND
     if TESTING:
-        MONITORING_ROUND = 2023
+        CURRENT_MONITORING_ROUND = 2023
     # TODO:: Support other changes from FLOW API
     print("------------------------------------------")
     changes = sync_data.get("changes")
@@ -160,7 +161,7 @@ def data_sync(
                     monitoring_answer = 0
                     if qid == QuestionConfig.year_conducted.value:
                         monitoring_answer = int(aval[0].get("text"))
-                    if monitoring_answer > MONITORING_ROUND:
+                    if monitoring_answer > CURRENT_MONITORING_ROUND:
                         desc = ValidationText.incorrect_monitoring_round.value
                         error.append({
                             "instance_id": data_id,
