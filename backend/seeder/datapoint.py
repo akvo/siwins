@@ -198,7 +198,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
     if not TESTING and nextPageUrl:
         data = flow_auth.get_data(url=nextPageUrl, token=token)
         if len(data.get("formInstances")):
-            seed_datapoint(data=data)
+            seed_datapoint(session=session, token=token, data=data, form=form)
     if error:
         # send error after sync completed
         send_error_email(error=error, filename="error-seed")

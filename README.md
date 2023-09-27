@@ -102,7 +102,7 @@ Assuming that you have **forms.json** inside `./backend/source/` folder and have
 docker-compose exec backend ./fake_seed.sh
 ```
 
-- Run seeder with flow data (require [Environment setup](#1-environment-setup))
+- Run form seeder with flow data (require [Environment setup](#1-environment-setup))
 
 ```
 docker-compose exec backend ./seed.sh
