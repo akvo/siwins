@@ -46,6 +46,7 @@ const barChartDefValues = {
   maxNumber: 0,
 };
 
+// TODO :: Maps filterinng not working !!!! Try to filter map data with province
 const Map = ({ searchValue }) => {
   // use tile layer from config
   const {
@@ -154,6 +155,7 @@ const Map = ({ searchValue }) => {
     if (isEmpty(selectedQuestion)) {
       return null;
     }
+    setData([]);
     setPagination(defPagination);
     let url = `data/maps`;
     url = generateAdvanceFilterURL(advanceSearchValue, url);
