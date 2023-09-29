@@ -64,11 +64,60 @@ const ChartVisual = ({ chartConfig, loading }) => {
           const tempData = showHistory
             ? historyData.concat(r?.data?.data)
             : r?.data?.data;
-          const findData = tempData?.filter((d) =>
+          let findData = tempData?.filter((d) =>
             showHistory
               ? d.administration === adm.name
               : d.administration === adm.name && !d.history
           );
+          if (!showHistory) {
+            // Merge child objects into a single array
+            const mergedChild = findData.reduce((acc, item) => {
+              return acc.concat(item.child);
+            }, []);
+
+            // Group merged child objects by option value and sum counts
+            const groupedChild = mergedChild.reduce((acc, item) => {
+              const key = item.option;
+              if (!acc[key]) {
+                acc[key] = {
+                  ...item,
+                  count: 0,
+                  percent: 0,
+                };
+              }
+              acc[key].count += item.count;
+              return acc;
+            }, {});
+
+            // Calculate percent values for each grouped option
+            const totalCount = Object.values(groupedChild).reduce(
+              (sum, item) => {
+                return sum + item.count;
+              },
+              0
+            );
+
+            Object.values(groupedChild).forEach((item) => {
+              item.percent = (item.count / totalCount) * 100;
+            });
+
+            const findCorrectYear = findData
+              .map((item) => {
+                const counts = item.child.map((c) => c.count);
+                if (counts.every((v) => v === 0)) {
+                  return false;
+                }
+                return item;
+              })
+              .filter((x) => x)[0];
+
+            const newData = {
+              ...findData[0],
+              year: findCorrectYear?.year || "",
+              child: Object.values(groupedChild),
+            };
+            findData = [newData];
+          }
 
           const stack = findData.map((item) => {
             return item?.child?.map((c, cx) => {
@@ -134,8 +183,10 @@ const ChartVisual = ({ chartConfig, loading }) => {
             .reduce((acc, cur, i) => {
               const item =
                 i > 0 &&
-                acc.find(
-                  ({ name, year }) => name === cur.name && year === cur.year
+                acc.find(({ name, year }) =>
+                  showHistory
+                    ? name === cur.name && year === cur.year
+                    : name === cur.name
                 );
               if (item) {
                 item.count += cur.count;
