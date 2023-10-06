@@ -173,8 +173,20 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
         check_datapoint = crud_data.get_data_by_school(
             session=session, schools=school_information)
         # update prev datapoint with same school to current False
-        if check_datapoint:
-            check_datapoint.current = False
+        update_prev_datapoint_current_flag = (
+            check_datapoint and
+            check_datapoint.year_conducted != int(year_conducted)
+        )
+        if update_prev_datapoint_current_flag:
+            # check current flag value
+            # check_datapoint.year_conducted ==> previous data monitoring year
+            # int(year_conducted) ==> current data monitoring year
+            current_datapoint = (
+                True
+                if check_datapoint.year_conducted < int(year_conducted)
+                else False
+            )
+            check_datapoint.current = not current_datapoint
             crud_data.update_data(
                 session=session, data=check_datapoint)
         # EOL check for current datapoint
