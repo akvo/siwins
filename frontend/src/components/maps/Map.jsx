@@ -32,6 +32,7 @@ import { isEmpty, intersection, uniqBy } from "lodash";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const defZoom = 7;
+const maxZoom = 18;
 const defCenter = window.mapConfig.center;
 const defPagination = {
   page: 1,
@@ -542,9 +543,13 @@ const Markers = ({
       item.school_information_array.includes(searchValue)
     );
     if (findCordinates?.geo) {
-      mapHook.setView(findCordinates?.geo, 14);
+      mapHook.setView(findCordinates?.geo, maxZoom);
+      setHovered(findCordinates?.id || null);
+      setSelectedDatapoint(findCordinates);
     } else {
-      mapHook.setView(defCenter, 7);
+      mapHook.setView(defCenter, defZoom);
+      setHovered(null);
+      setSelectedDatapoint(null);
     }
   }, [searchValue]);
 
@@ -553,6 +558,10 @@ const Markers = ({
     .map((d, di) => {
       const { id, geo, answer, school_information, year_conducted } = d;
       const isHovered = id === hovered;
+      const markerBgColor =
+        selectedQuestion?.option?.find((f) => f.name === answer)?.color ||
+        "#2EA745";
+      const markerBorderColor = isHovered ? "2px solid #fff" : "";
       return (
         <Marker
           key={`marker-${id}-${di}`}
@@ -563,10 +572,7 @@ const Markers = ({
             new L.divIcon({
               className: "custom-marker",
               iconSize: [32, 32],
-              html: `<span style="background-color:${
-                selectedQuestion?.option?.find((f) => f.name === answer)
-                  ?.color || "#2EA745"
-              }; border:${isHovered ? "2px solid #fff" : ""};"/>`,
+              html: `<span style="background-color:${markerBgColor}; border:${markerBorderColor};"/>`,
             })
           }
           eventHandlers={{
