@@ -48,7 +48,16 @@ const MainTabContent = ({
   // JMP Level
   const JMPLevel = () => {
     // jmp level
-    const groupedJmpLevel = groupBy(jmp_levels, "category");
+    const groupedJmpLevelTemp = groupBy(jmp_levels, "category");
+    // REORDER jmp level
+    const order = ["Water", "Sanitation", "Hygiene"];
+    let groupedJmpLevel = {};
+    order.forEach((x) => {
+      groupedJmpLevel = {
+        ...groupedJmpLevel,
+        [x]: groupedJmpLevelTemp[x],
+      };
+    });
     return (
       <Descriptions title="JMP Level" layout="vertical">
         {Object.keys(groupedJmpLevel).map((key, i) => {
