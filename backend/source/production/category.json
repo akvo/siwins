@@ -210,44 +210,46 @@
     ],
     "categories": [
       {
-        "name": "Basic",
+        "name": "No Service",
         "questions": [
           {
             "id": 650900919,
             "text": "Are there hand washing facilities at the school?",
-            "options": ["Yes"],
-            "else": {
-              "name": "No Service",
-              "ignore": [634210924, 650910924]
-            }
-          },
-          {
-            "id": 634210924,
-            "text": "If yes, what type of facility is there?",
-            "options": [
-              "Sink with tap",
-              "Water tank with tap",
-              "Bucket with tap",
-              "Tippy tap"
-            ],
-            "else": {
-              "name": "No Service"
-            }
-          },
-          {
-            "id": 650910924,
-            "text": "Are both soap and water currently available at the handwashing facilities?",
-            "options": ["Yes, water and soap"],
-            "other": [
-              {
-                "name": "Limited",
-                "options": ["Water only", "Soap only"],
-                "questions": []
-              }
-            ],
-            "else": {
-              "name": "No Service"
-            }
+            "options": ["No"],
+            "other": [{
+              "name": "Basic",
+                "options": ["Yes"],
+                "questions": [
+                  {
+                    "id": 634210924,
+                    "text": "If yes, what type of facility is there?",
+                    "options": [
+                      "Sink with tap",
+                      "Water tank with tap",
+                      "Bucket with tap",
+                      "Tippy tap"
+                    ],
+                    "else": {
+                      "name": "No Service"
+                    }
+                  },
+                  {
+                    "id": 650910924,
+                    "text": "Are both soap and water currently available at the handwashing facilities?",
+                    "options": ["Yes, water and soap"],
+                    "other": [
+                      {
+                        "name": "Limited",
+                        "options": ["Water only", "Soap only"],
+                        "questions": []
+                      }
+                    ],
+                    "else": {
+                      "name": "No Service"
+                    }
+                  }
+                ]
+            }]
           }
         ]
       }
