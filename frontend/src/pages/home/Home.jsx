@@ -136,10 +136,13 @@ const Home = () => {
           <Col>
             <Image src="/images/unicef-logo.png" preview={false} />
             <p className="about-content">
-            Elevating our commitment to data-driven evidence,
-             we're bolstering evidence-based budgeting and planning for WASH in Schools, 
-             thanks to insights from the Data Explorer 
-             - Ministry of Education and Human Resources Development, Solomon Islands Government
+              Elevating our commitment to data-driven evidence, we&apos;re
+              bolstering evidence-based budgeting and planning for WASH in
+              Schools, thanks to insights from the Data Explorer
+            </p>
+            <p>
+              - Ministry of Education and Human Resources Development, Solomon
+              Islands Government
             </p>
             <div className="info-content">
               <Image src="/images/mehrd_logo_no_bg.png" preview={false} />
