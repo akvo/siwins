@@ -136,13 +136,13 @@ const Home = () => {
           <Col>
             <Image src="/images/unicef-logo.png" preview={false} />
             <p className="about-content">
-              We are able to monitor the performance of our projects across the
-              country thanks to the data explorer
+            Elevating our commitment to data-driven evidence,
+             we're bolstering evidence-based budgeting and planning for WASH in Schools, 
+             thanks to insights from the Data Explorer 
+             - Ministry of Education and Human Resources Development, Solomon Islands Government
             </p>
             <div className="info-content">
-              <Image src="/images/about.png" preview={false} />
-              <h3>Jeremy Abula</h3>
-              <p>Programme Manager, UNICEF</p>
+              <Image src="/images/mehrd_logo_no_bg.png" preview={false} />
             </div>
           </Col>
         </Row>
