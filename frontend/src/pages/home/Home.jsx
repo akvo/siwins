@@ -129,6 +129,14 @@ const Home = () => {
               })}
             </Row>
           </Col>
+          <Col span={24} align="center">
+            <p>
+              For <b>province and year wise breakdowns</b> please visit the{" "}
+              <a style={{ color: "#3FB8EC" }} href="/dashboard">
+                dashboard
+              </a>
+            </p>
+          </Col>
         </Row>
       </section>
       <section className="about-section container">
