@@ -172,13 +172,16 @@ const getDataColumns = (option, category, suffix, showPercent) => {
   if (!data) {
     return "No Data";
   }
-  if (series?.[0]?.stack) {
+  if (series?.[0]?.stack || series.length > 1) {
     data = xAxis?.[0]?.data || yAxis?.[0]?.data;
     data = data?.map((x, xi) => {
       return series.reduce(
         (prev, current) => {
           const count = current.data[xi]?.count;
-          const name = `${current.name}(${current.stack})`;
+          let name = current.name;
+          if (current?.stack) {
+            name += ` (${current.stack})`;
+          }
           let val = current.data[xi].value;
           if (showPercent && !isNaN(count)) {
             val = `${val}${suffix} (${count})`;
@@ -191,7 +194,12 @@ const getDataColumns = (option, category, suffix, showPercent) => {
         { [category]: x }
       );
     });
-    columns = series.map((d) => `${d.name}(${d.stack})`);
+    columns = series.map((d) => {
+      if (d?.stack) {
+        return `${d.name}(${d.stack})`;
+      }
+      return d.name;
+    });
     columns = [category, ...columns];
   }
   return { columns: columns, data: data };
