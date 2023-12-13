@@ -71,13 +71,23 @@ const Dashboard = () => {
               .get(url)
               .then((res) => {
                 ds.saveDashboard({ endpoint: url, data: res });
-                setData((prevData) => [...prevData, res]);
+                setData((prevData) => {
+                  const filterPrevData = prevData.filter(
+                    (pv) => pv.data.question !== res.data.question
+                  );
+                  return [...filterPrevData, res];
+                });
               })
               .catch((e) => {
                 console.error("[Error fetch JMP chart data]", e);
               });
           } else {
-            setData((prevData) => [...prevData, cachedData.data]);
+            setData((prevData) => {
+              const filterPrevData = prevData.filter(
+                (pv) => pv.data.question !== cachedData.data.data.question
+              );
+              return [...filterPrevData, cachedData.data];
+            });
           }
         })
         .finally(() => {
