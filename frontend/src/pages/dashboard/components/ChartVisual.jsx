@@ -312,7 +312,10 @@ const ChartVisual = ({ chartConfig, loading }) => {
           <Chart
             height={
               chartData.length
-                ? 50 * chartData.find((f) => f.name === path)?.data.length + 188
+                ? 50 *
+                    (chartData.find((f) => f.name === path)?.data.length ||
+                      10) +
+                  188
                 : 300
             }
             excelFile={title}

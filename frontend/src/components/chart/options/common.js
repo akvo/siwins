@@ -196,7 +196,7 @@ const getDataColumns = (option, category, suffix, showPercent) => {
     });
     columns = series.map((d) => {
       if (d?.stack) {
-        return `${d.name}(${d.stack})`;
+        return `${d.name} (${d.stack})`;
       }
       return d.name;
     });
