@@ -125,8 +125,8 @@ const BarStack = (
     grid: {
       top: 80,
       bottom: 28,
-      left: 10,
-      right: 20,
+      left: 50,
+      right: 30,
       show: true,
       containLabel: true,
       label: {
