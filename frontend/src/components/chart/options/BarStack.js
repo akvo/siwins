@@ -94,6 +94,9 @@ const BarStack = (
         padding: 5,
         formatter: function (item) {
           const year = item.data.year;
+          if (!item.value) {
+            return "";
+          }
           return year;
         },
       },
