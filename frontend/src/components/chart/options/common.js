@@ -244,9 +244,12 @@ export const optionToContent = (
       const showCount = !isNaN(d?.count) && showPercent && s === "value";
       table += `<td class="ant-table-cell">`;
       if (showCount) {
-        table += `${d.count} (`;
+        table += `${d.count || 0} (`;
       }
-      table += s === "value" ? `${d[s]}${suffix}` : upperFirst(d[s]);
+      table +=
+        s === "value"
+          ? `${d[s] || 0}${suffix}`
+          : upperFirst(d[s]?.replace("undefined", "0"));
       if (showCount) {
         table += `)`;
       }
@@ -300,7 +303,10 @@ export const downloadToExcel = (
 
   const dataSource = transformData.map((x) =>
     columns.reduce(
-      (prev, current) => ({ ...prev, [current]: upperFirst(x[current]) }),
+      (prev, current) => ({
+        ...prev,
+        [current]: upperFirst(x[current]?.replace("undefined", "0")),
+      }),
       {}
     )
   );
