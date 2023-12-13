@@ -5,7 +5,8 @@ import { Layout } from "./components";
 import { Home, DashboardView, ErrorPage } from "./pages";
 import { UIState } from "./state/ui";
 import { api, ds } from "./lib";
-import { Alert } from "antd";
+import { Alert, Space } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 const formatDateToYYYYMM = (date) => {
   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
@@ -21,12 +22,21 @@ const InfoBanner = () => {
     <Alert
       banner
       showIcon={false}
-      message="Kindly refrain from using this dashboard's data until the updated version is ready. Thank you for your understanding as we ensure data accuracy and currency."
+      message={
+        <Space align="center">
+          <InfoCircleOutlined style={{ fontSize: "14px" }} />
+          <div>
+            Kindly refrain from using this dashboard&apos;s data until the
+            updated version is ready. Thank you for your understanding as we
+            ensure data accuracy and currency.
+          </div>
+        </Space>
+      }
       style={{
         background: "rgba(250, 206, 4, 0.75)",
         textAlign: "center",
         fontWeight: "450",
-        fontStyle: "italic",
+        fontSize: "14px",
       }}
     />
   );
