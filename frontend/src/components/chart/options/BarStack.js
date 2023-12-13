@@ -21,7 +21,7 @@ const tableFormatter = (e) => {
   table += `<tr><th style="font-size: 15px;color:#000;padding-bottom:8px;" colspan=${
     e?.length || 1
   }>${e[0]?.axisValueLabel || "-"}</th></tr></thead><tbody>`;
-  e.map((eI) => {
+  e.filter((x) => typeof x?.value !== "undefined").map((eI) => {
     const data = eI.data;
     table += "<tr>";
     table += '<td style="width: 18px;">' + eI.marker + "</td>";
@@ -30,7 +30,7 @@ const tableFormatter = (e) => {
     table += ` (${eI.data?.year})`;
     table += "</span></td>";
     table += '<td style="width: 80px; text-align: right; font-weight: 500;">';
-    table += eI.value + "%";
+    table += eI.value?.toFixed(2) + "%";
     if (!isNaN(data?.count)) {
       table += ` (${data.count})`;
     }
