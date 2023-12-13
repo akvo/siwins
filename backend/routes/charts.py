@@ -13,25 +13,21 @@ from AkvoResponseGrouper.utils import (
     get_counted_category,
     group_by_category_output,
 )
-from db.crud_data import (
-    get_all_data,
-    get_year_conducted_from_datapoint
-)
+from db.crud_data import get_all_data, get_year_conducted_from_datapoint
 from db.crud_jmp import (
     get_jmp_overview,
     get_jmp_config,
     get_jmp_labels,
-    group_children
+    group_children,
 )
 from db.crud_cascade import get_province_of_school_information
 from db.crud_option import get_option_by_question_id
 from db.crud_question import get_question_by_id
 from db.crud_province_view import (
-    get_province_number_answer, get_province_option_answer
+    get_province_number_answer,
+    get_province_option_answer,
 )
-from middleware import (
-    check_query, check_indicator_param
-)
+from middleware import check_query, check_indicator_param
 from models.answer import Answer
 from models.question import QuestionType
 from models.data import Data
@@ -52,14 +48,9 @@ def get_number_of_school(
     session: Session = Depends(get_session),
 ):
     data = get_all_data(
-        session=session,
-        columns=[Data.id],
-        current=True,
-        count=True)
-    return {
-        "name": "Number of schools",
-        "total": data
-    }
+        session=session, columns=[Data.id], current=True, count=True
+    )
+    return {"name": "Number of schools", "total": data}
 
 
 @charts_route.get(
@@ -75,8 +66,7 @@ def get_bar_charts(
     session: Session = Depends(get_session),
 ):
     configs = get_jmp_config()
-    all_data = get_all_data(
-        session=session, columns=[Data.id], current=True)
+    all_data = get_all_data(session=session, columns=[Data.id], current=True)
     ids = [d.id for d in all_data]
     filters = [Category.data.in_(ids)]
     if name:
@@ -92,12 +82,16 @@ def get_bar_charts(
         for o in r.get("options"):
             o["color"] = None
         for label in labels:
-            find_count = next((
-                x for x in r.get('options')
-                if x["name"] and x["name"].lower() == label.get('name').lower()
-            ), None)
-            label["count"] = find_count.get("count") \
-                if find_count else 0
+            find_count = next(
+                (
+                    x
+                    for x in r.get("options")
+                    if x["name"]
+                    and x["name"].lower() == label.get("name").lower()
+                ),
+                None,
+            )
+            label["count"] = find_count.get("count") if find_count else 0
             temp.append(label)
         r["options"] = temp if labels else r["options"]
     return res
@@ -114,57 +108,46 @@ def get_national_chart_data_by_question(
     question: int,
     session: Session = Depends(get_session),
 ):
-    current_question = get_question_by_id(
-        session=session, id=question)
+    current_question = get_question_by_id(session=session, id=question)
     if not current_question:
-        raise HTTPException(
-            status_code=404,
-            detail="Question not found"
-        )
+        raise HTTPException(status_code=404, detail="Question not found")
     if current_question.type not in [
         QuestionType.number,
-        QuestionType.option, QuestionType.multiple_option
+        QuestionType.option,
+        QuestionType.multiple_option,
     ]:
         raise HTTPException(
-            status_code=404,
-            detail="Question type not supported"
+            status_code=404, detail="Question type not supported"
         )
     qname = current_question.display_name or current_question.name
     if current_question.type == QuestionType.number:
         # get number national data
         res = get_province_number_answer(
-            session=session, question_ids=[question], current=True)
+            session=session, question_ids=[question], current=True
+        )
         total = sum(r.value for r in res)
         count = sum(r.count for r in res)
-        return {
-            "name": qname,
-            "total": total,
-            "count": count
-        }
+        return {"name": qname, "total": total, "count": count}
     # get option national data
-    options = get_option_by_question_id(
-        session=session, question=question)
+    options = get_option_by_question_id(session=session, question=question)
     options = [o.simplify for o in options]
     res = get_province_option_answer(
-        session=session, question_ids=[question], current=True)
+        session=session, question_ids=[question], current=True
+    )
     res = [r.serialize for r in res]
     for opt in options:
-        temps = list(filter(
-            lambda x: (x["value"].lower() == opt["name"].lower()),
-            res
-        ))
+        temps = list(
+            filter(lambda x: (x["value"].lower() == opt["name"].lower()), res)
+        )
         opt["count"] = sum(t["count"] for t in temps)
-    return {
-        "name": qname,
-        "option": options
-    }
+    return {"name": qname, "option": options}
 
 
 @charts_route.get(
     "/chart/generic-bar/{question:path}",
     name="charts:get_generic_chart_data",
     summary="get generic bar chart aggregate data",
-    tags=["Charts"]
+    tags=["Charts"],
 )
 def get_aggregated_chart_data(
     req: Request,
@@ -172,70 +155,81 @@ def get_aggregated_chart_data(
     history: Optional[bool] = False,
     session: Session = Depends(get_session),
     stack: Optional[int] = Query(
-        None, description="question id to create stack BAR"),
-    indicator: int = Query(
-        None, description="indicator is a question id"),
+        None, description="question id to create stack BAR"
+    ),
+    indicator: int = Query(None, description="indicator is a question id"),
     q: Optional[List[str]] = Query(
-        None, description="format: question_id|option value \
-            (indicator option & advance filter)"),
+        None,
+        description="format: question_id|option value \
+            (indicator option & advance filter)",
+    ),
     number: Optional[List[int]] = Query(
-        None, description="format: [int, int]"),
+        None, description="format: [int, int]"
+    ),
     prov: Optional[List[str]] = Query(
-        None, description="format: province name \
-            (filter by province name)"),
+        None,
+        description="format: province name \
+            (filter by province name)",
+    ),
     sctype: Optional[List[str]] = Query(
-        None, description="format: school_type name \
-            (filter by shcool type)")
+        None,
+        description="format: school_type name \
+            (filter by shcool type)",
+    ),
 ):
     current = not history
     # check indicator param
     indicator = check_indicator_param(
-        session=session, indicator=indicator, number=number)
+        session=session, indicator=indicator, number=number
+    )
     # for advance filter and indicator option filter
     options = check_query(q) if q else None
     if question == stack:
         raise HTTPException(status_code=406, detail="Not Acceptable")
     # options values
     question_options = get_option_by_question_id(
-        session=session,
-        columns=[Option.id, Option.name],
-        question=question)
+        session=session, columns=[Option.id, Option.name], question=question
+    )
     stack_options = []
     if stack:
         stack_options = get_option_by_question_id(
-            session=session,
-            columns=[Option.id, Option.name],
-            question=stack)
+            session=session, columns=[Option.id, Option.name], question=stack
+        )
     # year conducted
-    years = get_year_conducted_from_datapoint(
-        session=session, current=current)
-    years = [{
-        "year": y.year_conducted,
-        "current": y.current
-    } for y in years]
+    year_conducted = get_year_conducted_from_datapoint(
+        session=session, current=current
+    )
+    years = [
+        {"year": y.year_conducted, "current": y.current}
+        for y in year_conducted
+    ]
     res = []
     # fetch data
     data_source = get_all_data(
         session=session,
         columns=[Data.id, Data.current, Data.year_conducted],
-        current=current,
+        current=None if history else current,
+        year_conducted=(
+            [y.year_conducted for y in year_conducted] if history else None
+        ),
         options=options,
         prov=prov,
-        sctype=sctype
+        sctype=sctype,
     )
-    data_source = [{
-        "id": d.id,
-        "current": d.current,
-        "year": d.year_conducted
-    } for d in data_source]
+    data_source = [
+        {"id": d.id, "current": d.current, "year": d.year_conducted}
+        for d in data_source
+    ]
     # iterate over years conducted
     for y in years:
         year = y.get("year")
         current = y.get("current")
-        data = list(filter(
-            lambda c: (c["year"] == year and c["current"] == current),
-            data_source
-        ))
+        data = list(
+            filter(
+                lambda c: (c["year"] == year and c["current"] == current),
+                data_source,
+            )
+        )
         data = [d["id"] for d in data]
         # chart query
         type = "BAR"
@@ -243,22 +237,28 @@ def get_aggregated_chart_data(
             type = "BARSTACK"
             answerStack = aliased(Answer)
             answer = session.query(
-                Answer.options, answerStack.options, func.count())
+                Answer.options, answerStack.options, func.count()
+            )
             # filter
             answer = answer.filter(Answer.data.in_(data))
             answer = answer.join(
                 (answerStack, Answer.data == answerStack.data)
             )
-            answer = answer.filter(and_(
-                Answer.question == question, answerStack.question == stack
-            ))
+            answer = answer.filter(
+                and_(
+                    Answer.question == question, answerStack.question == stack
+                )
+            )
             answer = answer.group_by(Answer.options, answerStack.options)
             answer = answer.all()
-            answer = [{
-                "axis": a[0][0].lower(),
-                "stack": a[1][0].lower(),
-                "value": a[2]
-            } for a in answer]
+            answer = [
+                {
+                    "axis": a[0][0].lower(),
+                    "stack": a[1][0].lower(),
+                    "value": a[2],
+                }
+                for a in answer
+            ]
             temp = []
             answer.sort(key=lambda x: x["axis"])
             for k, v in groupby(answer, key=lambda x: x["axis"]):
@@ -266,37 +266,39 @@ def get_aggregated_chart_data(
                 counter = collections.Counter()
                 for d in child:
                     counter.update(d)
-                child = [{
-                    "name": key,
-                    "value": val
-                } for key, val in dict(counter).items()]
+                child = [
+                    {"name": key, "value": val}
+                    for key, val in dict(counter).items()
+                ]
                 temp.append({"group": k, "child": child})
             # remap result to options
             remap = []
             for qo in question_options:
                 group = qo.name.lower()
                 find_group = next(
-                    (x for x in temp if x["group"] == group),
-                    None
+                    (x for x in temp if x["group"] == group), None
                 )
                 fg_child = find_group["child"] if find_group else []
                 child = []
                 for so in stack_options:
                     name = so.name.lower()
                     find_child = next(
-                        (x for x in fg_child if x["name"] == name),
-                        None
+                        (x for x in fg_child if x["name"] == name), None
                     )
-                    child.append({
-                        "name": name,
-                        "value": find_child["value"] if find_child else 0
-                    })
-                remap.append({
-                    "year": year,
-                    "history": not current,
-                    "group": group,
-                    "child": child,
-                })
+                    child.append(
+                        {
+                            "name": name,
+                            "value": find_child["value"] if find_child else 0,
+                        }
+                    )
+                remap.append(
+                    {
+                        "year": year,
+                        "history": not current,
+                        "group": group,
+                        "child": child,
+                    }
+                )
             answer = remap
         else:
             answer = session.query(Answer.options, func.count(Answer.id))
@@ -314,16 +316,15 @@ def get_aggregated_chart_data(
             remap = []
             for qo in question_options:
                 name = qo.name.lower()
-                find_temp = next(
-                    (x for x in temp if x["name"] == name),
-                    None
+                find_temp = next((x for x in temp if x["name"] == name), None)
+                remap.append(
+                    {
+                        "year": year,
+                        "history": not current,
+                        "name": name,
+                        "value": find_temp["value"] if find_temp else 0,
+                    }
                 )
-                remap.append({
-                    "year": year,
-                    "history": not current,
-                    "name": name,
-                    "value": find_temp["value"] if find_temp else 0
-                })
             answer = remap
         res += answer
     return {"type": type, "data": res}
@@ -340,63 +341,71 @@ def get_aggregated_jmp_chart_data(
     type: str,
     history: Optional[bool] = False,
     session: Session = Depends(get_session),
-    indicator: int = Query(
-        None, description="indicator is a question id"),
+    indicator: int = Query(None, description="indicator is a question id"),
     q: Optional[List[str]] = Query(
-        None, description="format: question_id|option value \
-            (indicator option & advance filter)"),
+        None,
+        description="format: question_id|option value \
+            (indicator option & advance filter)",
+    ),
     number: Optional[List[int]] = Query(
-        None, description="format: [int, int]"),
+        None, description="format: [int, int]"
+    ),
     prov: Optional[List[str]] = Query(
-        None, description="format: province name \
-            (filter by province name)"),
+        None,
+        description="format: province name \
+            (filter by province name)",
+    ),
     sctype: Optional[List[str]] = Query(
-        None, description="format: school_type name \
-            (filter by shcool type)")
+        None,
+        description="format: school_type name \
+            (filter by shcool type)",
+    ),
 ):
     current = not history
     # check indicator param
     indicator = check_indicator_param(
-        session=session, indicator=indicator, number=number)
+        session=session, indicator=indicator, number=number
+    )
     # for advance filter and indicator option filter
     options = check_query(q) if q else None
     # administration / province
-    parent_administration = get_province_of_school_information(
-        session=session)
+    parent_administration = get_province_of_school_information(session=session)
     parent_administration = [p.simplify for p in parent_administration]
     for p in parent_administration:
-        p['children'] = [p['name']]
+        p["children"] = [p["name"]]
     # year conducted
-    years = get_year_conducted_from_datapoint(
-        session=session, current=current)
-    years = [{
-        "year": y.year_conducted,
-        "current": y.current
-    } for y in years]
+    year_conducted = get_year_conducted_from_datapoint(
+        session=session, current=current
+    )
+    years = [
+        {"year": y.year_conducted, "current": y.current}
+        for y in year_conducted
+    ]
     # get from data table
     data = get_all_data(
         session=session,
         columns=[
-            Data.id, Data.school_information,
-            Data.year_conducted, Data.current
+            Data.id,
+            Data.school_information,
+            Data.year_conducted,
+            Data.current,
         ],
-        current=current,
+        current=None if history else current,
+        year_conducted=(
+            [y.year_conducted for y in year_conducted] if history else None
+        ),
         options=options,
         prov=prov,
-        sctype=sctype)
+        sctype=sctype,
+    )
     # get categories from akvo response grouper by data_ids
     try:
         data_ids = [d.id for d in data]
-        categories = get_categories(
-            session=session, name=type, data=data_ids)
+        categories = get_categories(session=session, name=type, data=data_ids)
     except Exception:
         categories = []
     # generate JMP data
-    data = get_jmp_overview(
-        session=session,
-        categories=categories,
-        data=data
-    )
+    data = get_jmp_overview(session=session, categories=categories, data=data)
     configs = get_jmp_config()
     labels = get_jmp_labels(configs=configs, name=type)
     group_by_year = []

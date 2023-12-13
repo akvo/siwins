@@ -46,7 +46,7 @@ def add_data(
         registration=registration,
         year_conducted=year_conducted,
         school_information=school_information,
-        current=current
+        current=current,
     )
     for answer in answers:
         data.answer.append(answer)
@@ -112,6 +112,7 @@ def get_all_data(
     sctype: Optional[List[str]] = None,
     monitoring_round: Optional[int] = None,
     count: Optional[bool] = False,
+    year_conducted: Optional[List[int]] = [],
     # pagination param
     skip: Optional[int] = None,
     perpage: Optional[int] = None,
@@ -119,29 +120,30 @@ def get_all_data(
     columns = columns if columns else [Data]
     data = session.query(*columns)
     if registration is not None:
-        data = data.filter(
-            Data.registration == registration)
+        data = data.filter(Data.registration == registration)
     if current is not None:
         data = data.filter(Data.current == current)
+    if year_conducted:
+        data = data.filter(Data.year_conducted.in_(year_conducted))
     if options:
         # support multiple select options filter
         # change query to filter data by or_ condition
         or_query = or_(
             ViewAdvanceFilter.options.contains([opt]) for opt in options
         )
-        data_id = session.query(
-            ViewAdvanceFilter.identifier).filter(or_query).all()
-        data = data.filter(Data.identifier.in_(
-            [d.identifier for d in data_id]))
+        data_id = (
+            session.query(ViewAdvanceFilter.identifier).filter(or_query).all()
+        )
+        data = data.filter(
+            Data.identifier.in_([d.identifier for d in data_id])
+        )
     if data_ids is not None:
         data = data.filter(Data.id.in_(data_ids))
     if prov:
-        or_query = or_(
-            Data.school_information.contains([v]) for v in prov)
+        or_query = or_(Data.school_information.contains([v]) for v in prov)
         data = data.filter(or_query)
     if sctype:
-        or_query = or_(
-            Data.school_information.contains([v]) for v in sctype)
+        or_query = or_(Data.school_information.contains([v]) for v in sctype)
         data = data.filter(or_query)
     if monitoring_round:
         data = data.filter(Data.year_conducted == monitoring_round)
@@ -227,48 +229,42 @@ def get_last_history(
 
 
 def get_data_by_year_conducted(session: Session, year_conducted: int):
-    return session.query(Data).filter(
-        Data.year_conducted == year_conducted).all()
+    return (
+        session.query(Data).filter(Data.year_conducted == year_conducted).all()
+    )
 
 
 def get_data_by_school(
-    session: Session,
-    schools: List[str],
-    year_conducted: Optional[int] = None
+    session: Session, schools: List[str], year_conducted: Optional[int] = None
 ):
     data = session.query(Data)
-    and_query = and_(
-        Data.school_information.contains([v]) for v in schools)
+    and_query = and_(Data.school_information.contains([v]) for v in schools)
     data = data.filter(and_query)
-    if (year_conducted):
+    if year_conducted:
         data = data.filter(Data.year_conducted == year_conducted)
     return data.first()
 
 
 def get_history_data_by_school(
-    session: Session,
-    schools: List[str],
-    year_conducted: Optional[int] = None
+    session: Session, schools: List[str], year_conducted: Optional[int] = None
 ):
     data = session.query(Data)
-    and_query = and_(
-        Data.school_information.contains([v]) for v in schools)
+    and_query = and_(Data.school_information.contains([v]) for v in schools)
     data = data.filter(and_query).filter(Data.current == false())
-    if (year_conducted):
+    if year_conducted:
         data = data.filter(Data.year_conducted < year_conducted)
     return data.all()
 
 
 def get_year_conducted_from_datapoint(
-    session: Session,
-    current: Optional[bool] = None
+    session: Session, current: Optional[bool] = None
 ):
     data = session.query(Data.year_conducted, Data.current)
     if current is not None:
         data = data.filter(Data.current == current)
-    data = data.distinct(
-        Data.year_conducted
-    ).order_by(
-        desc(Data.year_conducted)
-    ).all()
+    data = (
+        data.distinct(Data.year_conducted)
+        .order_by(desc(Data.year_conducted))
+        .all()
+    )
     return data
