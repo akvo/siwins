@@ -69,7 +69,27 @@ const ChartVisual = ({ chartConfig, loading }) => {
               ? d.administration === adm.name
               : d.administration === adm.name && !d.history
           );
+
+          // filter findData if not history to remove data from particular year with 0 value
           if (!showHistory) {
+            findData = findData
+              .map((fd) => {
+                const checkValues = fd.child
+                  .map((c) => c.count)
+                  .filter((x) => x);
+                if (!checkValues.length) {
+                  return false;
+                }
+                return fd;
+              })
+              .filter((x) => x);
+          }
+
+          // TODO:: How we want to show the data without history?
+          // Disable this merging value for now
+          // because we have 2023 and 2018 data as current data
+          const disableMergingValue = true;
+          if (!showHistory && !disableMergingValue) {
             // Merge child objects into a single array
             const mergedChild = findData.reduce((acc, item) => {
               return acc.concat(item.child);
@@ -118,6 +138,7 @@ const ChartVisual = ({ chartConfig, loading }) => {
             };
             findData = [newData];
           }
+          // EOL How we want to show the data without history?
 
           const stack = findData.map((item) => {
             return item?.child?.map((c, cx) => {
