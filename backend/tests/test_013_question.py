@@ -14,19 +14,17 @@ class TestQuestionRoutes:
     async def test_get_question(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
-        res = await client.get(
-            app.url_path_for("question:get_all_question")
-        )
+        res = await client.get(app.url_path_for("question:get_all_question"))
         assert res.status_code == 200
         res = res.json()
         assert list(res[0]) == [
-            'id',
-            'group',
-            'name',
-            'type',
-            'attributes',
-            'option',
-            'number'
+            "id",
+            "group",
+            "name",
+            "type",
+            "attributes",
+            "option",
+            "number",
         ]
         # TODO:: Delete
         # assert res[0] == {
@@ -51,99 +49,118 @@ class TestQuestionRoutes:
         # filter by question attribute
         res = await client.get(
             app.url_path_for("question:get_all_question"),
-            params={"attribute": QuestionAttributes.indicator.value}
+            params={"attribute": QuestionAttributes.indicator.value},
         )
         assert res.status_code == 200
         res = res.json()
         # JMP category in indicator dropdown
-        assert res[:3] == [{
-            'id': 'jmp-water',
-            'group': 'JMP Indicator',
-            'name': 'Service level for Drinking Water',
-            'type': 'jmp',
-            'attributes': ['indicator'],
-            'option': [{
-                'name': 'Basic',
-                'order': 1,
-                'color': '#00b8ec',
-                'description': None
-            }, {
-                'name': 'Limited',
-                'order': 2,
-                'color': '#fff176',
-                'description': None
-            }, {
-                'name': 'No Service',
-                'order': 3,
-                'color': '#FEBC11',
-                'description': None
-            }],
-            'number': []
-        }, {
-            'id': 'jmp-sanitation',
-            'group': 'JMP Indicator',
-            'name': 'Service level for Sanitation',
-            'type': 'jmp',
-            'attributes': ['indicator'],
-            'option': [{
-                'name': 'Basic',
-                'order': 1,
-                'color': '#ab47bc',
-                'description': None
-            }, {
-                'name': 'Limited',
-                'order': 2,
-                'color': '#fff176',
-                'description': None
-            }, {
-                'name': 'No Service',
-                'order': 3,
-                'color': '#FEBC11',
-                'description': None
-            }],
-            'number': []
-        }, {
-            'id': 'jmp-hygiene',
-            'group': 'JMP Indicator',
-            'name': 'Service level for Hygiene',
-            'type': 'jmp',
-            'attributes': ['indicator'],
-            'option': [{
-                'name': 'Basic',
-                'order': 1,
-                'color': '#51B453',
-                'description': None
-            }, {
-                'name': 'Limited',
-                'order': 2,
-                'color': '#fff176',
-                'description': None
-            }, {
-                'name': 'No Service',
-                'order': 3,
-                'color': '#FEBC11',
-                'description': None
-            }],
-            'number': []
-        }]
+        assert res[:3] == [
+            {
+                "id": "jmp-water",
+                "group": "JMP Indicator",
+                "name": "Service level for Drinking Water",
+                "type": "jmp",
+                "attributes": ["indicator"],
+                "option": [
+                    {
+                        "name": "Basic",
+                        "order": 1,
+                        "color": "#00b8ec",
+                        "description": None,
+                    },
+                    {
+                        "name": "Limited",
+                        "order": 2,
+                        "color": "#fff176",
+                        "description": None,
+                    },
+                    {
+                        "name": "No Service",
+                        "order": 3,
+                        "color": "#FEBC11",
+                        "description": None,
+                    },
+                ],
+                "number": [],
+            },
+            {
+                "id": "jmp-sanitation",
+                "group": "JMP Indicator",
+                "name": "Service level for Sanitation",
+                "type": "jmp",
+                "attributes": ["indicator"],
+                "option": [
+                    {
+                        "name": "Basic",
+                        "order": 1,
+                        "color": "#ab47bc",
+                        "description": None,
+                    },
+                    {
+                        "name": "Limited",
+                        "order": 2,
+                        "color": "#fff176",
+                        "description": None,
+                    },
+                    {
+                        "name": "No Service",
+                        "order": 3,
+                        "color": "#FEBC11",
+                        "description": None,
+                    },
+                ],
+                "number": [],
+            },
+            {
+                "id": "jmp-hygiene",
+                "group": "JMP Indicator",
+                "name": "Service level for Hygiene",
+                "type": "jmp",
+                "attributes": ["indicator"],
+                "option": [
+                    {
+                        "name": "Basic",
+                        "order": 1,
+                        "color": "#51B453",
+                        "description": None,
+                    },
+                    {
+                        "name": "Limited",
+                        "order": 2,
+                        "color": "#fff176",
+                        "description": None,
+                    },
+                    {
+                        "name": "No Service",
+                        "order": 3,
+                        "color": "#FEBC11",
+                        "description": None,
+                    },
+                ],
+                "number": [],
+            },
+        ]
         assert list(res[3]) == [
-            'id',
-            'group',
-            'name',
-            'type',
-            'attributes',
-            'option',
-            'number'
+            "id",
+            "group",
+            "name",
+            "type",
+            "attributes",
+            "option",
+            "number",
         ]
         for r in res:
-            if r['option']:
-                assert list(r['option'][0]) == [
-                    'name', 'order', 'color', 'description'
+            if r["option"]:
+                assert list(r["option"][0]) == [
+                    "name",
+                    "order",
+                    "color",
+                    "description",
                 ]
-            if r['type'] == 'number':
-                for x in r['number']:
-                    assert 'value' in x
-                    assert 'count' in x
+            if r["type"] == "number":
+                for x in r["number"]:
+                    assert "value" in x
+                    assert "count" in x
         # TODO:: Delete
         # name = 'In the previous two weeks, was drinking water from the main '
         # name += 'source available at the school throughout each school day?'

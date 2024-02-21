@@ -54,11 +54,12 @@ class TestMigrationCategoryAndNationalData:
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res[0]) == [
-            'category', 'form', 'options'
-        ]
+        assert list(res[0]) == ["category", "form", "options"]
         assert list(res[0]["options"][0]) == [
-            'name', 'order', 'color', 'count'
+            "name",
+            "order",
+            "color",
+            "count",
         ]
         # TODO:: Delete
         # assert res == [{
@@ -133,22 +134,22 @@ class TestMigrationCategoryAndNationalData:
         res = await client.get(f"{api_url}?name=Water")
         assert res.status_code == 200
         res = res.json()
-        assert list(res[0]) == [
-            'category', 'form', 'options'
-        ]
+        assert list(res[0]) == ["category", "form", "options"]
         assert res[0]["category"] == "Water"
         assert list(res[0]["options"][0]) == [
-            'name', 'order', 'color', 'count'
+            "name",
+            "order",
+            "color",
+            "count",
         ]
         for opt in res[0]["options"]:
             assert opt["name"] in [
-                'Safely Managed', 'Basic',
-                'Limited', 'No Service'
+                "Safely Managed",
+                "Basic",
+                "Limited",
+                "No Service",
             ]
-            assert opt["color"] in [
-                '#0080c6', '#00b8ec',
-                '#fff176', '#FEBC11'
-            ]
+            assert opt["color"] in ["#0080c6", "#00b8ec", "#fff176", "#FEBC11"]
         # TODO:: Delete
         # assert res == [{
         #     'category': 'Water',
@@ -182,16 +183,18 @@ class TestMigrationCategoryAndNationalData:
     ):
         questions = session.query(Question)
         question_text = questions.filter(
-            Question.type == QuestionType.text).first()
+            Question.type == QuestionType.text
+        ).first()
         question_number = questions.filter(
-            Question.type == QuestionType.number).first()
+            Question.type == QuestionType.number
+        ).first()
         question_option = questions.filter(
-            Question.type == QuestionType.option).first()
+            Question.type == QuestionType.option
+        ).first()
         # question not found
         res = await client.get(
             app.url_path_for(
-                "charts:get_national_charts_by_question",
-                question=12345
+                "charts:get_national_charts_by_question", question=12345
             )
         )
         assert res.status_code == 404
@@ -199,7 +202,7 @@ class TestMigrationCategoryAndNationalData:
         res = await client.get(
             app.url_path_for(
                 "charts:get_national_charts_by_question",
-                question=question_text.id
+                question=question_text.id,
             )
         )
         assert res.status_code == 404
@@ -207,22 +210,26 @@ class TestMigrationCategoryAndNationalData:
         res = await client.get(
             app.url_path_for(
                 "charts:get_national_charts_by_question",
-                question=question_number.id
+                question=question_number.id,
             )
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == ['name', 'total', 'count']
+        assert list(res) == ["name", "total", "count"]
         # option question
         res = await client.get(
             app.url_path_for(
                 "charts:get_national_charts_by_question",
-                question=question_option.id
+                question=question_option.id,
             )
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == ['name', 'option']
-        assert list(res['option'][0]) == [
-            'name', 'order', 'color', 'description', 'count'
+        assert list(res) == ["name", "option"]
+        assert list(res["option"][0]) == [
+            "name",
+            "order",
+            "color",
+            "description",
+            "count",
         ]

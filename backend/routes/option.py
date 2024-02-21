@@ -22,11 +22,10 @@ option_route = APIRouter()
     response_model=List[int],
     name="option:get_monitoring_round",
     summary="get monitoring round (year) values",
-    tags=["Option"]
+    tags=["Option"],
 )
 def get_option_monitoring_round(
-    req: Request,
-    session: Session = Depends(get_session)
+    req: Request, session: Session = Depends(get_session)
 ):
     CURRENT_MONITORING_ROUND = MONITORING_ROUND
     if os.environ.get("TESTING"):
@@ -35,8 +34,6 @@ def get_option_monitoring_round(
     if not options:
         return []
     options = [int(o.name) for o in options]
-    options = list(filter(
-        lambda x: (x <= CURRENT_MONITORING_ROUND), options
-    ))
+    options = list(filter(lambda x: (x <= CURRENT_MONITORING_ROUND), options))
     options.sort()
     return options

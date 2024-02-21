@@ -1,10 +1,7 @@
 import os
 import json
 import flow.auth as flow_auth
-from fastapi import (
-    Depends, Request, APIRouter,
-    BackgroundTasks
-)
+from fastapi import Depends, Request, APIRouter, BackgroundTasks
 from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
 from db.connection import get_session
@@ -20,34 +17,23 @@ sync_route = APIRouter()
 def run_force_sync(session: Session, last_sync: dict):
     TESTING = os.environ.get("TESTING")
     sync_data = None
-    next_sync_url = last_sync.get('url')
+    next_sync_url = last_sync.get("url")
     token = flow_auth.get_token()
     sync_data = flow_auth.get_data(url=next_sync_url, token=token)
     if sync_data:
-        errors = data_sync(
-            token=token,
-            session=session,
-            sync_data=sync_data
-        )
+        errors = data_sync(token=token, session=session, sync_data=sync_data)
         log_content = json.dumps(errors, indent=2)
         write_log(
-            log_filename="sync_force_url_errors",
-            log_content=log_content
+            log_filename="sync_force_url_errors", log_content=log_content
         )
         if not TESTING:
             refresh_materialized_data()
 
 
 @sync_route.get(
-    "/cursor",
-    name="sync:get_cursor",
-    summary="get sync cursor",
-    tags=["Sync"]
+    "/cursor", name="sync:get_cursor", summary="get sync cursor", tags=["Sync"]
 )
-def get_sync_cursor(
-    req: Request,
-    session: Session = Depends(get_session)
-):
+def get_sync_cursor(req: Request, session: Session = Depends(get_session)):
     res = get_last_sync(session=session)
     if not res:
         return None
@@ -58,12 +44,12 @@ def get_sync_cursor(
     "/sync/force",
     name="sync:force",
     summary="force sync from url",
-    tags=["Sync"]
+    tags=["Sync"],
 )
 def sync_force(
     req: Request,
     background_tasks: BackgroundTasks,
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
 ):
     TESTING = os.environ.get("TESTING")
     last_sync = get_last_sync(session=session)

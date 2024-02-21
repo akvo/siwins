@@ -18,9 +18,5 @@ class GeoCenter(enum.Enum):
 
 
 class RemappingGeoName(enum.Enum):
-    notset = {
-        "adm_name": "updated adm name"
-    }
-    solomon_island = {
-        "makira_and_ulawa": "Makira Ulawa"
-    }
+    notset = {"adm_name": "updated adm name"}
+    solomon_island = {"makira_and_ulawa": "Makira Ulawa"}

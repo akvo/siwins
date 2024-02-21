@@ -17,9 +17,7 @@ class TestFileRoutes:
     async def test_get_download_list_404(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
-        res = await client.get(
-            app.url_path_for("excel-data:download-list")
-        )
+        res = await client.get(app.url_path_for("excel-data:download-list"))
         assert res.status_code == 404
 
     @pytest.mark.asyncio
@@ -27,58 +25,50 @@ class TestFileRoutes:
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         # no filter
-        res = await client.get(
-            app.url_path_for("excel-data:generate")
-        )
+        res = await client.get(app.url_path_for("excel-data:generate"))
         assert res.status_code == 200
         res = res.json()
         assert res == {
-            'id': 1,
-            'status': 0,
-            'payload': res.get('payload'),
-            'info': {
-                'tags': [],
-                'options': None,
-                'province': None,
-                'form_name': 'survey_questions',
-                'school_type': None,
-                'monitoring_round': None,
-                'data_ids': None
+            "id": 1,
+            "status": 0,
+            "payload": res.get("payload"),
+            "info": {
+                "tags": [],
+                "options": None,
+                "province": None,
+                "form_name": "survey_questions",
+                "school_type": None,
+                "monitoring_round": None,
+                "data_ids": None,
             },
-            'created': res.get('created'),
-            'available': None
+            "created": res.get("created"),
+            "available": None,
         }
         # with filter
         res = await client.get(
             app.url_path_for("excel-data:generate"),
-            params={
-                "monitoring_round": 2023,
-                "prov": ["Guadalcanal"]
-            }
+            params={"monitoring_round": 2023, "prov": ["Guadalcanal"]},
         )
         assert res.status_code == 200
         res = res.json()
         assert res == {
-            'id': 2,
-            'status': 0,
-            'payload': res.get('payload'),
-            'info': {
-                'tags': [{
-                    'o': 2023,
-                    'q': 'Monitoring round'
-                }, {
-                    'o': 'Guadalcanal',
-                    'q': 'Province'
-                }],
-                'options': None,
-                'province': ["Guadalcanal"],
-                'form_name': 'survey_questions',
-                'school_type': None,
-                'monitoring_round': 2023,
-                'data_ids': None
+            "id": 2,
+            "status": 0,
+            "payload": res.get("payload"),
+            "info": {
+                "tags": [
+                    {"o": 2023, "q": "Monitoring round"},
+                    {"o": "Guadalcanal", "q": "Province"},
+                ],
+                "options": None,
+                "province": ["Guadalcanal"],
+                "form_name": "survey_questions",
+                "school_type": None,
+                "monitoring_round": 2023,
+                "data_ids": None,
             },
-            'created': res.get('created'),
-            'available': None
+            "created": res.get("created"),
+            "available": None,
         }
         # with data_ids only
         data = session.query(Data).first()
@@ -86,34 +76,32 @@ class TestFileRoutes:
             app.url_path_for("excel-data:generate"),
             params={
                 "data_ids": [data.id],
-            }
+            },
         )
         assert res.status_code == 200
         res = res.json()
         assert res == {
-            'id': 3,
-            'status': 0,
-            'payload': res.get('payload'),
-            'info': {
-                'tags': [],
-                'options': None,
-                'data_ids': [f"{data.id}"],
-                'province': None,
-                'form_name': 'survey_questions',
-                'school_type': None,
-                'monitoring_round': None
+            "id": 3,
+            "status": 0,
+            "payload": res.get("payload"),
+            "info": {
+                "tags": [],
+                "options": None,
+                "data_ids": [f"{data.id}"],
+                "province": None,
+                "form_name": "survey_questions",
+                "school_type": None,
+                "monitoring_round": None,
             },
-            'created': res.get('created'),
-            'available': None
+            "created": res.get("created"),
+            "available": None,
         }
 
     @pytest.mark.asyncio
     async def test_get_download_list(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
-        res = await client.get(
-            app.url_path_for("excel-data:download-list")
-        )
+        res = await client.get(app.url_path_for("excel-data:download-list"))
         assert res.status_code == 200
         res = res.json()
         for r in res:
@@ -134,9 +122,7 @@ class TestFileRoutes:
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         # get file
-        res = await client.get(
-            app.url_path_for("excel-data:download-list")
-        )
+        res = await client.get(app.url_path_for("excel-data:download-list"))
         assert res.status_code == 200
         res = res.json()
         res = res[0]
@@ -144,7 +130,7 @@ class TestFileRoutes:
         job_id = res.get("id")
         res = await client.get(
             app.url_path_for("excel-data:download-status"),
-            params={"id": job_id}
+            params={"id": job_id},
         )
         assert res.status_code == 200
         r = res.json()
@@ -165,20 +151,15 @@ class TestFileRoutes:
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         # get file
-        res = await client.get(
-            app.url_path_for("excel-data:download-list")
-        )
+        res = await client.get(app.url_path_for("excel-data:download-list"))
         assert res.status_code == 200
         res = res.json()
         res = res[0]
         # download file
-        filename = res.get('payload')
-        status = res.get('status')
+        filename = res.get("payload")
+        status = res.get("status")
         if status == JOB_STATUS_TEXT.get(JobStatus.done.value):
             res = await client.get(
-                app.url_path_for(
-                    "excel-data:download",
-                    filename=filename
-                )
+                app.url_path_for("excel-data:download", filename=filename)
             )
             assert res.status_code == 200

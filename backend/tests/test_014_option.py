@@ -13,9 +13,7 @@ class TestOptionRoutes:
     async def test_get_option_monitoring_round(
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
-        res = await client.get(
-            app.url_path_for("option:get_monitoring_round")
-        )
+        res = await client.get(app.url_path_for("option:get_monitoring_round"))
         assert res.status_code == 200
         res = res.json()
         assert res == [2018, 2023]

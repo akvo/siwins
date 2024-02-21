@@ -6,23 +6,23 @@ from typing_extensions import TypedDict
 from typing import Optional, List, Union
 from pydantic import BaseModel, confloat
 from sqlalchemy import (
-    Column, Float, String, Boolean, Integer,
-    ForeignKey, DateTime, BigInteger
+    Column,
+    Float,
+    String,
+    Boolean,
+    Integer,
+    ForeignKey,
+    DateTime,
+    BigInteger,
 )
 import sqlalchemy.dialects.postgresql as pg
 from sqlalchemy.orm import relationship
 from db.connection import Base
 from models.answer import Answer, AnswerDict
-from models.answer import (
-    AnswerBase, MonitoringAnswerDict,
-    AnswerDictWithText
-)
+from models.answer import AnswerBase, MonitoringAnswerDict, AnswerDictWithText
 from models.form import Form
 from models.history import History
-from models.question import (
-    QuestionAttributes,
-    QuestionType
-)
+from models.question import QuestionAttributes, QuestionType
 
 
 class GeoData(BaseModel):
@@ -191,15 +191,15 @@ class Data(Base):
             "form": self.form,
             "registration": self.registration,
             "current": self.current,
-            "geo": {
-                "lat": self.geo[0], "long": self.geo[1]
-            } if self.geo else None,
+            "geo": {"lat": self.geo[0], "long": self.geo[1]}
+            if self.geo
+            else None,
             "year_conducted": self.year_conducted,
             "school_information": self.school_information,
             "created": self.created.strftime("%B %d, %Y"),
-            "updated": self.updated.strftime(
-                "%B %d, %Y"
-            ) if self.updated else None,
+            "updated": self.updated.strftime("%B %d, %Y")
+            if self.updated
+            else None,
             "answer": [a.formatted for a in self.answer],
             "history": [h.formatted for h in self.history],
         }
@@ -209,11 +209,11 @@ class Data(Base):
         return {
             "id": self.id,
             "name": self.name,
-            "geo": {
-                "lat": self.geo[0], "long": self.geo[1]
-            } if self.geo else None,
+            "geo": {"lat": self.geo[0], "long": self.geo[1]}
+            if self.geo
+            else None,
             "year_conducted": self.year_conducted,
-            "school_information": self.school_information
+            "school_information": self.school_information,
         }
 
     @property
@@ -225,7 +225,7 @@ class Data(Base):
             # "school_information": self.school_information,
             # "year_conducted": self.year_conducted,
             # "geo": self.geo,
-            "answer": {}
+            "answer": {},
         }
 
     @property
@@ -253,26 +253,24 @@ class Data(Base):
     def to_school_detail_popup(self) -> DataDetail:
         answer_filter = QuestionAttributes.school_detail_popup.value
         answers = [a.to_school_detail_popup for a in self.answer]
-        answers = list(filter(
-            lambda x: (
-                (
-                    x.get(
-                        "attributes"
-                    ) and answer_filter in x.get(
-                        "attributes"
+        answers = list(
+            filter(
+                lambda x: (
+                    (
+                        x.get("attributes")
+                        and answer_filter in x.get("attributes")
                     )
-                ) or x.get(
-                    "type"
-                ) == QuestionType.photo.value
-            ),
-            answers
-        ))
+                    or x.get("type") == QuestionType.photo.value
+                ),
+                answers,
+            )
+        )
         return {
             "id": self.id,
             "name": self.name,
             "year_conducted": self.year_conducted,
             "school_information": self.school_information,
-            "answer": answers
+            "answer": answers,
         }
 
     @property
@@ -281,8 +279,7 @@ class Data(Base):
             "id": self.id,
             "name": self.name,
             "registration": [
-                a.formatted_with_question_text
-                for a in self.answer
+                a.formatted_with_question_text for a in self.answer
             ],
             "monitoring": [],
         }
@@ -292,7 +289,7 @@ class Data(Base):
         return {
             "id": self.id,
             "history": not self.current,
-            "year_conducted": self.year_conducted
+            "year_conducted": self.year_conducted,
         }
 
 

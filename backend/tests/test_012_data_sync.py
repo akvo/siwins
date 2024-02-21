@@ -8,9 +8,11 @@ from sqlalchemy.orm import Session
 from seeder.data_sync import data_sync
 from db import crud_data
 from tests.conftest import test_refresh_materialized_data
+
 # from tests.test_dummy import res_sync_data, res_answers # TODO:: Delete
 
 from source.main import main_config
+
 DATAPOINT_PATH = main_config.DATAPOINT_PATH
 
 
@@ -35,47 +37,47 @@ class TestDataSync:
         temp_data = crud_data.get_all_data(session=session, current=True)
         data = [d.serialize for d in temp_data]
         assert list(data[0]) == [
-            'id',
-            'datapoint_id',
-            'identifier',
-            'name',
-            'form',
-            'registration',
-            'current',
-            'geo',
-            'year_conducted',
-            'school_information',
-            'created',
-            'updated',
-            'answer',
-            'history'
+            "id",
+            "datapoint_id",
+            "identifier",
+            "name",
+            "form",
+            "registration",
+            "current",
+            "geo",
+            "year_conducted",
+            "school_information",
+            "created",
+            "updated",
+            "answer",
+            "history",
         ]
         for d in data:
             d["current"] is True
-        assert list(data[0]["answer"][0]) == ['question', 'value']
+        assert list(data[0]["answer"][0]) == ["question", "value"]
         # assert data == res_sync_data  # TODO:: Delete
         # monitoring data
         temp_data = crud_data.get_all_data(session=session, current=False)
         data = [d.serialize for d in temp_data]
         assert list(data[0]) == [
-            'id',
-            'datapoint_id',
-            'identifier',
-            'name',
-            'form',
-            'registration',
-            'current',
-            'geo',
-            'year_conducted',
-            'school_information',
-            'created',
-            'updated',
-            'answer',
-            'history'
+            "id",
+            "datapoint_id",
+            "identifier",
+            "name",
+            "form",
+            "registration",
+            "current",
+            "geo",
+            "year_conducted",
+            "school_information",
+            "created",
+            "updated",
+            "answer",
+            "history",
         ]
         for d in data:
             d["current"] is False
-        assert list(data[0]["answer"][0]) == ['question', 'value']
+        assert list(data[0]["answer"][0]) == ["question", "value"]
         # TODO:: Delete
         # assert data == [
         #     {

@@ -1,9 +1,7 @@
 import pytest
 import os
 from sqlalchemy.orm import Session
-from utils.storage import (
-    upload, delete, check, StorageFolder
-)
+from utils.storage import upload, delete, check, StorageFolder
 
 from source.main import main_config
 
@@ -21,7 +19,7 @@ def create_test_file():
     return test_file
 
 
-class TestStorage():
+class TestStorage:
     @pytest.mark.asyncio
     async def test_dir_exist(self, session: Session) -> None:
         dirs = [TEST_PATH, DOWNLOAD_PATH, FAKE_STORAGE_PATH, LOG_PATH]
@@ -34,7 +32,7 @@ class TestStorage():
 
     @pytest.mark.asyncio
     async def test_upload_file_to_bucket(self, session: Session) -> None:
-        if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
+        if "GOOGLE_APPLICATION_CREDENTIALS" in os.environ:
             test_file = create_test_file()
             uploaded_file = upload(test_file, StorageFolder.test.value)
             assert check(uploaded_file) is True
@@ -44,7 +42,7 @@ class TestStorage():
 
     @pytest.mark.asyncio
     async def test_delete_file_from_bucket(self, session: Session) -> None:
-        if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
+        if "GOOGLE_APPLICATION_CREDENTIALS" in os.environ:
             # use administration CSV
             test_file = create_test_file()
             uploaded_file = upload(test_file, StorageFolder.test.value)

@@ -10,6 +10,7 @@ from models.question import (
     QuestionType,
 )
 from models.option import Option, OptionDict
+
 # import db.crud_option as crud_option
 
 
@@ -63,7 +64,7 @@ def add_question(
     dependency: Optional[List[dict]] = None,
     attributes: Optional[List[str]] = None,
     display_name: Optional[str] = None,
-    personal_data: Optional[bool] = False
+    personal_data: Optional[bool] = False,
 ) -> QuestionBase:
     last_question = get_last_question(
         session=session, form=form, question_group=question_group
@@ -81,7 +82,7 @@ def add_question(
         dependency=dependency,
         attributes=attributes,
         display_name=display_name,
-        personal_data=personal_data
+        personal_data=personal_data,
     )
     if option:
         for oi, o in enumerate(option):
@@ -92,6 +93,91 @@ def add_question(
     session.flush()
     session.refresh(question)
     return question
+
+
+def get_question(
+    session: Session,
+    form: Optional[int] = None,
+    type: Optional[QuestionType] = None,
+) -> List[QuestionDict]:
+    if form:
+        return session.query(Question).filter(Question.form == form).all()
+    if form and type:
+        return (
+            session.query(Question)
+            .filter(and_(Question.form == form, Question.type == type))
+            .all()
+        )
+    return session.query(Question).all()
+
+
+def get_question_by_id(session: Session, id: int) -> QuestionDict:
+    return session.query(Question).filter(Question.id == id).first()
+
+
+def get_question_by_attributes(
+    session: Session, attribute: str
+) -> List[QuestionDict]:
+    return (
+        session.query(Question)
+        .filter(Question.attributes.contains([attribute]))
+        .all()
+    )
+
+
+def get_question_name(session: Session, ids: List[int]) -> dict:
+    questions = (
+        session.query(Question.id, Question.name)
+        .filter(Question.id.in_(ids))
+        .all()
+    )
+    if questions:
+        return {q.id: q.name for q in questions}
+    return []
+
+
+def get_excel_headers(session: Session) -> List[str]:
+    questions = (
+        session.query(Question)
+        .filter(Question.personal_data == false())
+        .join(QuestionGroup)
+        .order_by(QuestionGroup.order, Question.order)
+    )
+    return [q.to_excel_header for q in questions]
+
+
+# def get_question_by_ids(
+#     session: Session, ids: List[int]
+# ) -> List[QuestionDict]:
+#     return session.query(Question).filter(Question.id.in_(ids)).all()
+
+
+# def validate_dependency(session: Session, dependency: List[dict]):
+#     # TODO: need to allow dependency for number and date
+#     errors = []
+#     for question in dependency:
+#         qid = question["id"]
+#         opt = question["options"]
+#         if not len(opt):
+#             errors.append("Should have at least 1 option")
+#         question = get_question_by_id(session=session, id=qid)
+#         if not question:
+#             errors.append(f"Question {qid} not found")
+#         if question.type not in [
+#             QuestionType.option,
+#             QuestionType.multiple_option,
+#         ]:
+#             errors.append(f"Question {qid} type should be option")
+#         options = [o.name for o in question.option]
+#         for o in opt:
+#             if o not in options:
+#                 errors.append(f"Option {o} is not part of {qid}")
+#     return errors
+
+
+# def delete_by_form(session: Session, form: int) -> None:
+#     session.query(Question).filter(Question.form == form).delete()
+#     session.commit()
 
 
 # def update_question(
@@ -149,84 +235,3 @@ def add_question(
 #     session.flush()
 #     session.refresh(question)
 #     return question
-
-
-def get_question(
-    session: Session,
-    form: Optional[int] = None,
-    type: Optional[QuestionType] = None,
-) -> List[QuestionDict]:
-    if form:
-        return session.query(Question).filter(Question.form == form).all()
-    if form and type:
-        return (
-            session.query(Question)
-            .filter(and_(Question.form == form, Question.type == type))
-            .all()
-        )
-    return session.query(Question).all()
-
-
-def get_question_by_id(session: Session, id: int) -> QuestionDict:
-    return session.query(Question).filter(Question.id == id).first()
-
-
-def get_question_by_attributes(
-    session: Session, attribute: str
-) -> List[QuestionDict]:
-    return session.query(Question).filter(
-        Question.attributes.contains([attribute])).all()
-
-
-def get_question_name(session: Session, ids: List[int]) -> dict:
-    questions = session.query(
-        Question.id, Question.name
-    ).filter(Question.id.in_(ids)).all()
-    if questions:
-        return {q.id: q.name for q in questions}
-    return []
-
-
-def get_excel_headers(session: Session) -> List[str]:
-    questions = (session.query(Question).filter(
-        Question.personal_data == false()
-    ).join(
-        QuestionGroup
-    ).order_by(
-        QuestionGroup.order, Question.order
-    ))
-    return [q.to_excel_header for q in questions]
-
-
-# def get_question_by_ids(
-#     session: Session, ids: List[int]
-# ) -> List[QuestionDict]:
-#     return session.query(Question).filter(Question.id.in_(ids)).all()
-
-
-# def validate_dependency(session: Session, dependency: List[dict]):
-#     # TODO: need to allow dependency for number and date
-#     errors = []
-#     for question in dependency:
-#         qid = question["id"]
-#         opt = question["options"]
-#         if not len(opt):
-#             errors.append("Should have at least 1 option")
-#         question = get_question_by_id(session=session, id=qid)
-#         if not question:
-#             errors.append(f"Question {qid} not found")
-#         if question.type not in [
-#             QuestionType.option,
-#             QuestionType.multiple_option,
-#         ]:
-#             errors.append(f"Question {qid} type should be option")
-#         options = [o.name for o in question.option]
-#         for o in opt:
-#             if o not in options:
-#                 errors.append(f"Option {o} is not part of {qid}")
-#     return errors
-
-
-# def delete_by_form(session: Session, form: int) -> None:
-#     session.query(Question).filter(Question.form == form).delete()
-#     session.commit()

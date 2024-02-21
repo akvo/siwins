@@ -1,0 +1,70 @@
+[
+  {
+    "name": "Service level for Drinking Water",
+    "hint": "Proportion of schools (including pre-primary, primary and secondary) with drinking water from an improved water source available at the school on the day of the survey",
+    "labels": [
+      {
+        "name": "Safely Managed",
+        "color": "#0080c6",
+        "hint": "School has an improved water source (water is protected from the outside environment), and water is available at the school on the day of the survey and  is free from feacal contamination"
+      },
+      {
+        "name": "Basic",
+        "color": "#00b8ec",
+        "hint": "School has an improved water source (water is protected from the outside environment), and water is available at the school on the day of the survey"
+      },
+      {
+        "name": "Limited",
+        "color": "#fff176",
+        "hint": "School has an improved water source (water is protected from the outside environment), and/or the source is shared,  and/or far away from the school, and/or water is not available at the school on the day of the survey"
+      },
+      {
+        "name": "No Service",
+        "color": "#FEBC11",
+        "hint": "School has no water source or has an Unimproved” (water is not protected from the outside environment) source"
+      }
+    ]
+  },
+  {
+    "name": "Service level for Sanitation",
+    "hint": "Proportion of schools (including pre-primary, primary and secondary) with improved sanitation facilities at the school, which are single-sex and usable",
+    "labels": [
+      {
+        "name": "Basic",
+        "color": "#ab47bc",
+        "hint": "School has an 'improved toilet' i.e. sanitation facility that is hygienically separates human excreta from human contact, and toilets are sex separated, and available (doors are unlocked or a key is available at all times), functional  (not broken, hole is not blocked, and water is available for flush/pour-flush toilets), and private (there are closable doors that lock from the inside and no large gaps in the structure) on the day of the survey"
+      },
+      {
+        "name": "Limited",
+        "color": "#fff176",
+        "hint": "School has an 'improved toilet' i.e. sanitation facility that is hygienically separates human excreta from human contact, and /or toilets are sex separated, and/or toilets are available (doors are unlocked or a key is available at all times), functional  (not broken, hole is not blocked, and water is available for flush/pour-flush toilets), and private (there are closable doors that lock from the inside and no large gaps in the structure) on the day of the survey"
+      },
+      {
+        "name": "No Service",
+        "color": "#FEBC11",
+        "hint": "School has no or “Unimproved” facilities or any other facility where human excreta is not separated from human contact."
+      }
+    ]
+  },
+  {
+    "name": "Service level for Hygiene",
+    "hint": "Proportion of schools (including pre-primary, primary and secondary) with handwashing facilities, which have soap and water available",
+    "labels": [
+      {
+        "name": "Basic",
+        "color": "#51B453",
+        "hint": "School has handwashing facilities i.e. any device or infrastructure that enables students to wash their hands effectively using running water, and both water and soap are available at the handwashing facilities on the day of the questionnaire or survey."
+      },
+      {
+        "name": "Limited",
+        "color": "#fff176",
+        "hint": "School has an 'improved toilet' i.e. sanitation facility that is hygienically separates human excreta from human contact, and /or toilets are sex separated, and/or toilets are available (doors are unlocked or a key is available at all times), functional  (not broken, hole is not blocked, and water is available for flush/pour-flush toilets), and private (there are closable doors that lock from the inside and no large gaps in the structure) on the day of the survey"
+      },
+      {
+        "name": "No Service",
+        "color": "#FEBC11",
+        "hint": "There are no handwashing facilities at the school"
+      }
+    ]
+  }
+]

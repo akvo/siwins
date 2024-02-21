@@ -7,19 +7,12 @@ from datetime import datetime
 from typing_extensions import TypedDict
 from pydantic import BaseModel
 from sqlalchemy.ext.mutable import MutableDict
-from sqlalchemy import (
-    Column, Integer, Text, DateTime
-)
+from sqlalchemy import Column, Integer, Text, DateTime
 import sqlalchemy.dialects.postgresql as pg
 from db.connection import Base
 
 
-JOB_STATUS_TEXT = {
-    0: "Pending",
-    1: "in Progress",
-    2: "Failed",
-    3: "Done"
-}
+JOB_STATUS_TEXT = {0: "Pending", 1: "in Progress", 2: "Failed", 3: "Done"}
 
 
 class JobStatus(enum.Enum):
@@ -52,7 +45,7 @@ class Jobs(Base):
         payload: str,
         info: Optional[dict] = None,
         status: Optional[JobStatus] = None,
-        available: Optional[datetime] = None
+        available: Optional[datetime] = None,
     ):
         self.info = info
         self.status = status
@@ -75,7 +68,7 @@ class Jobs(Base):
 
     @property
     def simplify(self) -> JobsDict:
-        payload = self.payload.split('/')[-1]
+        payload = self.payload.split("/")[-1]
         status = JOB_STATUS_TEXT.get(self.status)
         return {
             "id": self.id,

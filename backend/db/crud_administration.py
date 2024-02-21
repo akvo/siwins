@@ -15,14 +15,13 @@ def add_administration(
 
 
 def get_parent_administration(
-    session: Session,
-    access: Optional[List[int]] = False
+    session: Session, access: Optional[List[int]] = False
 ) -> List[Administration]:
     administration = session.query(Administration).filter(
-        Administration.parent.is_(None))
+        Administration.parent.is_(None)
+    )
     if access:
-        administration = administration.filter(
-            Administration.id.in_(access))
+        administration = administration.filter(Administration.id.in_(access))
     return administration.all()
 
 
@@ -31,43 +30,50 @@ def get_administration(session: Session) -> List[Administration]:
 
 
 def get_administration_by_id(session: Session, id: int) -> Administration:
-    return session.query(Administration).filter(
-        Administration.id == id).first()
+    return (
+        session.query(Administration).filter(Administration.id == id).first()
+    )
 
 
 def get_administration_by_name(
-    session: Session,
-    name: str,
-    parent: Optional[int] = None
+    session: Session, name: str, parent: Optional[int] = None
 ) -> Administration:
     administration = session.query(Administration).filter(
-        Administration.name == name.strip())
+        Administration.name == name.strip()
+    )
     if parent:
-        administration = administration.filter(
-            Administration.parent == parent)
+        administration = administration.filter(Administration.parent == parent)
     return administration.first()
 
 
 def get_administration_by_keyword(
-    session: Session,
-    name: str,
-    parent: Optional[int] = None
+    session: Session, name: str, parent: Optional[int] = None
 ) -> Administration:
-    return session.query(Administration).filter(and_(
-        Administration.parent == parent,
-        Administration.name.match("%{}%".format(name))
-    )).all()
+    return (
+        session.query(Administration)
+        .filter(
+            and_(
+                Administration.parent == parent,
+                Administration.name.match("%{}%".format(name)),
+            )
+        )
+        .all()
+    )
 
 
 def get_administration_id_by_keyword(
-    session: Session,
-    name: str,
-    parent: Optional[int] = None
+    session: Session, name: str, parent: Optional[int] = None
 ) -> Administration:
-    administration = session.query(Administration.id).filter(and_(
-        Administration.parent == parent,
-        Administration.name.match("%{}%".format(name))
-    )).first()
+    administration = (
+        session.query(Administration.id)
+        .filter(
+            and_(
+                Administration.parent == parent,
+                Administration.name.match("%{}%".format(name)),
+            )
+        )
+        .first()
+    )
     if administration:
         return administration.id
     return False
@@ -76,16 +82,18 @@ def get_administration_id_by_keyword(
 def get_administration_name(
     session: Session,
     id: Optional[int] = None,
-    name: Optional[List[str]] = None
+    name: Optional[List[str]] = None,
 ) -> str:
     if not name:
         name = []
-    administration = session.query(Administration).filter(
-        Administration.id == id).first()
+    administration = (
+        session.query(Administration).filter(Administration.id == id).first()
+    )
     name.append(administration.name)
     if administration.parent:
         get_administration_name(
-            session=session, id=administration.parent, name=name)
+            session=session, id=administration.parent, name=name
+        )
     return ", ".join(name)
 
 
@@ -101,14 +109,17 @@ def get_administration_list(session: Session, id: int) -> List[int]:
 def get_all_childs(
     session: Session,
     parents: Optional[List[int]] = None,
-    current: Optional[List[int]] = []
+    current: Optional[List[int]] = [],
 ) -> List[int]:
     if parents is None:
         current = session.query(Administration.id).all()
         current = [c[0] for c in current]
     else:
-        childrens = session.query(Administration).filter(
-            Administration.parent.in_(parents)).all()
+        childrens = (
+            session.query(Administration)
+            .filter(Administration.parent.in_(parents))
+            .all()
+        )
         has_childs = False
         current = current + [c.id for c in childrens]
         for c in childrens:
@@ -116,7 +127,8 @@ def get_all_childs(
                 has_childs = True
         if has_childs:
             current = get_all_childs(
-                session=session, current=current, parents=current)
+                session=session, current=current, parents=current
+            )
         else:
             current = parents + current
     return current

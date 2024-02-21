@@ -10,16 +10,15 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'bb1391a4aedf'
-down_revision = 'df4686198763'
+revision = "bb1391a4aedf"
+down_revision = "df4686198763"
 branch_labels = None
 depends_on = None
 
 
 def upgrade() -> None:
     op.add_column(
-        "question",
-        sa.Column("personal_data", sa.Boolean(), nullable=True)
+        "question", sa.Column("personal_data", sa.Boolean(), nullable=True)
     )
     op.execute("UPDATE question SET personal_data = false")
     op.alter_column("question", "personal_data", nullable=False)

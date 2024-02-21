@@ -81,8 +81,11 @@ def form_seeder(session: Session, forms: List[dict]):
                     type = QuestionType.number.value
                 if type == "option" and "option" in q:
                     allowMultiple = q["options"].get("allowMultiple")
-                    type == QuestionType.multiple_option.value \
-                        if allowMultiple else type
+                    (
+                        type == QuestionType.multiple_option.value
+                        if allowMultiple
+                        else type
+                    )
                 # EOL handle question type
                 dependency = None
                 if "dependency" in q and isinstance(q["dependency"], dict):
@@ -114,7 +117,7 @@ def form_seeder(session: Session, forms: List[dict]):
                     option=options,
                     attributes=attributes,
                     display_name=display_name,
-                    personal_data=q.get("personalData") or False
+                    personal_data=q.get("personalData") or False,
                 )
                 # print(f"{i}.{question.name}")
         print("------------------------------------------")

@@ -13,12 +13,14 @@ school_information_cascade = CascadeLevels.school_information.value
 
 
 def refresh_materialized_view_query():
-    return text("""
+    return text(
+        """
         REFRESH MATERIALIZED VIEW advance_filter;
         REFRESH MATERIALIZED VIEW province_option_answer;
         REFRESH MATERIALIZED VIEW province_number_answer;
         REFRESH MATERIALIZED VIEW data_answer;
-    """)
+    """
+    )
 
 
 def refresh_materialized_data():
@@ -31,30 +33,35 @@ def refresh_materialized_data():
 
 
 def extract_school_information(
-    school_information: List[str],
-    to_object: Optional[bool] = False
+    school_information: List[str], to_object: Optional[bool] = False
 ):
     province_lv = school_information_cascade.get(
-        SchoolInformationEnum.province.value)
+        SchoolInformationEnum.province.value
+    )
     school_type_lv = school_information_cascade.get(
-        SchoolInformationEnum.school_type.value)
+        SchoolInformationEnum.school_type.value
+    )
     school_name_lv = school_information_cascade.get(
-        SchoolInformationEnum.school_name.value)
+        SchoolInformationEnum.school_name.value
+    )
     school_code_lv = school_information_cascade.get(
-        SchoolInformationEnum.school_code.value)
+        SchoolInformationEnum.school_code.value
+    )
     # province, school name - code
     current_province = school_information[province_lv]
     current_school_type = school_information[school_type_lv]
     current_school_name = school_information[school_name_lv]
     current_school_code = school_information[school_code_lv]
-    if (to_object):
+    if to_object:
         return {
             SchoolInformationEnum.province.value: current_province,
             SchoolInformationEnum.school_type.value: current_school_type,
             SchoolInformationEnum.school_name.value: current_school_name,
-            SchoolInformationEnum.school_code.value: current_school_code
+            SchoolInformationEnum.school_code.value: current_school_code,
         }
     return (
-        current_province, current_school_type,
-        current_school_name, current_school_code
+        current_province,
+        current_school_type,
+        current_school_name,
+        current_school_code,
     )

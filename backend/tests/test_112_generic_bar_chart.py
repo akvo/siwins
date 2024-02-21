@@ -10,179 +10,127 @@ sys.path.append("..")
 
 
 res_bar = {
-    'type': 'BAR',
-    'data': [{
-        'year': 2023,
-        'history': False,
-        'name': 'yes',
-        'value': 0
-    }, {
-        'year': 2023,
-        'history': False,
-        'name': 'no',
-        'value': 1
-    }, {
-        'year': 2023,
-        'history': False,
-        'name': "don't know/can't say",
-        'value': 0
-    }, ]
+    "type": "BAR",
+    "data": [
+        {"year": 2023, "history": False, "name": "yes", "value": 0},
+        {"year": 2023, "history": False, "name": "no", "value": 1},
+        {
+            "year": 2023,
+            "history": False,
+            "name": "don't know/can't say",
+            "value": 0,
+        },
+    ],
 }
 
 
 res_bar_history = {
-    'type': 'BAR',
-    'data': [{
-        'year': 2018,
-        'history': True,
-        'name': 'yes',
-        'value': 0
-    }, {
-        'year': 2018,
-        'history': True,
-        'name': 'no',
-        'value': 1
-    }, {
-        'year': 2018,
-        'history': True,
-        'name': "don't know/can't say",
-        'value': 0
-    }]
+    "type": "BAR",
+    "data": [
+        {"year": 2018, "history": True, "name": "yes", "value": 0},
+        {"year": 2018, "history": True, "name": "no", "value": 1},
+        {
+            "year": 2018,
+            "history": True,
+            "name": "don't know/can't say",
+            "value": 0,
+        },
+    ],
 }
 
 
 res_bar_filtered = {
-    'type': 'BAR',
-    'data': [{
-        'year': 2023,
-        'history': False,
-        'name': 'yes',
-        'value': 0
-    }, {
-        'year': 2023,
-        'history': False,
-        'name': 'no',
-        'value': 0
-    }, {
-        'year': 2023,
-        'history': False,
-        'name': "don't know/can't say",
-        'value': 0
-    }, ]
+    "type": "BAR",
+    "data": [
+        {"year": 2023, "history": False, "name": "yes", "value": 0},
+        {"year": 2023, "history": False, "name": "no", "value": 0},
+        {
+            "year": 2023,
+            "history": False,
+            "name": "don't know/can't say",
+            "value": 0,
+        },
+    ],
 }
 
 
 res_bar_stack = {
     "type": "BARSTACK",
-    "data": [{
-        "year": 2023,
-        "history": False,
-        "group": "yes",
-        "child": [{
-            "name": "yes (always available)",
-            "value": 0
-        }, {
-            "name": "mostly (unavailable ≤ 30 days total)",
-            "value": 0
-        }, {
-            "name": "no (unavailable > 30 days total)",
-            "value": 0
-        }, {
-            "name": "don't know/can't say",
-            "value": 0
-        }, ],
-    }, {
-        "year": 2023,
-        "history": False,
-        "group": "no",
-        "child": [{
-            "name": "yes (always available)",
-            "value": 0
-        }, {
-            "name": "mostly (unavailable ≤ 30 days total)",
-            "value": 1
-        }, {
-            "name": "no (unavailable > 30 days total)",
-            "value": 0
-        }, {
-            "name": "don't know/can't say",
-            "value": 0
-        }, ],
-    }, {
-        "year": 2023,
-        "history": False,
-        "group": "don't know/can't say",
-        "child": [{
-            "name": "yes (always available)",
-            "value": 0
-        }, {
-            "name": "mostly (unavailable ≤ 30 days total)",
-            "value": 0
-        }, {
-            "name": "no (unavailable > 30 days total)",
-            "value": 0
-        }, {
-            "name": "don't know/can't say",
-            "value": 0
-        }, ],
-    }, ],
+    "data": [
+        {
+            "year": 2023,
+            "history": False,
+            "group": "yes",
+            "child": [
+                {"name": "yes (always available)", "value": 0},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
+            ],
+        },
+        {
+            "year": 2023,
+            "history": False,
+            "group": "no",
+            "child": [
+                {"name": "yes (always available)", "value": 0},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 1},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
+            ],
+        },
+        {
+            "year": 2023,
+            "history": False,
+            "group": "don't know/can't say",
+            "child": [
+                {"name": "yes (always available)", "value": 0},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
+            ],
+        },
+    ],
 }
 
 
 res_bar_stack_history = {
-    'type': 'BARSTACK',
-    'data': [{
-        'year': 2018,
-        'history': True,
-        'group': 'yes',
-        'child': [{
-            'name': 'yes (always available)',
-            'value': 0
-        }, {
-            'name': 'mostly (unavailable ≤ 30 days total)',
-            'value': 0
-        }, {
-            'name': 'no (unavailable > 30 days total)',
-            'value': 0
-        }, {
-            'name': "don't know/can't say",
-            'value': 0
-        }]
-    }, {
-        'year': 2018,
-        'history': True,
-        'group': 'no',
-        'child': [{
-            'name': 'yes (always available)',
-            'value': 1
-        }, {
-            'name': 'mostly (unavailable ≤ 30 days total)',
-            'value': 0
-        }, {
-            'name': 'no (unavailable > 30 days total)',
-            'value': 0
-        }, {
-            'name': "don't know/can't say",
-            'value': 0
-        }]
-    }, {
-        'year': 2018,
-        'history': True,
-        'group': "don't know/can't say",
-        'child': [{
-            'name': 'yes (always available)',
-            'value': 0
-        }, {
-            'name': 'mostly (unavailable ≤ 30 days total)',
-            'value': 0
-        }, {
-            'name': 'no (unavailable > 30 days total)',
-            'value': 0
-        }, {
-            'name': "don't know/can't say",
-            'value': 0
-        }]
-    }]
+    "type": "BARSTACK",
+    "data": [
+        {
+            "year": 2018,
+            "history": True,
+            "group": "yes",
+            "child": [
+                {"name": "yes (always available)", "value": 0},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
+            ],
+        },
+        {
+            "year": 2018,
+            "history": True,
+            "group": "no",
+            "child": [
+                {"name": "yes (always available)", "value": 1},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
+            ],
+        },
+        {
+            "year": 2018,
+            "history": True,
+            "group": "don't know/can't say",
+            "child": [
+                {"name": "yes (always available)", "value": 0},
+                {"name": "mostly (unavailable ≤ 30 days total)", "value": 0},
+                {"name": "no (unavailable > 30 days total)", "value": 0},
+                {"name": "don't know/can't say", "value": 0},
+            ],
+        },
+    ],
 }
 
 
@@ -195,17 +143,25 @@ class TestGenericBarChartRoutes:
         attribute = QuestionAttributes.generic_bar_chart.value
         res = await client.get(
             app.url_path_for("question:get_all_question"),
-            params={"attribute": attribute}
+            params={"attribute": attribute},
         )
         assert res.status_code == 200
         res = res.json()
         assert list(res[0]) == [
-            'id', 'group', 'name', 'type',
-            'attributes', 'option', 'number'
+            "id",
+            "group",
+            "name",
+            "type",
+            "attributes",
+            "option",
+            "number",
         ]
         assert attribute in res[0]["attributes"]
         assert list(res[0]["option"][0]) == [
-            'name', 'order', 'color', 'description'
+            "name",
+            "order",
+            "color",
+            "description",
         ]
         # TODO:: Delete
         # name = 'In the previous two weeks, was drinking water from the main '
@@ -252,24 +208,25 @@ class TestGenericBarChartRoutes:
         indicator_option = indicator_question.filter(
             Question.type == QuestionType.option
         ).first()
-        second_indicator = indicator_question.filter(
-            Question.type == QuestionType.option).filter(
-                Question.id != indicator_option.id).first()
+        second_indicator = (
+            indicator_question.filter(Question.type == QuestionType.option)
+            .filter(Question.id != indicator_option.id)
+            .first()
+        )
         indicator_number = indicator_question.filter(
             Question.type == QuestionType.number
         ).first()
         # no filter
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id)
+                "charts:get_generic_chart_data", question=indicator_option.id
+            )
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == ['type', 'data']
+        assert list(res) == ["type", "data"]
         assert res["type"] == "BAR"
-        assert list(res["data"][0]) == [
-            'year', 'history', 'name', 'value'
-        ]
+        assert list(res["data"][0]) == ["year", "history", "name", "value"]
         for d in res["data"]:
             assert d["history"] is False
         # TODO:: Delete
@@ -277,16 +234,15 @@ class TestGenericBarChartRoutes:
         # history data
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id),
-            params={"history": True}
+                "charts:get_generic_chart_data", question=indicator_option.id
+            ),
+            params={"history": True},
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == ['type', 'data']
+        assert list(res) == ["type", "data"]
         assert res["type"] == "BAR"
-        assert list(res["data"][0]) == [
-            'year', 'history', 'name', 'value'
-        ]
+        assert list(res["data"][0]) == ["year", "history", "name", "value"]
         for d in res["data"]:
             assert d["history"] is True
         # TODO:: Delete
@@ -294,26 +250,24 @@ class TestGenericBarChartRoutes:
         # with stack = question
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id),
-            params={"stack": indicator_option.id}
+                "charts:get_generic_chart_data", question=indicator_option.id
+            ),
+            params={"stack": indicator_option.id},
         )
         assert res.status_code == 406
         # with stack != question
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id),
-            params={"stack": second_indicator.id}
+                "charts:get_generic_chart_data", question=indicator_option.id
+            ),
+            params={"stack": second_indicator.id},
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == ['type', 'data']
+        assert list(res) == ["type", "data"]
         assert res["type"] == "BARSTACK"
-        assert list(res["data"][0]) == [
-            'year', 'history', 'group', 'child'
-        ]
-        assert list(res["data"][0]["child"][0]) == [
-            'name', 'value'
-        ]
+        assert list(res["data"][0]) == ["year", "history", "group", "child"]
+        assert list(res["data"][0]["child"][0]) == ["name", "value"]
         for d in res["data"]:
             assert d["history"] is False
         # TODO:: Delete
@@ -321,19 +275,16 @@ class TestGenericBarChartRoutes:
         # show history with stack
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id),
-            params={"stack": second_indicator.id, "history": True}
+                "charts:get_generic_chart_data", question=indicator_option.id
+            ),
+            params={"stack": second_indicator.id, "history": True},
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == ['type', 'data']
+        assert list(res) == ["type", "data"]
         assert res["type"] == "BARSTACK"
-        assert list(res["data"][0]) == [
-            'year', 'history', 'group', 'child'
-        ]
-        assert list(res["data"][0]["child"][0]) == [
-            'name', 'value'
-        ]
+        assert list(res["data"][0]) == ["year", "history", "group", "child"]
+        assert list(res["data"][0]["child"][0]) == ["name", "value"]
         for d in res["data"]:
             assert d["history"] is True
         # TODO:: Delete
@@ -341,94 +292,91 @@ class TestGenericBarChartRoutes:
         # with indicator
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id),
-            params={"indicator": indicator_option.id}
+                "charts:get_generic_chart_data", question=indicator_option.id
+            ),
+            params={"indicator": indicator_option.id},
         )
         assert res.status_code == 200
         # with indicator & indicator option filter
         # option indicator with number filter
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id),
-            params={"indicator": indicator_option.id, "number": [10, 20]}
+                "charts:get_generic_chart_data", question=indicator_option.id
+            ),
+            params={"indicator": indicator_option.id, "number": [10, 20]},
         )
         assert res.status_code == 400
         # option indicator with option filter
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id),
+                "charts:get_generic_chart_data", question=indicator_option.id
+            ),
             params={
                 "indicator": indicator_option.id,
-                "q": f"{indicator_option.id}|yes"
-            }
+                "q": f"{indicator_option.id}|yes",
+            },
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == ['type', 'data']
+        assert list(res) == ["type", "data"]
         assert res["type"] == "BAR"
-        assert list(res["data"][0]) == [
-            'year', 'history', 'name', 'value'
-        ]
+        assert list(res["data"][0]) == ["year", "history", "name", "value"]
         # TODO:: Delete
         # assert res == res_bar_filtered
         # number indicator with number filter
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id),
-            params={"indicator": indicator_number.id, "number": [11]}
+                "charts:get_generic_chart_data", question=indicator_option.id
+            ),
+            params={"indicator": indicator_number.id, "number": [11]},
         )
         assert res.status_code == 400
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id),
-            params={"indicator": indicator_number.id, "number": [1, 20]}
+                "charts:get_generic_chart_data", question=indicator_option.id
+            ),
+            params={"indicator": indicator_number.id, "number": [1, 20]},
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == ['type', 'data']
+        assert list(res) == ["type", "data"]
         assert res["type"] == "BAR"
-        assert list(res["data"][0]) == [
-            'year', 'history', 'name', 'value'
-        ]
+        assert list(res["data"][0]) == ["year", "history", "name", "value"]
         # TODO:: Delete
         # assert res == res_bar
         # filter by school type and province
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id),
+                "charts:get_generic_chart_data", question=indicator_option.id
+            ),
             params={
                 "prov": ["Guadalcanal"],
-                "sctype": ["Community High School"]
-            }
+                "sctype": ["Community High School"],
+            },
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == ['type', 'data']
+        assert list(res) == ["type", "data"]
         assert res["type"] == "BAR"
-        assert list(res["data"][0]) == [
-            'year', 'history', 'name', 'value'
-        ]
+        assert list(res["data"][0]) == ["year", "history", "name", "value"]
         # TODO:: Delete
         # assert res == res_bar
         # with stack != question and filter
         res = await client.get(
             app.url_path_for(
-                "charts:get_generic_chart_data", question=indicator_option.id),
+                "charts:get_generic_chart_data", question=indicator_option.id
+            ),
             params={
                 "stack": second_indicator.id,
                 "prov": ["Guadalcanal"],
-                "sctype": ["Community High School"]
-            }
+                "sctype": ["Community High School"],
+            },
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == ['type', 'data']
+        assert list(res) == ["type", "data"]
         assert res["type"] == "BARSTACK"
-        assert list(res["data"][0]) == [
-            'year', 'history', 'group', 'child'
-        ]
-        assert list(res["data"][0]["child"][0]) == [
-            'name', 'value'
-        ]
+        assert list(res["data"][0]) == ["year", "history", "group", "child"]
+        assert list(res["data"][0]["child"][0]) == ["name", "value"]
         # TODO:: Delete
         # assert res == res_bar_stack

@@ -1,7 +1,7 @@
 import os
 import importlib
 
-INSTANCE_NAME = os.environ.get('SIWINS_INSTANCE')
+INSTANCE_NAME = os.environ.get("SIWINS_INSTANCE")
 
 # Define the module name based on the cluster
 module_path = f"source.{INSTANCE_NAME}"

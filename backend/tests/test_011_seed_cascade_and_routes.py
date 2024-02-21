@@ -39,13 +39,13 @@ class TestSeedCascadeAndCascadeRoutes:
         cascade = crud_cascade.get_all_cascade(session=session)
         assert len(cascade) > 0
         cascade = crud_cascade.get_cascade_by_question_id(
-            session=session, question=school_information_qid)
+            session=session, question=school_information_qid
+        )
         assert len(cascade) > 0
         for k, level in school_information_levels.items():
             cascade = crud_cascade.get_cascade_by_question_id(
-                session=session,
-                question=school_information_qid,
-                level=level)
+                session=session, question=school_information_qid, level=level
+            )
             assert len(cascade) > 0
 
     @pytest.mark.asyncio
@@ -55,7 +55,8 @@ class TestSeedCascadeAndCascadeRoutes:
         # get province value
         res = await client.get(
             app.url_path_for("cascade:get_school_information"),
-            params={"level": SchoolInformationEnum.province.value})
+            params={"level": SchoolInformationEnum.province.value},
+        )
         assert res.status_code == 200
         res = res.json()
         assert list(res[0]) == ["name", "level"]
@@ -77,7 +78,8 @@ class TestSeedCascadeAndCascadeRoutes:
         # get school type value
         res = await client.get(
             app.url_path_for("cascade:get_school_information"),
-            params={"level": SchoolInformationEnum.school_type.value})
+            params={"level": SchoolInformationEnum.school_type.value},
+        )
         assert res.status_code == 200
         res = res.json()
         assert list(res[0]) == ["name", "level"]

@@ -5,8 +5,12 @@ from xlrd import open_workbook, XLRDError
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from fastapi import (
-    Depends, Request, APIRouter, Query,
-    HTTPException, BackgroundTasks
+    Depends,
+    Request,
+    APIRouter,
+    Query,
+    HTTPException,
+    BackgroundTasks,
 )
 from fastapi.security import HTTPBearer
 from fastapi.responses import FileResponse
@@ -16,10 +20,7 @@ from db.crud_question import get_question_name
 from utils.storage import StorageFolder, upload, download
 from utils.helper import UUID, write_log
 from utils.downloader import generate_download_data
-from db.crud_jobs import (
-    add_jobs, update_jobs,
-    query_jobs, get_jobs_by_id
-)
+from db.crud_jobs import add_jobs, update_jobs, query_jobs, get_jobs_by_id
 from models.jobs import JobsBase, JobStatus, JOB_STATUS_TEXT
 from middleware import check_query
 
@@ -29,7 +30,7 @@ DOWNLOAD_PATH = main_config.DOWNLOAD_PATH
 
 
 out_file_path = "./tmp/"
-ftype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+ftype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
 security = HTTPBearer()
 file_route = APIRouter()
@@ -50,7 +51,8 @@ def run_download(session: Session, jobs: dict):
     # download start
     out_file = payload
     file, context = generate_download_data(
-        session=session, jobs=jobs, file=f"{DOWNLOAD_PATH}/{out_file}")
+        session=session, jobs=jobs, file=f"{DOWNLOAD_PATH}/{out_file}"
+    )
     if file:
         storage_folder = StorageFolder.download.value
         output = upload(file, storage_folder, out_file)
@@ -59,10 +61,8 @@ def run_download(session: Session, jobs: dict):
     else:
         status = JobStatus.failed.value
     jobs = update_jobs(
-        session=session,
-        id=jobs.get("id"),
-        payload=payload,
-        status=status)
+        session=session, id=jobs.get("id"), payload=payload, status=status
+    )
     # write download log
     job_id = f"job_id: {jobs['id']}"
     job_status = f"status: {JOB_STATUS_TEXT.get(status)}"
@@ -75,25 +75,35 @@ def run_download(session: Session, jobs: dict):
     response_model=JobsBase,
     summary="request to download data",
     name="excel-data:generate",
-    tags=["File"])
+    tags=["File"],
+)
 async def generate_file(
     req: Request,
     background_tasks: BackgroundTasks,
     session: Session = Depends(get_session),
     monitoring_round: int = Query(
-        None, description="filter data by monitoring round (year)"),
+        None, description="filter data by monitoring round (year)"
+    ),
     q: Optional[List[str]] = Query(
-        None, description="format: question_id|option value \
-            (indicator option & advance filter)"),
+        None,
+        description="format: question_id|option value \
+            (indicator option & advance filter)",
+    ),
     data_ids: Optional[List[str]] = Query(
-        None, description="format: datapoint id \
-            (filter by datapoint ids)"),
+        None,
+        description="format: datapoint id \
+            (filter by datapoint ids)",
+    ),
     prov: Optional[List[str]] = Query(
-        None, description="format: province name \
-            (filter by province name)"),
+        None,
+        description="format: province name \
+            (filter by province name)",
+    ),
     sctype: Optional[List[str]] = Query(
-        None, description="format: school_type name \
-            (filter by shcool type)"),
+        None,
+        description="format: school_type name \
+            (filter by shcool type)",
+    ),
 ):
     TESTING = os.environ.get("TESTING")
     tags = []
@@ -103,29 +113,18 @@ async def generate_file(
     today = datetime.today().strftime("%y%m%d")
     out_file = UUID(f"{form_name}-{today}").str
     if monitoring_round:
-        tags.append({
-            "q": "Monitoring round",
-            "o": monitoring_round
-        })
+        tags.append({"q": "Monitoring round", "o": monitoring_round})
     if q:
         qids = [o.split("|")[0] for o in q]
-        question_names = get_question_name(
-            session=session, ids=qids
-        )
+        question_names = get_question_name(session=session, ids=qids)
         for o in q:
             [qid, option] = o.split("|")
             question = question_names.get(qid) or ""
             tags.append({"q": question, "o": option})
     if prov:
-        tags.append({
-            "q": "Province",
-            "o": ", ".join(prov)
-        })
+        tags.append({"q": "Province", "o": ", ".join(prov)})
     if sctype:
-        tags.append({
-            "q": "School type",
-            "o": ", ".join(sctype)
-        })
+        tags.append({"q": "School type", "o": ", ".join(sctype)})
     res = add_jobs(
         session=session,
         payload=f"download-{out_file}.xlsx",
@@ -137,7 +136,8 @@ async def generate_file(
             "school_type": sctype,
             "tags": tags,
             "data_ids": data_ids,
-        })
+        },
+    )
     if TESTING:
         run_download(session=session, jobs=res)
         return res
@@ -149,18 +149,17 @@ async def generate_file(
     "/download/file/{filename:path}",
     summary="download file by filename",
     name="excel-data:download",
-    tags=["File"])
+    tags=["File"],
+)
 async def download_file(
-    req: Request,
-    filename: str,
-    session: Session = Depends(get_session)
+    req: Request, filename: str, session: Session = Depends(get_session)
 ):
     TESTING = os.environ.get("TESTING")
-    filename = filename.split('/')[-1]
+    filename = filename.split("/")[-1]
     storage_folder = StorageFolder.download.value
     filepath = download(f"{storage_folder}/{filename}")
     if TESTING:
-        return {'filepath': filepath}
+        return {"filepath": filepath}
     return FileResponse(path=filepath, filename=filename, media_type=ftype)
 
 
@@ -169,17 +168,16 @@ async def download_file(
     response_model=List[JobsBase],
     summary="list of generated dowload data",
     name="excel-data:download-list",
-    tags=["File"])
+    tags=["File"],
+)
 async def download_list(
     req: Request,
     page: Optional[int] = 1,
     perpage: Optional[int] = 5,
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
 ):
     res = query_jobs(
-        session=session,
-        limit=perpage,
-        skip=(perpage * (page - 1))
+        session=session, limit=perpage, skip=(perpage * (page - 1))
     )
     if not res:
         raise HTTPException(status_code=404, detail="Not found")
@@ -191,11 +189,10 @@ async def download_list(
     response_model=JobsBase,
     summary="get download detail by id",
     name="excel-data:download-status",
-    tags=["File"])
+    tags=["File"],
+)
 async def download_check(
-    req: Request,
-    id: int,
-    session: Session = Depends(get_session)
+    req: Request, id: int, session: Session = Depends(get_session)
 ):
     res = get_jobs_by_id(session=session, id=id)
     if not res:

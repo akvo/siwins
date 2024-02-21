@@ -31,10 +31,9 @@ def get_cascade_by_question_id(
     session: Session,
     question: int,
     level: Optional[int] = None,
-    distinct: Optional[bool] = False
+    distinct: Optional[bool] = False,
 ) -> CascadeDict:
-    cascade = session.query(Cascade).filter(
-        Cascade.question == question)
+    cascade = session.query(Cascade).filter(Cascade.question == question)
     if level is not None:
         cascade = cascade.filter(Cascade.level == level)
     if distinct:
@@ -45,15 +44,20 @@ def get_cascade_by_question_id(
 def get_cascade_by_parent(
     session: Session, parent: int, level: Optional[int] = None
 ) -> CascadeSimplified:
-    cascade = session.query(Cascade).filter(
-        Cascade.parent == parent)
+    cascade = session.query(Cascade).filter(Cascade.parent == parent)
     if level is not None:
         cascade = cascade.filter(Cascade.level == level)
     return cascade.order_by(Cascade.level).all()
 
 
 def get_province_of_school_information(session: Session):
-    return session.query(Cascade).filter(and_(
-        Cascade.question == school_information_qid,
-        Cascade.level == province_level
-    )).all()
+    return (
+        session.query(Cascade)
+        .filter(
+            and_(
+                Cascade.question == school_information_qid,
+                Cascade.level == province_level,
+            )
+        )
+        .all()
+    )

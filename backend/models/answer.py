@@ -27,7 +27,7 @@ def append_value(self, answer):
         answer.update({"value": self.options})
     if type == QuestionType.photo:
         obj = json.loads(self.text)
-        answer.update({"value": obj.get('filename')})
+        answer.update({"value": obj.get("filename")})
     if type == QuestionType.geoshape:
         answer.update({"value": json.loads(self.text)})
     if type == QuestionType.cascade:
@@ -158,7 +158,7 @@ class Answer(Base):
         answer = {
             "question_id": self.question,
             "question": self.question_detail.name,
-            "type": self.question_detail.type.value
+            "type": self.question_detail.type.value,
         }
         answer = append_value(self, answer)
         return answer
@@ -186,7 +186,7 @@ class Answer(Base):
             "q_order": qdetail.order,
             "question_name": qdetail.name,
             "type": qdetail.type.value,
-            "personal_data": qdetail.personal_data
+            "personal_data": qdetail.personal_data,
         }
         answer = append_value(self, answer)
         return answer
@@ -205,7 +205,7 @@ class Answer(Base):
             "type": qdetail.type.value,
             "attributes": qdetail.attributes,
             "history": not self.answer.current,
-            "year": self.answer.year_conducted
+            "year": self.answer.year_conducted,
         }
         answer = append_value(self, answer)
         return answer

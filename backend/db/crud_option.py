@@ -1,9 +1,11 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from models.option import Option, OptionDict
+
 # from models.question import Question
 
 from source.main import main_config
+
 QuestionConfig = main_config.QuestionConfig
 
 
@@ -14,17 +16,18 @@ year_conducted_qid = QuestionConfig.year_conducted.value
 
 
 def get_option_by_question_id(
-    session: Session,
-    question=int,
-    columns: Optional[List] = None
+    session: Session, question=int, columns: Optional[List] = None
 ) -> List[OptionDict]:
     columns = columns if columns else [Option]
     return session.query(*columns).filter(Option.question == question).all()
 
 
 def get_option_year_conducted(session: Session) -> List[OptionDict]:
-    return session.query(Option).filter(
-        Option.question == year_conducted_qid).all()
+    return (
+        session.query(Option)
+        .filter(Option.question == year_conducted_qid)
+        .all()
+    )
 
 
 # def add_option(
