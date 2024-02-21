@@ -31,8 +31,8 @@ def save_cascade(
         try:
             res = flow_auth.get_cascade(source=source, id=id)
         except requests.exceptions.RequestException:
-            print("Sleep 2 second...")
-            sleep(2)
+            print("Sleep 5 second...")
+            sleep(5)
             print("Continue...")
             res = flow_auth.get_cascade(source=source, id=id)
         cids = []
@@ -50,7 +50,11 @@ def save_cascade(
         if not cids:
             return None
         save_cascade(
-            source=source, question=question, ids=cids, level=level + 1
+            session=session,
+            source=source,
+            question=question,
+            ids=cids,
+            level=level + 1,
         )
 
 
