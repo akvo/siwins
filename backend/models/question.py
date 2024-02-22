@@ -90,10 +90,7 @@ class Question(Base):
     personal_data = Column(Boolean, default=False)
 
     option = relationship(
-        "Option",
-        cascade="all, delete",
-        passive_deletes=True,
-        backref="option"
+        "Option", cascade="all, delete", passive_deletes=True, backref="option"
     )
 
     def __init__(
@@ -143,7 +140,7 @@ class Question(Base):
             "required": self.required,
             "dependency": self.dependency,
             "option": self.option,
-            "personal_data": self.personal_data
+            "personal_data": self.personal_data,
         }
 
     @property
@@ -165,7 +162,7 @@ class Question(Base):
             "q_order": self.order,
             "attributes": self.attributes or [],
             "option": [o.simplify for o in self.option] or [],
-            "number": []
+            "number": [],
         }
 
     @property

@@ -29,17 +29,15 @@ def check_query(keywords):
     for q in keywords:
         if not query_pattern.match(q):
             raise HTTPException(
-                status_code=400,
-                detail="Bad Request, wrong q pattern")
+                status_code=400, detail="Bad Request, wrong q pattern"
+            )
         else:
             keys.append(q.replace("|", "||").lower())
     return keys
 
 
 def check_indicator_param(
-    session: Session,
-    indicator: int,
-    number: Optional[List[int]]
+    session: Session, indicator: int, number: Optional[List[int]]
 ):
     # 1. indicator filter by option,
     #  - use same format as advanced filter: q param = qid|option
@@ -47,16 +45,16 @@ def check_indicator_param(
     #  - check if indicator qtype is number
     #  - filter answers by number param
     question = get_question_by_id(session=session, id=indicator)
-    is_number = question.type == QuestionType.number \
-        if question else False
+    is_number = question.type == QuestionType.number if question else False
     if number and not is_number:
         raise HTTPException(
-            status_code=400,
-            detail="Bad Request, indicator is not number type")
+            status_code=400, detail="Bad Request, indicator is not number type"
+        )
     if number and len(number) != 2:
         raise HTTPException(
             status_code=400,
-            detail="Bad Request, number param length must equal to 2")
+            detail="Bad Request, number param length must equal to 2",
+        )
     return indicator
 
 
@@ -75,14 +73,12 @@ def check_indicator_query(
             session=session,
             question=indicator,
             data_ids=data_ids,
-            number=number
+            number=number,
         )
         answer_data_ids = [a.data for a in answers]
     if indicator and return_answer_temp:
-        answers = [
-            a.formatted_with_data for a in answers
-        ] if answers else []
+        answers = [a.formatted_with_data for a in answers] if answers else []
         for a in answers:
-            key = a.get('identifier')
-            answer_temp.update({key: a.get('value')})
+            key = a.get("identifier")
+            answer_temp.update({key: a.get("value")})
     return answer_data_ids, answer_temp

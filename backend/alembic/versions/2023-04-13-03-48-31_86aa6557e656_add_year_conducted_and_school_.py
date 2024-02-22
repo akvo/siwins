@@ -11,19 +11,20 @@ import sqlalchemy.dialects.postgresql as pg
 
 
 # revision identifiers, used by Alembic.
-revision = '86aa6557e656'
-down_revision = 'b3ad51d031c6'
+revision = "86aa6557e656"
+down_revision = "b3ad51d031c6"
 branch_labels = None
 depends_on = None
 
 
 def upgrade() -> None:
     op.add_column(
-        "data", sa.Column(
-            "year_conducted", sa.Integer(), nullable=True))
+        "data", sa.Column("year_conducted", sa.Integer(), nullable=True)
+    )
     op.add_column(
-        "data", sa.Column(
-            "school_information", pg.ARRAY(sa.String()), nullable=True))
+        "data",
+        sa.Column("school_information", pg.ARRAY(sa.String()), nullable=True),
+    )
 
 
 def downgrade() -> None:

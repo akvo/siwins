@@ -19,11 +19,12 @@ class AdministrationDict(TypedDict):
 class Administration(Base):
     __tablename__ = "administration"
     id = Column(Integer, primary_key=True, index=True, nullable=True)
-    parent = Column(Integer, ForeignKey('administration.id'), nullable=True)
+    parent = Column(Integer, ForeignKey("administration.id"), nullable=True)
     name = Column(String)
     children = relationship("Administration")
     parent_detail = relationship(
-        "Administration", remote_side=[id], overlaps="children")
+        "Administration", remote_side=[id], overlaps="children"
+    )
 
     def __init__(self, id: int, parent: int, name: str):
         self.id = id
@@ -39,7 +40,7 @@ class Administration(Base):
             "id": self.id,
             "parent": self.parent,
             "name": self.name,
-            "children": self.children
+            "children": self.children,
         }
 
 

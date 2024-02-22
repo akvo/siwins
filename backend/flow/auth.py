@@ -43,10 +43,12 @@ def get_header(token: Optional[dict] = None):
         "Accept": "application/vnd.akvo.flow.v2+json",
         "Content-Type": "application/json",
     }
-    if (token):
-        header.update({
-            "Authorization": f"Bearer {token['token']}",
-        })
+    if token:
+        header.update(
+            {
+                "Authorization": f"Bearer {token['token']}",
+            }
+        )
     return header
 
 
@@ -70,8 +72,7 @@ def get_form(form_id: int):
 
 
 def get_cascade(source: str, id: int):
-    url = cascade_url.replace(
-        "#source#", source).replace("#id#", str(id))
+    url = cascade_url.replace("#source#", source).replace("#id#", str(id))
     return get_data(url=url, token=None)
 
 

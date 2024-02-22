@@ -7,9 +7,7 @@ from models.jobs import Jobs, JobsBase, JobStatus
 
 
 def add_jobs(
-    session: Session,
-    payload: str,
-    info: Optional[TypedDict] = None
+    session: Session, payload: str, info: Optional[TypedDict] = None
 ) -> JobsBase:
     jobs = Jobs(payload=payload, info=info)
     session.add(jobs)
@@ -24,7 +22,7 @@ def update_jobs(
     id: int,
     payload: Optional[str] = None,
     status: int = None,
-    info: Optional[TypedDict] = None
+    info: Optional[TypedDict] = None,
 ) -> JobsBase:
     jobs = session.query(Jobs).filter(Jobs.id == id).first()
     if payload:
@@ -45,14 +43,12 @@ def query_jobs(
     session: Session,
     status: Optional[int] = None,
     limit: Optional[int] = 5,
-    skip: Optional[int] = 0
+    skip: Optional[int] = 0,
 ) -> JobsBase:
     jobs = session.query(Jobs)
     if status:
         jobs = jobs.filter(Jobs.status == status)
-    jobs = jobs.order_by(
-        desc(Jobs.created)
-    ).offset(skip).limit(limit).all()
+    jobs = jobs.order_by(desc(Jobs.created)).offset(skip).limit(limit).all()
     return [j.simplify for j in jobs]
 
 

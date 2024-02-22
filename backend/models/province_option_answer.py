@@ -1,7 +1,4 @@
-from sqlalchemy import (
-    Column, BigInteger, String,
-    Boolean, Integer
-)
+from sqlalchemy import Column, BigInteger, String, Boolean, Integer
 import sqlalchemy.dialects.postgresql as pg
 from db.connection import Base
 
@@ -33,5 +30,5 @@ class ProvinceOptionAnswer(Base):
             "data_ids": self.data_ids,
             "province": self.province,
             "value": self.value,
-            "count": self.count
+            "count": self.count,
         }

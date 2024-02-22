@@ -74,10 +74,7 @@ class QuestionGroup(Base):
 
     @property
     def only_name(self):
-        return {
-            "name": self.display_name or self.name,
-            "order": self.order
-        }
+        return {"name": self.display_name or self.name, "order": self.order}
 
 
 class QuestionGroupBase(BaseModel):

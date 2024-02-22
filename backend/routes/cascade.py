@@ -26,19 +26,20 @@ school_information_levels = CascadeLevels.school_information.value
     response_model=List[CascadeNameAndLevel],
     name="cascade:get_school_information",
     summary="get school information cascade of filter",
-    tags=["Cascade"]
+    tags=["Cascade"],
 )
 def get_cascade(
     req: Request,
     level: Optional[SchoolInformationEnum] = None,
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
 ):
     level_numb = school_information_levels[level.value]
     cascade = crud_cascade.get_cascade_by_question_id(
         session=session,
         question=school_information_qid,
         level=level_numb,
-        distinct=True)
+        distinct=True,
+    )
     cascade = [c.to_name_level for c in cascade]
-    cascade.sort(key=lambda x: x.get('name'))
+    cascade.sort(key=lambda x: x.get("name"))
     return cascade

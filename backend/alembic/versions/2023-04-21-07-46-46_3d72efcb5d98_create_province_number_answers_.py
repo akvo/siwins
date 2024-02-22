@@ -10,8 +10,8 @@ from alembic_utils.pg_materialized_view import PGMaterializedView
 
 
 # revision identifiers, used by Alembic.
-revision = '3d72efcb5d98'
-down_revision = 'a4f9528c9ed4'
+revision = "3d72efcb5d98"
+down_revision = "a4f9528c9ed4"
 branch_labels = None
 depends_on = None
 

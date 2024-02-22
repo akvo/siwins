@@ -20,23 +20,21 @@ class TestDataRoutes:
         res = await client.get(app.url_path_for("data:get_all"))
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
+        assert list(res) == ["current", "data", "total", "total_page"]
         assert list(res["data"][0]) == [
-            'id', 'name', 'geo',
-            'year_conducted', 'school_information'
+            "id",
+            "name",
+            "geo",
+            "year_conducted",
+            "school_information",
         ]
         # filter with monitoring round
         res = await client.get(
-            app.url_path_for("data:get_all"),
-            params={"monitoring_round": 2010}
+            app.url_path_for("data:get_all"), params={"monitoring_round": 2010}
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
+        assert list(res) == ["current", "data", "total", "total_page"]
         assert res["data"] == []
         # filter with monitoring round
         # TODO: Delete
@@ -61,17 +59,17 @@ class TestDataRoutes:
         #     'total_page': 1
         # }
         res = await client.get(
-            app.url_path_for("data:get_all"),
-            params={"monitoring_round": 2018}
+            app.url_path_for("data:get_all"), params={"monitoring_round": 2018}
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
+        assert list(res) == ["current", "data", "total", "total_page"]
         assert list(res["data"][0]) == [
-            'id', 'name', 'geo',
-            'year_conducted', 'school_information'
+            "id",
+            "name",
+            "geo",
+            "year_conducted",
+            "school_information",
         ]
         for d in res["data"]:
             assert d["year_conducted"] == 2018
@@ -82,14 +80,12 @@ class TestDataRoutes:
             params={
                 "monitoring_round": 2018,
                 "prov": "Central",
-                "sctype": "Community High School"
-            }
+                "sctype": "Community High School",
+            },
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
+        assert list(res) == ["current", "data", "total", "total_page"]
         assert res["data"] == []
         # filter with monitoring round, province, school_type
         res = await client.get(
@@ -97,17 +93,18 @@ class TestDataRoutes:
             params={
                 "monitoring_round": 2018,
                 "prov": "Guadalcanal",
-                "sctype": "Community High School"
-            }
+                "sctype": "Community High School",
+            },
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
+        assert list(res) == ["current", "data", "total", "total_page"]
         assert list(res["data"][0]) == [
-            'id', 'name', 'geo',
-            'year_conducted', 'school_information'
+            "id",
+            "name",
+            "geo",
+            "year_conducted",
+            "school_information",
         ]
         for d in res["data"]:
             assert d["year_conducted"] == 2018
@@ -118,14 +115,12 @@ class TestDataRoutes:
                 "monitoring_round": 2018,
                 "prov": "Guadalcanal",
                 "sctype": "Primary School",
-                "q": "624660930|no"
-            }
+                "q": "624660930|no",
+            },
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
+        assert list(res) == ["current", "data", "total", "total_page"]
         assert res["data"] == []
 
     @pytest.mark.asyncio
@@ -157,23 +152,21 @@ class TestDataRoutes:
         self, app: FastAPI, session: Session, client: AsyncClient
     ) -> None:
         res = await client.get(
-            app.url_path_for("data:init_maps_data"),
-            params={"page_only": True}
+            app.url_path_for("data:init_maps_data"), params={"page_only": True}
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
+        assert list(res) == ["current", "data", "total", "total_page"]
         # load all data
         res = await client.get(app.url_path_for("data:init_maps_data"))
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
+        assert list(res) == ["current", "data", "total", "total_page"]
         assert list(res["data"][0]) == [
-            'id', 'school_information', 'year_conducted', 'geo'
+            "id",
+            "school_information",
+            "year_conducted",
+            "geo",
         ]
 
     @pytest.mark.asyncio
@@ -182,21 +175,16 @@ class TestDataRoutes:
     ) -> None:
         # without indicator
         res = await client.get(
-            app.url_path_for("data:get_maps_data"),
-            params={"page_only": True}
+            app.url_path_for("data:get_maps_data"), params={"page_only": True}
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
+        assert list(res) == ["current", "data", "total", "total_page"]
         res = await client.get(app.url_path_for("data:get_maps_data"))
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert list(res) == ["current", "data", "total", "total_page"]
+        assert list(res["data"][0]) == ["id", "answer"]
         # TODO:: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -224,13 +212,12 @@ class TestDataRoutes:
 
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_option.id})
+            params={"indicator": indicator_option.id},
+        )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert list(res) == ["current", "data", "total", "total_page"]
+        assert list(res["data"][0]) == ["id", "answer"]
         # TODO:: delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -251,19 +238,19 @@ class TestDataRoutes:
         # option indicator with number filter
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_option.id, "number": [10, 20]})
+            params={"indicator": indicator_option.id, "number": [10, 20]},
+        )
         assert res.status_code == 400
         # option indicator with option filter
         indicator_id = indicator_option.id
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id, "q": f"{indicator_id}|no"})
+            params={"indicator": indicator_id, "q": f"{indicator_id}|no"},
+        )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert list(res) == ["current", "data", "total", "total_page"]
+        assert list(res["data"][0]) == ["id", "answer"]
         # TODO:: Delete
         # assert res["data"] == [{
         #     'id': 649130936,
@@ -284,25 +271,23 @@ class TestDataRoutes:
             app.url_path_for("data:get_maps_data"),
             params={
                 "indicator": indicator_id,
-                "q": f"{indicator_id}|wrong_option"
-            })
+                "q": f"{indicator_id}|wrong_option",
+            },
+        )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
+        assert list(res) == ["current", "data", "total", "total_page"]
         assert len(res["data"]) == 0
         # number indicator with number filter
         indicator_id = indicator_number.id
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id})
+            params={"indicator": indicator_id},
+        )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert list(res) == ["current", "data", "total", "total_page"]
+        assert list(res["data"][0]) == ["id", "answer"]
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -321,26 +306,25 @@ class TestDataRoutes:
         # }
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id, "number": [11]})
+            params={"indicator": indicator_id, "number": [11]},
+        )
         assert res.status_code == 400
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id, "number": [999, 9999]})
+            params={"indicator": indicator_id, "number": [999, 9999]},
+        )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
+        assert list(res) == ["current", "data", "total", "total_page"]
         assert len(res["data"]) == 0
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id, "number": [1, 20]})
+            params={"indicator": indicator_id, "number": [1, 20]},
+        )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert list(res) == ["current", "data", "total", "total_page"]
+        assert list(res["data"][0]) == ["id", "answer"]
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -362,21 +346,21 @@ class TestDataRoutes:
             app.url_path_for("data:get_maps_data"),
             params={
                 "indicator": indicator_option.id,
-                "prov": ["Wrong Province"]
-            })
+                "prov": ["Wrong Province"],
+            },
+        )
         assert res.status_code == 200
         res = res.json()
         assert len(res["data"]) == 0
         # filter by province
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_option.id, "prov": ["Guadalcanal"]})
+            params={"indicator": indicator_option.id, "prov": ["Guadalcanal"]},
+        )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert list(res) == ["current", "data", "total", "total_page"]
+        assert list(res["data"][0]) == ["id", "answer"]
         # TODO:: delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -398,8 +382,9 @@ class TestDataRoutes:
             app.url_path_for("data:get_maps_data"),
             params={
                 "indicator": indicator_option.id,
-                "sctype": ["Wrong School Type"]
-            })
+                "sctype": ["Wrong School Type"],
+            },
+        )
         assert res.status_code == 200
         res = res.json()
         assert len(res["data"]) == 0
@@ -408,14 +393,13 @@ class TestDataRoutes:
             app.url_path_for("data:get_maps_data"),
             params={
                 "indicator": indicator_option.id,
-                "sctype": ["Community High School"]
-            })
+                "sctype": ["Community High School"],
+            },
+        )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert list(res) == ["current", "data", "total", "total_page"]
+        assert list(res["data"][0]) == ["id", "answer"]
         # TODO:: delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -438,8 +422,9 @@ class TestDataRoutes:
             params={
                 "indicator": indicator_option.id,
                 "prov": ["Wrong Province"],
-                "sctype": ["Wrong School Type"]
-            })
+                "sctype": ["Wrong School Type"],
+            },
+        )
         assert res.status_code == 200
         res = res.json()
         assert len(res["data"]) == 0
@@ -448,14 +433,13 @@ class TestDataRoutes:
             params={
                 "indicator": indicator_option.id,
                 "prov": ["Guadalcanal"],
-                "sctype": ["Community High School"]
-            })
+                "sctype": ["Community High School"],
+            },
+        )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert list(res) == ["current", "data", "total", "total_page"]
+        assert list(res["data"][0]) == ["id", "answer"]
         # TODO:: delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -476,13 +460,12 @@ class TestDataRoutes:
         indicator_id = "jmp-water"
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id})
+            params={"indicator": indicator_id},
+        )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert list(res) == ["current", "data", "total", "total_page"]
+        assert list(res["data"][0]) == ["id", "answer"]
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,
@@ -507,20 +490,20 @@ class TestDataRoutes:
             app.url_path_for("data:get_maps_data"),
             params={
                 "indicator": indicator_id,
-                "q": "jmp-water|wrong_category_name"
-            })
+                "q": "jmp-water|wrong_category_name",
+            },
+        )
         assert res.status_code == 200
         res = res.json()
         assert len(res["data"]) == 0
         res = await client.get(
             app.url_path_for("data:get_maps_data"),
-            params={"indicator": indicator_id, "q": "jmp-water|limited"})
+            params={"indicator": indicator_id, "q": "jmp-water|limited"},
+        )
         assert res.status_code == 200
         res = res.json()
-        assert list(res) == [
-            'current', 'data', 'total', 'total_page'
-        ]
-        assert list(res["data"][0]) == ['id', 'answer']
+        assert list(res) == ["current", "data", "total", "total_page"]
+        assert list(res["data"][0]) == ["id", "answer"]
         # TODO: Delete
         # assert res["data"][0] == {
         #     'id': 649130936,

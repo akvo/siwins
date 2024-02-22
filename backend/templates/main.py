@@ -13,12 +13,13 @@ template_route = APIRouter()
     response_class=HTMLResponse,
     summary="get email template",
     name="template:email",
-    tags=["Template"])
+    tags=["Template"],
+)
 def get_email_template(
     req: Request,
     type: MailTypeEnum,
     send: Optional[bool] = False,
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
 ):
     # need to add recipients
     email = Email(type=type)

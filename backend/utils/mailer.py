@@ -15,16 +15,16 @@ from source.main import main_config
 ERROR_PATH = main_config.ERROR_PATH
 
 
-mjkey = os.environ['MAILJET_APIKEY']
-mjsecret = os.environ['MAILJET_SECRET']
-notification_recepients = os.environ['NOTIFICATION_RECIPIENTS']
+mjkey = os.environ["MAILJET_APIKEY"]
+mjsecret = os.environ["MAILJET_SECRET"]
+notification_recepients = os.environ["NOTIFICATION_RECIPIENTS"]
 
 mailjet = Client(auth=(mjkey, mjsecret))
-loader = FileSystemLoader('.')
+loader = FileSystemLoader(".")
 env = Environment(loader=loader)
 html_template = env.get_template("./templates/main.html")
-ftype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-ftype += ';base64'
+ftype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+ftype += ";base64"
 
 
 def send(data):
@@ -35,7 +35,7 @@ def send(data):
 
 def html_to_text(html):
     soup = BeautifulSoup(html, "lxml")
-    body = soup.find('body')
+    body = soup.find("body")
     return "".join(body.get_text())
 
 
@@ -48,23 +48,21 @@ def format_attachment(file):
     return {
         "ContentType": ftype,
         "Filename": file.split("/")[-1],
-        "content": base64.b64encode(open(file, "rb").read()).decode('UTF-8')
+        "content": base64.b64encode(open(file, "rb").read()).decode("UTF-8"),
     }
 
 
 def send_error_email(error: List, filename: Optional[str] = None):
     today = datetime.today().strftime("%y%m%d")
     error_list = pd.DataFrame(error)
-    error_list = error_list[list(
-        filter(lambda x: x != "error", list(error_list)))]
+    error_list = error_list[
+        list(filter(lambda x: x != "error", list(error_list)))
+    ]
     fname = "error" if not filename else filename
     error_file = f"{ERROR_PATH}/{fname}-{today}.csv"
     error_list = error_list.to_csv(error_file, index=False)
     # error email
-    email = Email(
-        type=MailTypeEnum.error,
-        attachment=error_file
-    )
+    email = Email(type=MailTypeEnum.error, attachment=error_file)
     email.send
     # end of email
 
@@ -86,7 +84,7 @@ class Email:
         bcc: Optional[List[Recipients]] = None,
         attachment: Optional[str] = None,
         context: Optional[str] = None,
-        body: Optional[str] = None
+        body: Optional[str] = None,
     ):
         self.type = EmailText[type.value]
         self.recipients = recipients
@@ -98,9 +96,7 @@ class Email:
     @property
     def data(self):
         recipients = notification_recepients.split(",")
-        recipients = [{
-            "Email": email
-        } for email in recipients]
+        recipients = [{"Email": email} for email in recipients]
         type = self.type.value
         body = type["body"]
         if self.body:
@@ -115,7 +111,7 @@ class Email:
             body=body,
             image="",
             message=type["message"],
-            context=self.context
+            context=self.context,
         )
         payload = {
             "FromEmail": "noreply@akvo.org",

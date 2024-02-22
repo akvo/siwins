@@ -7,17 +7,11 @@ pytestmark = pytest.mark.asyncio
 sys.path.append("..")
 
 
-class TestMailer():
+class TestMailer:
     @pytest.mark.asyncio
     async def test_email_data(self, session: Session) -> None:
-        recipients = [{
-            "Email": "support@akvo.org",
-            "Name": "Akvo Support"
-        }]
-        email = Email(
-            recipients=recipients,
-            type=MailTypeEnum.error
-        )
+        recipients = [{"Email": "support@akvo.org", "Name": "Akvo Support"}]
+        email = Email(recipients=recipients, type=MailTypeEnum.error)
         data = email.data
         assert data["Recipients"] == recipients
         assert data["FromEmail"] == "noreply@akvo.org"

@@ -12,10 +12,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": ""
-          },
+          "help": { "altText": [], "text": "" },
           "id": "Q596240919",
           "mandatory": true,
           "order": 1,
@@ -25,31 +22,11 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "2018",
-                "text": "2018"
-              },
-              {
-                "altText": [],
-                "value": "2023",
-                "text": "2023"
-              },
-              {
-                "altText": [],
-                "value": "2024",
-                "text": "2024"
-              },
-              {
-                "altText": [],
-                "value": "2025",
-                "text": "2025"
-              },
-              {
-                "altText": [],
-                "value": "2026",
-                "text": "2026"
-              }
+              { "altText": [], "value": "2018", "text": "2018" },
+              { "altText": [], "value": "2023", "text": "2023" },
+              { "altText": [], "value": "2024", "text": "2024" },
+              { "altText": [], "value": "2025", "text": "2025" },
+              { "altText": [], "value": "2026", "text": "2026" }
             ]
           }
         },
@@ -116,22 +93,14 @@
         {
           "localeNameFlag": true,
           "altText": [],
-          "cascadeResource": "cascade-654850917-v1.sqlite",
+          "cascadeResource": "cascade-790170997-v1.sqlite",
           "id": "Q634200919",
           "levels": {
             "level": [
-              {
-                "text": "Province"
-              },
-              {
-                "text": "School Type"
-              },
-              {
-                "text": "School Name"
-              },
-              {
-                "text": "School Code"
-              }
+              { "text": "Province" },
+              { "text": "School type" },
+              { "text": "School Name" },
+              { "text": "School Code" }
             ]
           },
           "mandatory": true,
@@ -151,60 +120,32 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" }
             ]
           }
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": ""
-          },
+          "help": { "altText": [], "text": "" },
           "id": "Q599740919",
           "mandatory": true,
           "order": 3,
           "text": "Please write the school name if not available on the list above:",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "No"
-              ],
-              "question": "Q706490917"
-            }
-          ]
+          "dependency": [{ "answerValue": ["No"], "question": "Q706490917" }]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": ""
-          },
+          "help": { "altText": [], "text": "" },
           "id": "Q624560919",
           "mandatory": true,
           "order": 4,
           "text": "Please write the school registration number if not available/different from the list above:",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "No"
-              ],
-              "question": "Q706490917"
-            }
-          ],
+          "dependency": [{ "answerValue": ["No"], "question": "Q706490917" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -223,11 +164,7 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Day School",
-                "text": "Day School"
-              },
+              { "altText": [], "value": "Day School", "text": "Day School" },
               {
                 "altText": [],
                 "value": "Boarding School",
@@ -356,10 +293,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": "Check updated school records"
-          },
+          "help": { "altText": [], "text": "Check updated school records" },
           "id": "Q642180924",
           "mandatory": true,
           "order": 12,
@@ -369,10 +303,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": "Check updated school records"
-          },
+          "help": { "altText": [], "text": "Check updated school records" },
           "id": "Q640540918",
           "mandatory": true,
           "order": 13,
@@ -387,10 +318,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": "Check updated school records"
-          },
+          "help": { "altText": [], "text": "Check updated school records" },
           "id": "Q638520918",
           "mandatory": true,
           "order": 14,
@@ -405,10 +333,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": "Check updated school records"
-          },
+          "help": { "altText": [], "text": "Check updated school records" },
           "id": "Q629900921",
           "mandatory": true,
           "order": 15,
@@ -469,16 +394,8 @@
                 "value": "Mains Electricity",
                 "text": "Mains Electricity"
               },
-              {
-                "altText": [],
-                "value": "Solar",
-                "text": "Solar"
-              },
-              {
-                "altText": [],
-                "value": "Generator",
-                "text": "Generator"
-              },
+              { "altText": [], "value": "Solar", "text": "Solar" },
+              { "altText": [], "value": "Generator", "text": "Generator" },
               {
                 "altText": [],
                 "value": "No power supply",
@@ -510,22 +427,13 @@
           "text": "Status of the  the schools main source of power at time of survey?",
           "type": "option",
           "dependency": [
-            {
-              "answerValue": [
-                "Mains Electricity"
-              ],
-              "question": "Q629900923"
-            }
+            { "answerValue": ["Mains Electricity"], "question": "Q629900923" }
           ],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Functioning",
-                "text": "Functioning"
-              },
+              { "altText": [], "value": "Functioning", "text": "Functioning" },
               {
                 "altText": [],
                 "value": "Non-Functioning",
@@ -583,11 +491,7 @@
                 "value": "Packaged bottled water",
                 "text": "Packaged bottled water"
               },
-              {
-                "altText": [],
-                "value": "Rainwater",
-                "text": "Rainwater"
-              },
+              { "altText": [], "value": "Rainwater", "text": "Rainwater" },
               {
                 "altText": [],
                 "value": "Tanker truck or cart",
@@ -654,10 +558,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": ""
-          },
+          "help": { "altText": [], "text": "" },
           "id": "Q632240923",
           "mandatory": true,
           "order": 3,
@@ -707,16 +608,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -744,16 +637,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -774,16 +659,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -800,14 +677,7 @@
           "order": 3,
           "text": "If water is available, please take a picture of the water point:",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q622560918"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q622560918" }]
         },
         {
           "localeNameFlag": false,
@@ -817,14 +687,7 @@
           "order": 4,
           "text": "If water is available, please take a picture of the water point (second picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q622560918"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q622560918" }]
         },
         {
           "localeNameFlag": false,
@@ -834,14 +697,7 @@
           "order": 5,
           "text": "If water is available, please take a picture of the water point (third picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q622560918"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q622560918" }]
         },
         {
           "localeNameFlag": false,
@@ -897,16 +753,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -923,14 +771,7 @@
           "order": 2,
           "text": "If yes, please take a picture of the access to the water point to those with limited mobility/ vision?",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q641970922"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q641970922" }]
         },
         {
           "localeNameFlag": false,
@@ -940,14 +781,7 @@
           "order": 3,
           "text": "If yes, please take a picture of the access to the water point to those with limited mobility/ vision (second picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q641970922"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q641970922" }]
         },
         {
           "localeNameFlag": false,
@@ -957,14 +791,7 @@
           "order": 4,
           "text": "If yes, please take a picture of the access to the water point to those with limited mobility/ vision (third picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q641970922"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q641970922" }]
         },
         {
           "localeNameFlag": false,
@@ -978,16 +805,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -1004,14 +823,7 @@
           "order": 6,
           "text": "If yes, please take a picture of the access to the water point for the smallest children at the school?",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q629900927"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q629900927" }]
         },
         {
           "localeNameFlag": false,
@@ -1021,14 +833,7 @@
           "order": 7,
           "text": "If yes, please take a picture of the access to the water point for the smallest children at the school (second picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q629900927"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q629900927" }]
         },
         {
           "localeNameFlag": false,
@@ -1038,14 +843,7 @@
           "order": 8,
           "text": "If yes, please take a picture of the access to the water point for the smallest children at the school (third picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q629900927"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q629900927" }]
         },
         {
           "localeNameFlag": false,
@@ -1080,21 +878,9 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
-              {
-                "altText": [],
-                "value": "Don't know",
-                "text": "Don't know"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
+              { "altText": [], "value": "Don't know", "text": "Don't know" }
             ]
           }
         },
@@ -1106,38 +892,15 @@
           "order": 2,
           "text": "What parameters were tested for quality in the last 12 months? (Tick all that applicable)",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q629900947"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q629900947" }],
           "options": {
             "allowOther": false,
             "allowMultiple": true,
             "option": [
-              {
-                "altText": [],
-                "value": "E-Coli",
-                "text": "E-Coli"
-              },
-              {
-                "altText": [],
-                "value": "Arsenic",
-                "text": "Arsenic"
-              },
-              {
-                "altText": [],
-                "value": "Lead",
-                "text": "Lead"
-              },
-              {
-                "altText": [],
-                "value": "Other",
-                "text": "Other"
-              },
+              { "altText": [], "value": "E-Coli", "text": "E-Coli" },
+              { "altText": [], "value": "Arsenic", "text": "Arsenic" },
+              { "altText": [], "value": "Lead", "text": "Lead" },
+              { "altText": [], "value": "Other", "text": "Other" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -1154,49 +917,26 @@
           "order": 3,
           "text": "If other water quality test, please specify:",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Other"
-              ],
-              "question": "Q642190917"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Other"], "question": "Q642190917" }]
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": "Check the water quality report"
-          },
+          "help": { "altText": [], "text": "Check the water quality report" },
           "id": "Q634270919",
           "mandatory": true,
           "order": 4,
           "text": "Is the school’s main water point compliant with national standards for drinking water for E-Coli?",
           "type": "option",
           "dependency": [
-            {
-              "answerValue": [
-                "E-Coli"
-              ],
-              "question": "Q642190917"
-            }
+            { "answerValue": ["E-Coli"], "question": "Q642190917" }
           ],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -1208,37 +948,21 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": "Check the water quality report"
-          },
+          "help": { "altText": [], "text": "Check the water quality report" },
           "id": "Q632250922",
           "mandatory": false,
           "order": 5,
           "text": "Is the school’s main water point compliant with national standards for drinking water for Arsenic?",
           "type": "option",
           "dependency": [
-            {
-              "answerValue": [
-                "Arsenic"
-              ],
-              "question": "Q642190917"
-            }
+            { "answerValue": ["Arsenic"], "question": "Q642190917" }
           ],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -1250,37 +974,19 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": "Check the water quality report"
-          },
+          "help": { "altText": [], "text": "Check the water quality report" },
           "id": "Q634200940",
           "mandatory": false,
           "order": 6,
           "text": "Is the school’s main water point compliant with national standards for drinking water for Lead?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Lead"
-              ],
-              "question": "Q642190917"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Lead"], "question": "Q642190917" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -1292,37 +998,21 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": "Check the water quality report"
-          },
+          "help": { "altText": [], "text": "Check the water quality report" },
           "id": "Q649030946",
           "mandatory": false,
           "order": 7,
           "text": "Is the school’s main water point compliant with national standards for drinking water for Other (specify)?",
           "type": "option",
           "dependency": [
-            {
-              "answerValue": [
-                "Other"
-              ],
-              "question": "Q642190917"
-            }
+            { "answerValue": ["Other"], "question": "Q642190917" }
           ],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -1343,16 +1033,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -1369,38 +1051,19 @@
           "order": 9,
           "text": "If treated, what sort of treatment is conducted?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q629900934"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q629900934" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Filtration",
-                "text": "Filtration"
-              },
-              {
-                "altText": [],
-                "value": "Boiling",
-                "text": "Boiling"
-              },
+              { "altText": [], "value": "Filtration", "text": "Filtration" },
+              { "altText": [], "value": "Boiling", "text": "Boiling" },
               {
                 "altText": [],
                 "value": "Chlorination",
                 "text": "Chlorination"
               },
-              {
-                "altText": [],
-                "value": "SODIS",
-                "text": "SODIS"
-              },
+              { "altText": [], "value": "SODIS", "text": "SODIS" },
               {
                 "altText": [],
                 "value": "Ultraviolet disinfection",
@@ -1424,9 +1087,7 @@
           "type": "free",
           "dependency": [
             {
-              "answerValue": [
-                "Other, please specify"
-              ],
+              "answerValue": ["Other, please specify"],
               "question": "Q636230924"
             }
           ]
@@ -1456,68 +1117,30 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Always",
-                "text": "Always"
-              },
-              {
-                "altText": [],
-                "value": "Sometimes",
-                "text": "Sometimes"
-              },
-              {
-                "altText": [],
-                "value": "Rarely",
-                "text": "Rarely"
-              },
-              {
-                "altText": [],
-                "value": "Don't know",
-                "text": "Don't know"
-              }
+              { "altText": [], "value": "Always", "text": "Always" },
+              { "altText": [], "value": "Sometimes", "text": "Sometimes" },
+              { "altText": [], "value": "Rarely", "text": "Rarely" },
+              { "altText": [], "value": "Don't know", "text": "Don't know" }
             ]
           }
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": ""
-          },
+          "help": { "altText": [], "text": "" },
           "id": "Q624570922",
           "mandatory": true,
           "order": 12,
           "text": "Is the school’s main water point compliant with national standards for drinking water?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q634270919"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q634270919" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
-              {
-                "altText": [],
-                "value": "Don't know",
-                "text": "Don't know"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
+              { "altText": [], "value": "Don't know", "text": "Don't know" }
             ]
           }
         }
@@ -1540,16 +1163,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" }
             ]
           }
         },
@@ -1561,38 +1176,15 @@
           "order": 2,
           "text": "If no, where do children go to defecate?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "No"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["No"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": true,
             "option": [
-              {
-                "altText": [],
-                "value": "Bush",
-                "text": "Bush"
-              },
-              {
-                "altText": [],
-                "value": "Sea",
-                "text": "Sea"
-              },
-              {
-                "altText": [],
-                "value": "River",
-                "text": "River"
-              },
-              {
-                "altText": [],
-                "value": "Stream",
-                "text": "Stream"
-              },
+              { "altText": [], "value": "Bush", "text": "Bush" },
+              { "altText": [], "value": "Sea", "text": "Sea" },
+              { "altText": [], "value": "River", "text": "River" },
+              { "altText": [], "value": "Stream", "text": "Stream" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -1616,9 +1208,7 @@
           "type": "free",
           "dependency": [
             {
-              "answerValue": [
-                "Other, please specify:"
-              ],
+              "answerValue": ["Other, please specify:"],
               "question": "Q634220920"
             }
           ]
@@ -1631,14 +1221,7 @@
           "order": 4,
           "text": "What type of student toilets/latrines are at the school? (check one - most common)",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": true,
             "allowMultiple": true,
@@ -1689,14 +1272,7 @@
           "order": 5,
           "text": "Of these, which is the main toilet that is used by the school?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": true,
             "allowMultiple": false,
@@ -1754,10 +1330,7 @@
           "type": "option",
           "dependency": [
             {
-              "answerValue": [
-                "Flush toilet",
-                "Pour flush toilet"
-              ],
+              "answerValue": ["Flush toilet", "Pour flush toilet"],
               "question": "Q650910918"
             }
           ],
@@ -1796,14 +1369,7 @@
           "order": 7,
           "text": "How many student toilets / latrines are currently usable (available, functional, private)? (insert number of holes / seats stances)",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -1818,28 +1384,13 @@
           "order": 8,
           "text": "Are the toilets/latrines separate for girls and boys?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Dont know / Cant say",
@@ -1856,14 +1407,7 @@
           "order": 9,
           "text": "If separated, how many toilets are available for girls?",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q652860921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q652860921" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -1878,14 +1422,7 @@
           "order": 10,
           "text": "How many girl toilets / latrines are currently usable (available, functional, private)? (insert number of holes / seats stances)",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q652860921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q652860921" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -1900,14 +1437,7 @@
           "order": 11,
           "text": "If separated, how many toilets are available for boys?",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q652860921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q652860921" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -1922,14 +1452,7 @@
           "order": 12,
           "text": "How many boys toilets / latrines are currently usable (available, functional, private)? (insert number of holes / seats stances)",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q652860921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q652860921" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -1944,14 +1467,7 @@
           "order": 13,
           "text": "Where are the student toilets located?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
@@ -1987,14 +1503,7 @@
           "order": 14,
           "text": "Please take a picture of boys toilet:",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q652860921"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q652860921" }]
         },
         {
           "localeNameFlag": false,
@@ -2004,14 +1513,7 @@
           "order": 15,
           "text": "Please take a picture of boys toilet (second picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q652860921"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q652860921" }]
         },
         {
           "localeNameFlag": false,
@@ -2021,14 +1523,7 @@
           "order": 16,
           "text": "Please take a picture of boys toilet (third picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q652860921"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q652860921" }]
         },
         {
           "localeNameFlag": false,
@@ -2038,14 +1533,7 @@
           "order": 17,
           "text": "Please take a picture of girls toilets:",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q652860921"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q652860921" }]
         },
         {
           "localeNameFlag": false,
@@ -2055,14 +1543,7 @@
           "order": 18,
           "text": "Please take a picture of girls toilets (second picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q652860921"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q652860921" }]
         },
         {
           "localeNameFlag": false,
@@ -2072,14 +1553,7 @@
           "order": 19,
           "text": "Please take a picture of girls toilets (third picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q652860921"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q652860921" }]
         },
         {
           "localeNameFlag": false,
@@ -2089,14 +1563,7 @@
           "order": 20,
           "text": "How many teachers toilets / latrines are currently usable (available, functional, private)? (insert number of holes / seats stances) Insert number",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -2111,28 +1578,13 @@
           "order": 21,
           "text": "Are the toilets/latrines separate for female  and male teachers?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" }
             ]
           }
         },
@@ -2144,14 +1596,7 @@
           "order": 22,
           "text": "If yes, how many toilets are available for male teachers?",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q632220925"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q632220925" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -2166,14 +1611,7 @@
           "order": 23,
           "text": "Number of toilets/latrines that are usable (available, functional, private) for male teachers:",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q632220925"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q632220925" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -2188,14 +1626,7 @@
           "order": 24,
           "text": "If yes, how many toilets are available for female teachers?",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q632220925"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q632220925" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -2210,14 +1641,7 @@
           "order": 25,
           "text": "Number of toilets/latrines that are usable (available, functional, private) for female teachers:",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q632220925"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q632220925" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -2232,14 +1656,7 @@
           "order": 26,
           "text": "Where are the teachers toilets located?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
@@ -2277,14 +1694,7 @@
           "order": 1,
           "text": "How many times per week are the student toilets cleaned?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
@@ -2324,33 +1734,18 @@
           "order": 2,
           "text": "In general, how clean are the student toilets?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Clean",
-                "text": "Clean"
-              },
+              { "altText": [], "value": "Clean", "text": "Clean" },
               {
                 "altText": [],
                 "value": "Somewhat clean",
                 "text": "Somewhat clean"
               },
-              {
-                "altText": [],
-                "value": "Not clean",
-                "text": "Not clean"
-              }
+              { "altText": [], "value": "Not clean", "text": "Not clean" }
             ]
           }
         }
@@ -2369,28 +1764,13 @@
           "order": 1,
           "text": "Is there at least one usable toilet/latrine that is accessible to the smallest children at the school?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" }
             ]
           }
         },
@@ -2402,14 +1782,7 @@
           "order": 2,
           "text": "Please take a photo of the toilets that are accessible to small children:",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q634230917"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q634230917" }]
         },
         {
           "localeNameFlag": false,
@@ -2419,14 +1792,7 @@
           "order": 3,
           "text": "Please take a photo of the toilets that are accessible to small children (second picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q634230917"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q634230917" }]
         },
         {
           "localeNameFlag": false,
@@ -2436,14 +1802,7 @@
           "order": 4,
           "text": "Please take a photo of the toilets that are accessible to small children (third picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q634230917"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q634230917" }]
         },
         {
           "localeNameFlag": false,
@@ -2453,28 +1812,13 @@
           "order": 5,
           "text": "Is there at least one usable toilet/latrine that is accessible to those with limited mobility or vision?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" }
             ]
           }
         },
@@ -2486,14 +1830,7 @@
           "order": 6,
           "text": "Please take a photo of the toilets that are accessible to children with limited mobility:",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q634220925"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q634220925" }]
         },
         {
           "localeNameFlag": false,
@@ -2503,14 +1840,7 @@
           "order": 7,
           "text": "Please take a photo of the toilets that are accessible to children with limited mobility (second picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q634220925"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q634220925" }]
         },
         {
           "localeNameFlag": false,
@@ -2520,14 +1850,7 @@
           "order": 8,
           "text": "Please take a photo of the toilets that are accessible to children with limited mobility (third picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q634220925"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q634220925" }]
         }
       ],
       "repeatable": false
@@ -2544,14 +1867,7 @@
           "order": 1,
           "text": "When are students permitted to use the school toilets/latrines?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
@@ -2589,28 +1905,13 @@
           "order": 1,
           "text": "Are culturally appropriate anal cleansing materials currently available to all students?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/Can't say",
@@ -2627,43 +1928,25 @@
           "order": 2,
           "text": "Is there currently functional lighting in the student toilets?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "All toilets",
-                "text": "All toilets"
-              },
+              { "altText": [], "value": "All toilets", "text": "All toilets" },
               {
                 "altText": [],
                 "value": "Some toilets",
                 "text": "Some toilets"
               },
-              {
-                "altText": [],
-                "value": "None",
-                "text": "None"
-              }
+              { "altText": [], "value": "None", "text": "None" }
             ]
           }
         },
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": ""
-          },
+          "help": { "altText": [], "text": "" },
           "id": "Q620790921",
           "mandatory": true,
           "order": 3,
@@ -2722,16 +2005,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Dont know / Cant say",
@@ -2748,14 +2023,7 @@
           "order": 2,
           "text": "If yes, please take a photo of the hand washing facility?",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650900919"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650900919" }]
         },
         {
           "localeNameFlag": false,
@@ -2765,14 +2033,7 @@
           "order": 3,
           "text": "If yes, please take a photo of the hand washing facility (second picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650900919"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650900919" }]
         },
         {
           "localeNameFlag": false,
@@ -2782,14 +2043,7 @@
           "order": 4,
           "text": "If yes, please take a photo of the hand washing facility (third picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650900919"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650900919" }]
         },
         {
           "localeNameFlag": false,
@@ -2799,14 +2053,7 @@
           "order": 5,
           "text": "If yes, what type of facility is there?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650900919"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650900919" }],
           "options": {
             "allowOther": true,
             "allowMultiple": false,
@@ -2826,11 +2073,7 @@
                 "value": "Bucket with tap",
                 "text": "Bucket with tap"
               },
-              {
-                "altText": [],
-                "value": "Tippy tap",
-                "text": "Tippy tap"
-              },
+              { "altText": [], "value": "Tippy tap", "text": "Tippy tap" },
               {
                 "altText": [],
                 "value": "Other (please specify)",
@@ -2847,14 +2090,7 @@
           "order": 6,
           "text": "Are both soap and water currently available at the handwashing facilities?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650900919"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650900919" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
@@ -2864,16 +2100,8 @@
                 "value": "Yes, water and soap",
                 "text": "Yes, water and soap"
               },
-              {
-                "altText": [],
-                "value": "Water only",
-                "text": "Water only"
-              },
-              {
-                "altText": [],
-                "value": "Soap only",
-                "text": "Soap only"
-              },
+              { "altText": [], "value": "Water only", "text": "Water only" },
+              { "altText": [], "value": "Soap only", "text": "Soap only" },
               {
                 "altText": [],
                 "value": "Neither water or soap",
@@ -2890,14 +2118,7 @@
           "order": 7,
           "text": "Where does the water for the hand washing facility come from?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650900919"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650900919" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
@@ -2940,28 +2161,13 @@
           "order": 1,
           "text": "Are there handwashing facilities accessible to those with limited mobility or vision?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650900919"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650900919" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "There are no children with limited mobility or vision",
@@ -2978,33 +2184,14 @@
           "order": 2,
           "text": "Are there handwashing facilities accessible to the smallest children at the school?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650900919"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650900919" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
-              {
-                "altText": [],
-                "value": "Don't know",
-                "text": "Don't know"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
+              { "altText": [], "value": "Don't know", "text": "Don't know" }
             ]
           }
         },
@@ -3016,14 +2203,7 @@
           "order": 3,
           "text": "Do students wash their hands in group hand washing activities?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650900919"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650900919" }],
           "options": {
             "allowOther": false,
             "allowMultiple": true,
@@ -3073,21 +2253,9 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Always",
-                "text": "Always"
-              },
-              {
-                "altText": [],
-                "value": "Sometimes",
-                "text": "Sometimes"
-              },
-              {
-                "altText": [],
-                "value": "Never",
-                "text": "Never"
-              },
+              { "altText": [], "value": "Always", "text": "Always" },
+              { "altText": [], "value": "Sometimes", "text": "Sometimes" },
+              { "altText": [], "value": "Never", "text": "Never" },
               {
                 "altText": [],
                 "value": "Don't know / can't say",
@@ -3112,22 +2280,13 @@
           "text": "Where are handwashing facilities with water and soap located at the school? (mark all that apply)",
           "type": "option",
           "dependency": [
-            {
-              "answerValue": [
-                "Yes, water and soap"
-              ],
-              "question": "Q650910924"
-            }
+            { "answerValue": ["Yes, water and soap"], "question": "Q650910924" }
           ],
           "options": {
             "allowOther": true,
             "allowMultiple": true,
             "option": [
-              {
-                "altText": [],
-                "value": "Toilets",
-                "text": "Toilets"
-              },
+              { "altText": [], "value": "Toilets", "text": "Toilets" },
               {
                 "altText": [],
                 "value": "Food preparation area",
@@ -3138,16 +2297,8 @@
                 "value": "Food consumption area",
                 "text": "Food consumption area"
               },
-              {
-                "altText": [],
-                "value": "Classrooms",
-                "text": "Classrooms"
-              },
-              {
-                "altText": [],
-                "value": "School yard",
-                "text": "School yard"
-              },
+              { "altText": [], "value": "Classrooms", "text": "Classrooms" },
+              { "altText": [], "value": "School yard", "text": "School yard" },
               {
                 "altText": [],
                 "value": "Other (please specify)",
@@ -3164,14 +2315,7 @@
           "order": 2,
           "text": "How many handwashing facilities are located at the school? (insert number of taps)",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650900919"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650900919" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -3186,14 +2330,7 @@
           "order": 3,
           "text": "How many handwashing facilities with water and soap are located at the school? (insert number of taps)",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650900919"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650900919" }],
           "validationRule": {
             "allowDecimal": false,
             "signed": false,
@@ -3262,14 +2399,7 @@
           "order": 1,
           "text": "Are water and soap available in a private space for girls to manage menstrual hygiene?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
@@ -3279,16 +2409,8 @@
                 "value": "Yes, water and soap",
                 "text": "Yes, water and soap"
               },
-              {
-                "altText": [],
-                "value": "Water only",
-                "text": "Water only"
-              },
-              {
-                "altText": [],
-                "value": "Soap only",
-                "text": "Soap only"
-              },
+              { "altText": [], "value": "Water only", "text": "Water only" },
+              { "altText": [], "value": "Soap only", "text": "Soap only" },
               {
                 "altText": [],
                 "value": "Neither water or soap or no private space",
@@ -3305,28 +2427,13 @@
           "order": 2,
           "text": "Are there covered bins for disposal of menstrual materials in the toilets used by women and girls?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -3343,14 +2450,7 @@
           "order": 3,
           "text": "Please take the picture of covered bins for disposal of menstrual materials:",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q652860928"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q652860928" }]
         },
         {
           "localeNameFlag": false,
@@ -3360,28 +2460,13 @@
           "order": 4,
           "text": "Are there disposal mechanisms for menstrual hygiene waste at the school?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -3437,16 +2522,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" }
             ]
           }
         },
@@ -3493,28 +2570,13 @@
           "order": 8,
           "text": "Is there a toilet with facilities to manage menstruation that is accessible to persons with limited mobility?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" }
             ]
           }
         }
@@ -3534,12 +2596,7 @@
           "text": "How many bathing areas are available? Insert number",
           "type": "free",
           "dependency": [
-            {
-              "answerValue": [
-                "Boarding School"
-              ],
-              "question": "Q634280919"
-            }
+            { "answerValue": ["Boarding School"], "question": "Q634280919" }
           ],
           "validationRule": {
             "allowDecimal": false,
@@ -3556,27 +2613,14 @@
           "text": "Are there separate facilities for students and residential staff to bathe?",
           "type": "option",
           "dependency": [
-            {
-              "answerValue": [
-                "Boarding School"
-              ],
-              "question": "Q634280919"
-            }
+            { "answerValue": ["Boarding School"], "question": "Q634280919" }
           ],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" }
             ]
           }
         },
@@ -3589,27 +2633,14 @@
           "text": "Is there at least one bathing area that is accessible for females with limited mobility and a separate one for males with limited mobility?",
           "type": "option",
           "dependency": [
-            {
-              "answerValue": [
-                "Boarding School"
-              ],
-              "question": "Q634280919"
-            }
+            { "answerValue": ["Boarding School"], "question": "Q634280919" }
           ],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              }
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" }
             ]
           }
         },
@@ -3622,32 +2653,15 @@
           "text": "Is there hot water available in the student bathing areas?",
           "type": "option",
           "dependency": [
-            {
-              "answerValue": [
-                "Boarding School"
-              ],
-              "question": "Q634280919"
-            }
+            { "answerValue": ["Boarding School"], "question": "Q634280919" }
           ],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Always",
-                "text": "Always"
-              },
-              {
-                "altText": [],
-                "value": "Sometimes",
-                "text": "Sometimes"
-              },
-              {
-                "altText": [],
-                "value": "Never",
-                "text": "Never"
-              }
+              { "altText": [], "value": "Always", "text": "Always" },
+              { "altText": [], "value": "Sometimes", "text": "Sometimes" },
+              { "altText": [], "value": "Never", "text": "Never" }
             ]
           }
         },
@@ -3660,27 +2674,14 @@
           "text": "Is laundry facility available in the boarding school?",
           "type": "option",
           "dependency": [
-            {
-              "answerValue": [
-                "Boarding School"
-              ],
-              "question": "Q634280919"
-            }
+            { "answerValue": ["Boarding School"], "question": "Q634280919" }
           ],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know / can't say",
@@ -3708,16 +2709,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -3734,28 +2727,13 @@
           "order": 2,
           "text": "Does the WASH Committee have a Terms of Reference as outlined in the Technical Manual Tool Kit/National Standards?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q620790924"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q620790924" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -3772,28 +2750,13 @@
           "order": 3,
           "text": "Does the WASH Committee have a budgeted School WASH Plan (inclusive of a routine operation and maintenance plan and an improvement plan)?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q620790924"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q620790924" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -3814,16 +2777,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
@@ -3844,16 +2799,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
@@ -3865,10 +2812,7 @@
         {
           "localeNameFlag": false,
           "altText": [],
-          "help": {
-            "altText": [],
-            "text": "Please check the record"
-          },
+          "help": { "altText": [], "text": "Please check the record" },
           "id": "Q638510930",
           "mandatory": true,
           "order": 6,
@@ -3878,16 +2822,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
@@ -3908,16 +2844,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
@@ -3934,14 +2862,7 @@
           "order": 8,
           "text": "If yes, please take a photo of the document?",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q638490927"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q638490927" }]
         },
         {
           "localeNameFlag": false,
@@ -3951,14 +2872,7 @@
           "order": 9,
           "text": "If yes, please take a photo of the document (second picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q638490927"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q638490927" }]
         },
         {
           "localeNameFlag": false,
@@ -3968,14 +2882,7 @@
           "order": 10,
           "text": "If yes, please take a photo of the document (third picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q638490927"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q638490927" }]
         },
         {
           "localeNameFlag": false,
@@ -3985,28 +2892,13 @@
           "order": 11,
           "text": "Does the plan include WASH (repair, maintenance of toilets, water, soap)?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q638490927"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q638490927" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -4023,14 +2915,7 @@
           "order": 12,
           "text": "If yes, please take a photo of the page that contains the WASH aspects?",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q620780924"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q620780924" }]
         },
         {
           "localeNameFlag": false,
@@ -4040,14 +2925,7 @@
           "order": 13,
           "text": "If yes, please take a photo of the page that contains the WASH aspects (second picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q620780924"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q620780924" }]
         },
         {
           "localeNameFlag": false,
@@ -4057,14 +2935,7 @@
           "order": 14,
           "text": "If yes, please take a photo of the page that contains the WASH aspects (third picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q620780924"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q620780924" }]
         },
         {
           "localeNameFlag": false,
@@ -4074,28 +2945,13 @@
           "order": 15,
           "text": "Is there a cleaning schedule for the toilet facilities?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q650890921"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q650890921" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -4112,14 +2968,7 @@
           "order": 16,
           "text": "If yes, please take a photo of the cleaning schedule?",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q654810920"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q654810920" }]
         },
         {
           "localeNameFlag": false,
@@ -4129,14 +2978,7 @@
           "order": 17,
           "text": "If yes, please take a photo of the cleaning schedule (second picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q654810920"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q654810920" }]
         },
         {
           "localeNameFlag": false,
@@ -4146,14 +2988,7 @@
           "order": 18,
           "text": "If yes, please take a photo of the cleaning schedule (third picture):",
           "type": "photo",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q654810920"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q654810920" }]
         },
         {
           "localeNameFlag": false,
@@ -4163,38 +2998,19 @@
           "order": 19,
           "text": "If yes, who cleans the toilets?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q654810920"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q654810920" }],
           "options": {
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Only boys",
-                "text": "Only boys"
-              },
-              {
-                "altText": [],
-                "value": "Only girls",
-                "text": "Only girls"
-              },
+              { "altText": [], "value": "Only boys", "text": "Only boys" },
+              { "altText": [], "value": "Only girls", "text": "Only girls" },
               {
                 "altText": [],
                 "value": "Both boys and girls",
                 "text": "Both boys and girls"
               },
-              {
-                "altText": [],
-                "value": "Janitor",
-                "text": "Janitor"
-              },
+              { "altText": [], "value": "Janitor", "text": "Janitor" },
               {
                 "altText": [],
                 "value": "Don't know/can't say",
@@ -4211,14 +3027,7 @@
           "order": 20,
           "text": "If yes, when does the cleaning happen?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q654810920"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q654810920" }],
           "options": {
             "allowOther": false,
             "allowMultiple": true,
@@ -4258,16 +3067,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
@@ -4284,14 +3085,7 @@
           "order": 22,
           "text": "If yes, how much money does the schools receive from the government annually?",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q641970927"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q641970927" }]
         },
         {
           "localeNameFlag": false,
@@ -4301,14 +3095,7 @@
           "order": 23,
           "text": "How much money has been spent so far this year on cleaning, repairing, and making water and soap available at school?",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q641970927"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q641970927" }]
         },
         {
           "localeNameFlag": false,
@@ -4318,14 +3105,7 @@
           "order": 24,
           "text": "How much did you spend last year on operating, repairing and maintaining toilets, water supply and hand washing facilities?",
           "type": "free",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q641970927"
-            }
-          ]
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q641970927" }]
         },
         {
           "localeNameFlag": false,
@@ -4339,16 +3119,8 @@
             "allowOther": false,
             "allowMultiple": false,
             "option": [
-              {
-                "altText": [],
-                "value": "Yes",
-                "text": "Yes"
-              },
-              {
-                "altText": [],
-                "value": "No",
-                "text": "No"
-              },
+              { "altText": [], "value": "Yes", "text": "Yes" },
+              { "altText": [], "value": "No", "text": "No" },
               {
                 "altText": [],
                 "value": "Dont know / cant say",
@@ -4365,14 +3137,7 @@
           "order": 26,
           "text": "If yes, what kind of support was received from the community?",
           "type": "option",
-          "dependency": [
-            {
-              "answerValue": [
-                "Yes"
-              ],
-              "question": "Q636230934"
-            }
-          ],
+          "dependency": [{ "answerValue": ["Yes"], "question": "Q636230934" }],
           "options": {
             "allowOther": true,
             "allowMultiple": true,
@@ -4417,5 +3182,5 @@
   "surveyGroupId": 632220917,
   "surveyGroupName": "WASH in School",
   "surveyId": 634200917,
-  "version": 21
+  "version": 22.0
 }

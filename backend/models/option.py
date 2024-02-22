@@ -42,7 +42,7 @@ class Option(Base):
         order: Optional[int] = None,
         code: Optional[str] = None,
         color: Optional[str] = None,
-        description: Optional[str] = None
+        description: Optional[str] = None,
     ):
         self.id = id
         self.name = name
@@ -62,7 +62,7 @@ class Option(Base):
             "order": self.order,
             "code": self.code,
             "color": self.color,
-            "description": self.description
+            "description": self.description,
         }
 
     @property
@@ -71,7 +71,7 @@ class Option(Base):
             "name": self.name,
             "order": self.order,
             "color": self.color,
-            "description": self.description
+            "description": self.description,
         }
 
 

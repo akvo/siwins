@@ -7,8 +7,7 @@ import random
 from typing import Optional, List
 from datetime import datetime
 from faker import Faker
-from db import crud_form, crud_data, crud_option, \
-    crud_question, crud_cascade
+from db import crud_form, crud_data, crud_option, crud_question, crud_cascade
 from models.question import QuestionType
 from models.answer import Answer
 from models.data import Data
@@ -73,28 +72,32 @@ repeats = int(sys.argv[1]) if len(sys.argv) == 2 else DEFAULT_NUMBER_OF_SEEDER
 year_conducted_value = []
 year_conducted_qid = QuestionConfig.year_conducted.value
 question = crud_question.get_question_by_id(
-    session=session, id=year_conducted_qid)
+    session=session, id=year_conducted_qid
+)
 if question and question.type in [
     QuestionType.option,
     QuestionType.multiple_option,
 ]:
     year_conducted_value = crud_option.get_option_by_question_id(
-        session=session, question=question.id)
+        session=session, question=question.id
+    )
     year_conducted_value = [int(v.name) for v in year_conducted_value]
     year_conducted_value = list(set(year_conducted_value))  # ordering, unique
-    year_conducted_value = list(filter(
-        lambda x: (x <= MONITORING_ROUND), year_conducted_value
-    ))
+    year_conducted_value = list(
+        filter(lambda x: (x <= MONITORING_ROUND), year_conducted_value)
+    )
 # support other type?
 
 # school information cascade
 school_information_value = []
 school_information_qid = QuestionConfig.school_information.value
 question = crud_question.get_question_by_id(
-    session=session, id=school_information_qid)
+    session=session, id=school_information_qid
+)
 if question.type == QuestionType.cascade:
     school_information_value = crud_cascade.get_cascade_by_question_id(
-        session=session, question=school_information_qid, level=0)
+        session=session, question=school_information_qid, level=0
+    )
 # support other type?
 
 # setup FAKER
@@ -112,21 +115,17 @@ def generate_school_information():
         cascade_answers = []
         for name, level in cascade_levels.items():
             if level == 0:
-                prev_choice = random.choice(
-                    school_information_value)
+                prev_choice = random.choice(school_information_value)
                 cascade_answers.append(prev_choice)
                 continue
             child = crud_cascade.get_cascade_by_parent(
-                session=session,
-                parent=prev_choice.id,
-                level=level)
+                session=session, parent=prev_choice.id, level=level
+            )
             prev_choice = random.choice(child)
             cascade_answers.append(prev_choice)
         res = [c.name for c in cascade_answers]
         # check if that school exist in same year
-        check = crud_data.get_data_by_school(
-            session=session,
-            schools=res)
+        check = crud_data.get_data_by_school(session=session, schools=res)
         # EOL check if that school exist in same year
     return res
 
@@ -138,7 +137,7 @@ def seed_fake_datapoint(
     # default use first index of year conducted options value
     year_conducted: Optional[int] = None,
     # current data
-    prev_data: Optional[Data] = None
+    prev_data: Optional[Data] = None,
 ):
     answers = []
     names = []
@@ -171,15 +170,17 @@ def seed_fake_datapoint(
             # dependency checker, ONLY support single dependency
             if q.dependency:
                 current_dependency = q.dependency[0]
-                cd_question = int(current_dependency['question'])
+                cd_question = int(current_dependency["question"])
                 if "answer_value" in current_dependency:
-                    cd_answer = current_dependency['answer-value']
+                    cd_answer = current_dependency["answer-value"]
                 if "answerValue" in current_dependency:
-                    cd_answer = current_dependency['answerValue']
+                    cd_answer = current_dependency["answerValue"]
                 # check answer
-                dependency_answer = current_answers.get(
-                    cd_question) if current_answers.get(
-                        cd_question) else None
+                dependency_answer = (
+                    current_answers.get(cd_question)
+                    if current_answers.get(cd_question)
+                    else None
+                )
                 if dependency_answer != cd_answer:
                     # don't answer the question
                     continue
@@ -188,10 +189,16 @@ def seed_fake_datapoint(
             current_answer_value = None
 
             # Year conducted question check
-            if not MONITORING_FORM and q.id == year_conducted_qid \
-                    and year_conducted_value:
-                fa = year_conducted_value[0] if \
-                    not year_conducted else year_conducted
+            if (
+                not MONITORING_FORM
+                and q.id == year_conducted_qid
+                and year_conducted_value
+            ):
+                fa = (
+                    year_conducted_value[0]
+                    if not year_conducted
+                    else year_conducted
+                )
                 current_answer_value = "|".join([str(fa)])
                 answer.options = [fa]
                 if q.meta:
@@ -205,10 +212,14 @@ def seed_fake_datapoint(
             # EOL Year conducted question check
 
             # School information cascade check
-            if not MONITORING_FORM and q.id == school_information_qid \
-                    and school_information_value:
-                cascade_answers = [] if not school_information \
-                    else school_information
+            if (
+                not MONITORING_FORM
+                and q.id == school_information_qid
+                and school_information_value
+            ):
+                cascade_answers = (
+                    [] if not school_information else school_information
+                )
                 # random choice of school information cascade
                 if not cascade_answers:
                     cascade_answers = generate_school_information()
@@ -238,9 +249,7 @@ def seed_fake_datapoint(
                 answer.options = [fa.name]
                 if q.meta:
                     names.append(
-                        datapoint.name
-                        if monitoring and datapoint
-                        else fa.name
+                        datapoint.name if monitoring and datapoint else fa.name
                     )
 
             if q.type == QuestionType.number:
@@ -257,12 +266,14 @@ def seed_fake_datapoint(
 
             if q.type == QuestionType.geo and geo:
                 current_answer_value = ("{}|{}").format(
-                    geo["lat"], geo["long"])
+                    geo["lat"], geo["long"]
+                )
                 answer.text = current_answer_value
 
             if q.type == QuestionType.photo:
-                current_answer_value = json.dumps({
-                    'filename': fake.image_url()})
+                current_answer_value = json.dumps(
+                    {"filename": fake.image_url()}
+                )
                 answer.text = current_answer_value
 
             if q.type == QuestionType.text:
@@ -290,18 +301,21 @@ def seed_fake_datapoint(
         check_datapoint = crud_data.get_data_by_school(
             session=session,
             schools=prev_data.school_information,
-            year_conducted=prev_data.year_conducted)
+            year_conducted=prev_data.year_conducted,
+        )
         # update prev datapoint with same school to current False
         if check_datapoint:
             check_datapoint.current = False
-            crud_data.update_data(
-                session=session, data=check_datapoint)
+            crud_data.update_data(session=session, data=check_datapoint)
     # EOL current_datapoint
 
     # preparing data value
     displayName = " - ".join(names) or "Untitled"
-    geoVal = [geo.get("lat"), geo.get("long")] \
-        if not check_datapoint else prev_data.geo
+    geoVal = (
+        [geo.get("lat"), geo.get("long")]
+        if not check_datapoint
+        else prev_data.geo
+    )
     identifier = "-".join(fake.uuid4().split("-")[1:4])
     # add new datapoint
     data = crud_data.add_data(
@@ -316,7 +330,7 @@ def seed_fake_datapoint(
         answers=answers,
         year_conducted=data_year_conducted,
         school_information=data_school_information,
-        current=current_datapoint
+        current=current_datapoint,
     )
     return data
 
@@ -332,7 +346,8 @@ if not MONITORING_FORM and year_conducted_qid and year_conducted_value:
     # iterate for remain year conducted value (eliminate first year)
     registration_year = year_conducted_value[0]
     datapoints = crud_data.get_data_by_year_conducted(
-        session=session, year_conducted=registration_year)
+        session=session, year_conducted=registration_year
+    )
     year_conducted_value = year_conducted_value[1:]
     for year in year_conducted_value:
         for d in datapoints:
@@ -340,13 +355,14 @@ if not MONITORING_FORM and year_conducted_qid and year_conducted_value:
                 form=d.form,
                 year_conducted=year,
                 school_information=d.school_information,
-                prev_data=d
+                prev_data=d,
             )
 
 # populate data monitoring history if monitoring survey available
 if MONITORING_FORM:
     data_monitoring = crud_data.get_all_data(
-        session=session, registration=False)
+        session=session, registration=False
+    )
     for dm in data_monitoring:
         generate_fake_history(session=session, datapoint=dm)
 # EOL if monitoring survey available

@@ -51,7 +51,7 @@ class CascadeLevels(enum.Enum):
         "province": 0,
         "school_type": 1,
         "school_name": 2,
-        "school_code": 3
+        "school_code": 3,
     }
 
 
@@ -60,28 +60,16 @@ class CascadeNames(enum.Enum):
         "province": "Province",
         "school_type": "School Type",
         "school_name": "School Name",
-        "school_code": "School Code"
+        "school_code": "School Code",
     }
 
 
 class ResponseGrouperCustomConfig(enum.Enum):
-    water = {
-        "question_group": None,
-        "category_type": "jmp"
-    }
-    sanitation = {
-        "question_group": None,
-        "category_type": "jmp"
-    }
-    hygiene = {
-        "question_group": None,
-        "category_type": "jmp"
-    }
-    toilet_category = {
-        "question_group": 7,
-        "category_type": None
-    }
+    water = {"question_group": None, "category_type": "jmp"}
+    sanitation = {"question_group": None, "category_type": "jmp"}
+    hygiene = {"question_group": None, "category_type": "jmp"}
+    toilet_category = {"question_group": 7, "category_type": None}
 
     @classmethod
     def to_dict(cls):
-        return [{**member.value, 'name': member.name} for member in cls]
+        return [{**member.value, "name": member.name} for member in cls]

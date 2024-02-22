@@ -11,9 +11,11 @@ from db import crud_sync
 from db import crud_form
 from db import crud_data
 from tests.conftest import test_refresh_materialized_data
+
 # from .test_dummy import res_data #TODO:: Delete
 
 from source.main import main_config
+
 FORM_CONFIG_PATH = main_config.FORM_CONFIG_PATH
 
 
@@ -56,24 +58,24 @@ class TestDataSeed:
         data = crud_data.get_all_data(session=session, current=True)
         data = [d.serialize for d in data]
         assert list(data[0]) == [
-            'id',
-            'datapoint_id',
-            'identifier',
-            'name',
-            'form',
-            'registration',
-            'current',
-            'geo',
-            'year_conducted',
-            'school_information',
-            'created',
-            'updated',
-            'answer',
-            'history'
+            "id",
+            "datapoint_id",
+            "identifier",
+            "name",
+            "form",
+            "registration",
+            "current",
+            "geo",
+            "year_conducted",
+            "school_information",
+            "created",
+            "updated",
+            "answer",
+            "history",
         ]
         for d in data:
             d["current"] is True
-        assert list(data[0]["answer"][0]) == ['question', 'value']
+        assert list(data[0]["answer"][0]) == ["question", "value"]
         # assert data == res_data #TODO:: Delete
         # monitoring data
         temp_data = crud_data.get_all_data(session=session, current=False)

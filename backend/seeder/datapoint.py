@@ -79,11 +79,13 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                         monitoring_answer = int(aval[0].get("text"))
                     if monitoring_answer > CURRENT_MONITORING_ROUND:
                         desc = ValidationText.incorrect_monitoring_round.value
-                        error.append({
-                            "instance_id": data_id,
-                            "answer": monitoring_answer,
-                            "description": desc
-                        })
+                        error.append(
+                            {
+                                "instance_id": data_id,
+                                "answer": monitoring_answer,
+                                "description": desc,
+                            }
+                        )
                         is_error = True
                         continue
                     # EOL check for incorrect monitoring round
@@ -140,8 +142,10 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                     # custom
                     if year_conducted_qid and year_conducted_qid == qid:
                         year_conducted = int(answer.options[0])
-                    if school_information_qid and \
-                            school_information_qid == qid:
+                    if (
+                        school_information_qid
+                        and school_information_qid == qid
+                    ):
                         school_information = answer.options
                     # EOL custom
 
@@ -151,16 +155,19 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
             check_same_school_and_monitoring = crud_data.get_data_by_school(
                 session=session,
                 schools=school_information,
-                year_conducted=year_conducted)
+                year_conducted=year_conducted,
+            )
         if check_same_school_and_monitoring:
             school_answer = "|".join(school_information)
             desc = ValidationText.school_monitoring_exist.value
-            error.append({
-                "form_id": form_id,
-                "instance_id": data_id,
-                "answer": f"{school_answer} - {year_conducted}",
-                "description": desc
-            })
+            error.append(
+                {
+                    "form_id": form_id,
+                    "instance_id": data_id,
+                    "answer": f"{school_answer} - {year_conducted}",
+                    "description": desc,
+                }
+            )
             is_error = True
         # EOL check datapoint with same school and monitoring round
 
@@ -171,11 +178,12 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
         # check for current datapoint
         current_datapoint = True
         check_datapoint = crud_data.get_data_by_school(
-            session=session, schools=school_information)
+            session=session, schools=school_information
+        )
         # update prev datapoint with same school to current False
         update_prev_datapoint_current_flag = (
-            check_datapoint and
-            check_datapoint.year_conducted != int(year_conducted)
+            check_datapoint
+            and check_datapoint.year_conducted != int(year_conducted)
         )
         if update_prev_datapoint_current_flag:
             # check current flag value
@@ -187,8 +195,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                 else False
             )
             check_datapoint.current = not current_datapoint
-            crud_data.update_data(
-                session=session, data=check_datapoint)
+            crud_data.update_data(session=session, data=check_datapoint)
         # EOL check for current datapoint
 
         # add new datapoint
@@ -207,7 +214,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                 answers=answers,
                 year_conducted=year_conducted,
                 school_information=school_information,
-                current=current_datapoint
+                current=current_datapoint,
             )
         # print(f"New Datapoint: {data.id}")
     # print("------------------------------------------")

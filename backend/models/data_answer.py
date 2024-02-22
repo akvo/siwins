@@ -1,6 +1,4 @@
-from sqlalchemy import (
-    Column, String, Integer, DateTime
-)
+from sqlalchemy import Column, String, Integer, DateTime
 import sqlalchemy.dialects.postgresql as pg
 from db.connection import Base
 
@@ -25,7 +23,7 @@ class DataAnswer(Base):
             "name": self.name,
             "geo": self.geo,
             "created": self.created,
-            "answers": self.answers
+            "answers": self.answers,
         }
 
     @property

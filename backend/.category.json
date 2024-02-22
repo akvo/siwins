@@ -216,8 +216,9 @@
             "id": 650900919,
             "text": "Are there hand washing facilities at the school?",
             "options": ["No"],
-            "other": [{
-              "name": "Basic",
+            "other": [
+              {
+                "name": "Basic",
                 "options": ["Yes"],
                 "questions": [
                   {
@@ -249,7 +250,8 @@
                     }
                   }
                 ]
-            }]
+              }
+            ]
           }
         ]
       }
@@ -276,6 +278,7 @@
         "questions": [
           {
             "id": 650890921,
+            "text": "Does the school have toilets?",
             "options": ["No"],
             "other": [
               {
