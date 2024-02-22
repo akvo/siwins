@@ -1,7 +1,7 @@
 import json
 
-prev_file = "./source/forms/634200917.json"
-new_file = "./source/new_form.json"
+prev_file = "./source/production/forms/634200917.json"
+new_file = "./source/production/new_form.json"
 
 with open(prev_file, "r") as json_file:
     prev_json = json.load(json_file)
@@ -74,5 +74,5 @@ for qgi, qg in enumerate(new_qg):
 
 new_json["questionGroup"] = new_qg
 
-with open("./source/remapped_form.json", "w") as json_file:
+with open("./source/production/remapped_form.json", "w") as json_file:
     json.dump(new_json, json_file, indent=2)
