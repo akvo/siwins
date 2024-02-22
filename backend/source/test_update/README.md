@@ -2,6 +2,8 @@
 
 ---
 
+This source folder used to test the new incoming cascade updates (cascade-790170997-v1.sqlite).
+
 ## Structure
 
 The source folder contains static configurations for the SIWINS backend and frontend. Below is the tree representing the structure of the source folder.
