@@ -5,113 +5,61 @@
     "form": 805154350,
     "labels": [
       {
-        "name": "Safely Managed",
-        "order": 1,
-        "color": "#0080c6"
-      },
-      {
         "name": "Basic",
-        "order": 2,
+        "order": 1,
         "color": "#00b8ec"
       },
       {
         "name": "Limited",
-        "order": 3,
+        "order": 2,
         "color": "#fff176"
       },
       {
         "name": "No Service",
-        "order": 4,
+        "order": 3,
         "color": "#FEBC11"
       }
     ],
     "categories": [
       {
-        "name": "Safely Managed",
+        "name": "Basic",
         "questions": [
           {
-            "id": 813133232,
-            "text": "What parameters were tested for quality in the last 12 months? (Tick all that applicable)",
-            "options": ["E-Coli"],
-            "other": [
-              {
-                "name": "Basic",
-                "options": ["Arsenic", "Lead", "Other", "Don't know/can't say"],
-                "questions": [
-                  {
-                    "id": 776373989,
-                    "text": "What is the primary / main point of drinking water for the school?",
-                    "options": [
-                      "Piped water supply / Tap Stan",
-                      "Protected/covered well with pump",
-                      "Packaged bottled water",
-                      "Rainwater",
-                      "Tanker truck or cart",
-                      "Water brought by kids from home"
-                    ],
-                    "else": {
-                      "name": "No Service"
-                    }
-                  },
-                  {
-                    "id": 776373986,
-                    "text": "Is the primary water point also shared with the communities around the school?",
-                    "options": ["No"],
-                    "else": {
-                      "name": "Limited"
-                    }
-                  },
-                  {
-                    "id": 802194192,
-                    "text": "Was drinking water available from the primary/main point on the day of the survey?",
-                    "options": ["Yes"],
-                    "other": [
-                      {
-                        "name": "Limited",
-                        "options": ["No"],
-                        "questions": []
-                      }
-                    ],
-                    "else": {
-                      "name": "No Service"
-                    }
-                  }
-                ]
-              }
+            "id": 776373989,
+            "text": "What is the primary / main point of drinking water for the school?",
+            "options": [
+              "Piped water supply / Tap Stan",
+              "Protected/covered well with pump",
+              "Packaged bottled water",
+              "Rainwater",
+              "Tanker truck or cart",
+              "Water brought by kids from home"
             ],
             "else": {
-              "ignore": [813133238, 813133234]
+              "name": "No Service"
             }
           },
           {
-            "id": 813133238,
-            "text": "Is the school's main water point compliant with national standards for drinking water for E-Coli?",
+            "id": 776373986,
+            "text": "Is the primary water point also shared with the communities around the school?",
+            "options": ["No"],
+            "else": {
+              "name": "Limited"
+            }
+          },
+          {
+            "id": 802194192,
+            "text": "Was drinking water available from the primary/main point on the day of the survey?",
             "options": ["Yes"],
             "other": [
               {
-                "name": "No Service",
-                "options": ["Don't know/can't say"],
+                "name": "Limited",
+                "options": ["No"],
                 "questions": []
               }
             ],
             "else": {
-              "name": "Basic",
-              "ignore": [787805955]
-            }
-          },
-          {
-            "id": 787805955,
-            "text": "Is the school's main water point compliant with national standards for drinking water?",
-            "options": ["Yes"],
-            "other": [
-              {
-                "name": "No Service",
-                "options": ["Don't know"],
-                "questions": []
-              }
-            ],
-            "else": {
-              "name": "Basic"
+              "name": "No Service"
             }
           }
         ]
@@ -150,14 +98,14 @@
             "else": {
               "name": "No Service",
               "ignore": [
-                790662214, 803662355, 790662220, 798172838, 790623788,
+                816974593, 803662355, 790662220, 798172838, 790623788,
                 790623786, 815142894, 815142895
               ]
             }
           },
           {
-            "id": 790662214,
-            "text": "What type of student toilets/latrines are at the school? (check one - most common)",
+            "id": 816974593,
+            "text": "Of these, which is the main toilet that is used by the school?",
             "options": [
               "Flush toilet",
               "Pour flush toilet",
@@ -262,44 +210,48 @@
     ],
     "categories": [
       {
-        "name": "Basic",
+        "name": "No Service",
         "questions": [
           {
             "id": 805154361,
             "text": "Are there hand washing facilities at the school?",
-            "options": ["Yes"],
-            "else": {
-              "name": "No Service",
-              "ignore": [805154355, 805154356]
-            }
-          },
-          {
-            "id": 805154355,
-            "text": "If yes, what type of facility is there?",
-            "options": [
-              "Sink with tap",
-              "Water tank with tap",
-              "Bucket with tap",
-              "Tippy tap"
-            ],
-            "else": {
-              "name": "No Service"
-            }
-          },
-          {
-            "id": 805154356,
-            "text": "Are both soap and water currently available at the handwashing facilities?",
-            "options": ["Yes, water and soap"],
+            "options": ["No"],
             "other": [
               {
-                "name": "Limited",
-                "options": ["Water only", "Soap only"],
-                "questions": []
+                "name": "Basic",
+                "options": ["Yes"],
+                "questions": [
+                  {
+                    "id": 805154355,
+                    "text": "If yes, what type of facility is there?",
+                    "options": [
+                      "Sink with tap",
+                      "Water tank with tap",
+                      "Bucket with tap",
+                      "Tippy tap"
+                    ],
+                    "else": {
+                      "name": "No Service"
+                    }
+                  },
+                  {
+                    "id": 805154356,
+                    "text": "Are both soap and water currently available at the handwashing facilities?",
+                    "options": ["Yes, water and soap"],
+                    "other": [
+                      {
+                        "name": "Limited",
+                        "options": ["Water only", "Soap only"],
+                        "questions": []
+                      }
+                    ],
+                    "else": {
+                      "name": "No Service"
+                    }
+                  }
+                ]
               }
-            ],
-            "else": {
-              "name": "No Service"
-            }
+            ]
           }
         ]
       }
@@ -322,20 +274,33 @@
     ],
     "categories": [
       {
-        "name": "Improved",
+        "name": "Unimproved",
         "questions": [
           {
-            "id": 790662214,
-            "text": "What type of student toilets/latrines are at the school? (check one - most common)",
-            "options": [
-              "Flush toilet",
-              "Pour flush toilet",
-              "Pit toilet with slab",
-              "Composting toilet"
-            ],
-            "else": {
-              "name": "Unimproved"
-            }
+            "id": 816974599,
+            "text": "Does the school have toilets?",
+            "options": ["No"],
+            "other": [
+              {
+                "name": "Improved",
+                "options": ["Yes"],
+                "questions": [
+                  {
+                    "id": 816974593,
+                    "text": "Of these, which is the main toilet that is used by the school?",
+                    "options": [
+                      "Flush toilet",
+                      "Pour flush toilet",
+                      "Pit toilet with slab",
+                      "Composting toilet"
+                    ],
+                    "else": {
+                      "name": "Unimproved"
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
