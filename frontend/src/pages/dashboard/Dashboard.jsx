@@ -234,7 +234,7 @@ const Dashboard = () => {
                         data={barChartData?.data
                           .filter((h) => !h.history)
                           .map((v) => ({
-                            name: v.name,
+                            name: `${v.name} (${v.year})`,
                             value: v.value,
                             count: v.value,
                           }))}

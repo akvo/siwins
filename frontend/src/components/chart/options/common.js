@@ -54,9 +54,9 @@ export const titleFormatter = (text) => {
 export const AxisLabelFormatter = {
   formatter: function (params) {
     let newParamsName = String(params).split(" ");
-    if (newParamsName.length > 3) {
+    if (newParamsName.length > 2) {
       newParamsName = newParamsName.map((p, pi) => {
-        if (pi !== 0 && pi % 3 === 0) {
+        if (pi !== 0 && pi % 2 === 0) {
           p += "\n";
         }
         return p;
@@ -70,8 +70,8 @@ export const AxisLabelFormatter = {
 export const AxisShortLabelFormatter = {
   formatter: function (params) {
     const stringArr = String(params).split(" ");
-    const newParamsName = take(stringArr, 3).join("\n");
-    return upperFirst(newParamsName) + (stringArr.length > 3 ? ".." : "-");
+    const newParamsName = take(stringArr, 2).join("\n");
+    return upperFirst(newParamsName) + (stringArr.length > 2 ? ".." : "-");
   },
 };
 
