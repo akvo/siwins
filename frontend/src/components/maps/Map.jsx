@@ -55,6 +55,7 @@ const Map = ({ searchValue }) => {
     indicatorQuestions,
     mapData,
     provinceFilterValue,
+    schoolTotal,
   } = UIState.useState((s) => s);
   const baseMap = tileOSM;
   const map = useRef();
@@ -461,6 +462,7 @@ const Map = ({ searchValue }) => {
                       value: v.count,
                       count: v.count,
                       color: v.color,
+                      total: schoolTotal,
                     }))}
                     legend={true}
                     showRoseChart={true}

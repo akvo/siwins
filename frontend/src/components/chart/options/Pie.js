@@ -27,12 +27,19 @@ const Pie = (
   if (data.length > 0) {
     data = data.filter((x) => x.value >= 0 || x.count >= 0);
     labels = data.map((x) => x.name);
-    const total = sumBy(data, "count");
-    data = data.map((x) => ({
-      ...x,
-      value: x.count,
-      percentage: ((x.value / total) * 100)?.toFixed(0) || 0,
-    }));
+    let total = sumBy(data, "count");
+    if (data[0]?.total) {
+      // for custom percentage calculation (percentage should keep the correct value after filtering)
+      total = data[0]?.total;
+    }
+    data = data.map((x) => {
+      const percentage = ((x.value / total) * 100)?.toFixed(2) || 0;
+      return {
+        ...x,
+        value: x.count,
+        percentage: percentage,
+      };
+    });
   }
   const { textStyle } = TextStyle;
   const rose = {};
@@ -84,7 +91,13 @@ const Pie = (
         ...(showRoseChart && { roseType: "area" }),
         label: {
           show: true,
-          formatter: "{d}%",
+          formatter: function (p) {
+            // custom percentage
+            if (data[0]?.total) {
+              return p?.data?.percentage ? `${p.data.percentage}%` : "0%";
+            }
+            return `${p.percent}%`;
+          },
           fontSize: 12,
           fontWeight: "bold",
         },
