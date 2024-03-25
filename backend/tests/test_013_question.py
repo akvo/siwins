@@ -93,7 +93,7 @@ class TestQuestionRoutes:
                     {
                         "name": "Basic",
                         "order": 1,
-                        "color": "#ab47bc",
+                        "color": "#51B453",
                         "description": None,
                     },
                     {
@@ -121,7 +121,7 @@ class TestQuestionRoutes:
                     {
                         "name": "Basic",
                         "order": 1,
-                        "color": "#51B453",
+                        "color": "#ab47bc",
                         "description": None,
                     },
                     {
