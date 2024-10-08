@@ -238,7 +238,7 @@ def get_data_by_school(
     session: Session, schools: List[str], year_conducted: Optional[int] = None
 ):
     data = session.query(Data)
-    and_query = and_(Data.school_information.contains([v]) for v in schools)
+    and_query = and_(Data.school_information == schools)
     data = data.filter(and_query)
     if year_conducted:
         data = data.filter(Data.year_conducted == year_conducted)
@@ -249,7 +249,7 @@ def get_history_data_by_school(
     session: Session, schools: List[str], year_conducted: Optional[int] = None
 ):
     data = session.query(Data)
-    and_query = and_(Data.school_information.contains([v]) for v in schools)
+    and_query = and_(Data.school_information == schools)
     data = data.filter(and_query).filter(Data.current == false())
     if year_conducted:
         data = data.filter(Data.year_conducted < year_conducted)
