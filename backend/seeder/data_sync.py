@@ -121,7 +121,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
         form = crud_form.get_form_by_id(session=session, id=fi.get("formId"))
         if not form:
             continue
-
+        form_id = form.id
         datapoint_id = fi.get("dataPointId")
         data_id = fi.get("id")
         answers = []
@@ -162,6 +162,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                         desc = ValidationText.incorrect_monitoring_round.value
                         error.append(
                             {
+                                "form_id": form_id,
                                 "instance_id": data_id,
                                 "answer": monitoring_answer,
                                 "type": desc,
@@ -314,19 +315,36 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                             school_information = answer.options
                         # EOL custom
 
+        # check if school_information is not defined
+        if not school_information:
+            desc = ValidationText.school_information_is_not_defined.value
+            error.append(
+                {
+                    "form_id": form_id,
+                    "instance_id": data_id,
+                    "answer": f"NULL - {year_conducted}",
+                    "description": desc,
+                }
+            )
+            is_error = True
+        # EOL check if school_information is not defined
+
         # check datapoint with same school and monitoring round
         check_same_school_and_monitoring = None
-        if not updated_data and year_conducted:
+        if not updated_data and year_conducted and school_information:
             check_same_school_and_monitoring = crud_data.get_data_by_school(
                 session=session,
                 schools=school_information,
                 year_conducted=year_conducted,
             )
         if check_same_school_and_monitoring:
+            prev_instance = check_same_school_and_monitoring.id
             school_answer = "|".join(school_information)
             desc = ValidationText.school_monitoring_exist.value
+            desc = f"{desc} - prev instance_id: {prev_instance}"
             error.append(
                 {
+                    "form_id": form_id,
                     "instance_id": data_id,
                     "answer": f"{school_answer} - {year_conducted}",
                     "description": desc,
