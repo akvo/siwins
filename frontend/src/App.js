@@ -16,6 +16,7 @@ const formatDateToYYYYMM = (date) => {
 
 const now = new Date();
 const cursorTemp = formatDateToYYYYMM(now);
+const showInfoBanner = false;
 
 const InfoBanner = () => {
   return (
@@ -94,7 +95,7 @@ const App = () => {
 
   return (
     <Layout>
-      <InfoBanner />
+      {showInfoBanner && <InfoBanner />}
       {!location.pathname.includes("dashboard") && <Layout.Header />}
       <Layout.Body>
         <Routes>
