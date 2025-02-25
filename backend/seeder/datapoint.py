@@ -227,7 +227,8 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                     id=check_same_school_code_and_monitoring.id,
                 )
 
-            if school_type_ranking == prev_school_type_ranking:
+            if school_type_ranking <= prev_school_type_ranking:
+                # do not seed
                 prev_instance = check_same_school_code_and_monitoring.id
                 school_answer = "|".join(school_information)
                 desc = (
