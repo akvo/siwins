@@ -1,6 +1,8 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
+from sqlalchemy import and_
 from models.option import Option, OptionDict
+from models.data import Data
 
 # from models.question import Question
 
@@ -23,9 +25,17 @@ def get_option_by_question_id(
 
 
 def get_option_year_conducted(session: Session) -> List[OptionDict]:
+    # filter by available year conducted in data table
+    data_year_conducted = session.query(Data.year_conducted).distinct().all()
+    data_year_conducted = [str(d[0]) for d in data_year_conducted]
     return (
         session.query(Option)
-        .filter(Option.question == year_conducted_qid)
+        .filter(
+            and_(
+                Option.question == year_conducted_qid,
+                Option.name.in_(data_year_conducted),
+            )
+        )
         .all()
     )
 
