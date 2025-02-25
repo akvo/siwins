@@ -249,7 +249,6 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
         # EOL check datapoint with same school code and monitoring round
 
         # check datapoint with same school and monitoring round
-        # if the school type not in school type has ranking
         check_same_school_and_monitoring = None
         if year_conducted and school_information:
             check_same_school_and_monitoring = crud_data.get_data_by_school(

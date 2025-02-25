@@ -24,12 +24,22 @@ from source.main import main_config
 MONITORING_FORM = main_config.MONITORING_FORM
 MONITORING_ROUND = main_config.MONITORING_ROUND
 QuestionConfig = main_config.QuestionConfig
+SchoolInformationEnum = main_config.SchoolInformationEnum
+CascadeLevels = main_config.CascadeLevels
+SchoolTypeRanking = main_config.SchoolTypeRanking
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 year_conducted_qid = QuestionConfig.year_conducted.value
 school_information_qid = QuestionConfig.school_information.value
+
+school_type_enum = SchoolInformationEnum.school_type.value
+school_code_enum = SchoolInformationEnum.school_code.value
+school_type_level = CascadeLevels.school_information.value[school_type_enum]
+school_code_level = CascadeLevels.school_information.value[school_code_enum]
+school_type_has_ranking = SchoolTypeRanking.has_ranking.value
+school_type_rankings = SchoolTypeRanking.rankings.value
 
 # Error
 error = []
@@ -328,6 +338,80 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             )
             is_error = True
         # EOL check if school_information is not defined
+
+        # check if school type (in school information) has ranking
+        is_school_type_has_ranking = False
+        if school_information and school_information[school_type_level]:
+            school_type = school_information[school_type_level]
+            school_type = school_type.split(" ")[0]
+            school_type = school_type.lower() if school_type else None
+            is_school_type_has_ranking = school_type in school_type_has_ranking
+        # EOL check if school type (in school information) has ranking
+
+        # check datapoint with same school code and monitoring round
+        check_same_school_code_and_monitoring = None
+        school_code = None
+        if (
+            is_school_type_has_ranking
+            and year_conducted
+            and school_information[school_code_level]
+        ):
+            school_code = school_information[school_code_level]
+            check_same_school_code_and_monitoring = (
+                crud_data.get_data_by_school_code(
+                    session=session,
+                    school_code=school_code,
+                    year_conducted=year_conducted,
+                )
+            )
+        if (
+            check_same_school_code_and_monitoring
+            and school_code != "Not Available"
+        ):
+            # check school type ranking to decide the data seed
+            prev_school_information = (
+                check_same_school_code_and_monitoring.school_information
+            )
+            prev_school_type = prev_school_information[school_type_level]
+            prev_school_type = prev_school_type.split(" ")[0]
+            prev_school_type = (
+                prev_school_type.lower() if prev_school_type else None
+            )
+            prev_school_type_ranking = school_type_rankings[prev_school_type]
+
+            school_type = school_information[school_type_level]
+            school_type = school_type.split(" ")[0]
+            school_type = school_type.lower() if school_type else None
+            school_type_ranking = school_type_rankings[school_type]
+
+            if school_type_ranking > prev_school_type_ranking:
+                # use new answers to replace the prev answer
+                # delete prev datapoint
+                crud_data.delete_by_id(
+                    session=session,
+                    id=check_same_school_code_and_monitoring.id,
+                )
+
+            if school_type_ranking <= prev_school_type_ranking:
+                # do not seed
+                prev_instance = check_same_school_code_and_monitoring.id
+                school_answer = "|".join(school_information)
+                desc = (
+                    ValidationText.school_same_type_code_monitoring_exist.value
+                )
+                desc = f"{desc} - prev instance_id: {prev_instance}"
+                error.append(
+                    {
+                        "form_id": form_id,
+                        "instance_id": data_id,
+                        "answer": f"{school_answer} - {year_conducted}",
+                        "description": desc,
+                    }
+                )
+                is_error = True
+            # EOL check school type ranking to decide the data seed
+
+        # EOL check datapoint with same school code and monitoring round
 
         # check datapoint with same school and monitoring round
         check_same_school_and_monitoring = None
