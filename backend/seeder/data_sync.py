@@ -366,7 +366,8 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             )
         if (
             check_same_school_code_and_monitoring
-            and school_code != "Not Available"
+            and school_code
+            and school_code.lower() != "not available"
         ):
             # check school type ranking to decide the data seed
             prev_school_information = (
