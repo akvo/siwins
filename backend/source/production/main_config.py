@@ -64,6 +64,11 @@ class CascadeNames(enum.Enum):
     }
 
 
+class SchoolTypeRanking(enum.Enum):
+    has_ranking = ["early", "primary", "secondary", "community"]
+    rankings = {"early": 0, "primary": 1, "secondary": 3, "community": 4}
+
+
 class ResponseGrouperCustomConfig(enum.Enum):
     water = {"question_group": None, "category_type": "jmp"}
     sanitation = {"question_group": None, "category_type": "jmp"}

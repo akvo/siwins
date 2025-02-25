@@ -245,6 +245,16 @@ def get_data_by_school(
     return data.first()
 
 
+def get_data_by_school_code(
+    session: Session, school_code: str, year_conducted: Optional[int] = None
+):
+    data = session.query(Data)
+    data = data.filter(Data.school_information.any(school_code))
+    if year_conducted:
+        data = data.filter(Data.year_conducted == year_conducted)
+    return data.first()
+
+
 def get_history_data_by_school(
     session: Session, schools: List[str], year_conducted: Optional[int] = None
 ):
