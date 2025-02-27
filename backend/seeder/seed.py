@@ -3,6 +3,7 @@ import json
 import flow.auth as flow_auth
 from seeder.form import form_seeder
 from seeder.datapoint import datapoint_seeder
+from seeder.delete_outlier_data import delete_outlier_schools
 from db.connection import Base, SessionLocal, engine
 from db import crud_sync
 from db.truncator import truncate, truncate_datapoint
@@ -45,5 +46,9 @@ if sync_res.get("nextSyncUrl"):
 
 form_seeder(session=session, forms=forms)
 datapoint_seeder(session=session, token=token, forms=forms)
+
+# delete outlier
+delete_outlier_schools(session=session)
+
 # refresh materialized view
 refresh_materialized_data()
