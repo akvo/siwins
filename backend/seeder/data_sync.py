@@ -339,6 +339,31 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             is_error = True
         # EOL check if school_information is not defined
 
+        school_code = (
+            school_information[school_code_level]
+            if school_code_level < len(school_information)
+            else None
+        )
+
+        # do not include shcool with code "not available"
+        if school_code and school_code.lower() == "not available":
+            # set error message
+            prev_instance = "-"
+            school_answer = "|".join(school_information)
+            desc = ValidationText.school_code_not_available_ignored.value
+            desc = f"{desc} - prev instance_id: {prev_instance}"
+            error.append(
+                {
+                    "form_id": form_id,
+                    "instance_id": data_id,
+                    "answer": f"{school_answer} - {year_conducted}",
+                    "description": desc,
+                }
+            )
+            is_error = True
+            continue
+        # EOL do not include shcool with code "not available"
+
         # check if school type (in school information) has ranking
         is_school_type_has_ranking = False
         if school_information and school_information[school_type_level]:
@@ -350,13 +375,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
 
         # check datapoint with same school code and monitoring round
         check_same_school_code_and_monitoring = None
-        school_code = None
-        if (
-            is_school_type_has_ranking
-            and year_conducted
-            and school_information[school_code_level]
-        ):
-            school_code = school_information[school_code_level]
+        if is_school_type_has_ranking and year_conducted:
             check_same_school_code_and_monitoring = (
                 crud_data.get_data_by_school_code(
                     session=session,
@@ -364,6 +383,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
                     year_conducted=year_conducted,
                 )
             )
+
         if (
             check_same_school_code_and_monitoring
             and school_code

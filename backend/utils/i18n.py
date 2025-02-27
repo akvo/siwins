@@ -8,6 +8,9 @@ class ValidationText(enum.Enum):
     school_same_type_code_monitoring_exist = (
         "same school code and type in same monitoring round already exist"
     )
+    school_code_not_available_ignored = (
+        "school with code `not available` ignored by system"
+    )
 
 
 class EmailText(enum.Enum):
