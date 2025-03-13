@@ -97,8 +97,15 @@ const Home = () => {
           </Col>
         </Row>
         <Row align="middle" justify="center">
-          <Col>
-            <Image src="/images/home.png" preview={false} />
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              maxWidth: 1200,
+            }}
+          >
+            <Image src="/images/home.png" preview={false} width="90%" />
           </Col>
         </Row>
       </section>
