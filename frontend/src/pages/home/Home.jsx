@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./style.scss";
 import { Col, Row, Button, Image, Card, Statistic } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
@@ -19,6 +19,7 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [chartList, setChartList] = useState([]);
+  const target = useRef(null);
 
   useEffect(() => {
     const dsKey = "/home/chart/bar?name=overview-charts";
@@ -90,7 +91,16 @@ const Home = () => {
             </Link>
           </Col>
           <Col span={12} style={{ textAlign: "end" }}>
-            <Button type="text" className="scroll-button">
+            <Button
+              type="text"
+              className="scroll-button"
+              onClick={() =>
+                target.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                })
+              }
+            >
               Scroll
               <ArrowDownOutlined />
             </Button>
@@ -109,7 +119,7 @@ const Home = () => {
           </Col>
         </Row>
       </section>
-      <section className="metrics-section container">
+      <section className="metrics-section container" ref={target}>
         <Row align="middle" justify="center">
           <Col span={10}>
             <p className="title">Key Metrics</p>

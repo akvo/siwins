@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Image, Layout, Menu } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-const { Content, Sider, Header } = Layout;
 import "./style.scss";
 import { ReactComponent as MapsIcon } from "../../images/icons/maps.svg";
 import { ReactComponent as DashboardIcon } from "../../images/icons/dashboard.svg";
 import { ReactComponent as DocIcon } from "../../images/icons/db.svg";
 import JMPDocIcon from "../../images/icons/jmp-doc.png";
+import UserGuideIcon from "../../images/icons/user-guide.png";
 import {
   Routes,
   Route,
@@ -18,8 +18,11 @@ import Maps from "./Maps";
 import Dashboard from "./Dashboard";
 import ManageData from "./ManageData";
 import JMPDocumentation from "./JMPDocumentation";
+import UserGuide from "./UserGuide";
 import { UIState } from "../../state/ui";
 import { api, ds, colors } from "../../lib";
+
+const { Content, Sider, Header } = Layout;
 
 const menuItems = [
   { label: "Maps", link: "/dashboard/maps", icon: <MapsIcon />, key: "1" },
@@ -31,10 +34,16 @@ const menuItems = [
     key: "3",
   },
   {
+    label: "User Guide",
+    link: "/dashboard/user-guide",
+    icon: <img src={UserGuideIcon} height={30} />,
+    key: "4",
+  },
+  {
     label: "JMP Documentation",
     link: "/dashboard/jmp-documentation",
     icon: <img src={JMPDocIcon} height={35} />,
-    key: "4",
+    key: "5",
   },
 ];
 
@@ -241,6 +250,7 @@ const DashboardView = () => {
             <Route path="/maps" element={<Maps />} />
             <Route path="/database" element={<ManageData />} />
             <Route path="/jmp-documentation" element={<JMPDocumentation />} />
+            <Route path="/user-guide" element={<UserGuide />} />
           </Routes>
         </Content>
       </Layout>
