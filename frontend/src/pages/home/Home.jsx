@@ -134,7 +134,27 @@ const Home = () => {
         <Row justify="space-between" align="middle" gutter={[48, 48]}>
           <Col span={24} style={{ textAlign: "center" }}>
             <Statistic
-              title={<h3>Number of schools</h3>}
+              title={
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <h3
+                    style={{
+                      wordWrap: "break-word",
+                      maxWidth: 550,
+                      textAlign: "center",
+                    }}
+                  >
+                    Number of School Facilities (Based on Unique School Codes)
+                    Used for Annual Comparison
+                  </h3>
+                </div>
+              }
               value={schoolTotal}
               formatter={formatter}
             />

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Image, Layout, Menu } from "antd";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { Image, Layout, Menu, Tooltip } from "antd";
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import "./style.scss";
 import { ReactComponent as MapsIcon } from "../../images/icons/maps.svg";
 import { ReactComponent as DashboardIcon } from "../../images/icons/dashboard.svg";
@@ -212,7 +216,12 @@ const DashboardView = () => {
           </Link>
           <h4>
             Monitoring WaSH progress for {schoolTotal || 0} schools in Solomon
-            Islands
+            Islands{" "}
+            <Tooltip title="Number of School Facilities (Based on Unique School Codes) Used for Annual Comparison">
+              <span>
+                <InfoCircleOutlined style={{ color: "#fff" }} />
+              </span>
+            </Tooltip>
           </h4>
           <Image src="/images/unicef-logo.png" preview={false} height={20} />
         </div>
