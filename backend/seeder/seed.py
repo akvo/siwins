@@ -10,6 +10,7 @@ from db.truncator import truncate, truncate_datapoint
 from utils.functions import refresh_materialized_data
 
 from source.main import main_config
+from seeder.seeder_config import ENABLE_DELETE_OUTLIER_DATA
 
 FORM_CONFIG_PATH = main_config.FORM_CONFIG_PATH
 
@@ -47,8 +48,9 @@ if sync_res.get("nextSyncUrl"):
 form_seeder(session=session, forms=forms)
 datapoint_seeder(session=session, token=token, forms=forms)
 
-# delete outlier
-delete_outlier_schools(session=session)
+if ENABLE_DELETE_OUTLIER_DATA:
+    # delete outlier
+    delete_outlier_schools(session=session)
 
 # refresh materialized view
 refresh_materialized_data()
