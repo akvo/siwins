@@ -226,7 +226,9 @@ def get_aggregated_chart_data(
         columns=[Data.id, Data.current, Data.year_conducted],
         current=None if history else current,
         year_conducted=(
-            [y.year_conducted for y in year_conducted] if history else None
+            [
+                y.year_conducted for y in year_conducted
+            ] if history else None
         ),
         options=options,
         prov=prov,
@@ -408,7 +410,9 @@ def get_aggregated_jmp_chart_data(
         ],
         current=None if history else current,
         year_conducted=(
-            [y.year_conducted for y in year_conducted] if history else None
+            [
+                y.year_conducted for y in year_conducted
+            ] if history else [CURRENT_MONITORING_ROUND]
         ),
         options=options,
         prov=prov,
