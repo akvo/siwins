@@ -110,7 +110,6 @@ def get_all_data(
     data_ids: Optional[List[int]] = None,
     prov: Optional[List[str]] = None,
     sctype: Optional[List[str]] = None,
-    monitoring_round: Optional[int] = None,
     count: Optional[bool] = False,
     year_conducted: Optional[List[int]] = [],
     # pagination param
@@ -145,8 +144,6 @@ def get_all_data(
     if sctype:
         or_query = or_(Data.school_information.contains([v]) for v in sctype)
         data = data.filter(or_query)
-    if monitoring_round:
-        data = data.filter(Data.year_conducted == monitoring_round)
     if count:
         return data.count()
     # pagination param
