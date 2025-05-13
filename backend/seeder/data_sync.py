@@ -20,6 +20,7 @@ from utils.mailer import send_error_email
 from utils.i18n import ValidationText
 
 from source.main import main_config
+from seeder.seeder_config import ENABLE_RANKING_CHECK_FOR_SAME_SCHOOL_CODE
 
 MONITORING_FORM = main_config.MONITORING_FORM
 MONITORING_ROUND = main_config.MONITORING_ROUND
@@ -345,7 +346,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             else None
         )
 
-        # do not include shcool with code "not available"
+        # do not include school with code "not available"
         if school_code and school_code.lower() == "not available":
             # set error message
             prev_instance = "-"
@@ -362,7 +363,7 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             )
             is_error = True
             continue
-        # EOL do not include shcool with code "not available"
+        # EOL do not include school with code "not available"
 
         # check if school type (in school information) has ranking
         is_school_type_has_ranking = False
@@ -390,47 +391,51 @@ def data_sync(token: dict, session: Session, sync_data: dict):
             and school_code.lower() != "not available"
         ):
             # check school type ranking to decide the data seed
-            prev_school_information = (
-                check_same_school_code_and_monitoring.school_information
-            )
-            prev_school_type = prev_school_information[school_type_level]
-            prev_school_type = prev_school_type.split(" ")[0]
-            prev_school_type = (
-                prev_school_type.lower() if prev_school_type else None
-            )
-            prev_school_type_ranking = school_type_rankings[prev_school_type]
-
-            school_type = school_information[school_type_level]
-            school_type = school_type.split(" ")[0]
-            school_type = school_type.lower() if school_type else None
-            school_type_ranking = school_type_rankings[school_type]
-
-            if school_type_ranking > prev_school_type_ranking:
-                # use new answers to replace the prev answer
-                # delete prev datapoint
-                crud_data.delete_by_id(
-                    session=session,
-                    id=check_same_school_code_and_monitoring.id,
+            if ENABLE_RANKING_CHECK_FOR_SAME_SCHOOL_CODE:
+                prev_school_information = (
+                    check_same_school_code_and_monitoring.school_information
+                )
+                prev_school_type = prev_school_information[school_type_level]
+                prev_school_type = prev_school_type.split(" ")[0]
+                prev_school_type = (
+                    prev_school_type.lower() if prev_school_type else None
+                )
+                prev_school_type_ranking = (
+                    school_type_rankings[prev_school_type]
                 )
 
-            if school_type_ranking <= prev_school_type_ranking:
-                # do not seed
-                prev_instance = check_same_school_code_and_monitoring.id
-                school_answer = "|".join(school_information)
-                desc = (
-                    ValidationText.school_same_type_code_monitoring_exist.value
-                )
-                desc = f"{desc} - prev instance_id: {prev_instance}"
-                error.append(
-                    {
-                        "form_id": form_id,
-                        "instance_id": data_id,
-                        "answer": f"{school_answer} - {year_conducted}",
-                        "description": desc,
-                    }
-                )
-                is_error = True
-            # EOL check school type ranking to decide the data seed
+                school_type = school_information[school_type_level]
+                school_type = school_type.split(" ")[0]
+                school_type = school_type.lower() if school_type else None
+                school_type_ranking = school_type_rankings[school_type]
+
+                if school_type_ranking > prev_school_type_ranking:
+                    # use new answers to replace the prev answer
+                    # delete prev datapoint
+                    crud_data.delete_by_id(
+                        session=session,
+                        id=check_same_school_code_and_monitoring.id,
+                    )
+
+                if school_type_ranking <= prev_school_type_ranking:
+                    # do not seed
+                    prev_instance = check_same_school_code_and_monitoring.id
+                    school_answer = "|".join(school_information)
+                    desc = (
+                        ValidationText.school_same_type_code_monitoring_exist
+                    )
+                    desc = desc.value
+                    desc = f"{desc} - prev instance_id: {prev_instance}"
+                    error.append(
+                        {
+                            "form_id": form_id,
+                            "instance_id": data_id,
+                            "answer": f"{school_answer} - {year_conducted}",
+                            "description": desc,
+                        }
+                    )
+                    is_error = True
+                # EOL check school type ranking to decide the data seed
 
         # EOL check datapoint with same school code and monitoring round
 

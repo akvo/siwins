@@ -72,7 +72,13 @@ const ManageData = () => {
     api
       .get(url)
       .then((res) => {
-        setMonitoringData(res.data);
+        const monitoringRoundOptions = res.data;
+        setMonitoringData(monitoringRoundOptions);
+        if (monitoringRoundOptions?.length) {
+          setMonitoringRound(
+            monitoringRoundOptions[monitoringRoundOptions.length - 1]
+          );
+        }
       })
       .catch(() => {
         setMonitoringData([]);

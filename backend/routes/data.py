@@ -44,9 +44,13 @@ from middleware import (
 )
 from utils.functions import extract_school_information
 from utils.helper import MathOperation
+from source.main import main_config
 
 security = HTTPBearer()
 data_route = APIRouter()
+
+
+CURRENT_MONITORING_ROUND = main_config.MONITORING_ROUND
 
 
 @data_route.get(
@@ -84,7 +88,7 @@ def get_paginated_data(
     options = check_query(q) if q else None
     res = get_all_data(
         session=session,
-        monitoring_round=monitoring_round,
+        year_conducted=[monitoring_round] if monitoring_round else None,
         options=options,
         prov=prov,
         sctype=sctype,
@@ -137,9 +141,10 @@ def get_maps_init(
     # get the data
     page_data = get_all_data(
         session=session,
-        current=True,
+        # current=True,
         skip=(perpage * (page - 1)),
         perpage=perpage,
+        year_conducted=[CURRENT_MONITORING_ROUND]
     )
     # handle pagination
     count = page_data.get("count")

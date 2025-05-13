@@ -33,6 +33,11 @@ from models.question import QuestionType
 from models.data import Data
 from models.option import Option
 
+from source.main import main_config
+
+
+CURRENT_MONITORING_ROUND = main_config.MONITORING_ROUND
+
 
 charts_route = APIRouter()
 
@@ -48,7 +53,11 @@ def get_number_of_school(
     session: Session = Depends(get_session),
 ):
     data = get_all_data(
-        session=session, columns=[Data.id], current=True, count=True
+        session=session,
+        columns=[Data.id],
+        current=True,
+        year_conducted=[CURRENT_MONITORING_ROUND],
+        count=True,
     )
     return {"name": "Number of schools", "total": data}
 
@@ -66,7 +75,14 @@ def get_bar_charts(
     session: Session = Depends(get_session),
 ):
     configs = get_jmp_config()
-    all_data = get_all_data(session=session, columns=[Data.id], current=True)
+    # TODO :: is this bar chart also need show data only from current
+    # monitoring round?
+    all_data = get_all_data(
+        session=session,
+        columns=[Data.id],
+        current=True,
+        year_conducted=[CURRENT_MONITORING_ROUND]
+    )
     ids = [d.id for d in all_data]
     filters = [Category.data.in_(ids)]
     if name:
@@ -210,7 +226,9 @@ def get_aggregated_chart_data(
         columns=[Data.id, Data.current, Data.year_conducted],
         current=None if history else current,
         year_conducted=(
-            [y.year_conducted for y in year_conducted] if history else None
+            [
+                y.year_conducted for y in year_conducted
+            ] if history else None
         ),
         options=options,
         prov=prov,
@@ -392,7 +410,9 @@ def get_aggregated_jmp_chart_data(
         ],
         current=None if history else current,
         year_conducted=(
-            [y.year_conducted for y in year_conducted] if history else None
+            [
+                y.year_conducted for y in year_conducted
+            ] if history else [CURRENT_MONITORING_ROUND]
         ),
         options=options,
         prov=prov,

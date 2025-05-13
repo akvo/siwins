@@ -541,8 +541,8 @@ const Markers = ({
   const mapHook = useMap();
 
   useEffect(() => {
-    const findCordinates = mapData.find((item) =>
-      item.school_information_array.includes(searchValue)
+    const findCordinates = mapData?.find((item) =>
+      item?.school_information_array?.includes(searchValue)
     );
     if (findCordinates?.geo) {
       mapHook.setView(findCordinates?.geo, maxZoom);

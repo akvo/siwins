@@ -8,6 +8,9 @@ from seeder.data_sync import data_sync
 from seeder.delete_outlier_data import delete_outlier_schools
 from utils.functions import refresh_materialized_data
 
+from seeder.seeder_config import ENABLE_DELETE_OUTLIER_DATA
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 Base.metadata.create_all(bind=engine)
 session = SessionLocal()
@@ -27,8 +30,9 @@ if sync_data:
         sync_data=sync_data,
     )
 
-    # delete outlier
-    delete_outlier_schools(session=session)
+    if ENABLE_DELETE_OUTLIER_DATA:
+        # delete outlier
+        delete_outlier_schools(session=session)
 
     # refresh materialized view
     refresh_materialized_data()

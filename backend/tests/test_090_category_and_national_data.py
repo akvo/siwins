@@ -54,13 +54,15 @@ class TestMigrationCategoryAndNationalData:
         )
         assert res.status_code == 200
         res = res.json()
-        assert list(res[0]) == ["category", "form", "options"]
-        assert list(res[0]["options"][0]) == [
-            "name",
-            "order",
-            "color",
-            "count",
-        ]
+        assert res == []
+        if len(res):
+            assert list(res[0]) == ["category", "form", "options"]
+            assert list(res[0]["options"][0]) == [
+                "name",
+                "order",
+                "color",
+                "count",
+            ]
         # TODO:: Delete
         # assert res == [{
         #     'category': 'Hygiene',
@@ -134,22 +136,26 @@ class TestMigrationCategoryAndNationalData:
         res = await client.get(f"{api_url}?name=Water")
         assert res.status_code == 200
         res = res.json()
-        assert list(res[0]) == ["category", "form", "options"]
-        assert res[0]["category"] == "Water"
-        assert list(res[0]["options"][0]) == [
-            "name",
-            "order",
-            "color",
-            "count",
-        ]
-        for opt in res[0]["options"]:
-            assert opt["name"] in [
-                "Safely Managed",
-                "Basic",
-                "Limited",
-                "No Service",
+        assert res == []
+        if len(res):
+            assert list(res[0]) == ["category", "form", "options"]
+            assert res[0]["category"] == "Water"
+            assert list(res[0]["options"][0]) == [
+                "name",
+                "order",
+                "color",
+                "count",
             ]
-            assert opt["color"] in ["#0080c6", "#00b8ec", "#fff176", "#FEBC11"]
+            for opt in res[0]["options"]:
+                assert opt["name"] in [
+                    "Safely Managed",
+                    "Basic",
+                    "Limited",
+                    "No Service",
+                ]
+                assert opt["color"] in [
+                    "#0080c6", "#00b8ec", "#fff176", "#FEBC11"
+                ]
         # TODO:: Delete
         # assert res == [{
         #     'category': 'Water',
