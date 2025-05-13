@@ -88,7 +88,7 @@ def get_paginated_data(
     options = check_query(q) if q else None
     res = get_all_data(
         session=session,
-        year_conducted=[monitoring_round],
+        year_conducted=[monitoring_round] if monitoring_round else None,
         options=options,
         prov=prov,
         sctype=sctype,
@@ -141,7 +141,7 @@ def get_maps_init(
     # get the data
     page_data = get_all_data(
         session=session,
-        current=True,
+        # current=True,
         skip=(perpage * (page - 1)),
         perpage=perpage,
         year_conducted=[CURRENT_MONITORING_ROUND]

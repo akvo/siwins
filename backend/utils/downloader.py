@@ -41,10 +41,11 @@ def generate_download_data(session: Session, jobs: dict, file: str):
         for cf in configs
     ]
     # query data
+    monitoring_round = info.get("monitoring_round")
     filtered_data = get_all_data(
         session=session,
         columns=[Data.id],
-        year_conducted=[info.get("monitoring_round")],
+        year_conducted=[monitoring_round] if monitoring_round else None,
         options=info.get("options"),
         prov=info.get("province"),
         sctype=info.get("school_type"),
