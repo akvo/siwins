@@ -35,13 +35,16 @@ ERROR_PATH = f"{TMP_PATH}/error"
 
 
 class QuestionConfig(enum.Enum):
-    year_conducted = 816954157
-    school_information = 815103156
+    year_conducted = 654960929
+    school_information = 638730933
+    school_type = 624670927
+    school_category = 638730931
 
 
 class SchoolInformationEnum(enum.Enum):
     province = "province"
     school_type = "school_type"
+    school_category = "school_category"
     school_name = "school_name"
     school_code = "school_code"
 
