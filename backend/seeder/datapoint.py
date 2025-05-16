@@ -17,7 +17,10 @@ from utils.mailer import send_error_email
 from utils.i18n import ValidationText
 
 from source.main import main_config
-from seeder.seeder_config import ENABLE_RANKING_CHECK_FOR_SAME_SCHOOL_CODE
+from seeder.seeder_config import (
+    ENABLE_RANKING_CHECK_FOR_SAME_SCHOOL_CODE,
+    ENABLE_CHECK_FOR_SAME_SCHOOL_CODE
+)
 
 DATAPOINT_PATH = main_config.DATAPOINT_PATH
 MONITORING_FORM = main_config.MONITORING_FORM
@@ -214,7 +217,10 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
 
         # check datapoint with same school code and monitoring round
         check_same_school_code_and_monitoring = None
-        if is_school_type_has_ranking and year_conducted:
+        if (
+            is_school_type_has_ranking and year_conducted and
+            ENABLE_RANKING_CHECK_FOR_SAME_SCHOOL_CODE
+        ):
             check_same_school_code_and_monitoring = (
                 crud_data.get_data_by_school_code(
                     session=session,
@@ -279,13 +285,19 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
 
         # check datapoint with same school and monitoring round
         check_same_school_and_monitoring = None
-        if year_conducted and school_information:
+        if (
+            year_conducted and school_information and
+            ENABLE_CHECK_FOR_SAME_SCHOOL_CODE
+        ):
             check_same_school_and_monitoring = crud_data.get_data_by_school(
                 session=session,
                 schools=school_information,
                 year_conducted=year_conducted,
             )
-        if check_same_school_and_monitoring:
+        if (
+            check_same_school_and_monitoring and
+            ENABLE_CHECK_FOR_SAME_SCHOOL_CODE
+        ):
             prev_instance = check_same_school_and_monitoring.id
             school_answer = "|".join(school_information)
             desc = ValidationText.school_monitoring_exist.value
