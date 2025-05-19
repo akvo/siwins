@@ -239,6 +239,7 @@ def get_aggregated_chart_data(
         for d in data_source
     ]
     # iterate over years conducted
+    chart_type = "BAR" if not stack else "BARSTACK"
     for y in years:
         year = y.get("year")
         current = y.get("current")
@@ -250,9 +251,7 @@ def get_aggregated_chart_data(
         )
         data = [d["id"] for d in data]
         # chart query
-        type = "BAR"
         if stack:
-            type = "BARSTACK"
             answerStack = aliased(Answer)
             answer = session.query(
                 Answer.options, answerStack.options, func.count()
@@ -345,7 +344,7 @@ def get_aggregated_chart_data(
                 )
             answer = remap
         res += answer
-    return {"type": type, "data": res}
+    return {"type": chart_type, "data": res}
 
 
 @charts_route.get(

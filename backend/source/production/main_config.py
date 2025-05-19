@@ -37,6 +37,8 @@ ERROR_PATH = f"{TMP_PATH}/error"
 class QuestionConfig(enum.Enum):
     year_conducted = 596240919
     school_information = 634200919
+    school_type = 647020917
+    school_category = 634280919
 
 
 class SchoolInformationEnum(enum.Enum):
@@ -44,6 +46,7 @@ class SchoolInformationEnum(enum.Enum):
     school_type = "school_type"
     school_name = "school_name"
     school_code = "school_code"
+    school_category = "school_category"
 
 
 class CascadeLevels(enum.Enum):

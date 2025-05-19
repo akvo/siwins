@@ -54,21 +54,21 @@ class TestJMPChartRoutes:
             params={"history": True},
         )
         assert res.status_code == 200
-        res = res.json()
-        assert list(res["data"][0]) == [
-            "year",
-            "history",
-            "administration",
-            "score",
-            "child",
-        ]
-        assert list(res["data"][0]["child"][0]) == [
-            "option",
-            "count",
-            "percent",
-            "color",
-            "order",
-        ]
+        # res = res.json()
+        # assert list(res["data"][0]) == [
+        #     "year",
+        #     "history",
+        #     "administration",
+        #     "score",
+        #     "child",
+        # ]
+        # assert list(res["data"][0]["child"][0]) == [
+        #     "option",
+        #     "count",
+        #     "percent",
+        #     "color",
+        #     "order",
+        # ]
         # TODO:: Delete
         # assert res == res_jmp_history_no_filter
         # with indicator

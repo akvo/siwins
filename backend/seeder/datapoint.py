@@ -17,7 +17,11 @@ from utils.mailer import send_error_email
 from utils.i18n import ValidationText
 
 from source.main import main_config
-from seeder.seeder_config import ENABLE_RANKING_CHECK_FOR_SAME_SCHOOL_CODE
+from seeder.seeder_config import (
+    ENABLE_RANKING_CHECK_FOR_SAME_SCHOOL_CODE,
+    ENABLE_CHECK_FOR_SAME_SCHOOL_CODE,
+    ENABLE_MANUAL_SCHOOL_INFOMATION
+)
 
 DATAPOINT_PATH = main_config.DATAPOINT_PATH
 MONITORING_FORM = main_config.MONITORING_FORM
@@ -32,11 +36,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 year_conducted_qid = QuestionConfig.year_conducted.value
 school_information_qid = QuestionConfig.school_information.value
+school_type_qid = QuestionConfig.school_type.value
+school_category_qid = QuestionConfig.school_category.value
 
+school_province_enum = SchoolInformationEnum.province.value
 school_type_enum = SchoolInformationEnum.school_type.value
+school_name_enum = SchoolInformationEnum.school_name.value
 school_code_enum = SchoolInformationEnum.school_code.value
+
+school_province_level = (
+    CascadeLevels.school_information.value[school_province_enum])
 school_type_level = CascadeLevels.school_information.value[school_type_enum]
+school_name_level = CascadeLevels.school_information.value[school_name_enum]
 school_code_level = CascadeLevels.school_information.value[school_code_enum]
+
 school_type_has_ranking = SchoolTypeRanking.has_ranking.value
 school_type_rankings = SchoolTypeRanking.rankings.value
 
@@ -71,6 +84,64 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                 session=session, identifier=fi.get("identifier"), form=form_id
             )
 
+        # BEGIN generate school information manually
+        if ENABLE_MANUAL_SCHOOL_INFOMATION:
+            target_questions = {}
+            target_qids = [
+                school_information_qid, school_type_qid, school_category_qid
+            ]
+            target_qids = set(map(str, target_qids))
+            for group in fi.get("responses").values():
+                for entry in group:
+                    for question_id, answer in entry.items():
+                        if question_id in target_qids:
+                            target_questions[question_id] = answer
+
+            manual_school_information = {}
+            for qid in target_qids:
+                res = target_questions.get(qid, None)
+                if not res:
+                    # There're some datapoints without school category answer
+                    continue
+
+                qid = int(qid)
+                if qid == school_information_qid:
+                    province = res[school_province_level]
+                    province = province.get("name", None) if province else None
+                    manual_school_information["province"] = province
+
+                    s_name = res[school_name_level]
+                    s_name = s_name.get("name", None) if s_name else None
+                    manual_school_information["name"] = s_name
+
+                    s_code = res[school_code_level]
+                    s_code = s_code.get("name", None) if s_code else None
+                    manual_school_information["code"] = s_code
+                    continue
+
+                res = res[0]
+                if qid == school_type_qid:
+                    s_type = res.get("text", None) if res else None
+                    manual_school_information["type"] = s_type
+                    continue
+
+                if qid == school_category_qid:
+                    s_cat = res.get("text", None) if res else None
+                    manual_school_information["category"] = s_cat
+                    continue
+
+            if manual_school_information:
+                school_information = [
+                    manual_school_information.get("province"),
+                    manual_school_information.get("type"),
+                    manual_school_information.get("name"),
+                    manual_school_information.get("code"),
+                ]
+                if manual_school_information.get("category"):
+                    school_information.append(
+                        manual_school_information.get("category"))
+        # EOL generate school information manually
+
         # fetching answers value into answer model
         for key, value in fi.get("responses").items():
             for val in value:
@@ -82,7 +153,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                         session=session, id=kval
                     )
                     if not question:
-                        # print(f"{kval}: 404 not found")
+                        print(f"{kval}: 404 not found")
                         continue
                     # check for incorrect monitoring round
                     monitoring_answer = 0
@@ -157,6 +228,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                     if (
                         school_information_qid
                         and school_information_qid == qid
+                        and not ENABLE_MANUAL_SCHOOL_INFOMATION
                     ):
                         school_information = answer.options
                     # EOL custom
@@ -214,7 +286,10 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
 
         # check datapoint with same school code and monitoring round
         check_same_school_code_and_monitoring = None
-        if is_school_type_has_ranking and year_conducted:
+        if (
+            is_school_type_has_ranking and year_conducted and
+            ENABLE_RANKING_CHECK_FOR_SAME_SCHOOL_CODE
+        ):
             check_same_school_code_and_monitoring = (
                 crud_data.get_data_by_school_code(
                     session=session,
@@ -279,13 +354,19 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
 
         # check datapoint with same school and monitoring round
         check_same_school_and_monitoring = None
-        if year_conducted and school_information:
+        if (
+            year_conducted and school_information and
+            ENABLE_CHECK_FOR_SAME_SCHOOL_CODE
+        ):
             check_same_school_and_monitoring = crud_data.get_data_by_school(
                 session=session,
                 schools=school_information,
                 year_conducted=year_conducted,
             )
-        if check_same_school_and_monitoring:
+        if (
+            check_same_school_and_monitoring and
+            ENABLE_CHECK_FOR_SAME_SCHOOL_CODE
+        ):
             prev_instance = check_same_school_and_monitoring.id
             school_answer = "|".join(school_information)
             desc = ValidationText.school_monitoring_exist.value
