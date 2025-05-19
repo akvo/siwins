@@ -44,9 +44,9 @@ class QuestionConfig(enum.Enum):
 class SchoolInformationEnum(enum.Enum):
     province = "province"
     school_type = "school_type"
-    school_category = "school_category"
     school_name = "school_name"
     school_code = "school_code"
+    school_category = "school_category"
 
 
 class CascadeLevels(enum.Enum):

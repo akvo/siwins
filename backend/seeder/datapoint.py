@@ -19,7 +19,8 @@ from utils.i18n import ValidationText
 from source.main import main_config
 from seeder.seeder_config import (
     ENABLE_RANKING_CHECK_FOR_SAME_SCHOOL_CODE,
-    ENABLE_CHECK_FOR_SAME_SCHOOL_CODE
+    ENABLE_CHECK_FOR_SAME_SCHOOL_CODE,
+    ENABLE_MANUAL_SCHOOL_INFOMATION
 )
 
 DATAPOINT_PATH = main_config.DATAPOINT_PATH
@@ -35,11 +36,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 year_conducted_qid = QuestionConfig.year_conducted.value
 school_information_qid = QuestionConfig.school_information.value
+school_type_qid = QuestionConfig.school_type.value
+school_category_qid = QuestionConfig.school_category.value
 
+school_province_enum = SchoolInformationEnum.province.value
 school_type_enum = SchoolInformationEnum.school_type.value
+school_name_enum = SchoolInformationEnum.school_name.value
 school_code_enum = SchoolInformationEnum.school_code.value
+
+school_province_level = (
+    CascadeLevels.school_information.value[school_province_enum])
 school_type_level = CascadeLevels.school_information.value[school_type_enum]
+school_name_level = CascadeLevels.school_information.value[school_name_enum]
 school_code_level = CascadeLevels.school_information.value[school_code_enum]
+
 school_type_has_ranking = SchoolTypeRanking.has_ranking.value
 school_type_rankings = SchoolTypeRanking.rankings.value
 
@@ -74,6 +84,63 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                 session=session, identifier=fi.get("identifier"), form=form_id
             )
 
+        # BEGIN generate school information manually
+        if ENABLE_MANUAL_SCHOOL_INFOMATION:
+            flat_questions = {}
+            for group in fi.get("responses").values():
+                for entry in group:
+                    for question_id, answer in entry.items():
+                        flat_questions[question_id] = answer
+
+            manual_school_information = {}
+            target_qids = [
+                school_information_qid, school_type_qid, school_category_qid
+            ]
+            target_qids = set(map(str, target_qids))
+            for qid in target_qids:
+                res = flat_questions.get(qid, None)
+                if not res:
+                    # There're some datapoints without school category answer
+                    continue
+
+                qid = int(qid)
+                if qid == school_information_qid:
+                    province = res[school_province_level]
+                    province = province.get("name", None) if province else None
+                    manual_school_information["province"] = province
+
+                    s_name = res[school_name_level]
+                    s_name = s_name.get("name", None) if s_name else None
+                    manual_school_information["name"] = s_name
+
+                    s_code = res[school_code_level]
+                    s_code = s_code.get("name", None) if s_code else None
+                    manual_school_information["code"] = s_code
+                    continue
+
+                res = res[0]
+                if qid == school_type_qid:
+                    s_type = res.get("text", None) if res else None
+                    manual_school_information["type"] = s_type
+                    continue
+
+                if qid == school_category_qid:
+                    s_cat = res.get("text", None) if res else None
+                    manual_school_information["category"] = s_cat
+                    continue
+
+            if manual_school_information:
+                school_information = [
+                    manual_school_information.get("province"),
+                    manual_school_information.get("type"),
+                    manual_school_information.get("name"),
+                    manual_school_information.get("code"),
+                ]
+                if manual_school_information.get("category"):
+                    school_information.append(
+                        manual_school_information.get("category"))
+        # EOL generate school information manually
+
         # fetching answers value into answer model
         for key, value in fi.get("responses").items():
             for val in value:
@@ -85,7 +152,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                         session=session, id=kval
                     )
                     if not question:
-                        # print(f"{kval}: 404 not found")
+                        print(f"{kval}: 404 not found")
                         continue
                     # check for incorrect monitoring round
                     monitoring_answer = 0
@@ -160,6 +227,7 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
                     if (
                         school_information_qid
                         and school_information_qid == qid
+                        and not ENABLE_MANUAL_SCHOOL_INFOMATION
                     ):
                         school_information = answer.options
                     # EOL custom
