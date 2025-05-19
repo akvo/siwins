@@ -86,19 +86,20 @@ def seed_datapoint(session: Session, token: dict, data: dict, form: Form):
 
         # BEGIN generate school information manually
         if ENABLE_MANUAL_SCHOOL_INFOMATION:
-            flat_questions = {}
-            for group in fi.get("responses").values():
-                for entry in group:
-                    for question_id, answer in entry.items():
-                        flat_questions[question_id] = answer
-
-            manual_school_information = {}
+            target_questions = {}
             target_qids = [
                 school_information_qid, school_type_qid, school_category_qid
             ]
             target_qids = set(map(str, target_qids))
+            for group in fi.get("responses").values():
+                for entry in group:
+                    for question_id, answer in entry.items():
+                        if question_id in target_qids:
+                            target_questions[question_id] = answer
+
+            manual_school_information = {}
             for qid in target_qids:
-                res = flat_questions.get(qid, None)
+                res = target_questions.get(qid, None)
                 if not res:
                     # There're some datapoints without school category answer
                     continue
