@@ -150,8 +150,7 @@ const Home = () => {
                       textAlign: "center",
                     }}
                   >
-                    Number of School Facilities (Based on Unique School Codes)
-                    Used for Annual Comparison
+                    Number of School Facilities Surveyed (Functional Units)
                   </h3>
                 </div>
               }

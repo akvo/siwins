@@ -217,7 +217,7 @@ const DashboardView = () => {
           <h4>
             Monitoring WaSH progress for {schoolTotal || 0} schools in Solomon
             Islands{" "}
-            <Tooltip title="Number of School Facilities (Based on Unique School Codes) Used for Annual Comparison">
+            <Tooltip title="Number of School Facilities Surveyed (Functional Units)">
               <span>
                 <InfoCircleOutlined style={{ color: "#fff" }} />
               </span>
