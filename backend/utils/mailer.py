@@ -36,20 +36,40 @@ ERROR_PATH = main_config.ERROR_PATH
 # Compose passes `- EMAIL_PORT=${EMAIL_PORT}` through as an empty string when
 # the variable is unset in the shell, which is present as far as `get` is
 # concerned: that would make `int("")` raise, and would read an empty
-# EMAIL_USE_TLS as "not true" and quietly drop the connection to plaintext.
-EMAIL_HOST = os.environ.get("EMAIL_HOST")
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT") or 587)
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-EMAIL_USE_TLS = (os.environ.get("EMAIL_USE_TLS") or "true").lower() == "true"
-EMAIL_USE_SSL = (os.environ.get("EMAIL_USE_SSL") or "false").lower() == "true"
+def get_smtp_config():
+    """Resolve SMTP settings, inferring SSL/TLS defaults from port if unset."""
+    host = os.environ.get("EMAIL_HOST")
+    port = int(os.environ.get("EMAIL_PORT") or 587)
+    user = os.environ.get("EMAIL_HOST_USER")
+    password = os.environ.get("EMAIL_HOST_PASSWORD")
 
-# Relays commonly refuse a From outside the domain they authenticate, so the
-# sender is configurable. The default preserves the address this module used
-# while it still spoke to Mailjet.
-EMAIL_FROM = os.environ.get("EMAIL_FROM") or "noreply@akvo.org"
+    use_ssl_env = os.environ.get("EMAIL_USE_SSL")
+    if use_ssl_env is not None and use_ssl_env != "":
+        use_ssl = use_ssl_env.lower() == "true"
+    else:
+        use_ssl = port == 465
 
-notification_recepients = os.environ["NOTIFICATION_RECIPIENTS"]
+    use_tls_env = os.environ.get("EMAIL_USE_TLS")
+    if use_tls_env is not None and use_tls_env != "":
+        use_tls = use_tls_env.lower() == "true"
+    else:
+        use_tls = port != 465
+
+    from_addr = os.environ.get("EMAIL_FROM") or "noreply@akvo.org"
+    return host, port, user, password, use_tls, use_ssl, from_addr
+
+
+(
+    EMAIL_HOST,
+    EMAIL_PORT,
+    EMAIL_HOST_USER,
+    EMAIL_HOST_PASSWORD,
+    EMAIL_USE_TLS,
+    EMAIL_USE_SSL,
+    EMAIL_FROM,
+) = get_smtp_config()
+
+notification_recepients = os.environ.get("NOTIFICATION_RECIPIENTS", "")
 
 loader = FileSystemLoader(".")
 env = Environment(loader=loader)
@@ -137,13 +157,22 @@ class Email:
 
     @property
     def data(self) -> EmailMessage:
-        recipients = self.recipients or [
-            {"Email": email} for email in notification_recepients.split(",")
-        ]
+        if self.recipients:
+            recipients = self.recipients
+        else:
+            raw_recipients = os.environ.get(
+                "NOTIFICATION_RECIPIENTS", notification_recepients
+            )
+            recipients = [
+                {"Email": email.strip()}
+                for email in raw_recipients.split(",")
+                if email.strip()
+            ]
         html = self.html
+        _, _, _, _, _, _, sender = get_smtp_config()
 
         message = EmailMessage()
-        message["From"] = EMAIL_FROM
+        message["From"] = sender
         message["To"] = format_recipients(recipients)
         message["Subject"] = self.type.value["subject"]
         if self.bcc:
@@ -179,20 +208,29 @@ class Email:
         # relay. `TESTING` is already set by the pytest fixtures.
         if os.environ.get("TESTING"):
             return True
+        (
+            host,
+            port,
+            user,
+            password,
+            use_tls,
+            use_ssl,
+            _,
+        ) = get_smtp_config()
         # smtplib silently skips connecting when handed a falsy host and then
         # fails several calls later with "please run connect() first", which
         # says nothing about the actual problem. Name it here instead.
-        if not EMAIL_HOST:
+        if not host:
             raise RuntimeError("EMAIL_HOST is not configured")
-        smtp_class = smtplib.SMTP_SSL if EMAIL_USE_SSL else smtplib.SMTP
+        smtp_class = smtplib.SMTP_SSL if use_ssl else smtplib.SMTP
         # Mailjet bounded its connection at nothing at all, so any finite
         # timeout is the improvement; nothing here is worth tuning.
-        with smtp_class(EMAIL_HOST, EMAIL_PORT, timeout=30) as smtp:
+        with smtp_class(host, port, timeout=30) as smtp:
             # STARTTLS upgrades a plaintext connection, so it is meaningless
             # once implicit SSL has already wrapped the socket.
-            if EMAIL_USE_TLS and not EMAIL_USE_SSL:
+            if use_tls and not use_ssl:
                 smtp.starttls()
-            if EMAIL_HOST_USER:
-                smtp.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+            if user:
+                smtp.login(user, password)
             smtp.send_message(self.data)
         return True
