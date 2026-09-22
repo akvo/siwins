@@ -32,7 +32,8 @@ class TestStorage:
 
     @pytest.mark.asyncio
     async def test_upload_file_to_bucket(self, session: Session) -> None:
-        if "GOOGLE_APPLICATION_CREDENTIALS" in os.environ:
+        creds = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+        if creds and os.path.exists(creds):
             test_file = create_test_file()
             uploaded_file = upload(test_file, StorageFolder.test.value)
             assert check(uploaded_file) is True
@@ -42,7 +43,8 @@ class TestStorage:
 
     @pytest.mark.asyncio
     async def test_delete_file_from_bucket(self, session: Session) -> None:
-        if "GOOGLE_APPLICATION_CREDENTIALS" in os.environ:
+        creds = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+        if creds and os.path.exists(creds):
             # use administration CSV
             test_file = create_test_file()
             uploaded_file = upload(test_file, StorageFolder.test.value)
