@@ -38,13 +38,26 @@ export GOOGLE_APPLICATION_CREDENTIALS=path_to_service_account.json
 
 ##### Email Service
 
-To use the Mailjet Email API, you need to create a Mailjet account, then retrieve your API and Secret keys. They will be used for seed/sync notification purposes.
+Seed/sync notifications are sent over SMTP, so you need the host and credentials of a mail relay.
 
 ```
-export MAILJET_SECRET="string"
-export MAILJET_APIKEY="string"
+export EMAIL_HOST="smtp.example.org"
+export EMAIL_HOST_USER="string"
+export EMAIL_HOST_PASSWORD="string"
 export NOTIFICATION_RECIPIENTS="email1,email2"
 ```
+
+`EMAIL_PORT` defaults to `587` with `EMAIL_USE_TLS=true` and `EMAIL_USE_SSL=false`, which is the usual submission-with-STARTTLS setup. A relay that wants implicit SSL instead needs both overridden:
+
+```
+export EMAIL_PORT="465"
+export EMAIL_USE_TLS="false"
+export EMAIL_USE_SSL="true"
+```
+
+Neither mode can be inferred from the port number, so getting this wrong opens a plaintext socket against a TLS-only port and hangs until the connection times out.
+
+`EMAIL_FROM` sets the sender and defaults to `noreply@akvo.org`. Override it when the relay only accepts a `From` inside the domain it authenticates.
 
 #### 2. Start the App
 

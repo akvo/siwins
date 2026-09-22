@@ -64,16 +64,45 @@ spec:
                 secretKeyRef:
                   name: siwins
                   key: auth0-client
-            - name: MAILJET_APIKEY
+            - name: EMAIL_HOST
               valueFrom:
                 secretKeyRef:
                   name: siwins
-                  key: mailjet-apikey
-            - name: MAILJET_SECRET
+                  key: email-host
+            - name: EMAIL_HOST_USER
               valueFrom:
                 secretKeyRef:
                   name: siwins
-                  key: mailjet-secret
+                  key: email-host-user
+            - name: EMAIL_HOST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: siwins
+                  key: email-host-password
+            - name: EMAIL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: siwins
+                  key: email-port
+                  optional: true
+            - name: EMAIL_USE_TLS
+              valueFrom:
+                secretKeyRef:
+                  name: siwins
+                  key: email-use-tls
+                  optional: true
+            - name: EMAIL_USE_SSL
+              valueFrom:
+                secretKeyRef:
+                  name: siwins
+                  key: email-use-ssl
+                  optional: true
+            - name: EMAIL_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: siwins
+                  key: email-from
+                  optional: true
             - name: NOTIFICATION_RECIPIENTS
               valueFrom:
                 secretKeyRef:

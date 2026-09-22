@@ -25,4 +25,4 @@ def get_email_template(
     email = Email(type=type)
     if send:
         email.send
-    return email.data["Html-part"]
+    return email.html
