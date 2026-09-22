@@ -3,3 +3,7 @@
 .category.json
 .env
 notify.team.sh
+
+.agent/
+agent_docs/
+task.md
