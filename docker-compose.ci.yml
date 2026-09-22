@@ -12,8 +12,6 @@ services:
       - AUTH0_USER=$AUTH0_USER
       - AUTH0_PWD=$AUTH0_PWD
       - SKIP_MIGRATION=yes
-      - MAILJET_SECRET=notset
-      - MAILJET_APIKEY=notset
       - NOTIFICATION_RECIPIENTS=notset
       - SIWINS_INSTANCE=test
     image: eu.gcr.io/akvo-lumen/siwins/backend:latest
